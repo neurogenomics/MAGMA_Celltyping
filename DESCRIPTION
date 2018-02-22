@@ -8,14 +8,17 @@ Maintainer: Nathan Skene <nathan.skene@gmail.com>
 Description: Used to test for cell type enrichments using MAGMA
 License: Artistic-2.0
 LazyData: TRUE
-Depends: R(>= 3.2)
+Depends: R(>= 3.2),  EWCE, One2One, R.utils, rsnps
 VignetteBuilder: knitr
-Imports: 
+Imports: EWCE, 
+        One2One,
+        R.utils,
+        rsnps
 Suggests: knitr, BiocStyle,
     rmarkdown
-biocViews: GeneExpression, Transcription, DifferentialExpression,
-        GeneSetEnrichment, Genetics, Microarray,
-        mRNAMicroarray, OneChannel, RNASeq,
-        BiomedicalInformatics, Proteomics, Visualization,
-        FunctionalGenomics
+Remotes: nathanskene/ewce,
+    nathanskene/one2one
+biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
+        Genetics, scRNASeq, Single Cell RNAseq,
+        BiomedicalInformatics, FunctionalGenomics
 RoxygenNote: 6.0.1

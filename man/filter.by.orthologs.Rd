@@ -4,7 +4,7 @@
 \alias{filter.by.orthologs}
 \title{Filter specificity and mean_exp from CTD list to only keep a subset of genes}
 \usage{
-filter.by.orthologs(ctd_oneLevel, one2one_ortholog_symbols)
+\method{filter}{by.orthologs}(ctd_oneLevel, one2one_ortholog_symbols)
 }
 \arguments{
 \item{ctd_oneLevel}{method to order colors (\code{"hsv"} or \code{"cluster"})}
