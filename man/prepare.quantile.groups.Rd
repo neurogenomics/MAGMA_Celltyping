@@ -24,6 +24,6 @@ Quantile groups are stored in an extra matrix ('quantiles') in the returned CTD.
 from the CTD data which are not 1:1 orthologs with the GWAS species.
 }
 \examples{
-ctd2 = lapply(ctd,filter.by.orthologs,one2one_ortholog_symbols = ortholog_data[,2])
+ctd2 = lapply(ctd,filter_by_orthologs,one2one_ortholog_symbols = ortholog_data[,2])
 
 }

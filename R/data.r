@@ -27,3 +27,13 @@
 #' }
 #'
 "all_hgnc_wtEntrez"
+
+#' RSD / CHR / BP for GRCh37 and GRCh38
+#'
+#' Data table with all Hapmap3 SNPs
+#'
+#' @source
+#' build_snp_location_tables()
+#'
+"SNP_LOC_DATA"
+

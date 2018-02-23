@@ -11,7 +11,7 @@
 #' @return The ctd with additional quantiles matrix
 #'
 #' @examples
-#' ctd2 = lapply(ctd,filter.by.orthologs,one2one_ortholog_symbols = ortholog_data[,2])
+#' ctd2 = lapply(ctd,filter_by_orthologs,one2one_ortholog_symbols = ortholog_data[,2])
 #'
 #' @import tibble
 #' @import dplyr
@@ -23,7 +23,7 @@ prepare.quantile.groups <- function(ctd,specificity_species="mouse",gwas_species
         print("Dropping all genes that do not have 1:1 homologs between the two species")
         allHomologs = load.homologs()
         ortholog_data = analyse.orthology(specificity_species,gwas_species,allHomologs)$orthologs_one2one
-        ctd = lapply(ctd,filter.by.orthologs,one2one_ortholog_symbols = ortholog_data[,2])
+        ctd = lapply(ctd,filter_by_orthologs,one2one_ortholog_symbols = ortholog_data[,2])
     }
     
     # Quantiles will be stored within the CTD as 'quantiles'

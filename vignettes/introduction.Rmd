@@ -14,13 +14,10 @@ vignette: >
 ## Set parameters to be used for the analysis
 
 ```{r }
-# MAGMA parameters
-kb_upstream = 10
-kb_downstream = 1.5
+
 gwasN = 0 # Set this equal to the sample size of the GWAS
 
 # MAGMA file paths
-gene_loc_dir = sprintf("%s/data/",system.file(package="MAGMA.Celltyping"))
 gene_loc_files = c("NCBI37.3.gene.loc")
 if(!sum(gene_loc_files %in% list.files(gene_loc_dir))==length(gene_loc_files)){stop("ERROR: not all gene_loc_files are located in gene_loc_dir")}
 genome_ref_dir = "/Users/ns9/OneDrive - University College London/MAGMA/g1000_eur/g1000_eur"
@@ -61,51 +58,22 @@ We need to have a summary statistics file to analyse as input. As an example dow
 The function `check.sumstats.formatted.for.magma` does some basic processing to get it into the right format.
 
 ```{r }
+# Download and unzip the summary statistics file
 library(R.utils)
 gwas_sumstats_path = "~/Downloads/202040.assoc.tsv"
 if(!file.exists(gwas_sumstats_path)){
     download.file("https://www.dropbox.com/s/27yrfcsngenzab1/2040.assoc.tsv.gz?raw=1",destfile=gwas_sumstats_path)
     gunzip(sprintf("%s.gz",gwas_sumstats_path),gwas_sumstats_path)
 }
-col_headers = check.sumstats.formatted.for.magma(gwas_sumstats_path)
 
-
-library(rsnps)
-source("https://bioconductor.org/biocLite.R")
-library("SNPlocs.Hsapiens.dbSNP144.GRCh37")
-#library(SNPlocs.Hsapiens.dbSNP144.GRCh38)
-snps <- SNPlocs.Hsapiens.dbSNP144.GRCh37
-
-
-biocLite("SNPlocs.Hsapiens.dbSNP144.GRCh37") # [The SNPs in this package are mapped to reference genome GRCh37.p13]
-
-
-# Note, use the names of the SNPs printed out from the header above to find which genome build this was mapped with
-# -- use dbSNP to check this: https://www.ncbi.nlm.nih.gov/projects/SNP/
-gene_loc_dir = "/Users/ns9/Workshop"
-genomeLocFile=sprintf("%s/NCBI37.3.gene.loc",gene_loc_dir)
-#
+# Format it (i.e. column headers etc)
+col_headers = format_sumstats_for_magma(gwas_sumstats_path)
 ```
 
 ## Map SNPs to Genes
 
 ```{r }
-magma_cmd = sprintf("%smagma --annotate window=%s,%s --snp-loc '%s' --gene-loc '%s' --out '%s'",magma_path,kb_upstream,kb_downstream,gwas_sumstats_path,genomeLocFile,gwas_sumstats_path)
-system(magma_cmd)
-
-if("N" %in% column_headers){n_arg = "ncol=N"}else{n_arg = sprintf("N=%s",gwasN)}
-# SCHIZ CLOZUK N=35802
-
-magma_cmd = sprintf("%smagma --bfile '%s' --pval '%s' %s --gene-annot '%s.genes.annot' --out '%s'",magma_path,genome_ref_dir,gwas_sumstats_path,n_arg,gwas_sumstats_path,gwas_sumstats_path)
-magma_cmd
-system(magma_cmd)
-
-
-# window size: 10 kb upstream and 1.5 kb downstream of each gene 
-# model: snpwise-unweighted
-# option --gene-covar onesided
-# p-values need correcting to one sided
-# For the conditional analysis, we used the condition modifier of the —gene-covar parameter to condition on each of the significant cell types
+genesOutPath = map.snps.to.genes(gwas_sumstats_path)
 ```
 
 ## Run the analysis
