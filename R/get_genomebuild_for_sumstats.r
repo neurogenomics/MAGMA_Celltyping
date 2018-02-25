@@ -18,5 +18,5 @@ get_genomebuild_for_sumstats <- function(path){
     sub_SNP_LOC_DATA = SNP_LOC_DATA[sample(1:dim(SNP_LOC_DATA)[1],100000),]
     topSNP_locs = sub_SNP_LOC_DATA[sub_SNP_LOC_DATA$SNP %in% top20lines,]
     topSNP_locs$locs = sprintf("%s-%s-%s",topSNP_locs$SNP,topSNP_locs$CHR,topSNP_locs$BP)
-    return(sort(table(topSNP_locs[topSNP_locs$locs %in% topLOCs,]$Build),decreasing = TRUE)[1])
+    return(names(sort(table(topSNP_locs[topSNP_locs$locs %in% topLOCs,]$Build),decreasing = TRUE)[1]))
 }

@@ -107,6 +107,10 @@ format_sumstats_for_magma <- function(path){
     print(rows_of_data)
     col_headers = strsplit(rows_of_data[1],"\t")[[1]]
     
+    # Drop any rows with duplicated RSIDs
+    shCmd = sprintf("gawk -i inplace '!seen[$1]++' '%s'",path.expand(path))
+    system2("/bin/bash", args = c("-c", shQuote(shCmd)))
+    
     return(col_headers)
 }
 

@@ -1,6 +1,6 @@
 ---
-title: "MAGMA Celltyping"
-author: "Nathan Skene"
+title: "Using MAGMA to find causative celltypes for genetically complex traits using MAGMA"
+author: "Nathan Skene & Julien Bryois"
 date: "`r Sys.Date()`"
 output: rmarkdown::github_document
 vignette: >
@@ -9,18 +9,26 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# Introduction
+
+This package takes GWAS summary statistics & Single Cell Transcriptome specificity data (in EWCE's CTD format) as input. As output it calculates the associations between the GWAS trait and the celltypes. If you use this package then you must cite our paper in which this was described:
+
+"Genetic Identification Of Brain Cell Types Underlying Schizophrenia", Nature Genetics, March 2018, Nathan G. Skene, Julien Bryois, Trygve E. Bakken, Gerome Breen, James J Crowley, Héléna A Gaspar, Paola Giusti-Rodriguez, Rebecca D Hodge, Jeremy A. Miller, Ana Muñoz-Manchado, Michael C O’Donovan, Michael J Owen, Antonio F Pardiñas, Jesper Ryge, James T R Walters, Sten Linnarsson, Ed S. Lein, Major Depressive Disorder Working Group of the Psychiatric Genomics Consortium, Patrick F Sullivan, Jens Hjerling-Leffler"
+
 # Setup MAGMA
 
 ## Set parameters to be used for the analysis
 
 ```{r }
-
 gwasN = 0 # Set this equal to the sample size of the GWAS
 
-# MAGMA file paths
-gene_loc_files = c("NCBI37.3.gene.loc")
-if(!sum(gene_loc_files %in% list.files(gene_loc_dir))==length(gene_loc_files)){stop("ERROR: not all gene_loc_files are located in gene_loc_dir")}
-genome_ref_dir = "/Users/ns9/OneDrive - University College London/MAGMA/g1000_eur/g1000_eur"
+# Set path the 1000 genomes reference data.
+genome_ref_dir = "~/Downloads/g1000_eur"
+if(!file.exists(sprintf("%s/g1000_eur.bed",genome_ref_dir))){
+    download.file("https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip",destfile=sprintf("%s.zip",genome_ref_dir))
+    unzip(sprintf("%s.zip",genome_ref_dir),exdir=genome_ref_dir)
+}
+genome_ref_path = sprintf("%s/g1000_eur",genome_ref_dir)
 ```
 
 # Prepare cell type specificity data
@@ -73,292 +81,23 @@ col_headers = format_sumstats_for_magma(gwas_sumstats_path)
 ## Map SNPs to Genes
 
 ```{r }
-genesOutPath = map.snps.to.genes(gwas_sumstats_path)
+genesOutPath = map.snps.to.genes(gwas_sumstats_path,genome_ref_path=genome_ref_path)
 ```
 
-## Run the analysis
+## Run the main cell type association analysis
 
 ```{r }
-# First write the quantile data to a file
-##- Need to match quantiles to the genes in the genes.out file
-genesOut = read.table(sprintf("%s.genes.out",gwas_sumstats_path),stringsAsFactors = FALSE)
-data(all_hgnc_wtEntrez)
-#load("/Users/ns9/Box Sync/MAGMA.Celltyping/data/all_hgnc_wtEntrez.rda")
-colnames(all_hgnc_wtEntrez)[1] = "human.symbol"
-data(ortholog_data_Mouse_Human)
-entrez_mgi = merge(all_hgnc_wtEntrez,ortholog_data_Mouse_Human$orthologs_one2one[,2:3],by="human.symbol")
-entrez_mgi = entrez_mgi[!is.na(entrez_mgi$entrezgene),]
-
-entrez_mgi = entrez_mgi[entrez_mgi$mouse.symbol %in% rownames(ctd[[annotLevel]]$quantiles),]
-annotLevel=1
-quantDat = ctd[[annotLevel]]$quantiles[entrez_mgi$mouse.symbol,]
-quantDat2 = data.frame(entrez=entrez_mgi$entrezgene,quantDat)
-quantDat2 = quantDat2[!duplicated(quantDat2$entrez),]
-geneCovarFile="/Users/ns9/geneCovarMagma.csv"
-#write.csv(quantDat2,file=geneCovarFile,quote=FALSE,row.names=FALSE)
-write.table(quantDat2,file=geneCovarFile,quote=FALSE,row.names=FALSE,sep="\t")
-
-analysis_name = "test"
-magma_cmd = sprintf("%smagma --gene-results '%s.genes.raw' --gene-covar '%s' --out '%s.%s'",magma_path,gwas_sumstats_path,geneCovarFile,gwas_sumstats_path,analysis_name)
-print(magma_cmd)
-system(magma_cmd)
+ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path)
+plot_celltype_associations(ctAssocs)
 ```
 
-## Now rerun with another CTD file
+## Run the conditional cell type association analysis
 
 ```{r }
-ctd=list()
-load("/Users/ns9/Box Sync/Patrick & Julien/celltype_data_allKImouse_wtHypo_MergedStriatal_1to1only_level1_thresh0_trim0.rda")
-ctd[[1]] = list()
-ctd[[1]]$specificity = celltype_data[[1]]$cell_dists
-ctd[[1]]$mean_exp = celltype_data[[1]]$all_scts
-ctd[[1]]$annot = celltype_data[[1]]$annot
-load("/Users/ns9/Box Sync/Patrick & Julien/celltype_data_allKImouse_wtHypo_MergedStriatal_1to1only_level2_thresh0_trim0.rda")
-ctd[[2]] = list()
-ctd[[2]]$specificity = celltype_data[[1]]$cell_dists
-ctd[[2]]$mean_exp = celltype_data[[1]]$all_scts
-ctd[[2]]$annot = celltype_data[[1]]$annot
-save(ctd,file="/Users/ns9/Box Sync/Patrick & Julien/celltype_data_allKImouse_wtHypo_MergedStriatal_1to1only_thresh0_trim0.rda")
-
-
-# ff="ctd_StenWholeBrain10xGenomics2018_StringentGeneFiltering.rda"
-#ff="ctd_StenWholeBrain10xGenomics2018_RlyExtremeGeneFiltering.rda"
-#path="~/Box Sync/MAGMA.Celltyping/"
-ff="celltype_data_allKImouse_wtHypo_MergedStriatal_1to1only_thresh0_trim0.rda"
-path="/Users/ns9/Box Sync/Patrick & Julien//"
-load(sprintf("%s%s",path,ff))
-ctd = prepare.quantile.groups(ctd,"mouse","human",40)
-colnames(ctd[[1]]$quantiles) = gsub("\\(|\\)|;","",gsub(" ","",colnames(ctd[[1]]$quantiles)))
-colnames(ctd[[2]]$quantiles) = gsub("\\(|\\)|;","",gsub(" ","",colnames(ctd[[2]]$quantiles)))
-
-load("/Users/ns9/Box Sync/MAGMA.Celltyping/data/all_hgnc_wtEntrez.rda")
-colnames(all_hgnc_wtEntrez)[1] = "human.symbol"
-entrez_mgi = merge(all_hgnc_wtEntrez,ortholog_data_Mouse_Human$orthologs_one2one[,2:3],by="human.symbol")
-entrez_mgi = entrez_mgi[!is.na(entrez_mgi$entrezgene),]
-
-entrez_mgi = entrez_mgi[entrez_mgi$mouse.symbol %in% rownames(ctd[[1]]$quantiles),]
-for(annotLevel in 1:length(ctd)){
-    quantDat = ctd[[annotLevel]]$quantiles[entrez_mgi$mouse.symbol,]
-    quantDat2 = data.frame(entrez=entrez_mgi$entrezgene,quantDat)
-    quantDat2 = quantDat2[!duplicated(quantDat2$entrez),]
-    colnames(quantDat2)[2:dim(quantDat2)[2]]
-    geneCovarFile="/Users/ns9/geneCovarMagma.csv"
-    #write.csv(quantDat2,file=geneCovarFile,quote=FALSE,row.names=FALSE)
-    write.table(quantDat2,file=geneCovarFile,quote=TRUE,row.names=FALSE,sep="\t")
-    
-    analysis_name = ff #"ctd_StenWholeBrain10xGenomics2018_ExtremeGeneFilterin"
-    magma_cmd = sprintf("%smagma --gene-results '%s.genes.raw' --gene-covar '%s' onesided --out '%s.%s.annotLevel%s'",magma_path,gwas_sumstats_path,geneCovarFile,gwas_sumstats_path,analysis_name,annotLevel)
-    print(magma_cmd)
-    system(magma_cmd)
-}    
-
-library(ggplot2)
-analysis_name=ff#"ctd_StenWholeBrain10xGenomics2018_ExtremeGeneFilterin"
-baseline_res = list()
-for(annotLevel in 1:length(ctd)){
-    res = read.table(file=sprintf("%s.%s.annotLevel%s.gcov.out",gwas_sumstats_path,analysis_name,annotLevel),stringsAsFactors = FALSE)
-    colnames(res) = res[1,]
-    res = res[-1,]
-    res$P = as.numeric(res$P)
-    res = res[order(res$P,decreasing = TRUE),]
-    res$COVAR = factor(res$COVAR,levels=res$COVAR)
-    pdf(file=sprintf("%s.%s.annotLevel%s.gcov.pdf",gwas_sumstats_path,analysis_name,annotLevel),width=10,height=1+(dim(res)[1]/10))
-    print(ggplot(data=res)+geom_bar(aes(y=P,x=COVAR),stat="identity")+scale_y_log10()+coord_flip())
-    dev.off()
-    res$CONTROL = "BASELINE"
-    res$CONTROL_label = "BASELINE"
-    res$ANNOTLEVEL=annotLevel
-    baseline_res[[annotLevel]] = res
-}
-
-
 # Conditional analysis
-
-library(ggplot2)
-annotLevel=1
-res = read.table(file=sprintf("%s.%s.annotLevel%s.gcov.out",gwas_sumstats_path,analysis_name,annotLevel),stringsAsFactors = FALSE)
-colnames(res) = res[1,]
-res = res[-1,]
-res$P = as.numeric(res$P)
-res = res[order(res$P,decreasing = TRUE),]
-res$Q = p.adjust(res$P,method="BH")
-res = res[order(res$P),]
-signifCells = res[res$Q<0.05,"COVAR"]
-if(length(signifCells)>6){signifCells=res[res$Q<0.05,"COVAR"][1:6]}
-count=allRes=0
-for(controlFor in signifCells){
-    quantDat = ctd[[annotLevel]]$quantiles[entrez_mgi$mouse.symbol,]
-    quantDat2 = data.frame(entrez=entrez_mgi$entrezgene,quantDat)
-    quantDat2 = quantDat2[!duplicated(quantDat2$entrez),]
-    geneCovarFile="/Users/ns9/geneCovarMagma.csv"
-    #write.csv(quantDat2,file=geneCovarFile,quote=FALSE,row.names=FALSE)
-    write.table(quantDat2,file=geneCovarFile,quote=TRUE,row.names=FALSE,sep="\t")
-    
-    analysis_name = sprintf("ControlFor_%s",controlFor)
-    magma_cmd = sprintf("%smagma --gene-results '%s.genes.raw' --gene-covar '%s' onesided condition=\\\"%s\\\" --out '%s.%s.annotLevel%s'",magma_path,gwas_sumstats_path,geneCovarFile,controlFor,gwas_sumstats_path,analysis_name,annotLevel)
-    print(magma_cmd)
-    system(magma_cmd)    
-    
-    cond_res = read.table(file=sprintf("%s.%s.annotLevel%s.gcov.out",gwas_sumstats_path,analysis_name,annotLevel),stringsAsFactors = FALSE)
-    colnames(cond_res) = cond_res[1,]
-    cond_res = cond_res[-1,]
-    cond_res$P = as.numeric(cond_res$P)
-    cond_res = cond_res[order(cond_res$P,decreasing = TRUE),]
-    cond_res$CONTROL = controlFor
-    count = count + 1
-    if(count==1){
-        allRes = cond_res
-    }else{
-        allRes = rbind(allRes,cond_res)
-    }
-}
-allRes$ANNOTLEVEL = annotLevel
-allRes_base = allRes
-allRes$CONTROL_label = ""
-allRes = rbind(allRes,baseline_res[[1]])
-fullRes = rbind(allRes,baseline_res[[2]])
-save(fullRes,file=sprintf("%s.%s.annotLevel%s.allResults.Rda",gwas_sumstats_path,analysis_name,annotLevel))
-write.csv(fullRes,file=sprintf("%s.%s.annotLevel%s.allResults.csv",gwas_sumstats_path,analysis_name,annotLevel))
-allRes = allRes[allRes$COVAR %in% signifCells,]
-source("R/get.written.cellnames.r")
-allRes$COVAR = get.written.cellnames(allRes$COVAR,file="celltype_data_allKImouse_wtHypo_MergedStriatal_1to1only_thresh0_trim0")
-allRes$CONTROL[allRes$CONTROL!="BASELINE"] = get.written.cellnames(allRes$CONTROL[allRes$CONTROL!="BASELINE"],file="celltype_data_allKImouse_wtHypo_MergedStriatal_1to1only_thresh0_trim0")
-allRes$CONTROL_label[allRes$CONTROL!="BASELINE"] = sprintf("Conditioned on %s",allRes$CONTROL[allRes$CONTROL!="BASELINE"])
-subRes = allRes[allRes$COVAR %in% signifCells,]
-
-res$COVAR = factor(res$COVAR,levels=res$COVAR)
-analysis_name = sprintf("%s-ConditionalFacets",ff)
-library(cowplot)
-pdf(file=sprintf("%s.%s.annotLevel%s.gcov.pdf",gwas_sumstats_path,analysis_name,annotLevel),width=14,height=1+2*(dim(res)[1]/10))
-outPlot = ggplot(data=allRes)+geom_bar(aes(y=P,x=COVAR,fill=COVAR),stat="identity")+scale_y_log10()+coord_flip()+facet_wrap(~CONTROL_label)+
-        ylab(expression(-log[10](pvalue))) + xlab("") + theme(legend.position="none")+
-        geom_hline(yintercept=as.numeric(0.05/dim(allRes)[1]),colour="black")
-print(outPlot)
-dev.off()
-
-
-
-
-
-
-# 
-# ldsc=read.csv("/Users/ns9/Desktop/Edinburgh/LDSC_GWAS_Results_stepSize_0.1.csv")
-# ldsc = ldsc[ldsc$file %in% c("celltype_data_allKImouse_wtHypo_MergedStriatal_1to1only_level1_thresh0_trim0","celltype_data_allKImouse_wtHypo_MergedStriatal_1to1only_level2_thresh0_trim0"),]
-# ldsc = ldsc[ldsc$percentile==1.0,]
-# ldsc = ldsc[,-1]
-# ldsc = ldsc[order(ldsc$Enrichment_p),]
-# ldsc = ldsc[!is.na(ldsc$celltype),]
-# ldsc$Enrichment_P_oneTailed = ldsc$Enrichment_p
-# ldsc$Enrichment_P_oneTailed[ldsc$Enrichment>1] = ldsc$Enrichment_p[ldsc$Enrichment>1]/2
-# ldsc$Enrichment_P_oneTailed[ldsc$Enrichment<1] = 1-(ldsc$Enrichment_p[ldsc$Enrichment<1]/2)
-# ldsc = ldsc[order(ldsc$Enrichment_P_oneTailed),]
-# write.csv(ldsc,file="LDSC_Results_for_DavidHill.csv")
-# 
-# ct_names = ldsc_res[,c("celltype","celltype2")]
-# write.csv(unique(ct_names),file="ldsc_ct_names.csv")
-# 
-# ctd_names_1 = colnames(ctd[[1]]$quantiles)
-# ctd_names_fixed_1 = get.written.cellnames(colnames(ctd[[1]]$quantiles),file="celltype_data_allKImouse_wtHypo_MergedStriatal_1to1only_thresh0_trim0")
-# ctd_names_2 = colnames(ctd[[2]]$quantiles)
-# ctd_names_fixed_2 = get.written.cellnames(colnames(ctd[[2]]$quantiles),file="celltype_data_allKImouse_wtHypo_MergedStriatal_1to1only_thresh0_trim0")
-# ctd_names_dt = data.frame(ctd_names=c(ctd_names_1,ctd_names_2),writtenNames=c(ctd_names_fixed_1,ctd_names_fixed_2),stringsAsFactors = FALSE)
-# ctd_names_dt_uniq = unique(ctd_names_dt[order(ctd_names_dt$writtenNames),])
-# write.csv(ctd_names_dt_uniq,file="ctd_names.csv",row.names = FALSE)
-# ctd_uniq_names = ctd_names_dt_uniq$writtenNames
-# sort(ctd_uniq_names[!ctd_uniq_names %in% ldsc_res$celltype2])
-# sort(ldsc_res$celltype2[!ldsc_res$celltype2 %in% ctd_uniq_names])
-# 
-# original_ctd_names = gsub("\\(|\\)|;","",gsub(" ","",c(colnames(ctd[[1]]$quantiles),colnames(ctd[[2]]$quantiles))))
-# sort(original_ctd_names[!original_ctd_names %in% ldsc_res$celltype])
-# sort(ldsc_res$celltype[!ldsc_res$celltype %in% original_ctd_names])
-# 
-# original_ctd_names = gsub("\\(|\\)|;","",gsub("\\.","",magma_res$COVAR))
-# sort(original_ctd_names[!original_ctd_names %in% ldsc_res$celltype])
-# sort(ldsc_res$celltype[!ldsc_res$celltype %in% original_ctd_names])
-
+ctCondAssocs = calculate_conditional_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path)
+plot_celltype_associations(ctCondAssocs)
 ```
-
-Merge MAGMA results with LDSC results
-
-```{r }
-edu_magma = cbind(gwas="Education_trait_1.txt",read.csv("/Users/ns9/Desktop/Edinburgh/Education_trait_1.txt.ControlFor_SerotonergicNeuron.annotLevel1.allResults.csv",stringsAsFactors = FALSE)[,-1])
-hi_magma  = cbind(gwas="HI.txt",read.csv("/Users/ns9/Desktop/Edinburgh/HI.txt.snploc.ControlFor_interneurons.annotLevel1.allResults.csv",stringsAsFactors = FALSE)[,-1])
-magma_res = rbind(edu_magma,hi_magma)
-ldsc_res  = read.csv("/Users/ns9/Desktop/Edinburgh/LDSC_Results_for_DavidHill.csv",stringsAsFactors = FALSE)[,-1]
-ldsc_res$ANNOTLEVEL = 1
-ldsc_res$ANNOTLEVEL[grep("level2",ldsc_res$file)] = 2
-ldsc_res = ldsc_res[,c("gwas","celltype","ANNOTLEVEL","Enrichment_oneTailed")]
-
-# The MAGMA names lose all symbols, i.e. +, - or ;... drop those from LDSC and use to match the two together
-ldsc_res$celltype2 = gsub("\\-|\\+|;","\\.",ldsc_res$celltype)
-cellname_mapping = unique(ldsc_res[,c("celltype","celltype2")])
-rownames(cellname_mapping) = as.character(cellname_mapping$celltype2)
-magma_res$COVAR = as.character(cellname_mapping[magma_res$COVAR,]$celltype)
-magma_res$CONTROL[magma_res$CONTROL!="BASELINE"] = as.character(cellname_mapping[magma_res$CONTROL[magma_res$CONTROL!="BASELINE"],]$celltype)
-ldsc_res = ldsc_res[,c("gwas","celltype","ANNOTLEVEL","Enrichment_oneTailed")]
-ldsc_res$CONTROL="BASELINE"
-magma_res = magma_res[,c("gwas","COVAR","ANNOTLEVEL","P","CONTROL")]
-colnames(ldsc_res) = c("gwas","celltype","ANNOTLEVEL","P_Enrichment_oneTailed","ControlledFor")
-colnames(magma_res) = c("gwas","celltype","ANNOTLEVEL","P_Enrichment_oneTailed","ControlledFor")
-
-# Join MAGMA and LDSC together
-both_res = rbind(cbind(method="LDSC",ldsc_res),cbind(method="MAGMA",magma_res))
-both_res$q = p.adjust(both_res$P_Enrichment_oneTailed,method="BH")
-both_res$writtenName = get.written.cellnames(both_res$celltype,file="celltype_data_allKImouse_wtHypo_MergedStriatal_1to1only_thresh0_trim0")
-
-# Amend the names of the GWAS studies
-both_res$gwas[both_res$gwas=="Education_trait_1.txt"] = "Educational Achievement"
-both_res$gwas[both_res$gwas=="HI.txt"] = "Household Income"
-
-# Plot joint results
-library(cowplot)
-for(aL in unique(both_res$ANNOTLEVEL)){
-    subDat = both_res[both_res$ControlledFor=="BASELINE" & both_res$ANNOTLEVEL==aL,]
-    subDat = subDat[order(subDat$P_Enrichment_oneTailed,decreasing=TRUE),]
-    subDat$writtenName = factor(subDat$writtenName,levels=unique(subDat$writtenName))
-    pdf(file=sprintf("Edu+HI.JointResults.annotLevel%s.pdf",aL),width=14,height=1+2*(length(unique(subDat$writtenName))/10))
-    outPlot = ggplot(data=subDat)+geom_bar(aes(y=P_Enrichment_oneTailed,x=writtenName,fill=method),position="dodge",stat="identity")+scale_y_log10()+coord_flip()+
-            ylab(expression(-log[10](pvalue))) + xlab("") + facet_wrap(~gwas) +
-            geom_hline(yintercept=as.numeric(0.05/dim(both_res)[1]),colour="black")
-    #outPlot
-    print(outPlot)
-    dev.off()
-}
-
-
-for(gwas in unique(both_res$gwas)){
-    
-    subDat = both_res[both_res$ControlledFor!="BASELINE" & both_res$gwas==gwas,]
-    subDat$ControlledFor = get.written.cellnames(subDat$ControlledFor,file="celltype_data_allKImouse_wtHypo_MergedStriatal_1to1only_thresh0_trim0")
-    pdf(file=sprintf("Edu+HI.%s.JointResults.Conditional.gcov.pdf",gwas),width=14,height=1+(dim(subDat)[1]/13))
-    outPlot = ggplot(data=subDat)+geom_bar(aes(y=P_Enrichment_oneTailed,x=writtenName,fill=writtenName),stat="identity")+scale_y_log10()+coord_flip()+facet_wrap(~ControlledFor)+
-            ylab(expression(-log[10](pvalue))) + xlab("") + theme(legend.position="none")+
-            geom_hline(yintercept=as.numeric(0.05/dim(both_res)[1]),colour="black")
-    print(outPlot)
-    dev.off()
-}
-
-save(both_res,file="/Users/ns9/Desktop/Edinburgh/To Send/both_res.rda")
-```
-
-
-```{r }
-#unique(magma_res$COVAR)[!unique(magma_res$COVAR) %in% ldsc_res$celltype]
-
-source("/Users/ns9/Box Sync/MAGMA.Celltyping/R/get.written.cellnames.r")
-magma_res$COVAR2 = get.written.cellnames(magma_res$COVAR,file="celltype_data_allKImouse_wtHypo_MergedStriatal_1to1only_thresh0_trim0")
-ldsc_res$celltype2 = get.written.cellnames(ldsc_res2$celltype,file="celltype_data_allKImouse_wtHypo_MergedStriatal_1to1only_thresh0_trim0")
-sort(unique(magma_res$COVAR[magma_res$ANNOTLEVEL==1]))
-sort(unique(magma_res$COVAR2[magma_res$ANNOTLEVEL==1]))
-sort(unique(magma_res$COVAR2[magma_res$ANNOTLEVEL==2]))
-sort(unique(ldsc_res$celltype[ldsc_res$ANNOTLEVEL==1]))
-
-
-unique(magma_res$COVAR)[!unique(magma_res$COVAR) %in% ldsc_res$celltype]
-unique(magma_res$COVAR)[!unique(magma_res$COVAR) %in% ldsc_res$celltype]
-unique(ldsc_res$celltype[!ldsc_res$celltype %in% magma_res$COVAR])
-```
-
 
 
 
