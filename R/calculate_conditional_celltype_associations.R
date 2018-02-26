@@ -16,7 +16,8 @@
 #'
 #' @export
 calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name="MainRun",upstream_kb=10,downstream_kb=1.5,genome_ref_path,controlledAnnotLevel=1){
-    sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",gwas_sumstats_path,kb_upstream,kb_downstream)
+    gwas_sumstats_path = path.expand(gwas_sumstats_path)
+    sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",gwas_sumstats_path,upstream_kb,downstream_kb)
     
     # Check for errors in arguments
     check_inputs_to_magma_celltype_analysis(ctd,gwas_sumstats_path,analysis_name,upstream_kb,downstream_kb,genome_ref_path)
@@ -50,9 +51,9 @@ calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,a
                 write.table(genesCovarData2,file=genesCovarFile,quote=FALSE,row.names=FALSE,sep="\t")
             }
             
-            sumstatsPrefix2 = sprintf("%s.level%s.%sUP.%sDOWN.ControlFor_%s",gwas_sumstats_path,annotLevel,kb_upstream,kb_downstream,controlFor)
+            sumstatsPrefix2 = sprintf("%s.level%s.%sUP.%sDOWN.ControlFor_%s",gwas_sumstats_path,annotLevel,upstream_kb,downstream_kb,controlFor)
             #magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' onesided condition=\\\"%s\\\" --out '%s'",gwas_sumstats_path,genesCovarFile,controlFor,sumstatsPrefix2)
-            magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' onesided condition='%s' --out '%s'",gwas_sumstats_path,genesCovarFile,controlFor,sumstatsPrefix2)
+            magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' onesided condition='%s' --out '%s'",sumstatsPrefix,genesCovarFile,controlFor,sumstatsPrefix2)
             print(magma_cmd)
             system(magma_cmd)    
             

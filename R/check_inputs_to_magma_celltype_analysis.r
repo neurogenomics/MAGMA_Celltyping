@@ -16,7 +16,7 @@
 #'
 #' @export
 check_inputs_to_magma_celltype_analysis <- function(ctd,gwas_sumstats_path,analysis_name,upstream_kb,downstream_kb,genome_ref_path){
-    sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",gwas_sumstats_path,kb_upstream,kb_downstream)
+    sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",gwas_sumstats_path,upstream_kb,downstream_kb)
     
     #####################
     # ERROR CHECKS:

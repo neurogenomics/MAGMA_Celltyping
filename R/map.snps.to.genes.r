@@ -38,8 +38,8 @@ map.snps.to.genes <- function(gwas_sumstats_path,upstream_kb=10,downstream_kb=1.
     if(genome_build == "GRCh38"){genomeLocFile=sprintf("%s/NCBI38.gene.loc",gene_loc_dir)}
     print(sprintf("GWAS Sumstats appear to come from genome build: %s",genome_build))
     
-    sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",gwas_sumstats_path,kb_upstream,kb_downstream)
-    magma_cmd = sprintf("magma --annotate window=%s,%s --snp-loc '%s' --gene-loc '%s' --out '%s'",kb_upstream,kb_downstream,gwas_sumstats_path,genomeLocFile,sumstatsPrefix)
+    sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",gwas_sumstats_path,upstream_kb,downstream_kb)
+    magma_cmd = sprintf("magma --annotate window=%s,%s --snp-loc '%s' --gene-loc '%s' --out '%s'",upstream_kb,downstream_kb,gwas_sumstats_path,genomeLocFile,sumstatsPrefix)
     system(magma_cmd)
     
     # SCHIZ CLOZUK N=35802
