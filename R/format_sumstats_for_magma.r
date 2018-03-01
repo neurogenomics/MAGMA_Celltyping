@@ -100,6 +100,10 @@ format_sumstats_for_magma <- function(path){
         system(sprintf("gawk -i inplace '{ print %s}' %s",newColOrder,path))
     }
     
+    # MAGMA cannot handle P-values as low as 3e-400... so convert them to zeros
+    shCmd = sprintf("gawk -i inplace '{ i=%s; if($i > 1) { $i=0; }  print }' %s",which(col_headers=="P"),path.expand(path))
+    system2("/bin/bash", args = c("-c", shQuote(shCmd)))
+    
     # Show how the data now looks
     print("Succesfully finished preparing sumstats file:")
     print("Header of file:")

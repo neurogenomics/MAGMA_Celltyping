@@ -25,7 +25,6 @@ prepare.quantile.groups <- function(ctd,specificity_species="mouse",gwas_species
         ortholog_data = analyse.orthology(specificity_species,gwas_species,allHomologs)$orthologs_one2one
         ctd = lapply(ctd,filter_by_orthologs,one2one_ortholog_symbols = ortholog_data[,2])
     }
-    
     # Quantiles will be stored within the CTD as 'quantiles'
     bin.columns.into.quantiles <- function(spcValues){
         quantileValues = rep(0,length(spcValues))
