@@ -34,7 +34,7 @@ standardise.sumstats.column.headers <- function(path){
         un = sumstatsColHeaders[headerI,1]
         cr = sumstatsColHeaders[headerI,2]
         #print(un)
-        if(un %in% column_headers){column_headers=gsub(sprintf("^%s$",un),cr,column_headers)}       
+        if(un %in% column_headers & (!cr %in% column_headers)){column_headers=gsub(sprintf("^%s$",un),cr,column_headers)}       
         #if(tolower(un) %in% column_headers){column_headers=gsub(sprintf("^%s$",tolower(un)),cr,column_headers)}               
     }
     new_first_line = paste(column_headers,collapse = "\t")

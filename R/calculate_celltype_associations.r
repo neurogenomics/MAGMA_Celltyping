@@ -15,7 +15,7 @@
 #' ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path)
 #'
 #' @export
-calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name="MainRun",upstream_kb=10,downstream_kb=1.5,genome_ref_path){
+calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name="MainRun",upstream_kb=10,downstream_kb=1.5,genome_ref_path,specificity_species="mouse"){
     gwas_sumstats_path = path.expand(gwas_sumstats_path)
     sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",gwas_sumstats_path,upstream_kb,downstream_kb)
     
@@ -25,7 +25,7 @@ calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name
     output = list()
     for(annotLevel in 1:length(ctd)){
         # First match quantiles to the genes in the genes.out file... then write as the genesCovar file (the input to MAGMA)
-        geneCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",sumstatsPrefix),ctd,annotLevel)
+        geneCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",sumstatsPrefix),ctd,annotLevel,specificity_species=specificity_species)
         
         sumstatsPrefix2 = sprintf("%s.level%s.%sUP.%sDOWN",gwas_sumstats_path,annotLevel,upstream_kb,downstream_kb)
         magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' onesided --out '%s.%s'",sumstatsPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)

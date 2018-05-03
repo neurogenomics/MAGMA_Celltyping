@@ -5,6 +5,7 @@
 #' @param ctAssocs Output from either calculate_celltype_associations() or calculate_conditional_celltype_associations()
 #' @param useSignificanceLine TRUE or FALSE. Should their be a vertical line marking bonferroni signifiance? 
 #' @param savePDF TRUE or FALSE. Save figure to file or print to screen?
+#' @param fileTag String apprended to the names of the saved PDFs, i.e. the name of the celltype data file used
 #'
 #' @return NULL
 #'
@@ -14,7 +15,7 @@
 #' @import ggplot2
 #' @import cowplot
 #' @export
-plot_celltype_associations <- function(ctAssocs,useSignificanceLine=TRUE,savePDF=TRUE){
+plot_celltype_associations <- function(ctAssocs,useSignificanceLine=TRUE,savePDF=TRUE,fileTag=""){
     # Generate the plots (for each annotation level seperately)
     for(annotLevel in 1:sum(names(ctAssocs)=="")){
         if(length(unique(ctAssocs[[1]]$results$CONTROL))==1){
@@ -26,7 +27,7 @@ plot_celltype_associations <- function(ctAssocs,useSignificanceLine=TRUE,savePDF
             }
             
             if(savePDF){
-                fName = sprintf("%s.%sUP.%sDOWN.%s.annotLevel%s.Baseline.pdf",ctAssocs$gwas_sumstats_path,ctAssocs$upstream_kb,ctAssocs$downstream_kb,ctAssocs$analysis_name,annotLevel)
+                fName = sprintf("%s.%sUP.%sDOWN.%s.annotLevel%s.Baseline.%s.pdf",ctAssocs$gwas_sumstats_path,ctAssocs$upstream_kb,ctAssocs$downstream_kb,ctAssocs$analysis_name,annotLevel,fileTag)
                 pdf(file=fName,width=10,height=1+2*(dim(ctAssocs[[annotLevel]]$results)[1]/10))
                 print(theFig)
                 dev.off()
@@ -34,7 +35,7 @@ plot_celltype_associations <- function(ctAssocs,useSignificanceLine=TRUE,savePDF
                 print(theFig)
             }
         }else{
-            theFig = ggplot(data=ctCondAssocs[[annotLevel]]$results)+geom_bar(aes(y=P,x=COVAR,fill=COVAR),stat="identity")+scale_y_log10()+coord_flip()+facet_wrap(~CONTROL_label)+
+            theFig = ggplot(data=ctAssocs[[annotLevel]]$results)+geom_bar(aes(y=P,x=COVAR,fill=COVAR),stat="identity")+scale_y_log10()+coord_flip()+facet_wrap(~CONTROL_label)+
                 ylab(expression(-log[10](pvalue))) + xlab("") + theme(legend.position="none")
             
             if(useSignificanceLine){
@@ -42,8 +43,8 @@ plot_celltype_associations <- function(ctAssocs,useSignificanceLine=TRUE,savePDF
             }
             
             if(savePDF){
-                fName = sprintf("%s.%sUP.%sDOWN.%s.annotLevel%s.ConditionalFacets.pdf",ctAssocs$gwas_sumstats_path,ctAssocs$upstream_kb,ctAssocs$downstream_kb,ctAssocs$analysis_name,annotLevel)
-                pdf(file=fName,width=25,height=1+2*(dim(ctCondAssocs[[annotLevel]]$results)[1]/30))
+                fName = sprintf("%s.%sUP.%sDOWN.%s.annotLevel%s.ConditionalFacets.%s.pdf",ctAssocs$gwas_sumstats_path,ctAssocs$upstream_kb,ctAssocs$downstream_kb,ctAssocs$analysis_name,annotLevel,fileTag)
+                pdf(file=fName,width=25,height=1+2*(dim(ctAssocs[[annotLevel]]$results)[1]/30))
                 print(theFig)
                 dev.off()
             }else{

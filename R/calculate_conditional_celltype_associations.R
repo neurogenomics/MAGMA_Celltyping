@@ -15,7 +15,7 @@
 #' ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path)
 #'
 #' @export
-calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name="MainRun",upstream_kb=10,downstream_kb=1.5,genome_ref_path,controlledAnnotLevel=1){
+calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name="MainRun",upstream_kb=10,downstream_kb=1.5,genome_ref_path,controlledAnnotLevel=1,specificity_species="mouse",controlTopNcells=2){
     gwas_sumstats_path = path.expand(gwas_sumstats_path)
     sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",gwas_sumstats_path,upstream_kb,downstream_kb)
     
@@ -23,17 +23,22 @@ calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,a
     check_inputs_to_magma_celltype_analysis(ctd,gwas_sumstats_path,analysis_name,upstream_kb,downstream_kb,genome_ref_path)
     
     # Calculate the baseline associations
-    ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path)
+    ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,specificity_species=specificity_species)
     
     # Find the cells which are most significant at baseline at controlled annotation level
     res = ctAssocs[[controlledAnnotLevel]]$results
+    res = res[order(res$P),]
     signifCells = as.character(res[res$P<(0.05/ctAssocs$total_baseline_tests_performed),"COVAR"])
+    
+    if(length(signifCells)>controlTopNcells){
+        signifCells = signifCells[1:controlTopNcells]
+    }
     
     # If there are no significant cells... then stop
     if(length(signifCells)==0){stop("No celltypes reach significance with Q<0.05")}
     
     # Create gene covar file for the controlled for annotation level
-    controlledCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",sumstatsPrefix),ctd,controlledAnnotLevel)
+    controlledCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",sumstatsPrefix),ctd,controlledAnnotLevel,specificity_species=specificity_species)
     # Read in the controlled Covar File
     controlledCovarData = read.table(controlledCovarFile,stringsAsFactors = FALSE,header=TRUE)
     controlledCovarCols = controlledCovarData[,c("entrez",signifCells)]
@@ -42,7 +47,7 @@ calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,a
         count=allRes=0
         
         # First match quantiles to the genes in the genes.out file... then write as the genesCovar file (the input to MAGMA)
-        genesCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",sumstatsPrefix),ctd,annotLevel)
+        genesCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",sumstatsPrefix),ctd,annotLevel,specificity_species=specificity_species)
         
         for(controlFor in signifCells){
             if(annotLevel!=controlledAnnotLevel){

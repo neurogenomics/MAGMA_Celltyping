@@ -29,7 +29,7 @@ prepare.quantile.groups <- function(ctd,specificity_species="mouse",gwas_species
     bin.columns.into.quantiles <- function(spcValues){
         quantileValues = rep(0,length(spcValues))
         quantileValues[spcValues>0] = as.numeric(cut(spcValues[spcValues>0], 
-                                                     breaks=quantile(spcValues[spcValues>0], probs=seq(0,1, by=1/numberOfBins), na.rm=TRUE), 
+                                                     breaks=unique(quantile(spcValues[spcValues>0], probs=seq(0,1, by=1/numberOfBins), na.rm=TRUE)), 
                                                      include.lowest=TRUE))
         return(quantileValues)
     }

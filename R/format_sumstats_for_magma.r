@@ -61,15 +61,35 @@ format_sumstats_for_magma <- function(path){
             sed_command = sprintf("sed -i '' '1s/%s/%s/' %s",first_line,new_first_line,path)
             system2("/bin/bash", args = c("-c", shQuote(sed_command)))
             col_headers = strsplit(new_first_line,"\t")[[1]]
-            print(sprintf("Column %s has been replaced with CHR BP A2 A1",curColName))
             print(sprintf("Column %s has been replaced with CHR BP",curColName))
             print(col_headers)
             con <- file(path,"r") ; row_of_data <- strsplit(readLines(con,n=2)[2],"\t")[[1]] ; close(con)
         }
+        
+        # Restandardise incase the joined column headers were unusual
+        col_headers = standardise.sumstats.column.headers(path)
+    }
+    
+    # If CHR and BP are present... BUT not SNP then need to find the relevant SNP ids
+    con <- file(path,"r") ; rows_of_data <- readLines(con,n=2) ; close(con); col_headers = strsplit(rows_of_data[1],"\t")[[1]]
+    if(sum(c("CHR","BP") %in% col_headers)==2 & sum("SNP" %in% col_headers)==0){
+        print("There is no SNP column found within the data. It must be inferred from CHR and BP information.")
+        print("Note: this process drops any SNPs which are not from Hapmap")
+        genomebuild <- as.numeric(readline("Which genome build is the data from? 1 for GRCh37, 2 for GRCh38"))
+        if(!genomebuild %in% c(1,2)){stop("Genome build must be entered as either 1 (for GRCh37) or 2 (for GRCh38)")}
+        data("SNP_LOC_DATA")
+        if(genomebuild==1){genomebuild="GRCh37"}else{genomebuild="GRCh38"}
+        snpLocDat = SNP_LOC_DATA[SNP_LOC_DATA$Build==genomebuild,][,-4]
+        library(data.table)
+        sumstats = fread(path)
+        sumstats$CHR = as.factor(sumstats$CHR)
+        if(length(grep("chr",sumstats$CHR[1]))!=0){sumstats$CHR = gsub("chr","",sumstats$CHR)}
+        sumstats2 = merge(sumstats,snpLocDat,by=c("CHR","BP"))
+        fwrite(sumstats2,file=path,sep="\t")
     }
     
     # Check that all the vital columns are present
-    con <- file(path,"r") ; rows_of_data <- readLines(con,n=2) ; close(con)
+    con <- file(path,"r") ; rows_of_data <- readLines(con,n=2) ; close(con); col_headers = strsplit(rows_of_data[1],"\t")[[1]]
     for(key_column in c("SNP","CHR","BP","P","A1","A2")){
         code_example = "sed -i '' '1s/p_value/P/' IQ.Sniekers.2017.txt"
         if(!key_column %in% col_headers){
@@ -90,9 +110,9 @@ format_sumstats_for_magma <- function(path){
     
     # Check that first three column headers are SNP, CHR, BP (in that order)
     if(!sum(col_headers[1:3]==c("SNP","CHR","BP"))==3){
-        whichSNP = which(col_headers=="SNP")
-        whichCHR = which(col_headers=="CHR")
-        whichBP = which(col_headers=="BP")
+        whichSNP = which(col_headers=="SNP")[1]
+        whichCHR = which(col_headers=="CHR")[1]
+        whichBP = which(col_headers=="BP")[1]
         otherCols = setdiff(1:length(col_headers),c(whichSNP,whichCHR,whichBP))
         #system(sprintf("gawk -i inplace '{ print $%s \" \" $%s \" \" $%s}' %s",whichSNP,whichCHR,whichBP,path))
         #newColOrder = sprintf("$%s",paste(c(whichSNP,whichCHR,whichBP,otherCols),collapse = " \" \" $"))
@@ -100,8 +120,56 @@ format_sumstats_for_magma <- function(path){
         system(sprintf("gawk -i inplace '{ print %s}' %s",newColOrder,path))
     }
     
+    # The formatting process can (rarely) result in duplicated columns, i.e. CHR, if CHR:BP is expanded and one already exists... delete duplicates
+    con <- file(path,"r") ; rows_of_data <- readLines(con,n=2) ; close(con); col_headers = strsplit(rows_of_data[1],"\t")[[1]]
+    if(sum(duplicated(col_headers))>0){
+        notDup = which(!duplicated(col_headers))
+        newColOrder = sprintf("$%s",paste(notDup,collapse = " \"\\t\" $"))
+        system(sprintf("gawk -i inplace '{ print %s}' %s",newColOrder,path))        
+    }
+    
     # MAGMA cannot handle P-values as low as 3e-400... so convert them to zeros
+    con <- file(path,"r") ; rows_of_data <- readLines(con,n=2) ; close(con); col_headers = strsplit(rows_of_data[1],"\t")[[1]]
     shCmd = sprintf("gawk -i inplace '{ i=%s; if($i > 1) { $i=0; }  print }' %s",which(col_headers=="P"),path.expand(path))
+    system2("/bin/bash", args = c("-c", shQuote(shCmd)))
+    # The above command converts tabs in the header to spaces... so revert that (if neccesary)
+    con <- file(path,"r") ; rows_of_data <- readLines(con,n=2) ; close(con)
+    #if(("2" %in% grep("\t",rows_of_data)) & length(grep("\t",rows_of_data))==1){
+    if(length(grep("\t",rows_of_data))!=2){
+        tmpName = tempfile()
+        shCmd = sprintf("tr ' ' '\t' < %s <> %s > %s",path.expand(path),path.expand(path),tmpName)
+        system2("/bin/bash", args = c("-c", shQuote(shCmd)))
+        shCmd = sprintf("mv %s %s",tmpName,path.expand(path))
+        system2("/bin/bash", args = c("-c", shQuote(shCmd)))
+    }
+    # The above command converts 'P' to '0'... so revert that
+    shCmd = sprintf("sed -i '' '1s/0/P/' '%s'",path.expand(path))
+    system2("/bin/bash", args = c("-c", shQuote(shCmd)))
+    
+    
+    # Sometimes the N column is not all integers... so round it up
+    con <- file(path,"r") ; rows_of_data <- readLines(con,n=2) ; close(con); col_headers = strsplit(rows_of_data[1],"\t")[[1]]
+    if("N" %in% col_headers){
+        whichN = which(col_headers %in% "N")
+        #shCmd = sprintf("gawk -i inplace '{OFS=FS="\t"}NR>1{$%s=sprintf("%3.0f",$%s)}1' %s",whichN,whichN,path.expand(path))
+        pt1 = "gawk -i inplace '{OFS=FS=\"\t\"}NR>1{$"
+        pt2 = whichN
+        pt3 = "=sprintf(\"%3.0f\",$"
+        pt4 = whichN
+        pt5 = ")}1' "
+        pt6 = path.expand(path)
+        shCmd = paste(c(pt1,pt2,pt3,pt4,pt5,pt6),collapse="")
+        system2("/bin/bash", args = c("-c", shQuote(shCmd)))
+    }
+     
+    # All rows should start with either SNP or rs... if they don't drop them
+    shCmd = sprintf("grep -e '^rs' -e '^SNP' '%s' > '%s_tmp'",path.expand(path),path.expand(path))
+    system2("/bin/bash", args = c("-c", shQuote(shCmd)))
+    shCmd = sprintf("mv %s_tmp %s",path.expand(path),path.expand(path))
+    system2("/bin/bash", args = c("-c", shQuote(shCmd)))     
+    
+    # Keep only rows which have the number of columns expected
+    shCmd = sprintf("gawk -i inplace -F'\t' 'NF == %s {print}' '%s'",length(col_headers),path.expand(path))
     system2("/bin/bash", args = c("-c", shQuote(shCmd)))
     
     # Show how the data now looks
