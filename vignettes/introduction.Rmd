@@ -70,7 +70,7 @@ The function `check.sumstats.formatted.for.magma` does some basic processing to 
 library(R.utils)
 gwas_sumstats_path = "~/Downloads/20016.assoc.tsv"
 if(!file.exists(gwas_sumstats_path)){
-    download.file(sprintf("https://www.dropbox.com/s/shsiq0brkax886j/20016.assoc.tsv.gz?raw=1",ukbb_file_ref),destfile=sprintf("%s.gz",gwas_sumstats_path))
+    download.file("https://www.dropbox.com/s/shsiq0brkax886j/20016.assoc.tsv.gz?raw=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
     gunzip(sprintf("%s.gz",gwas_sumstats_path),gwas_sumstats_path)
 }
 
