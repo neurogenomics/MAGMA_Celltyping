@@ -8,6 +8,8 @@
 #' @param upstream_kb How many kb upstream of the gene should SNPs be included?
 #' @param downstream_kb How many kb downstream of the gene should SNPs be included?
 #' @param genome_ref_path Path to the folder containing the 1000 genomes .bed files (which can be downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)
+#' @param specificity_species Species name relevant to the cell type data, i.e. "mouse" or "human"
+#' @param genesOutCOND [Optional] Path to a genes.out file to condition on. Used if you want to condition on a different GWAS.
 #'
 #' @return Filepath for the genes.out file
 #'
@@ -15,7 +17,7 @@
 #' ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path)
 #'
 #' @export
-calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name="MainRun",upstream_kb=10,downstream_kb=1.5,genome_ref_path,specificity_species="mouse"){
+calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name="MainRun",upstream_kb=10,downstream_kb=1.5,genome_ref_path,specificity_species="mouse",genesOutCOND=NA){
     gwas_sumstats_path = path.expand(gwas_sumstats_path)
     sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",gwas_sumstats_path,upstream_kb,downstream_kb)
     
@@ -25,10 +27,14 @@ calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name
     output = list()
     for(annotLevel in 1:length(ctd)){
         # First match quantiles to the genes in the genes.out file... then write as the genesCovar file (the input to MAGMA)
-        geneCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",sumstatsPrefix),ctd,annotLevel,specificity_species=specificity_species)
+        geneCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",sumstatsPrefix),ctd,annotLevel,specificity_species=specificity_species,genesOutCOND)
         
         sumstatsPrefix2 = sprintf("%s.level%s.%sUP.%sDOWN",gwas_sumstats_path,annotLevel,upstream_kb,downstream_kb)
-        magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' onesided --out '%s.%s'",sumstatsPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
+        if(is.na(genesOutCOND)){
+            magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' onesided --out '%s.%s'",sumstatsPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
+        }else{
+            magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' condition='ZSTAT' --out '%s.%s'",sumstatsPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
+        }
         print(magma_cmd)
         system(magma_cmd)
         
@@ -42,6 +48,7 @@ calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name
         res$CONTROL = "BASELINE"
         res$CONTROL_label = "BASELINE"
         res$ANNOTLEVEL=annotLevel
+        res$genesOutCOND=genesOutCOND
         tmp$results = res
         output[[length(output)+1]] = tmp
     }

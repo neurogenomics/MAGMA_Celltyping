@@ -6,7 +6,8 @@
 \usage{
 calculate_conditional_celltype_associations(ctd, gwas_sumstats_path,
   analysis_name = "MainRun", upstream_kb = 10, downstream_kb = 1.5,
-  genome_ref_path, controlledAnnotLevel = 1)
+  genome_ref_path, controlledAnnotLevel = 1, specificity_species = "mouse",
+  controlTopNcells = 2)
 }
 \arguments{
 \item{ctd}{Cell type data strucutre containing $quantiles}
@@ -20,6 +21,8 @@ calculate_conditional_celltype_associations(ctd, gwas_sumstats_path,
 \item{downstream_kb}{How many kb downstream of the gene should SNPs be included?}
 
 \item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
+
+\item{specificity_species}{Species name relevant to the cell type data, i.e. "mouse" or "human"}
 }
 \value{
 Filepath for the genes.out file

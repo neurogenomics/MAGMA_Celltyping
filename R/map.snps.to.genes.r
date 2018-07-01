@@ -29,6 +29,8 @@ map.snps.to.genes <- function(gwas_sumstats_path,upstream_kb=10,downstream_kb=1.
             if(nval>100000000){stop("Value of N provided is over than 100000000. In 2018 this seems unlikely.")}
             n_arg = sprintf("N=%s",nval)
         }
+    }else{
+        n_arg = sprintf("N=%s",N)
     }
     
     # Determine which genome build it uses & get path to gene loc file

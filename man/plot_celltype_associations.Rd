@@ -5,7 +5,7 @@
 \title{Plot celltype associations calculated using MAGMA}
 \usage{
 plot_celltype_associations(ctAssocs, useSignificanceLine = TRUE,
-  savePDF = TRUE)
+  savePDF = TRUE, fileTag = "")
 }
 \arguments{
 \item{ctAssocs}{Output from either calculate_celltype_associations() or calculate_conditional_celltype_associations()}
@@ -13,6 +13,8 @@ plot_celltype_associations(ctAssocs, useSignificanceLine = TRUE,
 \item{useSignificanceLine}{TRUE or FALSE. Should their be a vertical line marking bonferroni signifiance?}
 
 \item{savePDF}{TRUE or FALSE. Save figure to file or print to screen?}
+
+\item{fileTag}{String apprended to the names of the saved PDFs, i.e. the name of the celltype data file used}
 }
 \description{
 Can take input from either calculate_celltype_associations() or calculate_conditional_celltype_associations()

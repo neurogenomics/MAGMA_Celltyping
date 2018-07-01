@@ -4,7 +4,7 @@
 \name{sumstatsColHeaders}
 \alias{sumstatsColHeaders}
 \title{Summary Statistics Column Headers}
-\format{An object of class \code{data.frame} with 68 rows and 2 columns.}
+\format{An object of class \code{data.frame} with 79 rows and 2 columns.}
 \source{
 The code to prepare the .Rda file file from the marker file is:
 \code{

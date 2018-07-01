@@ -33,12 +33,41 @@ prepare.quantile.groups <- function(ctd,specificity_species="mouse",gwas_species
                                                      include.lowest=TRUE))
         return(quantileValues)
     }
-    bin.specificity.into.quantiles <- function(spcMatrix){
-        spcMatrix$quantiles = apply(spcMatrix$specificity,2,FUN=bin.columns.into.quantiles)
-        rownames(spcMatrix$quantiles) = rownames(spcMatrix$specificity)
+    normalise.mean.exp <- function(spcMatrix){
+        spcMatrix$linear_normalised_mean_exp = t(t(spcMatrix$mean_exp)*(1/colSums(spcMatrix$mean_exp)))   
         return(spcMatrix)
     }
+    bin.specificity.into.quantiles <- function(spcMatrix){
+        spcMatrix$specificity_quantiles = apply(spcMatrix$specificity,2,FUN=bin.columns.into.quantiles)
+        rownames(spcMatrix$specificity_quantiles) = rownames(spcMatrix$specificity)
+        spcMatrix$quantiles = spcMatrix$specificity_quantiles
+        return(spcMatrix)
+    }
+    bin.expression.into.quantiles <- function(spcMatrix){
+        spcMatrix$expr_quantiles = apply(spcMatrix$linear_normalised_mean_exp,2,FUN=bin.columns.into.quantiles)
+        rownames(spcMatrix$expr_quantiles) = rownames(spcMatrix$linear_normalised_mean_exp)
+        return(spcMatrix)
+    }
+    use.distance.to.add.expression.level.info <- function(spcMatrix){
+        spcMatrix$spec_dist = spcMatrix$specificity
+        for(ct in colnames(spcMatrix$expr_quantiles)){
+            resTab = data.frame(spec=spcMatrix$specificity_quantiles[,ct],exp=spcMatrix$expr_quantiles[,ct],gene=rownames(spcMatrix$linear_normalised_mean_exp))
+            #resTab$dist = sqrt((max(resTab$spec)-resTab$spec)^2+(3*max(resTab$exp)-resTab$exp)^2)
+            resTab$dist = sqrt((max(resTab$spec)-resTab$spec)^2+(max(resTab$exp)-resTab$exp)^2)
+            spcMatrix$spec_dist[,ct] = resTab$dist
+        }
+        spcMatrix$spec_dist = max(spcMatrix$spec_dist)-spcMatrix$spec_dist
+        return(spcMatrix)
+    }
+    bin.specificityDistance.into.quantiles <- function(spcMatrix){
+        spcMatrix$specDist_quantiles = apply(spcMatrix$spec_dist,2,FUN=bin.columns.into.quantiles)
+        rownames(spcMatrix$specDist_quantiles) = rownames(spcMatrix$spec_dist)
+        return(spcMatrix)
+    }    
+    ctd = lapply(ctd,normalise.mean.exp)
     ctd = lapply(ctd,bin.specificity.into.quantiles)
-    
+    ctd = lapply(ctd,bin.expression.into.quantiles)
+    ctd = lapply(ctd,use.distance.to.add.expression.level.info)
+    ctd = lapply(ctd,bin.specificityDistance.into.quantiles)
     return(ctd)
 }

@@ -4,7 +4,8 @@
 \alias{create_gene_covar_file}
 \title{Create gene covar file}
 \usage{
-create_gene_covar_file(genesOutFile, ctd, annotLevel)
+create_gene_covar_file(genesOutFile, ctd, annotLevel, specificity_species,
+  genesOutCOND = NA)
 }
 \arguments{
 \item{genesOutFile}{The output of the second call to MAGMA (performed in the map.snps.to.genes function)}
@@ -12,6 +13,8 @@ create_gene_covar_file(genesOutFile, ctd, annotLevel)
 \item{ctd}{Cell type data structure. Must contain quantiles.}
 
 \item{annotLevel}{Annot level for which the gene covar file should be constructed}
+
+\item{genesOutCOND}{}
 }
 \value{
 Filepath for the gene covar file
