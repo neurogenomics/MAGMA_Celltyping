@@ -13,6 +13,7 @@
 #'
 #' @export
 load.magma.results.file <- function(path,annotLevel,ctd){
+  library(dplyr)
   res = read.table(path,stringsAsFactors = FALSE)
   colnames(res) = as.character(res[1,])
   res$level=annotLevel
@@ -29,5 +30,10 @@ load.magma.results.file <- function(path,annotLevel,ctd){
   res$BETA_STD = as.numeric(res$BETA_STD)
   res$SE = as.numeric(res$SE)
   res$P = as.numeric(res$P)
+  res$Method = "MAGMA"
+  res$GCOV_FILE = basename(path)
+  res$log10p = log(res$P,10)
+  
+  res = res %>% dplyr::rename(Celltype=COVAR)
   return(res)
 }

@@ -22,7 +22,7 @@
 #' ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path)
 #'
 #' @export
-calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name="MainRun",upstream_kb=10,downstream_kb=1.5,genome_ref_path,specificity_species="mouse",genesOutCOND=NA,EnrichmentMode="LinearModel"){
+calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name="MainRun",upstream_kb=10,downstream_kb=1.5,genome_ref_path,specificity_species="mouse",genesOutCOND=NA,EnrichmentMode="Linear"){
     # Check EnrichmentMode has correct values
     if(!EnrichmentMode %in% c("Linear","Top 10%")){stop("EnrichmentMode argument must be set to either 'Linear' or 'Top 10%")}
     
