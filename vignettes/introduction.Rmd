@@ -95,7 +95,7 @@ plot_celltype_associations(ctAssocs)
 
 ```{r }
 # Conditional analysis
-ctCondAssocs = calculate_conditional_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path)
+ctCondAssocs = calculate_conditional_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,analysis_name = "Conditional")
 plot_celltype_associations(ctCondAssocs)
 ```
 

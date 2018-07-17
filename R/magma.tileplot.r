@@ -1,22 +1,16 @@
-magma.tileplot <- function(ctd,results,figurePath=NA,height=13,width=4,annotLevel=1,fileTag=""){
+magma.tileplot <- function(ctd,results,height=13,width=4,annotLevel=1,fileTag="",output_path=NA){
     # First, error checking of arguments
     if(sum(!c("Celltype","GWAS","log10p","q","level") %in% colnames(results))>0){stop("results dataframe must contain 'Celltype', 'GWAS', 'log10p', 'level' and 'q' columns")}
     if(length(unique(results$GWAS))<2){stop("Must be more than one unique entry in results$GWAS for plotting tileplot")}
     if(!annotLevel %in% results$level){stop(sprintf("No results for annotation level = %s found in results",annotLevel))}
+    if(is.na(base_path)){stop("base_path must be specified. This is the location where tile plots are saved.")}
     
     # Reduce results to only contain results for the relevant annotation level
     results = results[results$level==annotLevel,]
     
     # Setup folder for saving figures
-    if(is.na(figurePath)){
-        dir.create("Figures", showWarnings = FALSE)
-        dir.create("Figures/Tileplots", showWarnings = FALSE)
-        figurePath = "Figures/Tileplots"
-    }else{
-        if(!dir.exists(figurePath)){
-            stop(sprintf("No folder exists at: %s",figurePath))
-        }
-    }
+    magmaPaths = get.magma.paths(output_path=output_path)
+    figurePath = magmaPaths$tiles
     
     # Then prep
     library(ggplot2)
@@ -47,4 +41,6 @@ magma.tileplot <- function(ctd,results,figurePath=NA,height=13,width=4,annotLeve
     pdf(sprintf("%s/CombinedRes_TilePlot_MAGMA_wtDendro_level%s_%s.pdf",figurePath,annotLevel,fileTag),width=width+1,height=height)
     print(grid.arrange(fig_Heatmap_WOdendro,Fig_Dendro,ncol=2,widths=c(0.8,0.2)))
     dev.off()
+    
+    return(list(heatmap=fig_Heatmap_WOdendro,dendro=Fig_Dendro))
 }

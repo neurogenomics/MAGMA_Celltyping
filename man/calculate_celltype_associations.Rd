@@ -6,7 +6,8 @@
 \usage{
 calculate_celltype_associations(ctd, gwas_sumstats_path,
   analysis_name = "MainRun", upstream_kb = 10, downstream_kb = 1.5,
-  genome_ref_path, specificity_species = "mouse", genesOutCOND = NA)
+  genome_ref_path, specificity_species = "mouse", genesOutCOND = NA,
+  EnrichmentMode = "Linear")
 }
 \arguments{
 \item{ctd}{Cell type data strucutre containing $quantiles}
@@ -24,6 +25,8 @@ calculate_celltype_associations(ctd, gwas_sumstats_path,
 \item{specificity_species}{Species name relevant to the cell type data, i.e. "mouse" or "human"}
 
 \item{genesOutCOND}{[Optional] Path to a genes.out file to condition on. Used if you want to condition on a different GWAS.}
+
+\item{EnrichmentMode}{[Optional] Should either 'Linear' or 'Top 10%' mode be used for testing enrichment?}
 }
 \value{
 Filepath for the genes.out file
@@ -32,6 +35,10 @@ Filepath for the genes.out file
 Assumes that you have already run map.snps.to.genes()
 }
 \examples{
+gwas_sumstats_path = "/Users/natske/Naomi_Wray_Conditional/Results/Conditional/scz_adj_all_withaut_gsmr_bxy_aric_reference.raw.NEW"
+upstream_kb=10;downstream_kb=1.5;genome_ref_path="~/Downloads/g1000_eur/g1000_eur";specificity_species="mouse"
+EnrichmentMode="Top 10\%"
+genesOutCOND = "/Users/natske/Naomi_Wray_Conditional/Results/Raw/scz_formtcojo.txt.NEW.10UP.1.5DOWN.genes.out"
 ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path)
 
 }

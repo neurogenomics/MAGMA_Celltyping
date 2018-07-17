@@ -16,6 +16,7 @@
 #' @export
 map.snps.to.genes <- function(gwas_sumstats_path,upstream_kb=10,downstream_kb=1.5,N=NULL,genome_ref_path){
     gwas_sumstats_path = path.expand(gwas_sumstats_path)
+    magmaPaths = get.magma.paths(gwas_sumstats_path,upstream_kb,downstream_kb)
     
     # Check whether there is an N column in the sumstats file (if it wasn't provided as an argument)
     if(is.null(N)){
@@ -40,13 +41,14 @@ map.snps.to.genes <- function(gwas_sumstats_path,upstream_kb=10,downstream_kb=1.
     if(genome_build == "GRCh38"){genomeLocFile=sprintf("%s/NCBI38.gene.loc",gene_loc_dir)}
     print(sprintf("GWAS Sumstats appear to come from genome build: %s",genome_build))
     
-    sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",gwas_sumstats_path,upstream_kb,downstream_kb)
-    magma_cmd = sprintf("magma --annotate window=%s,%s --snp-loc '%s' --gene-loc '%s' --out '%s'",upstream_kb,downstream_kb,gwas_sumstats_path,genomeLocFile,sumstatsPrefix)
+    #sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",gwas_sumstats_path,upstream_kb,downstream_kb)
+    #sumstatsPrefix = 
+    magma_cmd = sprintf("magma --annotate window=%s,%s --snp-loc '%s' --gene-loc '%s' --out '%s'",upstream_kb,downstream_kb,gwas_sumstats_path,genomeLocFile,magmaPaths$filePathPrefix)
     system(magma_cmd)
     
     # SCHIZ CLOZUK N=35802
-    magma_cmd = sprintf("magma --bfile '%s' --pval '%s' %s --gene-annot '%s.genes.annot' --out '%s'",path.expand(genome_ref_path),gwas_sumstats_path,n_arg,sumstatsPrefix,sumstatsPrefix)
-    magma_cmd
+    magma_cmd = sprintf("magma --bfile '%s' --pval '%s' %s --gene-annot '%s.genes.annot' --out '%s'",path.expand(genome_ref_path),gwas_sumstats_path,n_arg,magmaPaths$filePathPrefix,magmaPaths$filePathPrefix)
+    #magma_cmd
     system(magma_cmd)
     
     # Return path to genes.out file
