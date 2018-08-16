@@ -16,6 +16,7 @@
 #' @export
 create_gene_covar_file <- function(genesOutFile,ctd,annotLevel,specificity_species,genesOutCOND=NA){
     quantDat2 = map_specificity_to_entrez(genesOutFile,ctd,annotLevel,specificity_species)
+    #colnames(quantDat2)[2:length(colnames(quantDat2))] = colnames(ctd[[controlledAnnotLevel]]$quantiles)
     
     # Read in the genes.out file (which has a p-value for each entrez gene)
     # genesOut = read.table(genesOutFile,stringsAsFactors = FALSE)

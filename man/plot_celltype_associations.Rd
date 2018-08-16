@@ -4,11 +4,14 @@
 \alias{plot_celltype_associations}
 \title{Plot celltype associations calculated using MAGMA}
 \usage{
-plot_celltype_associations(ctAssocs, useSignificanceLine = TRUE,
-  savePDF = TRUE, fileTag = "")
+plot_celltype_associations(ctAssocs, ctd, useSignificanceLine = TRUE,
+  savePDF = TRUE, fileTag = "", plotDendro = TRUE, gwas_title = "",
+  plotLegend = TRUE)
 }
 \arguments{
 \item{ctAssocs}{Output from either calculate_celltype_associations() or calculate_conditional_celltype_associations()}
+
+\item{ctd}{Cell type data strucutre containing $quantiles (required to calculate dendrogram)}
 
 \item{useSignificanceLine}{TRUE or FALSE. Should their be a vertical line marking bonferroni signifiance?}
 

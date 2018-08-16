@@ -36,9 +36,9 @@ map_specificity_to_entrez <- function(genesOutFile,ctd,annotLevel,specificity_sp
     
     if(specificity_species=="human"){
         # Get the quantiles from ctd and put into correct format, using entrez symbols
-        humanSymsPresent = all_hgnc_wtEntrez$human.symbol[all_hgnc_wtEntrez$human.symbol %in% rownames(ctd[[annotLevel]]$quantiles)]
+        humanSymsPresent = as.character(all_hgnc_wtEntrez$human.symbol[all_hgnc_wtEntrez$human.symbol %in% rownames(ctd[[annotLevel]]$quantiles)])
         entrezTable = all_hgnc_wtEntrez[all_hgnc_wtEntrez$human.symbol %in% humanSymsPresent,]
-        quantDat = ctd[[annotLevel]]$quantiles[entrezTable$human.symbol,]
+        quantDat = ctd[[annotLevel]]$quantiles[as.character(entrezTable$human.symbol),]
         quantDat2 = suppressWarnings(data.frame(entrez=entrezTable$entrez,quantDat))
         quantDat2 = quantDat2[!duplicated(quantDat2$entrez),]
     }

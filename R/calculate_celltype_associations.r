@@ -27,33 +27,33 @@ calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name
     if(!EnrichmentMode %in% c("Linear","Top 10%")){stop("EnrichmentMode argument must be set to either 'Linear' or 'Top 10%")}
     
     gwas_sumstats_path = path.expand(gwas_sumstats_path)
-    sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",gwas_sumstats_path,upstream_kb,downstream_kb)
+    magmaPaths = get.magma.paths(gwas_sumstats_path,upstream_kb,downstream_kb)
     
     # Check for errors in arguments
     check_inputs_to_magma_celltype_analysis(ctd,gwas_sumstats_path,analysis_name,upstream_kb,downstream_kb,genome_ref_path)
     
     output = list()
     for(annotLevel in 1:length(ctd)){
-        sumstatsPrefix2 = sprintf("%s.level%s.%sUP.%sDOWN",gwas_sumstats_path,annotLevel,upstream_kb,downstream_kb)
+        sumstatsPrefix2 = sprintf("%s.level%s",magmaPaths$filePathPrefix,annotLevel)
         
         if(EnrichmentMode=="Linear"){
             # First match quantiles to the genes in the genes.out file... then write as the genesCovar file (the input to MAGMA)
-            geneCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",sumstatsPrefix),ctd,annotLevel,specificity_species=specificity_species,genesOutCOND)
+            geneCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",magmaPaths$filePathPrefix),ctd,annotLevel,specificity_species=specificity_species,genesOutCOND)
             
             if(is.na(genesOutCOND)){
-                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' onesided --out '%s.%s'",sumstatsPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
+                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' onesided --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
             }else{
-                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' condition='ZSTAT' --out '%s.%s'",sumstatsPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
+                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' condition='ZSTAT' --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
             }
         }else if(EnrichmentMode=="Top 10%"){
             # First match quantiles to the genes in the genes.out file... then write as the genesCovar file (the input to MAGMA)
-            geneCovarFile = create_top10percent_genesets_file(genesOutFile = sprintf("%s.genes.out",sumstatsPrefix),ctd,annotLevel,specificity_species=specificity_species)
+            geneCovarFile = create_top10percent_genesets_file(genesOutFile = sprintf("%s.genes.out",magmaPaths$filePathPrefix),ctd,annotLevel,specificity_species=specificity_species)
             
             if(is.na(genesOutCOND)){
-                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --set-annot '%s' --out '%s.%s'",sumstatsPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
+                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --set-annot '%s' --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
             }else{
-                geneCovarFile2 = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",sumstatsPrefix),ctd,annotLevel,specificity_species=specificity_species,genesOutCOND)
-                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --set-annot '%s' twosided --gene-covar '%s' condition-only='ZSTAT' --out '%s.%s'",sumstatsPrefix,geneCovarFile,geneCovarFile2,sumstatsPrefix2,analysis_name)
+                geneCovarFile2 = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",magmaPaths$filePathPrefix),ctd,annotLevel,specificity_species=specificity_species,genesOutCOND)
+                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --set-annot '%s' twosided --gene-covar '%s' condition-only='ZSTAT' --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,geneCovarFile2,sumstatsPrefix2,analysis_name)
             }
         }
         print(magma_cmd)
@@ -63,22 +63,11 @@ calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name
         tmp = list()
         tmp$geneCovarFile = geneCovarFile
         if(EnrichmentMode=="Linear"){
-            res = read.table(file=sprintf("%s.%s.gcov.out",sumstatsPrefix2,analysis_name),header=TRUE)
+            path = sprintf("%s.%s.gcov.out",sumstatsPrefix2,analysis_name)
         }else if(EnrichmentMode=="Top 10%"){
-            res = read.table(file=sprintf("%s.%s.sets.out",sumstatsPrefix2,analysis_name),header=TRUE)
+            path = sprintf("%s.%s.sets.out",sumstatsPrefix2,analysis_name)
         }
-        res$P = as.numeric(res$P)
-        res = res[order(res$P,decreasing = TRUE),]
-        if(EnrichmentMode=="Top 10%"){
-            res$COVAR = res$FULL_NAME
-        }
-        res$COVAR = factor(res$COVAR,levels=res$COVAR)
-        res$CONTROL = "BASELINE"
-        res$CONTROL_label = "BASELINE"
-        res$ANNOTLEVEL=annotLevel
-        res$EnrichmentMode = EnrichmentMode
-        res$genesOutCOND=genesOutCOND
-        tmp$results = res
+        tmp$results = load.magma.results.file(path,annotLevel,ctd,genesOutCOND=genesOutCOND,EnrichmentMode=EnrichmentMode,ControlForCT="BASELINE")
         output[[length(output)+1]] = tmp
     }
     

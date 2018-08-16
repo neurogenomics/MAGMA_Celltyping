@@ -19,7 +19,7 @@ This package takes GWAS summary statistics & Single Cell Transcriptome specifici
 
 ## Set parameters to be used for the analysis
 
-```{r}
+```{r, eval=FALSE}
 # Set path the 1000 genomes reference data.
 genome_ref_dir = "~/Downloads/g1000_eur"
 if(!file.exists(sprintf("%s/g1000_eur.bed",genome_ref_dir))){
@@ -35,7 +35,7 @@ genome_ref_path = sprintf("%s/g1000_eur",genome_ref_dir)
 
 The EWCE package comes with a celltype specificity dataset which we use as an example.  The One2One package is used to obtain 1:1 orthologs.
 
-```{r }
+```{r, eval=FALSE }
 library(MAGMA.Celltyping)
 
 # Load the celltype data
@@ -49,7 +49,7 @@ data(ortholog_data_Mouse_Human)
 
 First we need to calculate the quantile groups for each celltype within the single cell dataset. This is done using the `prepare.quantile.groups` function. If your single cell dataset is not from mouse, then change the specificity_species argument. If you wish to use a smaller number of bins then 
 
-```{r }
+```{r, eval=FALSE }
 ctd = prepare.quantile.groups(ctd,specificity_species="mouse",numberOfBins=40)
 
 # Examine how the quantile groups look
@@ -65,10 +65,11 @@ We need to have a summary statistics file to analyse as input. As an example dow
 
 The function `check.sumstats.formatted.for.magma` does some basic processing to get it into the right format.
 
-```{r }
+```{r, eval=FALSE }
 # Download and unzip the summary statistics file
 library(R.utils)
-gwas_sumstats_path = "~/Downloads/20016.assoc.tsv"
+#gwas_sumstats_path = "~/Downloads/20016.assoc.tsv"
+gwas_sumstats_path = "/Users/natske/GWAS_Summary_Statistics/20016.assoc.tsv"
 if(!file.exists(gwas_sumstats_path)){
     download.file("https://www.dropbox.com/s/shsiq0brkax886j/20016.assoc.tsv.gz?raw=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
     gunzip(sprintf("%s.gz",gwas_sumstats_path),gwas_sumstats_path)
@@ -80,24 +81,92 @@ col_headers = format_sumstats_for_magma(gwas_sumstats_path)
 
 ## Map SNPs to Genes
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 genesOutPath = map.snps.to.genes(gwas_sumstats_path,genome_ref_path=genome_ref_path)
 ```
 
 ## Run the main cell type association analysis
 
-```{r }
-ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path)
-plot_celltype_associations(ctAssocs)
+The analyses can be run in either linear or top10% enrichment modes. Let's start with linear:
+
+```{r, eval=FALSE }
+ctAssocsLinear = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,specificity_species = "mouse")
+FigsLinear = plot_celltype_associations(ctAssocsLinear,ctd=ctd)
+```
+
+Now let's add the top 10% mode
+
+```{r, eval=FALSE }
+ctAssocsTop = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,EnrichmentMode = "Top 10%")
+FigsTopDecile = plot_celltype_associations(ctAssocsTop,ctd=ctd)
+```
+
+Then plot linear together with the top decile mode
+
+```{r, eval=FALSE }
+ctAssocMerged = merge_magma_results(ctAssocsLinear,ctAssocsTop)
+FigsMerged = plot_celltype_associations(ctAssocMerged,ctd=ctd)
 ```
 
 ## Run the conditional cell type association analysis
 
-```{r }
+```{r, eval=FALSE }
 # Conditional analysis
 ctCondAssocs = calculate_conditional_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,analysis_name = "Conditional")
-plot_celltype_associations(ctCondAssocs)
+plot_celltype_associations(ctCondAssocs,ctd=ctd)
 ```
 
+# Controlling for a second GWAS
 
+We now want to test enrichments that remain in a GWAS after we control for a second GWAS. So let's download a second GWAS sumstats file and prepare it for analysis.
 
+20018.assoc.tsv is the sumstats file for 'Prospective memory result' from the UK Biobank. 
+
+20016.assoc.tsv is the sumstats file for 'Fluid Intelligence Score' from the UK Biobank. 
+
+So let's subtract genes associated with prospective memory from those involved in fluid intelligence.
+
+## Download and prepare the 'Prospective memory' GWAS summary statistics
+
+```{r, eval=FALSE }
+# Download and unzip the summary statistics file
+library(R.utils)
+gwas_sumstats_path = "~/GWAS_Summary_Statistics/20018.assoc.tsv"
+if(!file.exists(gwas_sumstats_path)){
+    download.file("https://www.dropbox.com/s/shsiq0brkax886j/20016.assoc.tsv.gz?raw=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
+    gunzip(sprintf("%s.gz",gwas_sumstats_path),gwas_sumstats_path)
+}
+
+# Format & map SNPs to genes
+col_headers = format_sumstats_for_magma(gwas_sumstats_path)
+genesOutPath = map.snps.to.genes(gwas_sumstats_path,genome_ref_path=genome_ref_path)
+```
+
+## Check which cell types this GWAS is associated with at baseline
+
+```{r, eval=FALSE }
+gwas_sumstats_path_Memory = "~/GWAS_Summary_Statistics/20018.assoc.tsv"
+gwas_sumstats_path_Intelligence = "~/GWAS_Summary_Statistics/20016.assoc.tsv"
+ctAssocsLinearMemory = calculate_celltype_associations(ctd,gwas_sumstats_path_Memory,genome_ref_path=genome_ref_path,specificity_species = "mouse")
+ctAssocsLinearIntelligence = calculate_celltype_associations(ctd,gwas_sumstats_path_Intelligence,genome_ref_path=genome_ref_path,specificity_species = "mouse")
+plot_celltype_associations(ctAssocsLinearMemory,ctd=ctd)
+```
+
+## Compare enrichments in the two GWAS using a tile plot
+
+```{r, eval=FALSE}
+ctAssocMerged_MemInt = merge_magma_results(ctAssocsLinearMemory,ctAssocsLinearIntelligence)
+FigsMerged_MemInt = magma.tileplot(ctd=ctd,results=ctAssocMerged_MemInt[[1]]$results,annotLevel=1,fileTag="Merged_MemInt_lvl1",output_path = "~/Desktop")
+FigsMerged_MemInt = magma.tileplot(ctd=ctd,results=ctAssocMerged_MemInt[[2]]$results,annotLevel=2,fileTag="Merged_MemInt_lvl2",output_path = "~/Desktop")
+```
+
+## Check which cell types 'Fluid Intelligence' is associated with after controlling for 'Prospective memory'
+
+```{r, eval=FALSE }
+gwas_sumstats_path = "/Users/natske/GWAS_Summary_Statistics/20016.assoc.tsv"
+memoryGenesOut = "~/GWAS_Summary_Statistics/MAGMA_Files/20018.assoc.tsv.10UP.1.5DOWN/20018.assoc.tsv.10UP.1.5DOWN.genes.out"
+ctAssocsLinear = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,specificity_species = "mouse",genesOutCOND=memoryGenesOut,analysis_name = "ControllingForPropMemory")
+FigsLinear = plot_celltype_associations(ctAssocsLinear,ctd=ctd,fileTag = "ControllingForPropMemory")
+```
+
+We find that after controlling for prospective memory, there is no significant enrichment left associated with fluid intelligence.

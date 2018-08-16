@@ -9,6 +9,24 @@
 #' @import stringr
 #' @export
 format_sumstats_for_magma <- function(path){
+    
+    ## NOTE, IF YOU GET AN ERROR ABOUT NOT BEING ABLE TO FIND COLUMN, THEN MAYBE SPACES NEED EXPANDING TO TABS?
+    # awk -v OFS="\t" '$1=$1' /Users/natske/GWAS_Summary_Statistics/Diabetes_Type2_Xue_et_al_T2D_META_Nat_Commun_2018.txt > /Users/natske/GWAS_Summary_Statistics/Diabetes_Type2_Xue_et_al_T2D_META_Nat_Commun_2018.expanded.txt
+    # awk -v OFS="\t" '$1=$1' /Users/natske/GWAS_Summary_Statistics/MAGIC_FastingGlucose.txt > /Users/natske/GWAS_Summary_Statistics/MAGIC_FastingGlucose.expanded.txt
+    # awk -v OFS="\t" '$1=$1' /Users/natske/GWAS_Summary_Statistics/MAGIC_ln_FastingInsulin.txt > /Users/natske/GWAS_Summary_Statistics/MAGIC_ln_FastingInsulin.expanded.txt
+    
+    # Ensure that tabs seperate rows
+    con <- file(path,"r") ; row_of_data <- strsplit(readLines(con,n=2)[2],"\t")[[1]] ; close(con)
+    tmpPath = tempfile()
+    if(length(row_of_data)==1){
+        if(grep(" ",row_of_data)==1){
+            cmd = sprintf("awk -v OFS=\"\t\" '$1=$1' %s > %s",path,tmpPath)
+            system(cmd)
+            cmd = sprintf("mv %s %s",tmpPath,path)
+            system(cmd)
+        }
+    }
+    
     # Check the sumstats file exists
     if(!file.exists(path)){stop("Path to GWAS sumstats is not valid")}
     

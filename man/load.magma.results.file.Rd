@@ -4,14 +4,19 @@
 \alias{load.magma.results.file}
 \title{Load a MAGMA .gcov.out file}
 \usage{
-load.magma.results.file(path, annotLevel, ctd)
+load.magma.results.file(path, annotLevel, ctd, genesOutCOND = NA,
+  EnrichmentMode = "Linear", ControlForCT = "BASELINE")
 }
 \arguments{
-\item{path}{Path to a .gcov.out file}
+\item{path}{Path to a .gcov.out file (if EnrichmentMode=='Linear') or .sets.out (if EnrichmentMode=='Top 10%')}
 
 \item{annotLevel}{Which annotation level does this .gcov.out file relate to?}
 
 \item{ctd}{Cell type data strucutre containing $quantiles}
+
+\item{genesOutCOND}{[Optional] If the analysis controlled for another GWAS, then this is included as a column, otherwise the column is NA}
+
+\item{EnrichmentMode}{[Optional] Either 'Linear' or 'Top 10%'. Default assumes Linear.}
 }
 \value{
 Contents of the .gcov.out file

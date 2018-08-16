@@ -18,5 +18,6 @@ get.ctd.dendro <- function(ctd,annotLevel){
   binned_file_dist_hclust <- hclust(binned_file_dist)
   ddata <- ggdendro::dendro_data(binned_file_dist_hclust, type="rectangle")
   ordered_cells <- as.character(ddata$labels$label)
-  return(list(ddata=ddata,ordered_cells=ordered_cells))
+  dendroPlot <- ggplot(segment(ddata)) + geom_segment(aes(x=x, y=y, xend=xend, yend=yend)) + coord_flip() +  theme_dendro() + scale_x_continuous(expand = c(0, 1.3)) 
+  return(list(ddata=ddata,ordered_cells=ordered_cells,dendroPlot=dendroPlot))
 }

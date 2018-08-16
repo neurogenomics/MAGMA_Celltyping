@@ -1,9 +1,26 @@
-magma.tileplot <- function(ctd,results,height=13,width=4,annotLevel=1,fileTag="",output_path=NA){
+#' MAGMA tileplot
+#'
+#' Used after merging results from multiple GWAS studies
+#'
+#' @param ctd Cell type data strucutre containing $quantiles
+#' @param ctAssoc1 Output from either merge_magma_results()
+#' @param height Height of the output tileplot
+#' @param width Width of the output tileplot
+#' @param annotLevel Annotation level to plot the results for
+#' @param output_path Location where the results should be plotted
+#'
+#' @examples
+#' ctAssocs = merge_magma_results.r(ctAssoc1,ctAssoc2)
+#'
+#' @export
+magma.tileplot <- function(ctd,results,height=13,width=4,annotLevel=1,fileTag="",output_path){
     # First, error checking of arguments
-    if(sum(!c("Celltype","GWAS","log10p","q","level") %in% colnames(results))>0){stop("results dataframe must contain 'Celltype', 'GWAS', 'log10p', 'level' and 'q' columns")}
-    if(length(unique(results$GWAS))<2){stop("Must be more than one unique entry in results$GWAS for plotting tileplot")}
+    #if(sum(!c("Celltype","GCOV_FILE","log10p","q","level") %in% colnames(results))>0){stop("results dataframe must contain 'Celltype', 'GCOV_FILE', 'log10p', 'level' and 'q' columns")}
+    if(sum(!c("Celltype","GCOV_FILE","log10p","level") %in% colnames(results))>0){stop("results dataframe must contain 'Celltype', 'GCOV_FILE', 'log10p' and 'level' columns")}
+    if(length(unique(results$GCOV_FILE))<2){stop("Must be more than one unique entry in results$GCOV_FILE for plotting tileplot")}
     if(!annotLevel %in% results$level){stop(sprintf("No results for annotation level = %s found in results",annotLevel))}
-    if(is.na(base_path)){stop("base_path must be specified. This is the location where tile plots are saved.")}
+    #if(is.na(base_path)){stop("base_path must be specified. This is the location where tile plots are saved.")}
+    
     
     # Reduce results to only contain results for the relevant annotation level
     results = results[results$level==annotLevel,]
@@ -17,16 +34,16 @@ magma.tileplot <- function(ctd,results,height=13,width=4,annotLevel=1,fileTag=""
     ctdDendro = get.ctd.dendro(ctd,annotLevel=annotLevel)
     
     # Order cells by dendrogram
-    allRes$Celltype <- factor(allRes$Celltype, levels=ctdDendro$ordered_cells)
+    results$Celltype <- factor(results$Celltype, levels=ctdDendro$ordered_cells)
     # Plot it!
-    allRes$q=p.adjust(allRes$P,method="bonferroni")
+    results$q=p.adjust(results$P,method="bonferroni")
     
     # Prepare the tileplot
-    fig_Heatmap_WOdendro = ggplot(allRes)+geom_tile(aes(x=GWAS,y=Celltype,fill=log10p)) + 
+    fig_Heatmap_WOdendro = ggplot(results)+geom_tile(aes(x=GCOV_FILE,y=Celltype,fill=log10p)) + 
         theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
         theme(legend.position="none") +
         xlab("") + ylab("") + scale_fill_gradient(low = "darkblue",high = "white") + ggtitle("MAGMA")+
-        geom_point(aes(x=GWAS,y=Celltype,size=ifelse(q<0.00001, "HUGEdot", ifelse(q<0.0001, "BIGdot", ifelse(q<0.001, "BiiGdot", ifelse(q<0.05, "dot", "no_dot"))))),col="black") +
+        geom_point(aes(x=GCOV_FILE,y=Celltype,size=ifelse(q<0.00001, "HUGEdot", ifelse(q<0.0001, "BIGdot", ifelse(q<0.001, "BiiGdot", ifelse(q<0.05, "dot", "no_dot"))))),col="black") +
         scale_size_manual(values=c(HUGEdot=4,BIGdot=3,BiiGdot=2,dot=1, no_dot=NA), guide="none") 
     
     # Prepare the dendrogram
