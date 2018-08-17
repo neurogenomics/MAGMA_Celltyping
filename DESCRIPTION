@@ -8,12 +8,12 @@ Maintainer: Nathan Skene <nathan.skene@gmail.com>
 Description: Used to test for cell type enrichments using MAGMA
 License: Artistic-2.0
 LazyData: TRUE
-Depends: R(>= 3.2),  EWCE, One2One, R.utils, rsnps
+Depends: R(>= 3.2),  EWCE, One2One, R.utils, rsnps, ggdendro, gridExtra
 VignetteBuilder: knitr
 Imports: EWCE, 
         One2One,
         R.utils,
-        rsnps
+        rsnps, ggdendro, gridExtra
 Suggests: knitr, BiocStyle,
     rmarkdown
 Remotes: nathanskene/ewce,
