@@ -88,6 +88,18 @@ format_sumstats_for_magma <- function(path){
         col_headers = standardise.sumstats.column.headers(path)
     }
     
+    # If SNP is present... BUT not CHR or BP then need to find the relevant locations
+    con <- file(path,"r") ; rows_of_data <- readLines(con,n=2) ; close(con); col_headers = strsplit(rows_of_data[1],"\t")[[1]]
+    if(sum(c("CHR","BP") %in% col_headers)==0 & sum("SNP" %in% col_headers)==1){
+        library(data.table)
+        sumstats = fread(path)
+        data("SNP_LOC_DATA")
+        SNP_LOC_DATA_2 = SNP_LOC_DATA[,1:3]
+        sumstats2 = merge(sumstats,SNP_LOC_DATA_2,by="SNP")
+        sumstats3 = data.frame(sumstats2)[,c("SNP","CHR","BP",setdiff(colnames(sumstats2),c("SNP","CHR","BP")))]
+        fwrite(sumstats3,file=path,sep="\t")
+    }
+    
     # If CHR and BP are present... BUT not SNP then need to find the relevant SNP ids
     con <- file(path,"r") ; rows_of_data <- readLines(con,n=2) ; close(con); col_headers = strsplit(rows_of_data[1],"\t")[[1]]
     if(sum(c("CHR","BP") %in% col_headers)==2 & sum("SNP" %in% col_headers)==0){

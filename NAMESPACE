@@ -3,6 +3,7 @@
 export(build_snp_location_tables.r)
 export(calculate_celltype_associations)
 export(calculate_conditional_celltype_associations)
+export(calculate_geneset_enrichment)
 export(check_inputs_to_magma_celltype_analysis)
 export(create_gene_covar_file)
 export(create_top10percent_genesets_file)

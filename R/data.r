@@ -44,3 +44,39 @@
 #'
 "SNP_LOC_DATA"
 
+#' Celltype data (allKI)
+#'
+#' CTD file with cortex, hippocampus, hypothalamus and midbrain
+#'
+#' @source
+#' # http://www.hjerling-leffler-lab.org/data/scz_singlecell/
+#'
+"ctd_allKI"
+
+#' Celltype data (AIBS)
+#'
+#' CTD file with AIBS human cortex data
+#'
+#' @source
+#' # http://www.hjerling-leffler-lab.org/data/scz_singlecell/
+#'
+"ctd_AIBS"
+
+#' Celltype data (DRONC_human)
+#'
+#' CTD file with DRONC-seq data from human
+#'
+#' @source
+#' # http://www.hjerling-leffler-lab.org/data/scz_singlecell/
+#'
+"ctd_DRONC_human"
+
+#' Celltype data (DRONC_mouse)
+#'
+#' CTD file with DRONC-seq data from mice
+#'
+#' @source
+#' # http://www.hjerling-leffler-lab.org/data/scz_singlecell/
+#'
+"ctd_DRONC_mouse"
+

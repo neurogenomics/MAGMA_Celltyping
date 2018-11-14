@@ -1,4 +1,16 @@
-adjust.zstat.in.genesOut <- function(ctd,magma_file="Results/Conditional/scz_adj_all_withaut_gsmr_bxy_aric_reference.raw.NEW.10UP.1.5DOWN.genes.out"){
+#' Adjust MAGMA Z-statistic from .genes.out files
+#'
+#' Used when you want to directly analyse the gene level z-scores corrected for gene length etc
+#'
+#' @param ctd Cell type data structure
+#' @param magma_file A MAGMA .genes.out file
+#' @param sctSpecies Either 'human' or 'mouse'
+#'
+#' @examples
+#' magmaGenesOut = adjust.zstat.in.genesOut(ctd,magma_file="/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",sctSpecies="mouse")
+#'
+#' @export
+adjust.zstat.in.genesOut <- function(ctd,magma_file="/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",sctSpecies="mouse"){
     allGenes = rownames(ctd[[1]]$specificity)
     
     # Get mouse-->human othologs with human entrez
@@ -10,10 +22,14 @@ adjust.zstat.in.genesOut <- function(ctd,magma_file="Results/Conditional/scz_adj
     # Load the MAGMA data
     magma = read.table(magma_file,stringsAsFactors = FALSE,header=TRUE)
     magma$entrez = magma$GENE
-    magma = merge(magma, orth2,by="entrez")
+    if(sctSpecies=="mouse"){
+        magma = merge(magma, orth2,by="entrez")
+    }
     magma = magma[order(magma$P),]
-    magma = magma[magma$mouse.symbol %in% allGenes,]
-    magma = magma[!duplicated(magma$mouse.symbol),]
+    if(sctSpecies=="mouse"){
+        magma = magma[magma$mouse.symbol %in% allGenes,]
+        magma = magma[!duplicated(magma$mouse.symbol),]
+    }
     magma$Q = p.adjust(magma$P,method="bonferroni")
     magma$logNSNPS=log(magma$NSNPS)
     magma$logNPARAM=log(magma$NPARAM)

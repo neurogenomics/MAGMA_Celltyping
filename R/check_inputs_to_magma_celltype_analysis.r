@@ -30,6 +30,6 @@ check_inputs_to_magma_celltype_analysis <- function(ctd,gwas_sumstats_path,analy
     # - Does genome_ref_path.bed exist?
     if(!file.exists(sprintf("%s.bed",genome_ref_path))){stop(sprintf("%s.bed does not exist",genome_ref_path))}
     # - Check the genes.raw file exists
-    if(!file.exists(sprintf("%s.genes.out",magmaPaths$filePathPrefix))){stop(sprintf("%s.genes.out does not exist. Run map.snps.to.genes() before this function",sumstatsPrefix))}
+    if(!file.exists(sprintf("%s.genes.out",magmaPaths$filePathPrefix))){stop(sprintf("%s.genes.out does not exist. Run map.snps.to.genes() before this function",magmaPaths$filePathPrefix))}
     #####################    
 }

@@ -5,7 +5,7 @@
 \title{MAGMA tileplot}
 \usage{
 magma.tileplot(ctd, results, height = 13, width = 4, annotLevel = 1,
-  fileTag = "", output_path = NA)
+  fileTag = "", output_path)
 }
 \arguments{
 \item{ctd}{Cell type data strucutre containing $quantiles}

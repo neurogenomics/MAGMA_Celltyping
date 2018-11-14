@@ -1,41 +1,232 @@
-# README #
+Using MAGMA to find causative celltypes for genetically complex traits using MAGMA
+================
+Nathan Skene & Julien Bryois
+2018-11-08
 
-This R package contains code neccesary for testing which cell types can explain the heritability signal from GWAS summary statistics. The method was described in our 2018 Nature Genetics paper, *"Genetic identification of brain cell types underlying schizophrenia"*. 
+-   [Introduction](#introduction)
+-   [Installation](#installation)
+-   [Using the package (basic usage)](#using-the-package-basic-usage)
+    -   [Set parameters to be used for the analysis](#set-parameters-to-be-used-for-the-analysis)
+    -   [Install and load all the required R packages and data](#install-and-load-all-the-required-r-packages-and-data)
+    -   [Prepare quantile groups for celltypes](#prepare-quantile-groups-for-celltypes)
+    -   [Download summary statistics file & check it is properly formatted](#download-summary-statistics-file-check-it-is-properly-formatted)
+    -   [Map SNPs to Genes](#map-snps-to-genes)
+    -   [Run the main cell type association analysis](#run-the-main-cell-type-association-analysis)
+    -   [Run the conditional cell type association analysis](#run-the-conditional-cell-type-association-analysis)
+-   [Controlling for a second GWAS](#controlling-for-a-second-gwas)
+    -   [Download and prepare the 'Prospective memory' GWAS summary statistics](#download-and-prepare-the-prospective-memory-gwas-summary-statistics)
+    -   [Check which cell types this GWAS is associated with at baseline](#check-which-cell-types-this-gwas-is-associated-with-at-baseline)
+    -   [Compare enrichments in the two GWAS using a tile plot](#compare-enrichments-in-the-two-gwas-using-a-tile-plot)
+    -   [Check which cell types 'Fluid Intelligence' is associated with after controlling for 'Prospective memory'](#check-which-cell-types-fluid-intelligence-is-associated-with-after-controlling-for-prospective-memory)
+-   [Who do I talk to?](#who-do-i-talk-to)
+-   [Citation](#citation)
 
-### How do I get set up? ###
+<!-- Readme.md is generated from Readme.Rmd. Please edit that file -->
+Introduction
+------------
 
-Before installing this package it is neccesary to install the magma software package. Please download it from https://ctg.cncr.nl/software/magma. The executable should then be copied to /usr/local/bin so that R can find it. Then install this package as follows:
+This R package contains code used for testing which cell types can explain the heritability signal from GWAS summary statistics. The method was described in our 2018 Nature Genetics paper, *"Genetic identification of brain cell types underlying schizophrenia"*. This package takes GWAS summary statistics & Single Cell Transcriptome specificity data (in EWCE's CTD format) as input. As output it calculates the associations between the GWAS trait and the celltypes.
 
+Installation
+------------
+
+Before installing this package it is neccesary to install the magma software package. Please download it from <https://ctg.cncr.nl/software/magma>. The executable should then be copied to /usr/local/bin so that R can find it. Then install this package as follows:
+
+    install.packages("devtools")
+    library(devtools)
+    install_github("nathanskene/ewce")
+    install_github("nathanskene/MAGMA_Celltyping")
+
+Using the package (basic usage)
+-------------------------------
+
+### Set parameters to be used for the analysis
+
+``` r
+# Set path the 1000 genomes reference data.
+genome_ref_dir = "~/Downloads/g1000_eur"
+if(!file.exists(sprintf("%s/g1000_eur.bed",genome_ref_dir))){
+    download.file("https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip",destfile=sprintf("%s.zip",genome_ref_dir))
+    unzip(sprintf("%s.zip",genome_ref_dir),exdir=genome_ref_dir)
+}
+genome_ref_path = sprintf("%s/g1000_eur",genome_ref_dir)
 ```
-install.packages("devtools")
-library(devtools)
-install_github("nathanskene/ewce")
-install_github("nathanskene/MAGMA_Celltyping")
+
+### Install and load all the required R packages and data
+
+The EWCE package comes with a celltype specificity dataset which we use as an example. The One2One package is used to obtain 1:1 orthologs.
+
+``` r
+library(MAGMA.Celltyping)
+
+# Load the celltype data
+data(ctd)
+
+# Load the mouse to human 1:1 orthologs
+data(ortholog_data_Mouse_Human)
 ```
 
-There is a vignette describing how to use the package located in /vignettes/introduction.Rmd
+Note that the cell type dataset loaded in the code above is the Karolinksa cortex/hippocampus data only. For the full Karolinska dataset with hypothalamus and midbrain instead use the following:
 
-### Where do I download the dataset described in the paper?
+    data(ctd_allKI)
 
-This package provides a smaller version of the Karolinska cell type dataset. The full Karolinska and AIBS datasets as described in the 2018 paper can be downloaded from http://www.hjerling-leffler-lab.org/data/scz_singlecell/
+Or for the DRONC seq or AIBS datasets use
 
-### Who do I talk to? ###
+    data(ctd_AIBS)
+    data(ctd_DRONC_human)
+    data(ctd_DRONC_human)
+
+### Prepare quantile groups for celltypes
+
+First we need to calculate the quantile groups for each celltype within the single cell dataset. This is done using the `prepare.quantile.groups` function. If your single cell dataset is not from mouse, then change the specificity\_species argument. If you wish to use a smaller number of bins then
+
+``` r
+ctd = prepare.quantile.groups(ctd,specificity_species="mouse",numberOfBins=40)
+
+# Examine how the quantile groups look
+print(ctd[[1]]$quantiles[c("Gfap","Dlg4","Aif1"),])
+print(table(ctd[[1]]$quantiles[,1]))
+```
+
+### Download summary statistics file & check it is properly formatted
+
+We need to have a summary statistics file to analyse as input. As an example download summary statistics for Fluid Intelligence, based on the UK Biobank, generated by Ben Neale's group.
+
+The function `check.sumstats.formatted.for.magma` does some basic processing to get it into the right format.
+
+``` r
+# Download and unzip the summary statistics file
+library(R.utils)
+#gwas_sumstats_path = "~/Downloads/20016.assoc.tsv"
+gwas_sumstats_path = "/Users/natske/GWAS_Summary_Statistics/20016.assoc.tsv"
+if(!file.exists(gwas_sumstats_path)){
+    download.file("https://www.dropbox.com/s/shsiq0brkax886j/20016.assoc.tsv.gz?raw=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
+    gunzip(sprintf("%s.gz",gwas_sumstats_path),gwas_sumstats_path)
+}
+
+# Format it (i.e. column headers etc)
+col_headers = format_sumstats_for_magma(gwas_sumstats_path)
+```
+
+### Map SNPs to Genes
+
+``` r
+genesOutPath = map.snps.to.genes(gwas_sumstats_path,genome_ref_path=genome_ref_path)
+```
+
+### Run the main cell type association analysis
+
+The analyses can be run in either linear or top10% enrichment modes. Let's start with linear:
+
+``` r
+ctAssocsLinear = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,specificity_species = "mouse")
+FigsLinear = plot_celltype_associations(ctAssocsLinear,ctd=ctd)
+```
+
+Now let's add the top 10% mode
+
+``` r
+ctAssocsTop = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,EnrichmentMode = "Top 10%")
+FigsTopDecile = plot_celltype_associations(ctAssocsTop,ctd=ctd)
+```
+
+Then plot linear together with the top decile mode
+
+``` r
+ctAssocMerged = merge_magma_results(ctAssocsLinear,ctAssocsTop)
+FigsMerged = plot_celltype_associations(ctAssocMerged,ctd=ctd)
+```
+
+### Run the conditional cell type association analysis
+
+``` r
+# Conditional analysis
+ctCondAssocs = calculate_conditional_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,analysis_name = "Conditional")
+plot_celltype_associations(ctCondAssocs,ctd=ctd)
+```
+
+Controlling for a second GWAS
+-----------------------------
+
+We now want to test enrichments that remain in a GWAS after we control for a second GWAS. So let's download a second GWAS sumstats file and prepare it for analysis.
+
+20018.assoc.tsv is the sumstats file for 'Prospective memory result' from the UK Biobank.
+
+20016.assoc.tsv is the sumstats file for 'Fluid Intelligence Score' from the UK Biobank.
+
+So let's subtract genes associated with prospective memory from those involved in fluid intelligence.
+
+### Download and prepare the 'Prospective memory' GWAS summary statistics
+
+``` r
+# Download and unzip the summary statistics file
+library(R.utils)
+gwas_sumstats_path = "~/GWAS_Summary_Statistics/20018.assoc.tsv"
+if(!file.exists(gwas_sumstats_path)){
+    download.file("https://www.dropbox.com/s/shsiq0brkax886j/20016.assoc.tsv.gz?raw=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
+    gunzip(sprintf("%s.gz",gwas_sumstats_path),gwas_sumstats_path)
+}
+
+# Format & map SNPs to genes
+col_headers = format_sumstats_for_magma(gwas_sumstats_path)
+genesOutPath = map.snps.to.genes(gwas_sumstats_path,genome_ref_path=genome_ref_path)
+```
+
+### Check which cell types this GWAS is associated with at baseline
+
+``` r
+gwas_sumstats_path_Memory = "~/GWAS_Summary_Statistics/20018.assoc.tsv"
+gwas_sumstats_path_Intelligence = "~/GWAS_Summary_Statistics/20016.assoc.tsv"
+ctAssocsLinearMemory = calculate_celltype_associations(ctd,gwas_sumstats_path_Memory,genome_ref_path=genome_ref_path,specificity_species = "mouse")
+ctAssocsLinearIntelligence = calculate_celltype_associations(ctd,gwas_sumstats_path_Intelligence,genome_ref_path=genome_ref_path,specificity_species = "mouse")
+plot_celltype_associations(ctAssocsLinearMemory,ctd=ctd)
+```
+
+### Compare enrichments in the two GWAS using a tile plot
+
+``` r
+ctAssocMerged_MemInt = merge_magma_results(ctAssocsLinearMemory,ctAssocsLinearIntelligence)
+FigsMerged_MemInt = magma.tileplot(ctd=ctd,results=ctAssocMerged_MemInt[[1]]$results,annotLevel=1,fileTag="Merged_MemInt_lvl1",output_path = "~/Desktop")
+FigsMerged_MemInt = magma.tileplot(ctd=ctd,results=ctAssocMerged_MemInt[[2]]$results,annotLevel=2,fileTag="Merged_MemInt_lvl2",output_path = "~/Desktop")
+```
+
+### Check which cell types 'Fluid Intelligence' is associated with after controlling for 'Prospective memory'
+
+``` r
+gwas_sumstats_path = "/Users/natske/GWAS_Summary_Statistics/20016.assoc.tsv"
+memoryGenesOut = "~/GWAS_Summary_Statistics/MAGMA_Files/20018.assoc.tsv.10UP.1.5DOWN/20018.assoc.tsv.10UP.1.5DOWN.genes.out"
+ctAssocsLinear = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,specificity_species = "mouse",genesOutCOND=memoryGenesOut,analysis_name = "ControllingForPropMemory")
+FigsLinear = plot_celltype_associations(ctAssocsLinear,ctd=ctd,fileTag = "ControllingForPropMemory")
+```
+
+We find that after controlling for prospective memory, there is no significant enrichment left associated with fluid intelligence.
+
+Who do I talk to?
+-----------------
 
 If you have any issues using the package then please get in touch with Nathan Skene (nathan.skene at ki.se). Bug reports etc are all most welcome, we want the package to be easy to use for everyone!
 
-### Citation
+Citation
+--------
 
 If you use the software then please cite
 
-[Skene, et al. Genetic identification of brain cell types underlying schizophrenia.
-Nature Genetics, 2018.](https://www.nature.com/articles/s41588-018-0129-5)
+[Skene, et al. Genetic identification of brain cell types underlying schizophrenia. Nature Genetics, 2018.](https://www.nature.com/articles/s41588-018-0129-5)
 
-The package builds on the MAGMA package developed in the Complex Trait Genetics lab at VU university (not us!) so please also cite their work:
+The package utilises the MAGMA package developed in the Complex Trait Genetics lab at VU university (not us!) so please also cite their work:
 
-[de Leeuw, et al. MAGMA: Generalized gene-set analysis of GWAS data.
-PLoS Comput Biol, 2015.](https://journals.plos.org/ploscompbiol/article?id=10.1371%2Fjournal.pcbi.1004219)
+[de Leeuw, et al. MAGMA: Generalized gene-set analysis of GWAS data. PLoS Comput Biol, 2015.](https://journals.plos.org/ploscompbiol/article?id=10.1371%2Fjournal.pcbi.1004219)
 
 If you use the EWCE package as well then please cite
 
-[Skene, et al. Identification of Vulnerable Cell Types in Major Brain Disorders Using Single Cell Transcriptomes and Expression Weighted Cell Type Enrichment.
-Front. Neurosci, 2016.](https://www.frontiersin.org/articles/10.3389/fnins.2016.00016/full)
+[Skene, et al. Identification of Vulnerable Cell Types in Major Brain Disorders Using Single Cell Transcriptomes and Expression Weighted Cell Type Enrichment. Front. Neurosci, 2016.](https://www.frontiersin.org/articles/10.3389/fnins.2016.00016/full)
+
+If you use the cortex/hippocampus single cell data associated with this package then please cite the following papers:
+
+[Zeisel, et al. Cell types in the mouse cortex and hippocampus revealed by single-cell RNA-seq. Science, 2015.](http://www.sciencemag.org/content/early/2015/02/18/science.aaa1934.abstract)
+
+If you use the midbrain and hypothalamus single cell datasets associated with the 2018 paper then please cite the following papers:
+
+[La Manno, et al. Molecular Diversity of Midbrain Development in Mouse, Human, and Stem Cells. Cell, 2016.](http://www.cell.com/cell/fulltext/S0092-8674(16)31309-5)
+
+[Romanov, et al. Molecular interrogation of hypothalamic organization reveals distinct dopamine neuronal subtypes. Nature Neuroscience, 2016.](http://www.nature.com/neuro/journal/vaop/ncurrent/full/nn.4462.html)
