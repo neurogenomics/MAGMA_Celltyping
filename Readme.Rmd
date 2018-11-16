@@ -209,6 +209,36 @@ print(sort(output))
 
 The results should closely resemble those obtained using MAGMA
 
+## Gene set enrichments
+
+To test whether a gene set (in HGNC or MGI format) is enriched using MAGMA the following commands can be used:
+
+```{r, eval=FALSE}
+data("rbfox_binding")
+gwas_sumstats_path = "/Users/natske/GWAS_Summary_Statistics/20016.assoc.tsv"
+geneset_res = calculate_geneset_enrichment(geneset=rbfox_binding,gwas_sumstats_path=gwas_sumstats_path,analysis_name="Rbfox_20016",upstream_kb=10,downstream_kb=1.5,genome_ref_path=genome_ref_path,geneset_species="mouse")
+print(geneset_res)
+```
+
+We can then test whether the geneset is still enriched after controlling for celltype enrichment:
+
+```{r, eval=FALSE}
+data(ctd_allKI)
+ctd = prepare.quantile.groups(ctd,specificity_species="mouse",numberOfBins=40)
+analysis_name="Rbfox_16_pyrSS"
+controlledCTs = c("pyramidal SS")
+cond_geneset_res_pyrSS = calculate_conditional_geneset_enrichment(geneset,ctd,controlledAnnotLevel=1,controlledCTs,gwas_sumstats_path,analysis_name=analysis_name,genome_ref_path=genome_ref_path,specificity_species = "mouse")
+controlledCTs = c("pyramidal CA1")
+cond_geneset_res_pyrCA1 = calculate_conditional_geneset_enrichment(geneset,ctd,controlledAnnotLevel=1,controlledCTs,gwas_sumstats_path,analysis_name=analysis_name,genome_ref_path=genome_ref_path,specificity_species = "mouse")
+controlledCTs = c("pyramidal CA1","pyramidal SS")
+cond_geneset_res_pyr = calculate_conditional_geneset_enrichment(geneset,ctd,controlledAnnotLevel=1,controlledCTs,gwas_sumstats_path,analysis_name=analysis_name,genome_ref_path=genome_ref_path,specificity_species = "mouse")
+controlledCTs = c("Medium Spiny Neuron")
+cond_geneset_res_MSN = calculate_conditional_geneset_enrichment(geneset,ctd,controlledAnnotLevel=1,controlledCTs,gwas_sumstats_path,analysis_name=analysis_name,genome_ref_path=genome_ref_path,specificity_species = "mouse")
+controlledCTs = c("Medium Spiny Neuron","pyramidal CA1","pyramidal SS","interneurons")
+cond_geneset_res = calculate_conditional_geneset_enrichment(geneset,ctd,controlledAnnotLevel=1,controlledCTs,gwas_sumstats_path,analysis_name=analysis_name,genome_ref_path=genome_ref_path,specificity_species = "mouse")
+
+```
+
 ## Who do I talk to?
 
 If you have any issues using the package then please get in touch with Nathan Skene (nathan.skene at ki.se). Bug reports etc are all most welcome, we want the package to be easy to use for everyone!

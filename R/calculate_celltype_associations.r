@@ -41,7 +41,8 @@ calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name
             geneCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",magmaPaths$filePathPrefix),ctd,annotLevel,specificity_species=specificity_species,genesOutCOND)
             
             if(is.na(genesOutCOND)){
-                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' onesided --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
+                #magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' onesided --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
+                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
             }else{
                 magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' condition='ZSTAT' --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
             }
