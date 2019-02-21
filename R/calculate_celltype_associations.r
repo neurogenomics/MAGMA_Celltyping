@@ -42,9 +42,9 @@ calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name
             
             if(is.na(genesOutCOND)){
                 #magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' onesided --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
-                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
+                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' --model direction=pos --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
             }else{
-                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' condition='ZSTAT' --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
+                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' --model direction=pos  condition='ZSTAT' --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
             }
         }else if(EnrichmentMode=="Top 10%"){
             # First match quantiles to the genes in the genes.out file... then write as the genesCovar file (the input to MAGMA)
@@ -63,11 +63,12 @@ calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name
         # Prepare output list
         tmp = list()
         tmp$geneCovarFile = geneCovarFile
-        if(EnrichmentMode=="Linear"){
-            path = sprintf("%s.%s.gcov.out",sumstatsPrefix2,analysis_name)
-        }else if(EnrichmentMode=="Top 10%"){
-            path = sprintf("%s.%s.sets.out",sumstatsPrefix2,analysis_name)
-        }
+        #if(EnrichmentMode=="Linear"){
+        path = sprintf("%s.%s.gsa.out",sumstatsPrefix2,analysis_name)
+        print(path)
+        #}else if(EnrichmentMode=="Top 10%"){
+        #    path = sprintf("%s.%s.sets.out",sumstatsPrefix2,analysis_name)
+        #}
         tmp$results = load.magma.results.file(path,annotLevel,ctd,genesOutCOND=genesOutCOND,EnrichmentMode=EnrichmentMode,ControlForCT="BASELINE")
         output[[length(output)+1]] = tmp
     }

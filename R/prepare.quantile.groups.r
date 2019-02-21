@@ -66,7 +66,7 @@ prepare.quantile.groups <- function(ctd,specificity_species="mouse",gwas_species
     }    
     ctd = lapply(ctd,normalise.mean.exp)
     ctd = lapply(ctd,bin.specificity.into.quantiles)
-    ctd = lapply(ctd,bin.expression.into.quantiles)
+    #ctd = lapply(ctd,bin.expression.into.quantiles)
     ctd = lapply(ctd,use.distance.to.add.expression.level.info)
     ctd = lapply(ctd,bin.specificityDistance.into.quantiles)
     return(ctd)

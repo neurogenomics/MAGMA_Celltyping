@@ -39,7 +39,8 @@ calculate_geneset_enrichment <- function(geneset,gwas_sumstats_path,analysis_nam
     print(magma_cmd)
     system(magma_cmd)
 
-    path = sprintf("%s.%s.sets.out",magmaPaths$filePathPrefix,analysis_name)
+    #path = sprintf("%s.%s.sets.out",magmaPaths$filePathPrefix,analysis_name)
+    path = sprintf("%s.%s.gsa.out",magmaPaths$filePathPrefix,analysis_name)
     res = read.table(path,stringsAsFactors = FALSE)
     colnames(res) = as.character(res[1,])
     res=res[-1,]

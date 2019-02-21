@@ -19,8 +19,9 @@ load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,Enrichme
   if(!EnrichmentMode %in% c("Linear","Top 10%")){stop("EnrichmentMode argument must be set to either 'Linear' or 'Top 10%")}
     
   # Check the file has appropriate ending given EnrichmentMode    
-  if(EnrichmentMode=="Linear" & length(grep(".gcov.out$",path))==0){stop("If EnrichmentMode=='Linear' then path must end in .gcov.out")}    
-  if(EnrichmentMode=="Top 10%" & length(grep(".sets.out$",path))==0){stop("If EnrichmentMode=='Top 10%' then path must end in .sets.out")}    
+  #if(EnrichmentMode=="Linear" & length(grep(".gcov.out$",path))==0){stop("If EnrichmentMode=='Linear' then path must end in .gcov.out")}    
+  #if(EnrichmentMode=="Top 10%" & length(grep(".sets.out$",path))==0){stop("If EnrichmentMode=='Top 10%' then path must end in .sets.out")}  
+   if(EnrichmentMode=="Linear" & length(grep(".gsa.out$",path))==0){stop("If EnrichmentMode=='Linear' then path must end in .gsa.out")}        
     
   library(dplyr)
   res = read.table(path,stringsAsFactors = FALSE)
@@ -42,11 +43,20 @@ load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,Enrichme
       editedNames = colnames(read.csv(tmpF,stringsAsFactors = FALSE))[-1]
       transliterateMap = data.frame(original=colnames(ctd[[annotLevel]]$specificity),edited=editedNames,stringsAsFactors = FALSE)
       rownames(transliterateMap) = transliterateMap$edited
-      res = res[res$COVAR %in% rownames(transliterateMap),]
-      res$COVAR = transliterateMap[res$COVAR,]$original
+      #res = res[res$COVAR %in% rownames(transliterateMap),]
+      res = res[res$VARIABLE %in% rownames(transliterateMap),]
+      #res$COVAR = transliterateMap[res$COVAR,]$original
+      res$VARIABLE = transliterateMap[res$VARIABLE,]$original
   }
   
-  rownames(res) = res$COVAR
+  # In the new version of MAGMA, when you run conditional analyses, each model has a number, and the covariates also get p-values...
+  # ---- The information contained is actually quite useful.... but for now just drop it
+  if(sum(res$MODEL==1)>1){
+      res = res[res$VARIABLE!=names(sort(table(res$VARIABLE),decreasing = TRUE)[1]),]
+  }
+  
+  #rownames(res) = res$COVAR
+  rownames(res) = res$VARIABLE
   res$BETA = as.numeric(res$BETA)
   res$BETA_STD = as.numeric(res$BETA_STD)
   res$SE = as.numeric(res$SE)
@@ -58,11 +68,16 @@ load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,Enrichme
   res$log10p = log(res$P,10)
   res$genesOutCOND = genesOutCOND
   res$EnrichmentMode = EnrichmentMode
-  res = res %>% dplyr::rename(Celltype=COVAR)
+  #res = res %>% dplyr::rename(Celltype=COVAR)
+  res = res %>% dplyr::rename(Celltype=VARIABLE)
   
   if(EnrichmentMode=="Top 10%"){
     res = res %>%  dplyr::rename(OBS_GENES=NGENES) %>%  purrr::modify_at(c("SET"),~NULL)
     res = res[,c("Celltype","OBS_GENES","BETA","BETA_STD","SE","P","level","Method","GCOV_FILE","CONTROL","CONTROL_label","log10p","genesOutCOND","EnrichmentMode")]
+  }
+  if(EnrichmentMode=="Linear"){
+      res = res %>%  dplyr::rename(OBS_GENES=NGENES) %>%  purrr::modify_at(c("SET"),~NULL)
+      res = res[,c("Celltype","OBS_GENES","BETA","BETA_STD","SE","P","level","Method","GCOV_FILE","CONTROL","CONTROL_label","log10p","genesOutCOND","EnrichmentMode")]
   }
   
   return(res)

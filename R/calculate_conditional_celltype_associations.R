@@ -11,6 +11,7 @@
 #' @param specificity_species Species name relevant to the cell type data, i.e. "mouse" or "human"
 #' @param controlledAnnotLevel Which annotation level should be controlled for
 #' @param controlTopNcells How many of the most significant cell types at that annotation level should be controlled for?
+#' @param controlledCTs Array of the celltype to be controlled for, i.e. c("Interneuron type 16","Medium Spiny Neuron)
 #'
 #' @return Filepath for the genes.out file
 #'
@@ -18,7 +19,7 @@
 #' ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path)
 #'
 #' @export
-calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name="MainRun",upstream_kb=10,downstream_kb=1.5,genome_ref_path,controlledAnnotLevel=1,specificity_species="mouse",controlTopNcells=2){
+calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name="MainRun",upstream_kb=10,downstream_kb=1.5,genome_ref_path,controlledAnnotLevel=1,specificity_species="mouse",controlTopNcells=NA,controlledCTs=NA){
     gwas_sumstats_path = path.expand(gwas_sumstats_path)
     #sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",gwas_sumstats_path,upstream_kb,downstream_kb)
     magmaPaths = get.magma.paths(gwas_sumstats_path,upstream_kb,downstream_kb)
@@ -26,20 +27,31 @@ calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,a
     # Check for errors in arguments
     check_inputs_to_magma_celltype_analysis(ctd,gwas_sumstats_path,analysis_name,upstream_kb,downstream_kb,genome_ref_path)
     
+    # Either controlTopNcells or controlledCTs should be passed with arguments, not both
+    if(!is.na(controlTopNcells) & !is.na(controlledCTs)){stop("Either controlTopNcells or controlledCTs should be passed with arguments, not both")}
+    
     # Calculate the baseline associations
     ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,specificity_species=specificity_species,EnrichmentMode = EnrichmentMode)
     
-    # Find the cells which are most significant at baseline at controlled annotation level
-    res = ctAssocs[[controlledAnnotLevel]]$results
-    res = res[order(res$P),]
-    signifCells = as.character(res[res$P<(0.05/ctAssocs$total_baseline_tests_performed),"Celltype"])
-    
-    if(length(signifCells)>controlTopNcells){
-        signifCells = signifCells[1:controlTopNcells]
+    if(!is.na(controlledCTs)){
+        # Check if controlledCTs are all in the CTD at the expected annotation level
+        if(mean(controlledCTs %in% colnames(ctd[[controlledAnnotLevel]]$specificity))<1){
+            missingCTs = controlledCTs[!controlledCTs %in% colnames(ctd[[controlledAnnotLevel]]$specificity)]
+            stop(sprintf("The following celltypes are not found at the specified annotation level: %s",paste(missingCTs,sep=" ")))
+        }else{signifCells=controlledCTs}
+    }else{
+        # Find the cells which are most significant at baseline at controlled annotation level
+        res = ctAssocs[[controlledAnnotLevel]]$results
+        res = res[order(res$P),]
+        signifCells = as.character(res[res$P<(0.05/ctAssocs$total_baseline_tests_performed),"Celltype"])
+        
+        if(length(signifCells)>controlTopNcells){
+            signifCells = signifCells[1:controlTopNcells]
+        }
+        
+        # If there are no significant cells... then stop
+        if(length(signifCells)==0){stop("No celltypes reach significance with Q<0.05")}
     }
-    
-    # If there are no significant cells... then stop
-    if(length(signifCells)==0){stop("No celltypes reach significance with Q<0.05")}
     
     # Create gene covar file for the controlled for annotation level
     controlledCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",magmaPaths$filePathPrefix),ctd,controlledAnnotLevel,specificity_species=specificity_species)
@@ -49,6 +61,7 @@ calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,a
     transliterateMap = data.frame(original=colnames(ctd[[controlledAnnotLevel]]$quantiles),modified=colnames(controlledCovarData)[2:length(colnames(controlledCovarData))],stringsAsFactors = FALSE)
     signifCells2 = transliterateMap[transliterateMap$original %in% signifCells,]$modified # Because full stops replace spaces when the covars are written to file... (and MAGMA sees spaces as delimiters)
     controlledCovarCols = controlledCovarData[,c("entrez",signifCells2)]
+    
     
     for(annotLevel in 1:length(ctd)){
         count=allRes=0
@@ -64,12 +77,16 @@ calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,a
             }
             
             sumstatsPrefix2 = sprintf("%s.level%s.%sUP.%sDOWN.ControlFor_%s",magmaPaths$filePathPrefix,annotLevel,upstream_kb,downstream_kb,controlFor)
-            #magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' onesided condition='%s' --out '%s'",magmaPaths$filePathPrefix,genesCovarFile,controlFor,sumstatsPrefix2)
+            #magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' onesided condition='%s' --out '%s'",magmaPaths$filePathPrefix,,controlFor,sumstatsPrefix2)
+            
+            #magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' --model direction=pos condition='%s' --out '%s.%s'",magmaPaths$filePathPrefix,genesCovarFile,controlFor,sumstatsPrefix2,analysis_name)
+            magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' --model direction=pos condition='%s' --out '%s'",magmaPaths$filePathPrefix,genesCovarFile,controlFor,sumstatsPrefix2)
             
             print(magma_cmd)
             system(magma_cmd)    
             
-            cond_res = load.magma.results.file(path=sprintf("%s.gcov.out",sumstatsPrefix2),annotLevel,ctd,genesOutCOND=NA,EnrichmentMode="Linear",ControlForCT=controlFor)
+            #cond_res = load.magma.results.file(path=sprintf("%s.gcov.out",sumstatsPrefix2),annotLevel,ctd,genesOutCOND=NA,EnrichmentMode="Linear",ControlForCT=controlFor)
+            cond_res = load.magma.results.file(path=sprintf("%s.gsa.out",sumstatsPrefix2),annotLevel,ctd,genesOutCOND=NA,EnrichmentMode="Linear",ControlForCT=controlFor)
             count = count + 1
             if(count==1){
                 allRes = cond_res
@@ -77,7 +94,8 @@ calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,a
                 allRes = rbind(allRes,cond_res)
             }
         }
-        ctAssocs[[annotLevel]]$results = rbind(ctAssocs[[annotLevel]]$results,allRes)
+        #ctAssocs[[annotLevel]]$results = rbind(ctAssocs[[annotLevel]]$results,allRes)
+        ctAssocs[[annotLevel]]$results = allRes
     }
     
     # Calculate total number of tests performed

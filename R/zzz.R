@@ -4,6 +4,11 @@
     if(!system(sprintf("magma"))==1){
         stop("magma does not appear to be located on your path\nPlease download it from https://ctg.cncr.nl/software/magma\nThe executable should then be copied to /usr/local/bin")
     }else{
-        packageStartupMessage("MAGMA succesfully loaded")
+        ret <- system2("magma","--v", stdout=TRUE, stderr=TRUE)
+        if(length(grep("v1.07b",ret[1]))==1){
+            packageStartupMessage("MAGMA succesfully loaded")    
+        }else{
+            stop("MAGMA_celltyping assumes you have magma v1.07b installed on the path")   
+        }
     }
 }
