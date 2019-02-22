@@ -20,8 +20,10 @@
 #'
 #' @export
 calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name="MainRun",upstream_kb=10,downstream_kb=1.5,genome_ref_path,controlledAnnotLevel=1,specificity_species="mouse",controlTopNcells=NA,controlledCTs=NA,EnrichmentMode="Linear"){
+    # Check EnrichmentMode has correct values
+    if(!EnrichmentMode %in% c("Linear","Top 10%")){stop("EnrichmentMode argument must be set to either 'Linear' or 'Top 10%")}
+    
     gwas_sumstats_path = path.expand(gwas_sumstats_path)
-    #sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",gwas_sumstats_path,upstream_kb,downstream_kb)
     magmaPaths = get.magma.paths(gwas_sumstats_path,upstream_kb,downstream_kb)
     
     # Check for errors in arguments
@@ -67,33 +69,45 @@ calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,a
         signifCells2 = signifCells
     }
     controlledCovarCols = controlledCovarData[,c("entrez",signifCells2)]
-    
+    controlCovarFile=tempfile()
+    write.table(controlledCovarCols,file=controlCovarFile,quote=FALSE,row.names=FALSE,sep="\t")
     
     for(annotLevel in 1:length(ctd)){
         count=allRes=0
         
         # First match quantiles to the genes in the genes.out file... then write as the genesCovar file (the input to MAGMA)
-        genesCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",magmaPaths$filePathPrefix),ctd,annotLevel,specificity_species=specificity_species)
+        if(EnrichmentMode=="Linear"){
+            genesCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",magmaPaths$filePathPrefix),ctd,annotLevel,specificity_species=specificity_species)
+        }else{
+            geneCovarFile = create_top10percent_genesets_file(genesOutFile = sprintf("%s.genes.out",magmaPaths$filePathPrefix),ctd,annotLevel,specificity_species=specificity_species)
+        }
         
         # First control for each individually
         for(controlFor in signifCells2){
-            if(annotLevel!=controlledAnnotLevel){
-                genesCovarData = read.table(genesCovarFile,stringsAsFactors = FALSE,header=TRUE)
-                genesCovarData2 = merge(genesCovarData,controlledCovarCols[,c("entrez",controlFor)])
-                write.table(genesCovarData2,file=genesCovarFile,quote=FALSE,row.names=FALSE,sep="\t")
+            if(EnrichmentMode=="Linear"){
+                if(annotLevel!=controlledAnnotLevel){
+                    genesCovarData = read.table(genesCovarFile,stringsAsFactors = FALSE,header=TRUE)
+                    genesCovarData2 = merge(genesCovarData,controlledCovarCols[,c("entrez",controlFor)])
+                    write.table(genesCovarData2,file=genesCovarFile,quote=FALSE,row.names=FALSE,sep="\t")
+                }                
+                
+                sumstatsPrefix2 = sprintf("%s.level%s.%sUP.%sDOWN.Linear.ControlFor_%s",magmaPaths$filePathPrefix,annotLevel,upstream_kb,downstream_kb,controlFor)
+                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' --model direction=pos condition='%s' --out '%s'",magmaPaths$filePathPrefix,genesCovarFile,controlFor,sumstatsPrefix2)
+            }else{
+                controlledCovarCols2 = controlledCovarCols
+                colnames(controlledCovarCols2)[-1] = sprintf("%s.covar",colnames(controlledCovarCols2)[-1])
+                write.table(controlledCovarCols2,file=controlCovarFile,quote=FALSE,row.names=FALSE,sep="\t")
+                controlledCTcovarNames = colnames(controlledCovarCols2)[-1]
+                sumstatsPrefix2 = sprintf("%s.level%s.%sUP.%sDOWN.Top10.ControlFor_%s",magmaPaths$filePathPrefix,annotLevel,upstream_kb,downstream_kb,controlFor)
+            
+                # First match quantiles to the genes in the genes.out file... then write as the genesCovar file (the input to MAGMA)
+                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --set-annot '%s' --gene-covar '%s' --model direction=pos  condition=%s --out '%s'",magmaPaths$filePathPrefix,geneCovarFile,controlCovarFile,sprintf("%s.covar",controlFor),sumstatsPrefix2)
             }
-            
-            sumstatsPrefix2 = sprintf("%s.level%s.%sUP.%sDOWN.ControlFor_%s",magmaPaths$filePathPrefix,annotLevel,upstream_kb,downstream_kb,controlFor)
-            #magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' onesided condition='%s' --out '%s'",magmaPaths$filePathPrefix,,controlFor,sumstatsPrefix2)
-            
-            #magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' --model direction=pos condition='%s' --out '%s.%s'",magmaPaths$filePathPrefix,genesCovarFile,controlFor,sumstatsPrefix2,analysis_name)
-            magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' --model direction=pos condition='%s' --out '%s'",magmaPaths$filePathPrefix,genesCovarFile,controlFor,sumstatsPrefix2)
             
             print(magma_cmd)
             system(magma_cmd)    
-            
-            #cond_res = load.magma.results.file(path=sprintf("%s.gcov.out",sumstatsPrefix2),annotLevel,ctd,genesOutCOND=NA,EnrichmentMode="Linear",ControlForCT=controlFor)
-            cond_res = load.magma.results.file(path=sprintf("%s.gsa.out",sumstatsPrefix2),annotLevel,ctd,genesOutCOND=NA,EnrichmentMode="Linear",ControlForCT=controlFor)
+
+            cond_res = load.magma.results.file(path=sprintf("%s.gsa.out",sumstatsPrefix2),annotLevel,ctd,genesOutCOND=NA,EnrichmentMode=EnrichmentMode,ControlForCT=controlFor)
             count = count + 1
             if(count==1){
                 allRes = cond_res
@@ -103,15 +117,27 @@ calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,a
         }
         
         # Then control for all controlled cells together
-        if(annotLevel!=controlledAnnotLevel){
-            genesCovarData = read.table(genesCovarFile,stringsAsFactors = FALSE,header=TRUE)
-            genesCovarData2 = merge(genesCovarData,controlledCovarCols[,c("entrez",signifCells2)])
-            write.table(genesCovarData2,file=genesCovarFile,quote=FALSE,row.names=FALSE,sep="\t")
-        }        
-        sumstatsPrefix2 = sprintf("%s.level%s.%sUP.%sDOWN.ControlFor_%s",magmaPaths$filePathPrefix,annotLevel,upstream_kb,downstream_kb,paste(signifCells2,collapse=","))
-        magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' --model direction=pos condition='%s' --out '%s'",magmaPaths$filePathPrefix,genesCovarFile,paste(signifCells2,collapse=","),sumstatsPrefix2)
+        pastedControls = paste(signifCells2,collapse=",")
+        if(EnrichmentMode=="Linear"){
+            if(annotLevel!=controlledAnnotLevel){
+                genesCovarData = read.table(genesCovarFile,stringsAsFactors = FALSE,header=TRUE)
+                genesCovarData2 = merge(genesCovarData,controlledCovarCols[,c("entrez",signifCells2)])
+                write.table(genesCovarData2,file=genesCovarFile,quote=FALSE,row.names=FALSE,sep="\t")
+            }        
+            sumstatsPrefix2 = sprintf("%s.level%s.%sUP.%sDOWN.ControlFor_%s",magmaPaths$filePathPrefix,annotLevel,upstream_kb,downstream_kb,pastedControls)
+            magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' --model direction=pos condition='%s' --out '%s'",magmaPaths$filePathPrefix,genesCovarFile,pastedControls,sumstatsPrefix2)
+        }else{
+            controlledCovarCols2 = controlledCovarCols
+            colnames(controlledCovarCols2)[-1] = sprintf("%s.covar",colnames(controlledCovarCols2)[-1])
+            write.table(controlledCovarCols2,file=controlCovarFile,quote=FALSE,row.names=FALSE,sep="\t")
+            controlledCTcovarNames = colnames(controlledCovarCols2)[-1]
+            pastedControlCovars = paste(controlledCTcovarNames,collapse=",")
+            
+            sumstatsPrefix2 = sprintf("%s.level%s.%sUP.%sDOWN.Top10.ControlFor_%s",magmaPaths$filePathPrefix,annotLevel,upstream_kb,downstream_kb,pastedControls)
+            magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --set-annot '%s' --gene-covar '%s' --model direction=pos  condition=%s --out '%s'",magmaPaths$filePathPrefix,geneCovarFile,controlCovarFile,pastedControlCovars,sumstatsPrefix2)            
+        }
         print(magma_cmd);system(magma_cmd)    
-        cond_res = load.magma.results.file(path=sprintf("%s.gsa.out",sumstatsPrefix2),annotLevel,ctd,genesOutCOND=NA,EnrichmentMode="Linear",ControlForCT=controlledCTs)
+        cond_res = load.magma.results.file(path=sprintf("%s.gsa.out",sumstatsPrefix2),annotLevel,ctd,genesOutCOND=NA,EnrichmentMode=EnrichmentMode,ControlForCT=pastedControls)
         allRes = rbind(allRes,cond_res)
         
         # This line makes it so the baseline results are appended to the conditonal results
