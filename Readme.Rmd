@@ -148,6 +148,17 @@ ctCondAssocs = calculate_conditional_celltype_associations(ctd,gwas_sumstats_pat
 plot_celltype_associations(ctCondAssocs,ctd=ctd)
 ```
 
+Note that Periventricular Microglia (PVM) go from totally non-significant to significant once the neurons are controlled for. Test if this change is significant as follows:
+
+```{r }
+magma1 = ctCondAssocs[[2]]$results[ctCondAssocs[[2]]$results$CONTROL=="BASELINE",]
+magma2 = ctCondAssocs[[2]]$results[ctCondAssocs[[2]]$results$CONTROL=="pyramidal CA1,pyramidal SS,interneurons",]
+resCompared = compare.trait.enrichments(magma1=magma1,magma2=magma2,annotLevel=2,ctd=ctd)
+resCompared[1:3,]
+```
+
+Using this approach we can see that the increasd enrichment is microglia in the controlled analysis is almost significantly increased relative to the baseline analysis.
+
 ## Controlling for a second GWAS
 
 We now want to test enrichments that remain in a GWAS after we control for a second GWAS. So let's download a second GWAS sumstats file and prepare it for analysis.
