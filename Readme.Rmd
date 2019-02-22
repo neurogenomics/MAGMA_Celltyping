@@ -133,9 +133,18 @@ FigsMerged = plot_celltype_associations(ctAssocMerged,ctd=ctd)
 
 ### Run the conditional cell type association analysis
 
+By default, it is assumed that you want to run the linear enrichment analysis. There are two modes for conditional analyses, you can either control for the top N cell types from the baseline analysis (in which case, set controlTopNcells) or control for specific specified cell types (in which case, set controlledCTs).
+
 ```{r, eval=FALSE }
 # Conditional analysis
-ctCondAssocs = calculate_conditional_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,analysis_name = "Conditional")
+ctCondAssocs = calculate_conditional_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,analysis_name = "Conditional",controlTopNcells=2)
+plot_celltype_associations(ctCondAssocs,ctd=ctd)
+```
+
+Let's try as an alternative to control for expression of both the level 1 pyramidal neuron types at the same time
+
+```{r }
+ctCondAssocs = calculate_conditional_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,analysis_name = "Conditional",controlledCTs=c("pyramidal CA1","pyramidal SS","interneurons"),controlledAnnotLevel=1)
 plot_celltype_associations(ctCondAssocs,ctd=ctd)
 ```
 

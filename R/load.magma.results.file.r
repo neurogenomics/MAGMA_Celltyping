@@ -32,7 +32,7 @@ load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,Enrichme
   # Do some error checking
   numCTinCTD = length(colnames(ctd[[annotLevel]]$specificity))
   numCTinRes = dim(res)[1]
-  if(ControlForCT=="BASELINE"){
+  if(ControlForCT[1]=="BASELINE"){
     if(numCTinCTD!=numCTinRes){stop(sprintf("%s celltypes in ctd but %s in results file. Did you provide the correct annotLevel?",numCTinCTD,numCTinRes))}
       res$COVAR = colnames(ctd[[annotLevel]]$specificity)
   }else{
@@ -52,7 +52,8 @@ load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,Enrichme
   # In the new version of MAGMA, when you run conditional analyses, each model has a number, and the covariates also get p-values...
   # ---- The information contained is actually quite useful.... but for now just drop it
   if(sum(res$MODEL==1)>1){
-      res = res[res$VARIABLE!=names(sort(table(res$VARIABLE),decreasing = TRUE)[1]),]
+      #res = res[res$VARIABLE!=names(sort(table(res$VARIABLE),decreasing = TRUE)[1]),]
+      res = res[!res$VARIABLE %in% controlledCTs,]
   }
   
   #rownames(res) = res$COVAR
@@ -63,22 +64,22 @@ load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,Enrichme
   res$P = as.numeric(res$P)
   res$Method = "MAGMA"
   res$GCOV_FILE = basename(path)
-  res$CONTROL = ControlForCT
-  res$CONTROL_label = ControlForCT
+  res$CONTROL = paste(ControlForCT,collapse=",")
+  res$CONTROL_label = paste(ControlForCT,collapse=",")
   res$log10p = log(res$P,10)
   res$genesOutCOND = genesOutCOND
   res$EnrichmentMode = EnrichmentMode
   #res = res %>% dplyr::rename(Celltype=COVAR)
   res = res %>% dplyr::rename(Celltype=VARIABLE)
   
-  if(EnrichmentMode=="Top 10%"){
-    res = res %>%  dplyr::rename(OBS_GENES=NGENES) %>%  purrr::modify_at(c("SET"),~NULL)
-    res = res[,c("Celltype","OBS_GENES","BETA","BETA_STD","SE","P","level","Method","GCOV_FILE","CONTROL","CONTROL_label","log10p","genesOutCOND","EnrichmentMode")]
-  }
-  if(EnrichmentMode=="Linear"){
+  #if(EnrichmentMode=="Top 10%"){
+  #  res = res %>%  dplyr::rename(OBS_GENES=NGENES) %>%  purrr::modify_at(c("SET"),~NULL)
+  #  res = res[,c("Celltype","OBS_GENES","BETA","BETA_STD","SE","P","level","Method","GCOV_FILE","CONTROL","CONTROL_label","log10p","genesOutCOND","EnrichmentMode")]
+  #}
+  #if(EnrichmentMode=="Linear"){
       res = res %>%  dplyr::rename(OBS_GENES=NGENES) %>%  purrr::modify_at(c("SET"),~NULL)
       res = res[,c("Celltype","OBS_GENES","BETA","BETA_STD","SE","P","level","Method","GCOV_FILE","CONTROL","CONTROL_label","log10p","genesOutCOND","EnrichmentMode")]
-  }
+  #}
   
   return(res)
 }
