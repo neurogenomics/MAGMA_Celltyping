@@ -15,6 +15,7 @@
 #'
 #' @import tibble
 #' @import dplyr
+#' @import EWCE
 #' @export
 prepare.quantile.groups <- function(ctd,specificity_species="mouse",gwas_species="human",numberOfBins=41){
     library(tibble)
@@ -37,12 +38,7 @@ prepare.quantile.groups <- function(ctd,specificity_species="mouse",gwas_species
         spcMatrix$linear_normalised_mean_exp = t(t(spcMatrix$mean_exp)*(1/colSums(spcMatrix$mean_exp)))   
         return(spcMatrix)
     }
-    bin.specificity.into.quantiles <- function(spcMatrix){
-        spcMatrix$specificity_quantiles = apply(spcMatrix$specificity,2,FUN=bin.columns.into.quantiles)
-        rownames(spcMatrix$specificity_quantiles) = rownames(spcMatrix$specificity)
-        spcMatrix$quantiles = spcMatrix$specificity_quantiles
-        return(spcMatrix)
-    }
+    
     bin.expression.into.quantiles <- function(spcMatrix){
         spcMatrix$expr_quantiles = apply(spcMatrix$linear_normalised_mean_exp,2,FUN=bin.columns.into.quantiles)
         rownames(spcMatrix$expr_quantiles) = rownames(spcMatrix$linear_normalised_mean_exp)
@@ -65,7 +61,7 @@ prepare.quantile.groups <- function(ctd,specificity_species="mouse",gwas_species
         return(spcMatrix)
     }    
     ctd = lapply(ctd,normalise.mean.exp)
-    ctd = lapply(ctd,bin.specificity.into.quantiles)
+    ctd = lapply(ctd,EWCE::bin.specificity.into.quantiles)
     #ctd = lapply(ctd,bin.expression.into.quantiles)
     ctd = lapply(ctd,use.distance.to.add.expression.level.info)
     ctd = lapply(ctd,bin.specificityDistance.into.quantiles)

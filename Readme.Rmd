@@ -20,7 +20,9 @@ This R package contains code used for testing which cell types can explain the h
 
 ## Installation
 
-Before installing this package it is neccesary to install the magma software package. Please download it from https://ctg.cncr.nl/software/magma. The executable should then be copied to /usr/local/bin so that R can find it. Then install this package as follows:
+Before installing this package it is neccesary to install the magma software package. Please download it from https://ctg.cncr.nl/software/magma. Please do note, the magma software which forms the backend of this package was developed by Christian de Leeuw from Daniella Posthuma's lab. If you use this package to generate publishable results then you must cite their publication (listed below).
+
+The executable should be copied to /usr/local/bin so that R can find it. Then install this package as follows:
 
 ```
 install.packages("devtools")
@@ -44,7 +46,10 @@ genome_ref_path = sprintf("%s/g1000_eur",genome_ref_dir)
 
 ### Install and load all the required R packages and data
 
-The EWCE package comes with a celltype specificity dataset which we use as an example.  The One2One package is used to obtain 1:1 orthologs.
+The EWCE package comes with a celltype specificity dataset which we use as an example. If you want to import your own single cell RNA-seq dataset, then this needs converting into CTD format; please see the EWCE tutorial (https://github.com/NathanSkene/EWCE/) for explanation of how to do this.
+
+
+The One2One package is used to obtain 1:1 orthologs.
 
 ```{r, eval=FALSE }
 library(MAGMA.Celltyping)
@@ -101,6 +106,9 @@ if(!file.exists(gwas_sumstats_path)){
 # Format it (i.e. column headers etc)
 col_headers = format_sumstats_for_magma(gwas_sumstats_path)
 ```
+
+If you are not using a mac to run this code, then `format_sumstats_for_magma` will probably crash. A crossplatform alternative was contributed by another user: `format_sumstats_for_magma_crossplatform
+`
 
 ### Map SNPs to Genes
 

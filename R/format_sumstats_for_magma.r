@@ -162,6 +162,7 @@ format_sumstats_for_magma <- function(path){
     con <- file(path,"r") ; rows_of_data <- readLines(con,n=2) ; close(con); col_headers = strsplit(rows_of_data[1],"\t")[[1]]
     shCmd = sprintf("gawk -i inplace '{ i=%s; if($i > 1) { $i=0; }  print }' %s",which(col_headers=="P"),path.expand(path))
     system2("/bin/bash", args = c("-c", shQuote(shCmd)))
+    
     # The above command converts tabs in the header to spaces... so revert that (if neccesary)
     con <- file(path,"r") ; rows_of_data <- readLines(con,n=2) ; close(con)
     #if(("2" %in% grep("\t",rows_of_data)) & length(grep("\t",rows_of_data))==1){

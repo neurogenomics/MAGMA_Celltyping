@@ -35,7 +35,7 @@ calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,a
     suppressWarnings(if(is.na(controlTopNcells) & is.na(controlledCTs)){stop("Either controlTopNcells or controlledCTs should be passed with arguments")})
     
     # Calculate the baseline associations
-    ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,specificity_species=specificity_species,EnrichmentMode = EnrichmentMode)
+    ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,specificity_species=specificity_species,EnrichmentMode = EnrichmentMode,upstream_kb=upstream_kb,downstream_kb=downstream_kb)
     
     if(!is.na(controlledCTs[1])){
         # Check if controlledCTs are all in the CTD at the expected annotation level

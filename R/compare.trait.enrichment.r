@@ -4,6 +4,8 @@ compare.trait.enrichments <- function(magmaPath1=NA,magmaPath2=NA,magma1=NA,magm
         magma1 = load.magma.results.file(magmaPath1,annotLevel=annotLevel,ctd=ctd)
         magma2 = load.magma.results.file(magmaPath2,annotLevel=annotLevel,ctd=ctd)  
     }
+    rownames(magma1) = magma1$Celltype
+    rownames(magma2) = magma2$Celltype
     magma1 = magma1[intersect(magma1$Celltype,magma2$Celltype),]
     magma2 = magma2[intersect(magma1$Celltype,magma2$Celltype),]
     

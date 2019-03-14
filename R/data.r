@@ -50,7 +50,7 @@
 #'
 #' @source
 #' # http://www.hjerling-leffler-lab.org/data/scz_singlecell/
-#'
+#' usethis::use_data(ctd_allKI,overwrite=TRUE)
 "ctd_allKI"
 
 #' Celltype data (AIBS)
@@ -59,7 +59,7 @@
 #'
 #' @source
 #' # http://www.hjerling-leffler-lab.org/data/scz_singlecell/
-#'
+#' usethis::use_data(ctd_AIBS,overwrite=TRUE)
 "ctd_AIBS"
 
 #' Celltype data (DRONC_human)
@@ -68,7 +68,7 @@
 #'
 #' @source
 #' # http://www.hjerling-leffler-lab.org/data/scz_singlecell/
-#'
+#' usethis::use_data(ctd_DRONC_human,overwrite=TRUE)
 "ctd_DRONC_human"
 
 #' Celltype data (DRONC_mouse)
@@ -77,7 +77,7 @@
 #'
 #' @source
 #' # http://www.hjerling-leffler-lab.org/data/scz_singlecell/
-#'
+#' usethis::use_data(ctd_DRONC_mouse,overwrite=TRUE)
 "ctd_DRONC_mouse"
 
 #' Rbfox binding genes in MGI format

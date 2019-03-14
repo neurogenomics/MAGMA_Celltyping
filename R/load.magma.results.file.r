@@ -52,6 +52,9 @@ load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,Enrichme
   # In the new version of MAGMA, when you run conditional analyses, each model has a number, and the covariates also get p-values...
   # ---- The information contained is actually quite useful.... but for now just drop it
   if(sum(res$MODEL==1)>1){
+      xx=sort(table(res$VARIABLE),decreasing = TRUE)
+      tt=xx[xx>1]
+      controlledCTs = names(tt)
       #res = res[res$VARIABLE!=names(sort(table(res$VARIABLE),decreasing = TRUE)[1]),]
       res = res[!res$VARIABLE %in% controlledCTs,]
   }

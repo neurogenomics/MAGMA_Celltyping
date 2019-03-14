@@ -21,6 +21,8 @@ create_top10percent_genesets_file <- function(genesOutFile,ctd,annotLevel,specif
     ctd2 = prepare.quantile.groups(ctd,specificity_species=specificity_species,numberOfBins=10)
     quantDat2 = map_specificity_to_entrez(genesOutFile,ctd2,annotLevel,specificity_species)
     
+    if(dim(quantDat2)[1]<100){stop("Less than one hundred genes detected after mapping genes between species. Was specificity_species defined correctly?")}
+    
     cts = setdiff(colnames(quantDat2),"entrez")
     ctRows = rep("",length(cts))
     names(ctRows) = cts
