@@ -21,4 +21,4 @@ Remotes: nathanskene/ewce,
 biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
         Genetics, scRNASeq, Single Cell RNAseq,
         BiomedicalInformatics, FunctionalGenomics
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

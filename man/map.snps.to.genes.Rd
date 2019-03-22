@@ -4,8 +4,8 @@
 \alias{map.snps.to.genes}
 \title{Map SNPs to their nearby genes}
 \usage{
-map.snps.to.genes(gwas_sumstats_path, upstream_kb = 10, downstream_kb = 1.5,
-  N = NULL, genome_ref_path)
+map.snps.to.genes(gwas_sumstats_path, upstream_kb = 10,
+  downstream_kb = 1.5, N = NULL, genome_ref_path)
 }
 \arguments{
 \item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}
