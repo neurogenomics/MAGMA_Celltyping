@@ -71,6 +71,22 @@
 #' usethis::use_data(ctd_DRONC_human,overwrite=TRUE)
 "ctd_DRONC_human"
 
+#' Celltype data (DivSeq)
+#'
+#' CTD file with DivSeq data
+#'
+#' @source
+#' usethis::use_data(ctd_DivSeq,overwrite = TRUE)
+"ctd_DivSeq"
+
+#' Celltype data (Tasic)
+#'
+#' CTD file with Tasic data
+#'
+#' @source
+#' usethis::use_data(ctd_Tasic,overwrite = TRUE)
+"ctd_Tasic"
+
 #' Celltype data (DRONC_mouse)
 #'
 #' CTD file with DRONC-seq data from mice

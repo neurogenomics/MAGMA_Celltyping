@@ -70,6 +70,8 @@ data(ctd_allKI)
 Or for the DRONC seq or AIBS datasets use
 
 ```
+data(ctd_Tasic)
+data(ctd_DivSeq)
 data(ctd_AIBS)
 data(ctd_DRONC_human)
 data(ctd_DRONC_human)
