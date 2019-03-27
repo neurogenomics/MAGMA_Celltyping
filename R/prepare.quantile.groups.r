@@ -27,20 +27,21 @@ prepare.quantile.groups <- function(ctd,specificity_species="mouse",gwas_species
         ctd = lapply(ctd,filter_by_orthologs,one2one_ortholog_symbols = ortholog_data[,2])
     }
     # Quantiles will be stored within the CTD as 'quantiles'
-    bin.columns.into.quantiles <- function(spcValues){
-        quantileValues = rep(0,length(spcValues))
-        quantileValues[spcValues>0] = as.numeric(cut(spcValues[spcValues>0], 
-                                                     breaks=unique(quantile(spcValues[spcValues>0], probs=seq(0,1, by=1/numberOfBins), na.rm=TRUE)), 
-                                                     include.lowest=TRUE))
-        return(quantileValues)
-    }
+    # - Function below 'bin.columns.into.quantiles' has been moved to EWCE
+    # bin.columns.into.quantiles <- function(spcValues,numberOfBins){
+    #     quantileValues = rep(0,length(spcValues))
+    #     quantileValues[spcValues>0] = as.numeric(cut(spcValues[spcValues>0], 
+    #                                                  breaks=unique(quantile(spcValues[spcValues>0], probs=seq(0,1, by=1/numberOfBins), na.rm=TRUE)), 
+    #                                                  include.lowest=TRUE))
+    #     return(quantileValues)
+    # }
     normalise.mean.exp <- function(spcMatrix){
         spcMatrix$linear_normalised_mean_exp = t(t(spcMatrix$mean_exp)*(1/colSums(spcMatrix$mean_exp)))   
         return(spcMatrix)
     }
     
-    bin.expression.into.quantiles <- function(spcMatrix){
-        spcMatrix$expr_quantiles = apply(spcMatrix$linear_normalised_mean_exp,2,FUN=bin.columns.into.quantiles)
+    bin.expression.into.quantiles <- function(spcMatrix,numberOfBins){
+        spcMatrix$expr_quantiles = apply(spcMatrix$linear_normalised_mean_exp,2,FUN=EWCE::bin.columns.into.quantiles,numberOfBins=numberOfBins)
         rownames(spcMatrix$expr_quantiles) = rownames(spcMatrix$linear_normalised_mean_exp)
         return(spcMatrix)
     }
@@ -56,12 +57,12 @@ prepare.quantile.groups <- function(ctd,specificity_species="mouse",gwas_species
         return(spcMatrix)
     }
     bin.specificityDistance.into.quantiles <- function(spcMatrix){
-        spcMatrix$specDist_quantiles = apply(spcMatrix$spec_dist,2,FUN=bin.columns.into.quantiles)
+        spcMatrix$specDist_quantiles = apply(spcMatrix$spec_dist,2,FUN=EWCE::bin.columns.into.quantiles)
         rownames(spcMatrix$specDist_quantiles) = rownames(spcMatrix$spec_dist)
         return(spcMatrix)
     }    
     ctd = lapply(ctd,normalise.mean.exp)
-    ctd = lapply(ctd,EWCE::bin.specificity.into.quantiles)
+    ctd = lapply(ctd,EWCE::bin.specificity.into.quantiles,numberOfBins=numberOfBins)
     #ctd = lapply(ctd,bin.expression.into.quantiles)
     ctd = lapply(ctd,use.distance.to.add.expression.level.info)
     ctd = lapply(ctd,bin.specificityDistance.into.quantiles)
