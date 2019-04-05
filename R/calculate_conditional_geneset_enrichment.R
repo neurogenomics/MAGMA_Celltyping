@@ -3,7 +3,7 @@
 #' Assumes that you have already run map.snps.to.genes()
 #'
 #' @param geneset Genes which are to be tested (as HGNC / MGI symbols)
-#' @param ctd Cell type data strucutre containing $quantiles
+#' @param ctd Cell type data strucutre containing $specificity_quantiles
 #' @param gwas_sumstats_path Filepath of the summary statistics file
 #' @param analysis_name Used in filenames which area created
 #' @param upstream_kb How many kb upstream of the gene should SNPs be included?
