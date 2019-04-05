@@ -23,7 +23,8 @@ check_inputs_to_magma_celltype_analysis <- function(ctd,gwas_sumstats_path,analy
     # ERROR CHECKS:
     # - Does ctd have quantiles?
     for(annotLevel in 1:length(ctd)){
-        if(!"quantiles" %in% names(ctd[[annotLevel]])){stop("CTD should have quantiles. Send to 'prepare.quantile.groups' before calling this function.")}
+        #if(!"quantiles" %in% names(ctd[[annotLevel]])){stop("CTD should have quantiles. Send to 'prepare.quantile.groups' before calling this function.")}
+        if(!"specificity_quantiles" %in% names(ctd[[annotLevel]])){stop("CTD should have quantiles. Send to 'prepare.quantile.groups' before calling this function.")}
     }
     # - Is annotLevel within length(ctd)
     if(!annotLevel %in% 1:length(ctd)){stop("annotLevel does not correspond to a level available with ctd[[annotLevel]]")}

@@ -26,19 +26,19 @@ map_specificity_to_entrez <- function(genesOutFile,ctd,annotLevel,specificity_sp
         # Because sumstats use entrez genes & ctd uses gene symbols, match entrez-->symbols
         entrez_mgi = merge(all_hgnc_wtEntrez,ortholog_data_Mouse_Human$orthologs_one2one[,2:3],by="human.symbol")
         entrez_mgi = entrez_mgi[!is.na(entrez_mgi$entrezgene),]
-        entrez_mgi = entrez_mgi[entrez_mgi$mouse.symbol %in% rownames(ctd[[annotLevel]]$quantiles),]
+        entrez_mgi = entrez_mgi[entrez_mgi$mouse.symbol %in% rownames(ctd[[annotLevel]]$specificity_quantiles),] 
         
         # Get the quantiles from ctd and put into correct format, using entrez symbols
-        quantDat = ctd[[annotLevel]]$quantiles[entrez_mgi$mouse.symbol,]
+        quantDat = ctd[[annotLevel]]$specificity_quantiles[entrez_mgi$mouse.symbol,]
         quantDat2 = suppressWarnings(data.frame(entrez=entrez_mgi$entrezgene,quantDat))
         quantDat2 = quantDat2[!duplicated(quantDat2$entrez),]
     }
     
     if(specificity_species=="human"){
         # Get the quantiles from ctd and put into correct format, using entrez symbols
-        humanSymsPresent = as.character(all_hgnc_wtEntrez$human.symbol[all_hgnc_wtEntrez$human.symbol %in% rownames(ctd[[annotLevel]]$quantiles)])
+        humanSymsPresent = as.character(all_hgnc_wtEntrez$human.symbol[all_hgnc_wtEntrez$human.symbol %in% rownames(ctd[[annotLevel]]$specificity_quantiles)])
         entrezTable = all_hgnc_wtEntrez[all_hgnc_wtEntrez$human.symbol %in% humanSymsPresent,]
-        quantDat = ctd[[annotLevel]]$quantiles[as.character(entrezTable$human.symbol),]
+        quantDat = ctd[[annotLevel]]$specificity_quantiles[as.character(entrezTable$human.symbol),]
         quantDat2 = suppressWarnings(data.frame(entrez=entrezTable$entrez,quantDat))
         quantDat2 = quantDat2[!duplicated(quantDat2$entrez),]
     }
