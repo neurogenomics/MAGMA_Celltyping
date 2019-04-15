@@ -29,6 +29,10 @@ load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,Enrichme
   res$level=annotLevel
   res=res[-1,]
   
+  # The VARIABLE column in MAGMA output is limited by 30 characters. 
+  # If so, use the FULL_NAME column.
+  if(!is.null(res$FULL_NAME)){res$VARIABLE <- res$FULL_NAME}
+  
   # Do some error checking
   numCTinCTD = length(colnames(ctd[[annotLevel]]$specificity))
   numCTinRes = dim(res)[1]
