@@ -12,6 +12,10 @@
 calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,thresh=0.0001,sctSpecies="mouse"){
     library(limma)
     
+    if("hgnc_symbol" %in% colnames(magmaAdjZ)){
+        magmaAdjZ = magmaAdjZ %>% dplyr::rename(human.symbol=hgnc_symbol)
+    }
+    
     # First get names of all cell types
     allCellTypes = colnames(ctd[[1]]$specificity)
     

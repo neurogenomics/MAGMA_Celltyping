@@ -13,22 +13,41 @@
 adjust.zstat.in.genesOut <- function(ctd,magma_file="/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",sctSpecies="mouse"){
     allGenes = rownames(ctd[[1]]$specificity)
     
-    # Get mouse-->human othologs with human entrez
-    orth = One2One::ortholog_data_Mouse_Human$orthologs_one2one[,2:3]
-    hgnc2entrez = all_hgnc_wtEntrez
-    colnames(hgnc2entrez)=c("human.symbol","entrez")
-    orth2 = merge(orth,hgnc2entrez,by="human.symbol")
+    if(sctSpecies=="mouse"){
+        # Get mouse-->human othologs with human entrez
+        orth = One2One::ortholog_data_Mouse_Human$orthologs_one2one[,2:3]
+        hgnc2entrez = all_hgnc_wtEntrez
+        colnames(hgnc2entrez)=c("human.symbol","entrez")
+        orth2 = merge(orth,hgnc2entrez,by="human.symbol")
+    }else{
+        # library("biomaRt")
+        # human <- useMart(host="www.ensembl.org", "ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl")
+        # attrib_hum = listAttributes(human)
+        # hgnc_symbols = getBM(attributes=c("hgnc_symbol","entrezgene"), mart=human)
+        # colnames(hgnc_symbols) = c("hgnc_symbol","entrez")
+        # hgnc_symbols = hgnc_symbols[hgnc_symbols$hgnc_symbol!=""]
+        # hgnc_symbols = hgnc_symbols[!is.na(hgnc_symbols$entrez),]
+        # hgnc2entrez = hgnc_symbols
+        # usethis::use_data(hgnc2entrez,overwrite = TRUE)
+        data(hgnc2entrez)
+    }
     
     # Load the MAGMA data
     magma = read.table(magma_file,stringsAsFactors = FALSE,header=TRUE)
     magma$entrez = magma$GENE
     if(sctSpecies=="mouse"){
         magma = merge(magma, orth2,by="entrez")
+    }else if(sctSpecies=="human"){
+        magma = merge(magma, hgnc2entrez,by="entrez")
     }
+    
     magma = magma[order(magma$P),]
     if(sctSpecies=="mouse"){
         magma = magma[magma$mouse.symbol %in% allGenes,]
         magma = magma[!duplicated(magma$mouse.symbol),]
+    }else if(sctSpecies=="human"){
+        magma = magma[magma$hgnc_symbol %in% allGenes,]
+        magma = magma[!duplicated(magma$hgnc_symbol),]
     }
     magma$Q = p.adjust(magma$P,method="bonferroni")
     magma$logNSNPS=log(magma$NSNPS)
@@ -42,7 +61,7 @@ adjust.zstat.in.genesOut <- function(ctd,magma_file="/Users/natske/GWAS_Summary_
     mod = lm(ZSTAT~NSNPS+logNSNPS+NPARAM+logNPARAM+GENELEN+logGENELEN,data=magma)
     magma$ADJ_ZSTAT = magma$ZSTAT - (magma$NSNPS*mod$coefficients[2] + magma$logNSNPS*mod$coefficients[3] + 
                                          magma$NPARAM*mod$coefficients[4] + magma$logNPARAM*mod$coefficients[5] + 
-                                         magma$NPARAM*mod$coefficients[6] + magma$logNPARAM*mod$coefficients[7]    )
+                                         magma$GENELEN*mod$coefficients[6] + magma$logGENELEN*mod$coefficients[7]    )
     #magma = arrange(magma,desc(magma$ADJ_ZSTAT))
     #magma = magma[order(magma$ADJ_ZSTAT,decreasing=TRUE),]
     return(magma)
