@@ -2,7 +2,7 @@
 #'
 #' This code was functonalised because it is called by both baseline and conditional analysis.
 #'
-#' @param ctd Cell type data strucutre containing $quantiles
+#' @param ctd Cell type data strucutre containing $specificity_quantiles
 #' @param gwas_sumstats_path Filepath of the summary statistics file
 #' @param analysis_name Used in filenames which area created
 #' @param upstream_kb How many kb upstream of the gene should SNPs be included?

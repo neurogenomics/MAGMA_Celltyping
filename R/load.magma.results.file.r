@@ -4,7 +4,7 @@
 #'
 #' @param path Path to a .gcov.out file (if EnrichmentMode=='Linear') or .sets.out (if EnrichmentMode=='Top 10%')
 #' @param annotLevel Which annotation level does this .gcov.out file relate to?
-#' @param ctd Cell type data strucutre containing $quantiles
+#' @param ctd Cell type data strucutre containing $specificity_quantiles
 #' @param genesOutCOND [Optional] If the analysis controlled for another GWAS, then this is included as a column, otherwise the column is NA
 #' @param EnrichmentMode [Optional] Either 'Linear' or 'Top 10%'. Default assumes Linear.
 #'

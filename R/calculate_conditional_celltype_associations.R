@@ -2,7 +2,7 @@
 #'
 #' Assumes that you have already run map.snps.to.genes()
 #'
-#' @param ctd Cell type data strucutre containing $quantiles
+#' @param ctd Cell type data strucutre containing $specificity_quantiles
 #' @param gwas_sumstats_path Filepath of the summary statistics file
 #' @param analysis_name Used in filenames which area created
 #' @param upstream_kb How many kb upstream of the gene should SNPs be included?
@@ -61,8 +61,8 @@ calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,a
     controlledCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",magmaPaths$filePathPrefix),ctd,controlledAnnotLevel,specificity_species=specificity_species)
     # Read in the controlled Covar File
     controlledCovarData = read.table(controlledCovarFile,stringsAsFactors = FALSE,header=TRUE)
-    #colnames(controlledCovarData)[2:length(colnames(controlledCovarData))] = colnames(ctd[[controlledAnnotLevel]]$quantiles)
-    transliterateMap = data.frame(original=colnames(ctd[[controlledAnnotLevel]]$quantiles),modified=colnames(controlledCovarData)[2:length(colnames(controlledCovarData))],stringsAsFactors = FALSE)
+    #colnames(controlledCovarData)[2:length(colnames(controlledCovarData))] = colnames(ctd[[controlledAnnotLevel]]$specificity_quantiles)
+    transliterateMap = data.frame(original=colnames(ctd[[controlledAnnotLevel]]$specificity_quantiles),modified=colnames(controlledCovarData)[2:length(colnames(controlledCovarData))],stringsAsFactors = FALSE)
     if(!is.na(controlledCTs[1])){
         signifCells2 = transliterateMap[transliterateMap$original %in% signifCells,]$modified # Because full stops replace spaces when the covars are written to file... (and MAGMA sees spaces as delimiters)
     }else{
