@@ -6,7 +6,7 @@
 \usage{
 plot_celltype_associations(ctAssocs, ctd, useSignificanceLine = TRUE,
   savePDF = TRUE, fileTag = "", plotDendro = TRUE, gwas_title = "",
-  plotLegend = TRUE)
+  plotLegend = TRUE, figsDir = NA)
 }
 \arguments{
 \item{ctAssocs}{Output from either calculate_celltype_associations() or calculate_conditional_celltype_associations()}

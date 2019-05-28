@@ -12,7 +12,7 @@ load.magma.results.file(path, annotLevel, ctd, genesOutCOND = NA,
 
 \item{annotLevel}{Which annotation level does this .gcov.out file relate to?}
 
-\item{ctd}{Cell type data strucutre containing $quantiles}
+\item{ctd}{Cell type data strucutre containing $specificity_quantiles}
 
 \item{genesOutCOND}{[Optional] If the analysis controlled for another GWAS, then this is included as a column, otherwise the column is NA}
 

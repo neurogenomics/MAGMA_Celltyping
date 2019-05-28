@@ -8,7 +8,7 @@ check_inputs_to_magma_celltype_analysis(ctd, gwas_sumstats_path,
   analysis_name, upstream_kb, downstream_kb, genome_ref_path)
 }
 \arguments{
-\item{ctd}{Cell type data strucutre containing $quantiles}
+\item{ctd}{Cell type data strucutre containing $specificity_quantiles}
 
 \item{gwas_sumstats_path}{Filepath of the summary statistics file}
 

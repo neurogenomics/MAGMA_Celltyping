@@ -85,8 +85,8 @@ First we need to calculate the quantile groups for each celltype within the sing
 ctd = prepare.quantile.groups(ctd,specificity_species="mouse",numberOfBins=40)
 
 # Examine how the quantile groups look
-print(ctd[[1]]$quantiles[c("Gfap","Dlg4","Aif1"),])
-print(table(ctd[[1]]$quantiles[,1]))
+print(ctd[[1]]$specificity_quantiles[c("Gfap","Dlg4","Aif1"),])
+print(table(ctd[[1]]$specificity_quantiles[,1]))
 ```
 
 ### Download summary statistics file & check it is properly formatted
