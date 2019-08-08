@@ -63,7 +63,7 @@ data(ortholog_data_Mouse_Human)
 
 Note that the cell type dataset loaded in the code above is the Karolinksa cortex/hippocampus data only. For the full Karolinska dataset with hypothalamus and midbrain instead use the following:
 
-```
+```{ }
 data(ctd_allKI)
 ```
 
@@ -98,8 +98,7 @@ The function `check.sumstats.formatted.for.magma` does some basic processing to 
 ```{r, eval=FALSE }
 # Download and unzip the summary statistics file
 library(R.utils)
-#gwas_sumstats_path = "~/Downloads/20016.assoc.tsv"
-gwas_sumstats_path = "/Users/natske/GWAS_Summary_Statistics/20016.assoc.tsv"
+gwas_sumstats_path = "~/Downloads/20016.assoc.tsv"
 if(!file.exists(gwas_sumstats_path)){
     download.file("https://www.dropbox.com/s/shsiq0brkax886j/20016.assoc.tsv.gz?raw=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
     gunzip(sprintf("%s.gz",gwas_sumstats_path),gwas_sumstats_path)
@@ -109,8 +108,7 @@ if(!file.exists(gwas_sumstats_path)){
 col_headers = format_sumstats_for_magma(gwas_sumstats_path)
 ```
 
-If you are not using a mac to run this code, then `format_sumstats_for_magma` will probably crash. A crossplatform alternative was contributed by another user: `format_sumstats_for_magma_crossplatform
-`
+If you are not using a mac to run this code, then `format_sumstats_for_magma` will probably crash. A crossplatform alternative was contributed by another user: `format_sumstats_for_magma_crossplatform`.
 
 ### Map SNPs to Genes
 
@@ -193,7 +191,7 @@ So let's subtract genes associated with prospective memory from those involved i
 ```{r, eval=FALSE }
 # Download and unzip the summary statistics file
 library(R.utils)
-gwas_sumstats_path = "~/GWAS_Summary_Statistics/20018.assoc.tsv"
+gwas_sumstats_path = "~/Downloads/20018.assoc.tsv"
 if(!file.exists(gwas_sumstats_path)){
     download.file("https://www.dropbox.com/s/shsiq0brkax886j/20016.assoc.tsv.gz?raw=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
     gunzip(sprintf("%s.gz",gwas_sumstats_path),gwas_sumstats_path)
@@ -207,8 +205,8 @@ genesOutPath = map.snps.to.genes(gwas_sumstats_path,genome_ref_path=genome_ref_p
 ### Check which cell types this GWAS is associated with at baseline
 
 ```{r, eval=FALSE }
-gwas_sumstats_path_Memory = "~/GWAS_Summary_Statistics/20018.assoc.tsv"
-gwas_sumstats_path_Intelligence = "~/GWAS_Summary_Statistics/20016.assoc.tsv"
+gwas_sumstats_path_Memory = "~/Downloads/20018.assoc.tsv"
+gwas_sumstats_path_Intelligence = "~/Downloads/20016.assoc.tsv"
 ctAssocsLinearMemory = calculate_celltype_associations(ctd,gwas_sumstats_path_Memory,genome_ref_path=genome_ref_path,specificity_species = "mouse")
 ctAssocsLinearIntelligence = calculate_celltype_associations(ctd,gwas_sumstats_path_Intelligence,genome_ref_path=genome_ref_path,specificity_species = "mouse")
 plot_celltype_associations(ctAssocsLinearMemory,ctd=ctd)
@@ -225,8 +223,10 @@ FigsMerged_MemInt = magma.tileplot(ctd=ctd,results=ctAssocMerged_MemInt[[2]]$res
 ### Check which cell types 'Fluid Intelligence' is associated with after controlling for 'Prospective memory'
 
 ```{r, eval=FALSE }
-gwas_sumstats_path = "/Users/natske/GWAS_Summary_Statistics/20016.assoc.tsv"
-memoryGenesOut = "~/GWAS_Summary_Statistics/MAGMA_Files/20018.assoc.tsv.10UP.1.5DOWN/20018.assoc.tsv.10UP.1.5DOWN.genes.out"
+# Set paths for GWAS sum stats + .genes.out file (with the z-scores)
+gwas_sumstats_path = gwas_sumstats_path_Intelligence # "/Users/natske/GWAS_Summary_Statistics/20016.assoc.tsv"
+memoryGenesOut = sprintf("%s.genes.out",get.magma.paths(gwas_sumstats_path_Memory,upstream_kb = 10,downstream_kb = 1.5)$filePathPrefix)
+
 ctAssocsLinear = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,specificity_species = "mouse",genesOutCOND=memoryGenesOut,analysis_name = "ControllingForPropMemory")
 FigsLinear = plot_celltype_associations(ctAssocsLinear,ctd=ctd,fileTag = "ControllingForPropMemory")
 ```

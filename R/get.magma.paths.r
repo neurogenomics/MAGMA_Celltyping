@@ -29,7 +29,7 @@ get.magma.paths <- function(gwas_sumstats_path=NA,upstream_kb=NA,downstream_kb=N
         
         # Set the paths
         pathMagmaFiles = sprintf("%s/MAGMA_Files/%s.%sUP.%sDOWN",output_path,gwasFileName,upstream_kb,downstream_kb)
-        pathFigs = sprintf("%s/MAGMA_Figures/%s",output_path,gwasFileName)
+        pathFigs = sprintf("%s/MAGMA_Figures/%s FIGS",output_path,gwasFileName)
         pathTiles = sprintf("%s/MAGMA_Figures/Tileplots",output_path)
         
         # Create the folders (in case they don't exist yet)

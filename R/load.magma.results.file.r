@@ -29,10 +29,13 @@ load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,Enrichme
   res$level=annotLevel
   res=res[-1,]
   
+  # Check if some of the variables are ZSTAT (if so, this indicates that another GWAS is being controlled for)
+  isConditionedOnGWAS=sum("ZSTAT" %in% res$VARIABLE)!=0
+  
   # Do some error checking
   numCTinCTD = length(colnames(ctd[[annotLevel]]$specificity))
   numCTinRes = dim(res)[1]
-  if(ControlForCT[1]=="BASELINE"){
+  if(ControlForCT[1]=="BASELINE" & !isConditionedOnGWAS){
     if(numCTinCTD!=numCTinRes){stop(sprintf("%s celltypes in ctd but %s in results file. Did you provide the correct annotLevel?",numCTinCTD,numCTinRes))}
       res$COVAR = colnames(ctd[[annotLevel]]$specificity)
   }else{

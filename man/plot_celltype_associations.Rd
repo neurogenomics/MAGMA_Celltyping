@@ -11,7 +11,7 @@ plot_celltype_associations(ctAssocs, ctd, useSignificanceLine = TRUE,
 \arguments{
 \item{ctAssocs}{Output from either calculate_celltype_associations() or calculate_conditional_celltype_associations()}
 
-\item{ctd}{Cell type data strucutre containing $quantiles (required to calculate dendrogram)}
+\item{ctd}{Cell type data strucutre containing $specificity_quantiles (required to calculate dendrogram)}
 
 \item{useSignificanceLine}{TRUE or FALSE. Should their be a vertical line marking bonferroni signifiance?}
 

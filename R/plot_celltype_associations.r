@@ -24,9 +24,11 @@ plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,sav
     
     magmaPaths = get.magma.paths(ctAssocs$gwas_sumstats_path,ctAssocs$upstream_kb,ctAssocs$downstream_kb)
     
-    
     if(is.na(figsDir)){
         figsDir = magmaPaths$figs
+    }
+    if(!file.exists(figsDir)){
+        dir.create(figsDir)
     }
     
     
@@ -49,9 +51,10 @@ plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,sav
     
     # Generate the plots (for each annotation level seperately)
     library(cowplot)
+    theme_set(theme_cowplot())
     figures = list()
     for(annotLevel in 1:sum(names(ctAssocs)=="")){
-        # SET: NEW COLUMN COMBINING METHODS or ENRICHMENTTYPES
+        # SET: NEW COLUMN COMBINING METHODS or ENRICHMENT TYPES
         ctAssocs[[annotLevel]]$results$FullMethod = sprintf("%s %s",ctAssocs[[annotLevel]]$results$Method,ctAssocs[[annotLevel]]$results$EnrichmentMode)
         
         if(plotDendro==TRUE){
