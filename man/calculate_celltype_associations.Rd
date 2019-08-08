@@ -10,7 +10,7 @@ calculate_celltype_associations(ctd, gwas_sumstats_path,
   EnrichmentMode = "Linear")
 }
 \arguments{
-\item{ctd}{Cell type data strucutre containing $quantiles}
+\item{ctd}{Cell type data strucutre containing $specificity_quantiles}
 
 \item{gwas_sumstats_path}{Filepath of the summary statistics file}
 

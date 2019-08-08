@@ -9,11 +9,11 @@
 #' magmaGenesOut = adjust.zstat.in.genesOut(ctd,magma_file="/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",sctSpecies="mouse")
 #'
 #' @export
-calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,thresh=0.0001,sctSpecies="mouse"){
+calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,thresh=0.0001,sctSpecies="mouse",annotLevel=1){
     library(limma)
     
     # First get names of all cell types
-    allCellTypes = colnames(ctd[[1]]$specificity)
+    allCellTypes = colnames(ctd[[annotLevel]]$specificity)
     
     # Initialise variables
     ps = coef = rep(0,length(allCellTypes))
@@ -29,7 +29,7 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,th
         }else{
             mgiS = magmaAdjZ$human.symbol
         }
-        props = ctd[[1]]$specificity[mgiS,ct1]
+        props = ctd[[annotLevel]]$specificity[mgiS,ct1]
         notExp = rep(0,length(props))
         
         # Drop any genes with expression below threshold

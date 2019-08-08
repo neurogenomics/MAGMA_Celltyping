@@ -13,7 +13,9 @@
 #' @export
 calculate.conditional.celltype.enrichment.probabilities.wtLimma <- function(magma1,magma2,ctd,thresh=0.0001,sctSpecies="mouse",annotLevel=1){
     library(limma)
+    library(tidyverse)
     
+    # Join the two MAGMA Z-score data frames
     m1 = magma1
     m2 = magma2
     library(tidyverse)
@@ -23,6 +25,16 @@ calculate.conditional.celltype.enrichment.probabilities.wtLimma <- function(magm
     m1a = m1[as.character(shared),] %>% dplyr::select(entrez,ADJ_ZSTAT)
     m2a = m2[as.character(shared),] %>% dplyr::select(entrez,ADJ_ZSTAT)
     m3 = merge(m1a,m2a,by="entrez")
+    
+    # Regress the second from the first & get the residuals
+    print(cor(m3$ADJ_ZSTAT.x,m3$ADJ_ZSTAT.y))
+    mod=lm(data=m3,ADJ_ZSTAT.x~ADJ_ZSTAT.y)
+    print(anova(mod))
+    m3$zNew = residuals(mod)
+    m3 = m3 %>% dplyr::rename(ADJ_original=ADJ_ZSTAT.y) %>% dplyr::rename(ADJ_ZSTAT.y=zNew)
+    magma2_NEW = merge(m3[,c("entrez","ADJ_ZSTAT.y")] %>% dplyr::rename(ADJ_ZSTAT=ADJ_ZSTAT.y),magma2 %>% dplyr::select(entrez,mouse.symbol),by="entrez")
+    
+    # Melt it (so it's ready for mixed modelling)!
     m4 = melt(m3,id="entrez")
     m5 = merge(m4,m1[,c("entrez","mouse.symbol")],by="entrez")    
     magmaAdjZ=m5
@@ -87,7 +99,7 @@ calculate.conditional.celltype.enrichment.probabilities.wtLimma <- function(magm
         
         # Convert p-value to one-sided
         ps[count] = modANOVA$`Pr(>Chisq)`[2] #modANOVA$`Pr(>Chisq)`[2]
-        print(ps[count])
+        #print(ps[count])
         coef[count] = summary(mod.mod)$coefficients["variableADJ_ZSTAT.y:percentile",1] #summary(mod.mod)$coefficients[2,1]
        # print(coef[count])
         #ps[count] = anova(mod)["variable",]$`Pr(>F)`
@@ -96,7 +108,7 @@ calculate.conditional.celltype.enrichment.probabilities.wtLimma <- function(magm
     
     # Get baseline results
     baseline1 = calculate.celltype.enrichment.probabilities.wtLimma(magmaAdjZ=magma1,ctd,thresh=thresh,sctSpecies=sctSpecies,annotLevel=annotLevel)
-    baseline2 = calculate.celltype.enrichment.probabilities.wtLimma(magmaAdjZ=magma2,ctd,thresh=thresh,sctSpecies=sctSpecies,annotLevel=annotLevel)
+    baseline2 = calculate.celltype.enrichment.probabilities.wtLimma(magmaAdjZ=magma2_NEW,ctd,thresh=thresh,sctSpecies=sctSpecies,annotLevel=annotLevel)
     baselineRes = data.frame(ct=names(baseline1),p1_baseline=baseline1,p2_baseline=baseline2)
     
     output = list(ps=ps,coef=coef)
@@ -111,8 +123,26 @@ calculate.conditional.celltype.enrichment.probabilities.wtLimma <- function(magm
     df3$log10p = log10(df3$value)
     
     library(cowplot)
-    ggplot(df3)+geom_bar(aes(x=ct,y=log10p,fill=variable),stat="identity",position="dodge")+scale_y_reverse()+facet_wrap(~direction,scale="free_x")+
+    ggplot(df3)+geom_bar(aes(x=ct,y=log10p,fill=variable),stat="identity",position="dodge")+scale_y_reverse()+facet_wrap(~direction)+
          coord_flip() + ylab(expression('-log'[10]*'(pvalue)')) + xlab("") + theme_minimal_hgrid()
-    print("Negative coef indicates relative enrichment in magma1. Positive coef indicates relative enrichment in magma2.")
+    
+    # Now plot the baseline in one facet + significance of changes in the next
+    df3b = df3
+    #df3b[df3b$coef<0,]$qs = df3b[df3b$coef<0,]$qs*-1
+    df4_a = df3b[,c("ct","qs","coef")]
+    df4_a$log10p = log(df4_a$qs)
+    df4_a[df4_a$coef<0,]$log10p = -1*df4_a[df4_a$coef<0,]$log10p
+    df4_a = df4_a %>% dplyr::select(ct,qs,log10p)
+    df4_a$variable = ""
+    df4_a$type   = "Significance of Changes"
+    
+    df4_b = df3[,c("ct","value","log10p","variable")] %>% rename(qs=value)
+    df4_b$type = "Baseline"
+    
+    df4 = rbind(df4_a,df4_b)
+    ggplot(df4)+geom_bar(aes(x=ct,y=log10p,fill=variable),stat="identity",position="dodge")+scale_y_reverse()+facet_wrap(~type,scale="free_x")+
+        coord_flip() + ylab(expression('-log'[10]*'(pvalue)')) + xlab("") + theme_minimal_hgrid()
+    
+    
     return(df2)
 }

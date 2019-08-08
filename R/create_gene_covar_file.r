@@ -24,19 +24,22 @@ create_gene_covar_file <- function(genesOutFile,ctd,annotLevel,specificity_speci
     # genesOut = read.table(genesOutFile,stringsAsFactors = FALSE)
     
     # If the analysis is being run conditionally on another GWAS
-    if(!is.na(genesOutCOND)){
-        genesOutCOND_data = read.table(file=genesOutCOND,stringsAsFactors = FALSE)
-        colnames(genesOutCOND_data) = genesOutCOND_data[1,]
-        genesOutCOND_data = genesOutCOND_data[-1,c("GENE","ZSTAT")]
-        colnames(genesOutCOND_data)[1]="entrezgene"
-        
-        # Expand the entrez definitions to include other entrez symbols matching the relevant gene symbols
-        data(all_hgnc_wtEntrez);    colnames(all_hgnc_wtEntrez)[1] = "human.symbol"        
-        genesOutCOND_data2 = merge(all_hgnc_wtEntrez,genesOutCOND_data,by="entrezgene")[,c(1,3)]
-        colnames(genesOutCOND_data2)[1]="entrez"
-        
-        #quantDat2new = merge(quantDat2,genesOutCOND_data2,by="entrez")
-        quantDat2 = merge(quantDat2,genesOutCOND_data2,by="entrez")
+    if(!is.na(genesOutCOND[1])){
+        for(i in 1:length(genesOutCOND)){
+            genesOutCOND_data = read.table(file=genesOutCOND[i],stringsAsFactors = FALSE)
+            colnames(genesOutCOND_data) = genesOutCOND_data[1,]
+            genesOutCOND_data = genesOutCOND_data[-1,c("GENE","ZSTAT")]
+            colnames(genesOutCOND_data)[1]="entrezgene"
+            
+            # Expand the entrez definitions to include other entrez symbols matching the relevant gene symbols
+            data(all_hgnc_wtEntrez);    colnames(all_hgnc_wtEntrez)[1] = "human.symbol"        
+            genesOutCOND_data2 = merge(all_hgnc_wtEntrez,genesOutCOND_data,by="entrezgene")[,c(1,3)]
+            colnames(genesOutCOND_data2)[1]="entrez"
+            colnames(genesOutCOND_data2)[2]=sprintf("ZSTAT%s",i)
+            
+            #quantDat2new = merge(quantDat2,genesOutCOND_data2,by="entrez")
+            quantDat2 = merge(quantDat2,genesOutCOND_data2,by="entrez")
+        }
     }
     
     # Write genes covar file to disk

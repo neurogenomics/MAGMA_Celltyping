@@ -1,4 +1,20 @@
-# Test to see which cell types are more enriched in magmaPath2 than magmaPath1
+#' Compare Trait Enrichments
+#'
+#' Test to see which cell types are more enriched in magmaPath2 than magmaPath1
+#'
+#' @param magmaPath1 A magma results file
+#' @param magmaPath2 A magma results file
+#' @param magma1 A magma results data structure
+#' @param magma2 A magma results data structure 
+#' @param annotLevel Annotation level of the CTD / results file to use
+#' @param ctd The celltypedata structure
+#'
+#' @return Results
+#'
+#' @examples
+#' 1==1
+#'
+#' @export
 compare.trait.enrichments <- function(magmaPath1=NA,magmaPath2=NA,magma1=NA,magma2=NA,annotLevel,ctd){
     if(!is.na(magmaPath1) & !is.na(magmaPath2)){
         magma1 = load.magma.results.file(magmaPath1,annotLevel=annotLevel,ctd=ctd)

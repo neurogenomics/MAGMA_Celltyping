@@ -12,7 +12,7 @@ calculate_conditional_geneset_enrichment(geneset, ctd,
 \arguments{
 \item{geneset}{Genes which are to be tested (as HGNC / MGI symbols)}
 
-\item{ctd}{Cell type data strucutre containing $quantiles}
+\item{ctd}{Cell type data strucutre containing $specificity_quantiles}
 
 \item{controlledAnnotLevel}{Annotation level of the celltypes being controlled for}
 

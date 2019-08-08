@@ -237,7 +237,7 @@ We find that after controlling for prospective memory, there is no significant e
 
 ```{r, eval=FALSE}
 magmaGenesOut = adjust.zstat.in.genesOut(ctd,magma_file="/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",sctSpecies="mouse")
-output = calculate.celltype.enrichment.probabilities.wtLimma(magmaAdjZ=magmaGenesOut,ctd,thresh=0.0001,sctSpecies="mouse")
+output = calculate.celltype.enrichment.probabilities.wtLimma(magmaAdjZ=magmaGenesOut,ctd,thresh=0.0001,sctSpecies="mouse",annotLevel=4)
 ```
 
 We can then get the probability of the celltype being enriched as follows
