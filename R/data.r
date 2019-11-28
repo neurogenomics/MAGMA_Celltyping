@@ -96,6 +96,46 @@
 #' usethis::use_data(ctd_DRONC_mouse,overwrite=TRUE)
 "ctd_DRONC_mouse"
 
+#' Celltype data (Blue Lake 2018 Frontal Cortex)
+#'
+#' CTD file with data from humans
+#'
+#' @source
+#' # Generated on Nathan's Mac: ~/Single Cell Datasets/BlueLake2018
+#' usethis::use_data(ctd_BlueLake2018_FrontalCortexOnly,overwrite=TRUE)
+"ctd_BlueLake2018_FrontalCortexOnly"
+
+#' Celltype data (Blue Lake 2018 Visual Cortex)
+#'
+#' CTD file with data from humans
+#'
+#' @source
+#' # Generated on Nathan's Mac: ~/Single Cell Datasets/BlueLake2018
+#' usethis::use_data(ctd_BlueLake2018_FrontalCortexOnly,overwrite=TRUE)
+"ctd_BlueLake2018_VisualCortexOnly"
+
+#' Celltype data (Saunders)
+#'
+#' CTD file with data from humans
+#'
+#' @source
+#' # Generated on Nathan's Mac: ctd_SaundersWithLvl1.Rda
+#' usethis::use_data(ctd_Saunders,overwrite=TRUE)
+"ctd_Saunders"
+
+#' Celltype data (Zeisel2018)
+#'
+#' CTD file with data from mice
+#'
+#' @source
+#' # Generated on Nathan's Mac: ctd_ZieselAllLevels.Rda
+#' usethis::use_data(ctd_Zeisel2018,overwrite=TRUE)
+"ctd_Zeisel2018"
+
+
+
+
+
 #' Rbfox binding genes in MGI format
 #'
 #' List of significant hits for Rbfox 1 2 or 3 binding from supplementary table 1 of HITS-CLIP and Integrative Modeling Define the Rbfox Splicing-Regulatory Network Linked to Brain Development and Autism. All with rbfox2 count greater than 4 or summed rbfox 1 and 3 greater than 12
