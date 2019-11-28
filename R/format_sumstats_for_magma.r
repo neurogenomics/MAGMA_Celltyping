@@ -91,31 +91,33 @@ format_sumstats_for_magma <- function(path){
     # If SNP is present... BUT not CHR or BP then need to find the relevant locations
     con <- file(path,"r") ; rows_of_data <- readLines(con,n=2) ; close(con); col_headers = strsplit(rows_of_data[1],"\t")[[1]]
     if(sum(c("CHR","BP") %in% col_headers)==0 & sum("SNP" %in% col_headers)==1){
-        library(data.table)
-        sumstats = fread(path)
-        data("SNP_LOC_DATA")
-        SNP_LOC_DATA_2 = SNP_LOC_DATA[,1:3]
-        sumstats2 = merge(sumstats,SNP_LOC_DATA_2,by="SNP")
-        sumstats3 = data.frame(sumstats2)[,c("SNP","CHR","BP",setdiff(colnames(sumstats2),c("SNP","CHR","BP")))]
-        fwrite(sumstats3,file=path,sep="\t")
+        #library(data.table)
+        #sumstats = fread(path)
+        #data("SNP_LOC_DATA")
+        #SNP_LOC_DATA_2 = SNP_LOC_DATA[,1:3]
+        #sumstats2 = merge(sumstats,SNP_LOC_DATA_2,by="SNP")
+        #sumstats3 = data.frame(sumstats2)[,c("SNP","CHR","BP",setdiff(colnames(sumstats2),c("SNP","CHR","BP")))]
+        #fwrite(sumstats3,file=path,sep="\t")
+        stop("I've blocked this function because SNP_LOC_DATA is incomplete. Try rebuilding it with data from ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606/database/organism_data/b151_SNPContigLocusId_108.bcp.gz?")
     }
     
     # If CHR and BP are present... BUT not SNP then need to find the relevant SNP ids
     con <- file(path,"r") ; rows_of_data <- readLines(con,n=2) ; close(con); col_headers = strsplit(rows_of_data[1],"\t")[[1]]
     if(sum(c("CHR","BP") %in% col_headers)==2 & sum("SNP" %in% col_headers)==0){
-        print("There is no SNP column found within the data. It must be inferred from CHR and BP information.")
-        print("Note: this process drops any SNPs which are not from Hapmap")
-        genomebuild <- as.numeric(readline("Which genome build is the data from? 1 for GRCh37, 2 for GRCh38"))
-        if(!genomebuild %in% c(1,2)){stop("Genome build must be entered as either 1 (for GRCh37) or 2 (for GRCh38)")}
-        data("SNP_LOC_DATA")
-        if(genomebuild==1){genomebuild="GRCh37"}else{genomebuild="GRCh38"}
-        snpLocDat = SNP_LOC_DATA[SNP_LOC_DATA$Build==genomebuild,][,-4]
-        library(data.table)
-        sumstats = fread(path)
-        sumstats$CHR = as.factor(sumstats$CHR)
-        if(length(grep("chr",sumstats$CHR[1]))!=0){sumstats$CHR = gsub("chr","",sumstats$CHR)}
-        sumstats2 = merge(sumstats,snpLocDat,by=c("CHR","BP"))
-        fwrite(sumstats2,file=path,sep="\t")
+        #print("There is no SNP column found within the data. It must be inferred from CHR and BP information.")
+        #print("Note: this process drops any SNPs which are not from Hapmap")
+        #genomebuild <- as.numeric(readline("Which genome build is the data from? 1 for GRCh37, 2 for GRCh38"))
+        #if(!genomebuild %in% c(1,2)){stop("Genome build must be entered as either 1 (for GRCh37) or 2 (for GRCh38)")}
+        #data("SNP_LOC_DATA")
+        #if(genomebuild==1){genomebuild="GRCh37"}else{genomebuild="GRCh38"}
+        #snpLocDat = SNP_LOC_DATA[SNP_LOC_DATA$Build==genomebuild,][,-4]
+        #library(data.table)
+        #sumstats = fread(path)
+        #sumstats$CHR = as.factor(sumstats$CHR)
+        #if(length(grep("chr",sumstats$CHR[1]))!=0){sumstats$CHR = gsub("chr","",sumstats$CHR)}
+        #sumstats2 = merge(sumstats,snpLocDat,by=c("CHR","BP"))
+        #fwrite(sumstats2,file=path,sep="\t")
+        stop("I've blocked this function because SNP_LOC_DATA is incomplete.  Try rebuilding it with data from ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606/database/organism_data/b151_SNPContigLocusId_108.bcp.gz?")        
     }
     
     # Check that all the vital columns are present
