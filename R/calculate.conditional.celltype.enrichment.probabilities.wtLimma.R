@@ -1,7 +1,7 @@
 #' Calculate celltype enrichments without MAGMA using adjusted MAGMA Z-statistic from .genes.out files
 #'
-#' @param magma1 Output from adjust.zstat.in.genesOut()
-#' @param magma2 Output from adjust.zstat.in.genesOut()
+#' @param magma1 Output from adjust.zstat.in.genesOut() (Alzheimers for instance)
+#' @param magma2 Output from adjust.zstat.in.genesOut() (EduYears for instance)
 #' @param ctd Cell type data structure
 #' @param thresh A threshold on low specificity values (used to drop genes)
 #' @param sctSpecies Either 'human' or 'mouse'
@@ -84,8 +84,6 @@ calculate.conditional.celltype.enrichment.probabilities.wtLimma <- function(magm
         
         # Fit a linear model and get p,-value and coefficient (slope)
         library(lme4)
-        #mod = lm(percentile ~ value+variable+value*variable, data=magma_with_ct1)
-        
         mZ = reshape::cast(magma_with_ct1,formula = mouse.symbol~variable,fun.aggregate = mean)
         mZ2 = merge(mZ,magma_with_ct1[,c("mouse.symbol","percentile")],by="mouse.symbol")
         mZ2$residualPercentile=residuals(lm(percentile~ADJ_ZSTAT.y,data=mZ2))
@@ -93,17 +91,11 @@ calculate.conditional.celltype.enrichment.probabilities.wtLimma <- function(magm
         mod.mod   = lmer(value ~ 1 + variable + percentile + variable * percentile + (1|mouse.symbol), data=unique(magma_with_ct1),REML=FALSE)
         mod.null  = lmer(value ~ 1 + variable + percentile +                         (1|mouse.symbol), data=unique(magma_with_ct1),REML=FALSE)
         
-        #mod.null = lmer(value ~            percentile + (1|mouse.symbol), data=unique(magma_with_ct1),REML=FALSE)        
-        
         modANOVA = anova(mod.mod,mod.null)
         
         # Convert p-value to one-sided
-        ps[count] = modANOVA$`Pr(>Chisq)`[2] #modANOVA$`Pr(>Chisq)`[2]
-        #print(ps[count])
-        coef[count] = summary(mod.mod)$coefficients["variableADJ_ZSTAT.y:percentile",1] #summary(mod.mod)$coefficients[2,1]
-       # print(coef[count])
-        #ps[count] = anova(mod)["variable",]$`Pr(>F)`
-        #coef[count] = summary(mod.mod)$coefficients[2,1]        
+        ps[count] = modANOVA$`Pr(>Chisq)`[2]
+        coef[count] = summary(mod.mod)$coefficients["variableADJ_ZSTAT.y:percentile",1]
     }
     
     # Get baseline results

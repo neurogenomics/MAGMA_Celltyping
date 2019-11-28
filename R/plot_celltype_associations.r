@@ -64,7 +64,7 @@ plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,sav
         a2 <- a2 + theme(legend.position = c(0.5, 0.8)) + ggtitle(gwas_title) + theme(legend.title=element_blank())
         if(plotLegend==FALSE){    a2 = a2 + theme(legend.position="none") }
         if(useSignificanceLine){  a2 = a2+geom_hline(yintercept=log(as.numeric(0.05/ctAssocs$total_baseline_tests_performed),10),colour="black")    }
-        theFig = a2
+        theFig = a2 + theme_cowplot()
         
         # If the results come from a BASELINE analysis... 
         if(length(unique(ctAssocs[[1]]$results$CONTROL))==1){
@@ -75,7 +75,7 @@ plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,sav
                 fName = sprintf("%s/%s.%sUP.%sDOWN.annotLevel%s.Baseline.%s.%s.pdf",figsDir,magmaPaths$gwasFileName,ctAssocs$upstream_kb,ctAssocs$downstream_kb,annotLevel,fileTag,analysisType)
                 print("here")
                 pdf(file=fName,width=10,height=1+2*(dim(ctAssocs[[annotLevel]]$results)[1]/10))
-                    print(grid.arrange(a2,ctdDendro$dendroPlot,ncol=2,widths=c(0.8,0.2)))
+                    print(grid.arrange(a2 + theme_cowplot(),ctdDendro$dendroPlot,ncol=2,widths=c(0.8,0.2)))
                 dev.off()
             }else{print(theFig)}            
         # IF THE RESULTS COME FROM A CONDITIONAL ANALYSIS    
@@ -85,7 +85,7 @@ plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,sav
             if(savePDF){
                 fName = sprintf("%s/%s.%sUP.%sDOWN.annotLevel%s.ConditionalFacets.%s.%s.pdf",figsDir,magmaPaths$gwasFileName,ctAssocs$upstream_kb,ctAssocs$downstream_kb,annotLevel,fileTag,analysisType)
                 pdf(file=fName,width=25,height=1+2*(dim(ctAssocs[[annotLevel]]$results)[1]/30))
-                    print(theFig)
+                    print(theFig + theme_cowplot())
                 dev.off()
             }else{print(theFig)}            
         }
