@@ -15,6 +15,13 @@ format_sumstats_for_magma <- function(path){
     # awk -v OFS="\t" '$1=$1' /Users/natske/GWAS_Summary_Statistics/MAGIC_FastingGlucose.txt > /Users/natske/GWAS_Summary_Statistics/MAGIC_FastingGlucose.expanded.txt
     # awk -v OFS="\t" '$1=$1' /Users/natske/GWAS_Summary_Statistics/MAGIC_ln_FastingInsulin.txt > /Users/natske/GWAS_Summary_Statistics/MAGIC_ln_FastingInsulin.expanded.txt
     
+    # Test which OS is being used
+    OS=""
+    switch(Sys.info()[['sysname']],
+           Windows= {OS="Windows;print('This function will not work with Windows computers. Instead use format_sumstats_for_magma_crossplatform')"},
+           Linux  = {OS="Linux"},
+           Darwin = {OS="Mac"})
+    
     # Ensure that tabs seperate rows
     con <- file(path,"r") ; row_of_data <- strsplit(readLines(con,n=2)[2],"\t")[[1]] ; close(con)
     tmpPath = tempfile()
@@ -30,7 +37,11 @@ format_sumstats_for_magma <- function(path){
     # Check the sumstats file exists
     if(!file.exists(path)){stop("Path to GWAS sumstats is not valid")}
     
-    col_headers = standardise.sumstats.column.headers(path)
+    if(OS=="Mac"){
+        col_headers = standardise.sumstats.column.headers(path)
+    }else{
+        col_headers = standardise.sumstats.column.headers.crossplatform(path)
+    }
     
     
     # Check if there are CHR and BP columns
@@ -105,15 +116,20 @@ format_sumstats_for_magma <- function(path){
     con <- file(path,"r") ; rows_of_data <- readLines(con,n=2) ; close(con); col_headers = strsplit(rows_of_data[1],"\t")[[1]]
     if(sum(c("CHR","BP") %in% col_headers)==2 & sum("SNP" %in% col_headers)==0){
 
+        genomebuild <- as.numeric(readline("Which genome build is the data from? 1 for GRCh37, 2 for GRCh38"))
+        if(!genomebuild %in% c(1,2)){stop("Genome build must be entered as either 1 (for GRCh37) or 2 (for GRCh38)")}
+        
         print("There is no SNP column found within the data. It must be inferred from CHR and BP information.")
         print("Note: this requires downloading a 300mb file from figshare into a temporary directory")
         print("the file which is downloaded is created by the build_snp_location_tables function included with this package")
         tmpF1 = tempfile()
-        #download.file("https://ndownloader.figshare.com/files/21768105",destfile=tmpF1)
+        start.time <- Sys.time()
+        download.file("https://ndownloader.figshare.com/files/21768105",destfile=tmpF1)
+        end.time <- Sys.time()
+        time.taken <- end.time - start.time
+        print(sprintf("File downloaded in %.0f seconds"))
         load(tmpF1)
-        genomebuild <- as.numeric(readline("Which genome build is the data from? 1 for GRCh37, 2 for GRCh38"))
-        if(!genomebuild %in% c(1,2)){stop("Genome build must be entered as either 1 (for GRCh37) or 2 (for GRCh38)")}
-        data("SNP_LOC_DATA")
+        #data("SNP_LOC_DATA")
         if(genomebuild==1){genomebuild="GRCh37"}else{genomebuild="GRCh38"}
         snpLocDat = SNP_LOC_DATA[SNP_LOC_DATA$Build==genomebuild,][,-4]
         library(data.table)

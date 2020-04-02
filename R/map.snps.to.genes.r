@@ -43,11 +43,12 @@ map.snps.to.genes <- function(gwas_sumstats_path,upstream_kb=10,downstream_kb=1.
     
     #sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",gwas_sumstats_path,upstream_kb,downstream_kb)
     #sumstatsPrefix = 
-    magma_cmd = sprintf("magma --annotate window=%s,%s --snp-loc '%s' --gene-loc '%s' --out '%s'",upstream_kb,downstream_kb,gwas_sumstats_path,genomeLocFile,magmaPaths$filePathPrefix)
+    outPath = gsub("\\/$","",magmaPaths$filePathPrefix) # Remove a trailing slash to avoid errors on windows
+    magma_cmd = sprintf("magma --annotate window=%s,%s --snp-loc '%s' --gene-loc '%s' --out '%s'",upstream_kb,downstream_kb,gwas_sumstats_path,genomeLocFile,outPath)
     system(magma_cmd)
     
     # SCHIZ CLOZUK N=35802
-    magma_cmd = sprintf("magma --bfile '%s' --pval '%s' %s --gene-annot '%s.genes.annot' --out '%s'",path.expand(genome_ref_path),gwas_sumstats_path,n_arg,magmaPaths$filePathPrefix,magmaPaths$filePathPrefix)
+    magma_cmd = sprintf("magma --bfile '%s' --pval '%s' %s --gene-annot '%s.genes.annot' --out '%s'",path.expand(genome_ref_path),gwas_sumstats_path,n_arg,magmaPaths$filePathPrefix,outPath)
     #magma_cmd
     system(magma_cmd)
     
