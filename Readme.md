@@ -126,7 +126,7 @@ library(R.utils)
 gwas_sumstats_path = "~/Downloads/20016_irnt.gwas.imputed_v3.both_sexes.tsv"
 if(!file.exists(gwas_sumstats_path)){
     #download.file("https://www.dropbox.com/s/shsiq0brkax886j/20016.assoc.tsv.gz?raw=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
-  download.file("https://www.dropbox.com/s/t3lrfj1id8133sx/20016_irnt.gwas.imputed_v3.both_sexes.tsv.bgz?dl=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
+    download.file("https://www.dropbox.com/s/t3lrfj1id8133sx/20016_irnt.gwas.imputed_v3.both_sexes.tsv.bgz?dl=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
     gunzip(sprintf("%s.gz",gwas_sumstats_path),gwas_sumstats_path)
 }
 
@@ -239,22 +239,25 @@ intelligence.
 ``` r
 # Download and unzip the summary statistics file
 library(R.utils)
-gwas_sumstats_path = "~/Downloads/20018.assoc.tsv"
+gwas_sumstats_path = "~/Downloads/20018.gwas.imputed_v3.both_sexes.tsv"
 if(!file.exists(gwas_sumstats_path)){
-    download.file("https://www.dropbox.com/s/shsiq0brkax886j/20016.assoc.tsv.gz?raw=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
+    download.file("https://www.dropbox.com/s/j6mde051pl8k8vu/20018.gwas.imputed_v3.both_sexes.tsv.bgz?dl=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
     gunzip(sprintf("%s.gz",gwas_sumstats_path),gwas_sumstats_path)
 }
 
 # Format & map SNPs to genes
-col_headers = format_sumstats_for_magma(gwas_sumstats_path)
-genesOutPath = map.snps.to.genes(gwas_sumstats_path,genome_ref_path=genome_ref_path)
+tmpSumStatsPath = format_sumstats_for_magma(gwas_sumstats_path)
+gwas_sumstats_path_formatted = sprintf("%s.formatted",gwas_sumstats_path)
+file.copy(from=tmpSumStatsPath,to=gwas_sumstats_path_formatted,overwrite = TRUE)
+
+genesOutPath = map.snps.to.genes(gwas_sumstats_path_formatted,genome_ref_path=genome_ref_path)
 ```
 
 ### Check which cell types this GWAS is associated with at baseline
 
 ``` r
-gwas_sumstats_path_Memory = "~/Downloads/20018.assoc.tsv"
-gwas_sumstats_path_Intelligence = "~/Downloads/20016.assoc.tsv"
+gwas_sumstats_path_Memory = "~/Downloads/20018.gwas.imputed_v3.both_sexes.tsv.formatted"
+gwas_sumstats_path_Intelligence = "~/Downloads/20016.gwas.imputed_v3.both_sexes.tsv.formatted"
 ctAssocsLinearMemory = calculate_celltype_associations(ctd,gwas_sumstats_path_Memory,genome_ref_path=genome_ref_path,specificity_species = "mouse")
 ctAssocsLinearIntelligence = calculate_celltype_associations(ctd,gwas_sumstats_path_Intelligence,genome_ref_path=genome_ref_path,specificity_species = "mouse")
 plot_celltype_associations(ctAssocsLinearMemory,ctd=ctd)
