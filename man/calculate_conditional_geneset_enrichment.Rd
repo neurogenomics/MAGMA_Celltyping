@@ -4,10 +4,19 @@
 \alias{calculate_conditional_geneset_enrichment}
 \title{Use MAGMA to test enrichment in a geneset}
 \usage{
-calculate_conditional_geneset_enrichment(geneset, ctd,
-  controlledAnnotLevel = 1, controlledCTs, gwas_sumstats_path,
-  analysis_name, upstream_kb = 10, downstream_kb = 1.5,
-  genome_ref_path, geneset_species = "mouse", specificity_species)
+calculate_conditional_geneset_enrichment(
+  geneset,
+  ctd,
+  controlledAnnotLevel = 1,
+  controlledCTs,
+  gwas_sumstats_path,
+  analysis_name,
+  upstream_kb = 10,
+  downstream_kb = 1.5,
+  genome_ref_path,
+  geneset_species = "mouse",
+  specificity_species
+)
 }
 \arguments{
 \item{geneset}{Genes which are to be tested (as HGNC / MGI symbols)}

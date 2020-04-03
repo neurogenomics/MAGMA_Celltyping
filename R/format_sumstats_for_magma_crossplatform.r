@@ -30,6 +30,7 @@ format_sumstats_for_magma_crossplatform <- function(path){
   
   sumstats_file[1] = standardise.sumstats.column.headers.crossplatform(sumstats_file[1])
   col_headers = sumstats_file[1]
+  col_headers = strsplit(col_headers, "\t")[[1]]
   
   # Check if there are CHR and BP columns
   if(!sum(c("SNP","BP") %in% col_headers)==2){
@@ -53,7 +54,7 @@ format_sumstats_for_magma_crossplatform <- function(path){
       curColName = col_headers[fourStepCol]
       # Write the new column headers to file
       first_line = paste(col_headers, collapse = "\t")
-      new_first_line = gsub(curColName, "CHR\tBP\tA2\tA1", paste(col_headers, collapse = "\t"))
+      new_first_line = gsub(sprintf("^%s\\t|\\t%s\\t|\\t%s$",curColName,curColName,curColName), "CHR\tBP\tA2\tA1\t", paste(col_headers, collapse = "\t"))
       sumstats_file[1]=new_first_line
       col_headers = strsplit(new_first_line, "\t")[[1]]
       print(sprintf("Column %s has been replaced with CHR BP A2 A1", curColName))
@@ -80,29 +81,31 @@ format_sumstats_for_magma_crossplatform <- function(path){
     
     # Restandardise in case the joined column headers were unusual
     sumstats_file[1] = standardise.sumstats.column.headers.crossplatform(sumstats_file[1])
-    col_headers = sumstats_file[1]
+    col_headers = strsplit(sumstats_file[1], "\t")[[1]]
   }
   
   # If SNP is present... BUT not CHR or BP then need to find the relevant locations
   rows_of_data <- c(sumstats_file[1], sumstats_file[2]); col_headers = strsplit(rows_of_data[1], "\t")[[1]]; writeLines(sumstats_file, con = path)
   if(sum(c("CHR","BP") %in% col_headers)==0 & sum("SNP" %in% col_headers)==1){
-    library(data.table)
-    sumstats = fread(path)
-    data("SNP_LOC_DATA")
-    SNP_LOC_DATA_2 = SNP_LOC_DATA[,1:3]
-    sumstats2 = merge(sumstats,SNP_LOC_DATA_2,by="SNP")
-    sumstats3 = data.frame(sumstats2)[,c("SNP","CHR","BP",setdiff(colnames(sumstats2),c("SNP","CHR","BP")))]
-    fwrite(sumstats3,file=path,sep="\t"); sumstats_file <- readLines(path)
+    #library(data.table)
+    #sumstats = fread(path)
+    #SNP_LOC_DATA = load_snp_loc_data()
+    #SNP_LOC_DATA_2 = SNP_LOC_DATA[SNP_LOC_DATA$Build=="GRCh37",1:3]
+    #sumstats2 = merge(sumstats,SNP_LOC_DATA_2,by="SNP")
+    #sumstats3 = data.frame(sumstats2)[,c("SNP","CHR","BP",setdiff(colnames(sumstats2),c("SNP","CHR","BP")))]
+    #fwrite(sumstats3,file=path,sep="\t"); sumstats_file <- readLines(path)
+    stop("I've blocked this function because I've not tested it since replacing SNP_LOC_DATA. You should test it works manually. Let me know if you test it!")
   }
   
   # If CHR and BP are present... BUT not SNP then need to find the relevant SNP ids
   rows_of_data <- c(sumstats_file[1], sumstats_file[2]); col_headers = strsplit(rows_of_data[1], "\t")[[1]]
   if(sum(c("CHR","BP") %in% col_headers)==2 & sum("SNP" %in% col_headers)==0){
     print("There is no SNP column found within the data. It must be inferred from CHR and BP information.")
-    print("Note: this process drops any SNPs which are not from Hapmap")
-    genomebuild <- as.numeric(readline("Which genome build is the data from? 1 for GRCh37, 2 for GRCh38"))
+    
+    genomebuild <- as.numeric(readline("Which genome build is the data from? 1 for GRCh37, 2 for GRCh38... "))
     if(!genomebuild %in% c(1,2)){stop("Genome build must be entered as either 1 (for GRCh37) or 2 (for GRCh38)")}
-    data("SNP_LOC_DATA")
+    
+    SNP_LOC_DATA = load_snp_loc_data()
     if(genomebuild==1){genomebuild="GRCh37"}else{genomebuild="GRCh38"}
     snpLocDat = SNP_LOC_DATA[SNP_LOC_DATA$Build==genomebuild,][,-4]
     library(data.table)
@@ -110,7 +113,8 @@ format_sumstats_for_magma_crossplatform <- function(path){
     sumstats$CHR = as.factor(sumstats$CHR)
     if(length(grep("chr",sumstats$CHR[1]))!=0){sumstats$CHR = gsub("chr","",sumstats$CHR)}
     sumstats2 = merge(sumstats,snpLocDat,by=c("CHR","BP"))
-    fwrite(sumstats2,file=path,sep="\t"); sumstats_file <- readLines(path)
+    fwrite(sumstats2,file=path,sep="\t")
+    sumstats_file <- readLines(path)
   }
   
   # Check that all the vital columns are present
@@ -140,7 +144,12 @@ format_sumstats_for_magma_crossplatform <- function(path){
     whichCHR = which(col_headers=="CHR")[1]
     whichBP = which(col_headers=="BP")[1]
     otherCols = setdiff(1:length(col_headers),c(whichSNP,whichCHR,whichBP))
-    write.table(x=read.table(path)[,c(whichSNP,whichCHR,whichBP,otherCols)], file=path, sep="\t", quote=FALSE, row.names = FALSE, col.names = FALSE); sumstats_file <- readLines(path)
+    #x=read.table(path)
+    x=fread(path)
+    #write.table(x=x[,c(whichSNP,whichCHR,whichBP,otherCols)], file=path, sep="\t", quote=FALSE, row.names = FALSE, col.names = FALSE)
+    xx = setcolorder(x, c(whichSNP,whichCHR,whichBP,otherCols))
+    fwrite(x=xx, file=path, sep="\t")
+    sumstats_file <- readLines(path)
   }
   
   # The formatting process can (rarely) result in duplicated columns, i.e. CHR, if CHR:BP is expanded and one already exists... delete duplicates
@@ -152,14 +161,15 @@ format_sumstats_for_magma_crossplatform <- function(path){
   }
   
   # MAGMA cannot handle P-values as low as 3e-400... so convert them to zeros
-  if (as.logical(readline("MAGMA cannot handle P-values as low as 3e-400. Do you want MAGMA.celltyping to convert any (if) existing ones to zeroes? 0 for NO, 1 for YES"))) {
+  if (as.logical(as.numeric(readline("MAGMA cannot handle P-values as low as 3e-400. Do you want MAGMA.celltyping to convert any (if) existing ones to zeroes? 0 for NO, 1 for YES")))) {
     rows_of_data <- c(sumstats_file[1], sumstats_file[2]); col_headers = strsplit(rows_of_data[1], "\t")[[1]]
-    sumstats <- read.table(path)
+    sumstats <- fread(path)
     for (i in seq_along(sumstats[,which(col_headers=="P")])) {
       if (sumstats[i,which(col_headers=="P")]=="P") {next} # To skip the header.
       sumstats[i,which(col_headers=="P")] <- as.numeric(as.character(sumstats[i,which(col_headers=="P")])) # This converts anything under 3e-400 to zeros.
     }
-    write.table(x=sumstats, file=path, sep="\t", quote=FALSE, row.names = FALSE, col.names = FALSE); sumstats_file <- readLines(path)
+    fwrite(x=sumstats, file=path, sep="\t") #, quote=FALSE, row.names = FALSE, col.names = FALSE)
+    sumstats_file <- readLines(path)
   }
   
   # Sometimes the N column is not all integers... so round it up
@@ -182,21 +192,24 @@ format_sumstats_for_magma_crossplatform <- function(path){
   sumstats_file <- c(sumstats_file[1],sumstats_file[grepl("^rs",sumstats_file)])
   writeLines(text=sumstats_file, con = path)
   
-  # Keep only rows which have the number of columns expected
-  print("Keeping only rows which have the number of columns expected.")
-  sumstats_file <- readLines(path); expected_number_of_columns <- length(strsplit(sumstats_file[1],"\t")[[1]]); good_ones <- sumstats_file[1]
-  for (line in sumstats_file) {
-    if (line == sumstats_file[1]) {next} # Skip header
-    if ( length(strsplit(line,"\t")[[1]]) == expected_number_of_columns ) {good_ones <- c(good_ones, line)} # This adds every line that has expected number of columns to a temporary list
-  }
-  writeLines(text=good_ones, con = path)
+  # Keep only rows which have the number of columns expected (I've commmented this out because it takes forever to run... but presumably I wrote it for a reason!)
+  # print("Keeping only rows which have the number of columns expected.")
+  # sumstats_file <- readLines(path); expected_number_of_columns <- length(strsplit(sumstats_file[1],"\t")[[1]]); good_ones <- sumstats_file[1]
+  # for (line in sumstats_file) {
+  #   if (line == sumstats_file[1]) {next} # Skip header
+  #   if ( length(strsplit(line,"\t")[[1]]) == expected_number_of_columns ) {good_ones <- c(good_ones, line)} # This adds every line that has expected number of columns to a temporary list
+  # }
+  # writeLines(text=good_ones, con = path)
   
   # Try to remove duplicated RSIDs
   print("Removing duplicated RSIDs.")
-  sumstats <- read.table(path)
+  #sumstats <- read.table(path)
+  sumstats <- fread(path)
   if(sum(duplicated(sumstats[,1]))>0){
     notDup = which(!duplicated(sumstats[,1]))
-    write.table(x=read.table(path)[notDup,], file=path, sep="\t", quote=FALSE, row.names = FALSE, col.names = FALSE); sumstats_file <- readLines(path)
+    notDupLines=sumstats[notDup,]
+    fwrite(notDupLines, file=path, sep="\t") #, quote=FALSE, row.names = FALSE, col.names = FALSE); sumstats_file <- readLines(path)
+    rm(notDupLines);gc()
   }
   
   # Show how the data now looks

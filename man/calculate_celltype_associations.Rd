@@ -4,10 +4,17 @@
 \alias{calculate_celltype_associations}
 \title{Calculate celltype associations using MAGMA}
 \usage{
-calculate_celltype_associations(ctd, gwas_sumstats_path,
-  analysis_name = "MainRun", upstream_kb = 10, downstream_kb = 1.5,
-  genome_ref_path, specificity_species = "mouse", genesOutCOND = NA,
-  EnrichmentMode = "Linear")
+calculate_celltype_associations(
+  ctd,
+  gwas_sumstats_path,
+  analysis_name = "MainRun",
+  upstream_kb = 10,
+  downstream_kb = 1.5,
+  genome_ref_path,
+  specificity_species = "mouse",
+  genesOutCOND = NA,
+  EnrichmentMode = "Linear"
+)
 }
 \arguments{
 \item{ctd}{Cell type data strucutre containing $specificity_quantiles}

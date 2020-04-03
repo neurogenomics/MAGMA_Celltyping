@@ -7,7 +7,7 @@
 #' \code{
 #' # Most the data in the below table comes from the LDSC github wiki
 #' sumstatsColHeaders = read.csv("Magma_Column_headers.csv",stringsAsFactors = FALSE)
-#' devtools::use_data(sumstatsColHeaders,overwrite = TRUE)
+#' usethis::use_data(sumstatsColHeaders,overwrite = TRUE)
 #' }
 #'
 "sumstatsColHeaders"
@@ -42,7 +42,7 @@
 #' @source
 #' build_snp_location_tables()
 #'
-"SNP_LOC_DATA"
+# "SNP_LOC_DATA" # This is now depreciated
 
 #' Celltype data (allKI)
 #'

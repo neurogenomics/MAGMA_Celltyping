@@ -4,8 +4,7 @@
 \alias{map_specificity_to_entrez}
 \title{Map specificity to entrez}
 \usage{
-map_specificity_to_entrez(genesOutFile, ctd, annotLevel,
-  specificity_species)
+map_specificity_to_entrez(genesOutFile, ctd, annotLevel, specificity_species)
 }
 \arguments{
 \item{genesOutFile}{The output of the second call to MAGMA (performed in the map.snps.to.genes function)}

@@ -4,8 +4,12 @@
 \alias{prepare.quantile.groups}
 \title{Prepare quantile groups for each celltype based on specificity}
 \usage{
-prepare.quantile.groups(ctd, specificity_species = "mouse",
-  gwas_species = "human", numberOfBins = 41)
+prepare.quantile.groups(
+  ctd,
+  specificity_species = "mouse",
+  gwas_species = "human",
+  numberOfBins = 41
+)
 }
 \arguments{
 \item{ctd}{Cell type data}

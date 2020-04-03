@@ -4,9 +4,12 @@
 \alias{adjust.zstat.in.genesOut}
 \title{Adjust MAGMA Z-statistic from .genes.out files}
 \usage{
-adjust.zstat.in.genesOut(ctd,
-  magma_file = "/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",
-  sctSpecies = "mouse")
+adjust.zstat.in.genesOut(
+  ctd,
+ 
+    magma_file = "/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",
+  sctSpecies = "mouse"
+)
 }
 \arguments{
 \item{ctd}{Cell type data structure}

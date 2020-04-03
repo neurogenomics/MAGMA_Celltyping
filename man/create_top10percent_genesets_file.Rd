@@ -4,8 +4,12 @@
 \alias{create_top10percent_genesets_file}
 \title{Create gene covar file}
 \usage{
-create_top10percent_genesets_file(genesOutFile, ctd, annotLevel,
-  specificity_species)
+create_top10percent_genesets_file(
+  genesOutFile,
+  ctd,
+  annotLevel,
+  specificity_species
+)
 }
 \arguments{
 \item{genesOutFile}{The output of the second call to MAGMA (performed in the map.snps.to.genes function)}

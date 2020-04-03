@@ -4,8 +4,12 @@
 \alias{get.magma.paths}
 \title{Get MAGMA Paths}
 \usage{
-get.magma.paths(gwas_sumstats_path = NA, upstream_kb = NA,
-  downstream_kb = NA, output_path = NA)
+get.magma.paths(
+  gwas_sumstats_path = NA,
+  upstream_kb = NA,
+  downstream_kb = NA,
+  output_path = NA
+)
 }
 \arguments{
 \item{gwas_sumstats_path}{Path to the GWAS summary statistics file}

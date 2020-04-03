@@ -112,7 +112,8 @@ if(!file.exists(gwas_sumstats_path)){
 }
 
 # Format it (i.e. column headers etc)
-col_headers = format_sumstats_for_magma(gwas_sumstats_path)
+tmpSumStatsPath = format_sumstats_for_magma_crossplatform(gwas_sumstats_path)
+file.copy(from=tmpSumStatsPath,to=sprintf("%s.formatted",gwas_sumstats_path),overwrite = TRUE)
 ```
 
 If you are not using a mac to run this code, then `format_sumstats_for_magma` will probably crash. A crossplatform alternative was contributed by another user: `format_sumstats_for_magma_crossplatform`.

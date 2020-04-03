@@ -4,8 +4,14 @@
 \alias{load.magma.results.file}
 \title{Load a MAGMA .gcov.out file}
 \usage{
-load.magma.results.file(path, annotLevel, ctd, genesOutCOND = NA,
-  EnrichmentMode = "Linear", ControlForCT = "BASELINE")
+load.magma.results.file(
+  path,
+  annotLevel,
+  ctd,
+  genesOutCOND = NA,
+  EnrichmentMode = "Linear",
+  ControlForCT = "BASELINE"
+)
 }
 \arguments{
 \item{path}{Path to a .gcov.out file (if EnrichmentMode=='Linear') or .sets.out (if EnrichmentMode=='Top 10%')}

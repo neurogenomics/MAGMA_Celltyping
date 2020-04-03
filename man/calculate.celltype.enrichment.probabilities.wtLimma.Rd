@@ -5,8 +5,12 @@
 \alias{calculate.celltype.enrichment.probabilities.wtLimma}
 \title{Calculate celltype enrichments without MAGMA using adjusted MAGMA Z-statistic from .genes.out files}
 \usage{
-calculate.celltype.enrichment.probabilities.wtLimma(magmaAdjZ, ctd,
-  thresh = 1e-04, sctSpecies = "mouse")
+calculate.celltype.enrichment.probabilities.wtLimma(
+  magmaAdjZ,
+  ctd,
+  thresh = 1e-04,
+  sctSpecies = "mouse"
+)
 }
 \arguments{
 \item{magmaAdjZ}{Output from adjust.zstat.in.genesOut()}
