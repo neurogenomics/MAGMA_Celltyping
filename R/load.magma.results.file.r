@@ -21,6 +21,7 @@
 #' @importFrom utils read.table
 #' @importFrom utils write.csv
 #' @importFrom rlang .data
+#' @importFrom purrr modify_at
 load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,EnrichmentMode="Linear",ControlForCT="BASELINE"){
   # Check EnrichmentMode has correct values
   if(!EnrichmentMode %in% c("Linear","Top 10%")){stop("EnrichmentMode argument must be set to either 'Linear' or 'Top 10%")}

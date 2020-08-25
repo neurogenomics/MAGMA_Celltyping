@@ -20,7 +20,7 @@
 #' @importFrom One2One analyse.orthology
 #' @export
 prepare.quantile.groups <- function(ctd,specificity_species="mouse",gwas_species="human",numberOfBins=41){
-    library(tibble)
+    #library(tibble)
     # First drop all genes without 1:1 homologs
     if(specificity_species != gwas_species){
         print("Dropping all genes that do not have 1:1 homologs between the two species")

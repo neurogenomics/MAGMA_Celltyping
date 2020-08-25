@@ -8,13 +8,15 @@
 #'
 # @import R.utils
 #' @importFrom data.table fread
-#' @import SNPlocs.Hsapiens.dbSNP144.GRCh38
+#' @importFrom SNPlocs.Hsapiens.dbSNP144.GRCh38 SNPlocs.Hsapiens.dbSNP144.GRCh38
+#' @importFrom SNPlocs.Hsapiens.dbSNP144.GRCh37 SNPlocs.Hsapiens.dbSNP144.GRCh37
 #' @importFrom utils download.file
 #' @importFrom utils unzip
 #' @importFrom BSgenome snpsById
 #' @importFrom S4Vectors mcols
 #' @importFrom GenomeInfoDb seqnames
 #' @importFrom BiocGenerics pos
+#' @importFrom usethis use_data
 #' @export
 build_snp_location_tables.r <- function(){
     tmpF1 = tempfile()

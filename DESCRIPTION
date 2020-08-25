@@ -5,8 +5,7 @@ Version: 1.0.0
 Date: 2018-8-01
 Author: Dr Nathan Skene
 Maintainer: Nathan Skene <nathan.skene@gmail.com>
-Description: 
-    Used to test for cell type enrichments using MAGMA
+Description: Used to test for cell type enrichments using MAGMA.
 License: Artistic-2.0
 LazyData: TRUE
 Depends: R(>= 3.2)

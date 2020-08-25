@@ -19,6 +19,7 @@
 #' @importFrom stats p.adjust
 #' @importFrom ggdendro segment
 #' @importFrom gridExtra grid.arrange
+#' @import ggplot2
 magma.tileplot <- function(ctd,results,height=13,width=4,annotLevel=1,fileTag="",output_path){
     # First, error checking of arguments
     #if(sum(!c("Celltype","GCOV_FILE","log10p","q","level") %in% colnames(results))>0){stop("results dataframe must contain 'Celltype', 'GCOV_FILE', 'log10p', 'level' and 'q' columns")}
@@ -36,7 +37,6 @@ magma.tileplot <- function(ctd,results,height=13,width=4,annotLevel=1,fileTag=""
     figurePath = magmaPaths$tiles
     
     # Then prep
-    library(ggplot2)
     ctdDendro = get.ctd.dendro(ctd,annotLevel=annotLevel)
     
     # Order cells by dendrogram
