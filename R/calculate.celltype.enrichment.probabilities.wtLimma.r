@@ -65,7 +65,7 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,th
         }else{
             geneGroups = data.frame(hgnc_symbol=mgiS,proportion=props,percentile=perc)
             magma_with_ct1 = geneGroups %>%
-                dplyr::rename(human.symbol=hgnc_symbol) %>% merge(magmaAdjZ,by="human.symbol") %>%
+                dplyr::rename(human.symbol=.data$hgnc_symbol) %>% merge(magmaAdjZ,by="human.symbol") %>%
                 dplyr::filter(.data$percentile>=0)            
         }
         

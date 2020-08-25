@@ -16,7 +16,7 @@
 #' @export
 #' @importFrom utils read.table
 create_gene_covar_file <- function(genesOutFile,ctd,annotLevel,specificity_species,genesOutCOND=NA){
-    quantDat2 = map_specificity_to_entrez(genesOutFile,ctd,annotLevel,specificity_species)
+    quantDat2 = map_specificity_to_entrez(ctd=ctd,annotLevel=annotLevel,specificity_species=specificity_species)
     #colnames(quantDat2)[2:length(colnames(quantDat2))] = colnames(ctd[[controlledAnnotLevel]]$quantiles)
     
     if(dim(quantDat2)[1]<100){stop("Less than one hundred genes detected after mapping genes between species. Was specificity_species defined correctly?")}

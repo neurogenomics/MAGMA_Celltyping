@@ -68,7 +68,7 @@ plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,sav
             ctAssocs[[annotLevel]]$results$Celltype <- factor(ctAssocs[[annotLevel]]$results$Celltype, levels=gsub(" |\\(|\\)","\\.",ctdDendro$ordered_cells))
         }
         
-        a2 <- ggplot(ctAssocs[[annotLevel]]$results, aes(x = factor(Celltype), y = log10p, fill=FullMethod)) + scale_y_reverse()+geom_bar(stat = "identity",position="dodge") + coord_flip() + ylab(expression('-log'[10]*'(pvalue)')) + xlab("")
+        a2 <- ggplot(ctAssocs[[annotLevel]]$results, aes_string(x = "factor(Celltype)", y = "log10p", fill="FullMethod")) + scale_y_reverse()+geom_bar(stat = "identity",position="dodge") + coord_flip() + ylab(expression('-log'[10]*'(pvalue)')) + xlab("")
         a2 <- a2 + theme(legend.position = c(0.5, 0.8)) + ggtitle(gwas_title) + theme(legend.title=element_blank())
         if(plotLegend==FALSE){    a2 = a2 + theme(legend.position="none") }
         if(useSignificanceLine){  a2 = a2+geom_hline(yintercept=log(as.numeric(0.05/ctAssocs$total_baseline_tests_performed),10),colour="black")    }

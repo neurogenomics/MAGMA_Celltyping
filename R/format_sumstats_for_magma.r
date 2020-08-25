@@ -27,7 +27,7 @@ format_sumstats_for_magma <- function(path){
   if (length(row_of_data) == 1) {
     if (grep(" ", row_of_data) == 1) {
       print("WARNING: This GWAS sumstat file has space field separators instead of tabs (unusual, not proper input for MAGMA). Temp file with corrected FS created and used instead.")
-      sumstats_file <- gsub(pattern = " ", replace = "\t", x = sumstats_file)
+      sumstats_file <- gsub(pattern = " ", replacement = "\t", x = sumstats_file)
     }
   }
   
@@ -52,7 +52,7 @@ format_sumstats_for_magma <- function(path){
     fourStepCol = grep(".*:.*:\\w:\\w",row_of_data)
     if(length(fourStepCol)){
       # Convert the ':' into '\t'
-      sumstats_file <- gsub(pattern = ":", replace = "\t", x = sumstats_file)
+      sumstats_file <- gsub(pattern = ":", replacement = "\t", x = sumstats_file)
       # Replace the column name with four names
       curColName = col_headers[fourStepCol]
       # Write the new column headers to file
@@ -69,7 +69,7 @@ format_sumstats_for_magma <- function(path){
     twoStepCol = grep(".*:.*", row_of_data)
     if (length(twoStepCol)) {
       # Convert the ':' into '\t'
-      sumstats_file <- gsub(pattern = ":", replace = "\t", x = sumstats_file)
+      sumstats_file <- gsub(pattern = ":", replacement = "\t", x = sumstats_file)
       # Replace the column name with four names
       curColName = col_headers[twoStepCol]
       # Write the new column headers to file

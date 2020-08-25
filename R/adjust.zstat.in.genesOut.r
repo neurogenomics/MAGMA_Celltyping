@@ -25,16 +25,6 @@ adjust.zstat.in.genesOut <- function(ctd,magma_GenesOut_file=NA,sctSpecies="mous
         hgnc2entrez = MAGMA.Celltyping::all_hgnc_wtEntrez
         colnames(hgnc2entrez)=c("human.symbol","entrez")
         orth2 = merge(orth,hgnc2entrez,by="human.symbol")
-    }else{
-        # library("biomaRt")
-        # human <- useMart(host="www.ensembl.org", "ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl")
-        # attrib_hum = listAttributes(human)
-        # hgnc_symbols = getBM(attributes=c("hgnc_symbol","entrezgene"), mart=human)
-        # colnames(hgnc_symbols) = c("hgnc_symbol","entrez")
-        # hgnc_symbols = hgnc_symbols[hgnc_symbols$hgnc_symbol!=""]
-        # hgnc_symbols = hgnc_symbols[!is.na(hgnc_symbols$entrez),]
-        # hgnc2entrez = hgnc_symbols
-        # usethis::use_data(hgnc2entrez,overwrite = TRUE)
     }
     
     # Load the MAGMA data

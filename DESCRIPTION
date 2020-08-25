@@ -1,11 +1,12 @@
 Package: MAGMA.Celltyping
 Type: Package
 Title: MAGMA.Celltyping
-Version: 0.99.0
+Version: 1.0.0
 Date: 2018-8-01
 Author: Dr Nathan Skene
 Maintainer: Nathan Skene <nathan.skene@gmail.com>
-Description: Used to test for cell type enrichments using MAGMA
+Description: 
+    Used to test for cell type enrichments using MAGMA
 License: Artistic-2.0
 LazyData: TRUE
 Depends: R(>= 3.2)
@@ -16,11 +17,13 @@ Imports: EWCE,
         ggdendro, cowplot, dplyr, data.table,
         ggplot2, stringr, tibble,
         SNPlocs.Hsapiens.dbSNP144.GRCh38,
-        magrittr, grDevices, limma
+        magrittr, grDevices, limma,
+        BSgenome, BiocGenerics, GenomeInfoDb, S4Vectors, gridExtra, rlang
 Suggests: knitr, BiocStyle,
     rmarkdown
 Remotes: nathanskene/ewce,
     nathanskene/one2one
+SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
 biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
         Genetics, scRNASeq, Single Cell RNAseq,
         BiomedicalInformatics, FunctionalGenomics
