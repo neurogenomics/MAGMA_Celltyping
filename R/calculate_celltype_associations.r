@@ -7,19 +7,20 @@
 #' @param analysis_name Used in filenames which area created
 #' @param upstream_kb How many kb upstream of the gene should SNPs be included?
 #' @param downstream_kb How many kb downstream of the gene should SNPs be included?
-#' @param genome_ref_path Path to the folder containing the 1000 genomes .bed files (which can be downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)
+#' @param genome_ref_path Path to the folder containing the 1000 genomes .bed files (which can be downloaded 
+#' from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)
 #' @param specificity_species Species name relevant to the cell type data, i.e. "mouse" or "human"
 #' @param genesOutCOND [Optional] Path to a genes.out file to condition on. Used if you want to condition on a different GWAS.
-#' @param EnrichmentMode [Optional] Should either 'Linear' or 'Top 10%' mode be used for testing enrichment?
+#' @param EnrichmentMode [Optional] Should either 'Linear' or 'Top 10\%' mode be used for testing enrichment?
 #'
 #' @return Filepath for the genes.out file
 #'
 #' @examples
-#' gwas_sumstats_path = "/Users/natske/Naomi_Wray_Conditional/Results/Conditional/scz_adj_all_withaut_gsmr_bxy_aric_reference.raw.NEW"
-#' upstream_kb=10;downstream_kb=1.5;genome_ref_path="~/Downloads/g1000_eur/g1000_eur";specificity_species="mouse"
-#' EnrichmentMode="Top 10%"
-#' genesOutCOND = "/Users/natske/Naomi_Wray_Conditional/Results/Raw/scz_formtcojo.txt.NEW.10UP.1.5DOWN.genes.out"
-#' ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path)
+#' ctAssocs = calculate_celltype_associations(EWCE::ctd,gwas_sumstats_path,
+#' gwas_sumstats_path = "PATH_TO_SUMSTATS",
+#' upstream_kb=10,downstream_kb=1.5,genome_ref_path="~/Downloads/g1000_eur/g1000_eur",
+#' specificity_species="mouse",
+#' EnrichmentMode="Top 10%")
 #'
 #' @export
 calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name="MainRun",upstream_kb=10,downstream_kb=1.5,genome_ref_path,specificity_species="mouse",genesOutCOND=NA,EnrichmentMode="Linear"){

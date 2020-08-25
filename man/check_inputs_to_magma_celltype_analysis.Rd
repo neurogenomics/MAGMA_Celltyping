@@ -34,6 +34,7 @@ Nothing returned but sends error if there is a fault with the arguments
 This code was functonalised because it is called by both baseline and conditional analysis.
 }
 \examples{
-check_inputs_to_magma_celltype_analysis(ctd,gwas_sumstats_path,analysis_name,upstream_kb,downstream_kb,genome_ref_path)
+check_inputs_to_magma_celltype_analysis(ctd,gwas_sumstats_path,analysis_name,upstream_kb,
+downstream_kb,genome_ref_path)
 
 }

@@ -10,9 +10,10 @@
 #' genome_build = get_genomebuild_for_sumstats(gwas_sumstats_path)
 #'
 #' @export
+#' @importFrom utils read.table
 get_genomebuild_for_sumstats <- function(path){
     # Get first 20 lines of sumstats
-    topLines = read.table(path,nrows=30000,header = TRUE,stringsAsFactors = FALSE)
+    topLines = utils::read.table(path,nrows=30000,header = TRUE,stringsAsFactors = FALSE)
     topSNPS  = topLines$SNP
     topLOCs  = sprintf("%s-%s-%s",topLines$SNP,topLines$CHR,topLines$BP)
     SNP_LOC_DATA = load_snp_loc_data()

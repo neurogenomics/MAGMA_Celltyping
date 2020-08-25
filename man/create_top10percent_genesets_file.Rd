@@ -29,10 +29,10 @@ because it is called by both baseline and conditional analysis.
 }
 \examples{
 library(MAGMA.Celltyping)
-genesOutFile=
-"/Users/natske/Naomi_Wray_Conditional/Results/Conditional/scz_adj_all_withaut_gsmr_bxy_aric_reference.raw"
+myGenesOut = tempfile()
+data.table::fwrite(MAGMA.Celltyping::genesOut,sep="\t",file=myGenesOut)
 ctd = prepare.quantile.groups(EWCE::ctd,specificity_species="mouse",numberOfBins=40)
-geneSetsFilePath = create_top10percent_genesets_file(genesOutFile="",ctd=ctd,annotLevel=1,
+geneSetsFilePath = create_top10percent_genesets_file(genesOutFile=myGenesOut,ctd=ctd,annotLevel=1,
 specificity_species="mouse")
 
 }

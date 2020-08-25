@@ -15,11 +15,15 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr rename
 #' @importFrom dplyr filter
+#' @importFrom limma lmFit
+#' @importFrom limma eBayes
+#' @importFrom limma topTable
+#' @importFrom stats quantile
+#' @importFrom rlang .data
 calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,thresh=0.0001,sctSpecies="mouse"){
-    library(limma)
     
     if("hgnc_symbol" %in% colnames(magmaAdjZ)){
-        magmaAdjZ = magmaAdjZ %>% dplyr::rename(human.symbol=hgnc_symbol)
+        magmaAdjZ = magmaAdjZ %>% dplyr::rename(human.symbol=.data$hgnc_symbol)
     }
     
     # First get names of all cell types
@@ -48,7 +52,7 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,th
         notExp[props<thresh]=-1
         
         # Determine which expression decile genes fall into
-        quantiles = quantile(props[props>thresh],probs=seq(from=0,to=1,by=0.1))
+        quantiles = stats::quantile(props[props>thresh],probs=seq(from=0,to=1,by=0.1))
         perc  = as.numeric(cut(props,quantiles,include.lowest=TRUE))
         perc[is.na(perc)] = 0
         
@@ -56,13 +60,13 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,th
         if(sctSpecies=="mouse"){
             geneGroups = data.frame(mgi_symbol=mgiS,proportion=props,percentile=perc)
             magma_with_ct1 = geneGroups %>%
-                dplyr::rename(mouse.symbol=mgi_symbol) %>% merge(magmaAdjZ,by="mouse.symbol") %>%
-                dplyr::filter(percentile>=0)
+                dplyr::rename(mouse.symbol=.data$mgi_symbol) %>% merge(magmaAdjZ,by="mouse.symbol") %>%
+                dplyr::filter(.data$percentile>=0)
         }else{
             geneGroups = data.frame(hgnc_symbol=mgiS,proportion=props,percentile=perc)
             magma_with_ct1 = geneGroups %>%
                 dplyr::rename(human.symbol=hgnc_symbol) %>% merge(magmaAdjZ,by="human.symbol") %>%
-                dplyr::filter(percentile>=0)            
+                dplyr::filter(.data$percentile>=0)            
         }
         
         # Fit a linear model and get p,-value and coefficient (slope)
@@ -70,10 +74,10 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,th
         expMat[1,] = magma_with_ct1$ADJ_ZSTAT
         rownames(expMat) = c("actual")
         colnames(expMat) = magma_with_ct1$mouse.symbol
-        dmat <- model.matrix(~ magma_with_ct1$percentile)
-        fit <- lmFit(expMat, dmat)
-        fit2 <- eBayes(fit)
-        res <- topTable(fit2,number=1)
+        dmat <- stats::model.matrix(~ magma_with_ct1$percentile)
+        fit <- limma::lmFit(expMat, dmat)
+        fit2 <- limma::eBayes(fit)
+        res <- limma::topTable(fit2,number=1)
         res[res$logFC<0,"P.Value"]=1
         res[res$logFC>=0,"P.Value"]=res[res$logFC>=0,"P.Value"]/2   
         

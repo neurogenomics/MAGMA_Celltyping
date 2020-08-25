@@ -16,7 +16,7 @@ Imports: EWCE,
         ggdendro, cowplot, dplyr, data.table,
         ggplot2, stringr, tibble,
         SNPlocs.Hsapiens.dbSNP144.GRCh38,
-        magrittr
+        magrittr, grDevices, limma
 Suggests: knitr, BiocStyle,
     rmarkdown
 Remotes: nathanskene/ewce,

@@ -4,17 +4,12 @@
 \alias{adjust.zstat.in.genesOut}
 \title{Adjust MAGMA Z-statistic from .genes.out files}
 \usage{
-adjust.zstat.in.genesOut(
-  ctd,
- 
-    magma_file = "/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",
-  sctSpecies = "mouse"
-)
+adjust.zstat.in.genesOut(ctd, magma_GenesOut_file = NA, sctSpecies = "mouse")
 }
 \arguments{
 \item{ctd}{Cell type data structure}
 
-\item{magma_file}{A MAGMA .genes.out file}
+\item{magma_GenesOut_file}{A MAGMA .genes.out file}
 
 \item{sctSpecies}{Either 'human' or 'mouse'}
 }
@@ -22,8 +17,9 @@ adjust.zstat.in.genesOut(
 Used when you want to directly analyse the gene level z-scores corrected for gene length etc
 }
 \examples{
-magmaGenesOut = adjust.zstat.in.genesOut(ctd,magma_file=
-"/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",
+myGenesOut = tempfile()
+data.table::fwrite(MAGMA.Celltyping::genesOut,sep="\t",file=myGenesOut)
+magmaGenesOut = adjust.zstat.in.genesOut(ctd,magma_GenesOut_file=myGenesOut,
 sctSpecies="mouse")
 
 }

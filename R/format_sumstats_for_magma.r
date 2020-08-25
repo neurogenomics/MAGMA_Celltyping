@@ -7,6 +7,8 @@
 #' @param path Filepath for the summary statistics file to be formatted
 #' @importFrom data.table fread
 #' @importFrom data.table fwrite
+#' @importFrom data.table setcolorder
+#' @importFrom utils read.table
 #' @import stringr
 #' @export
 format_sumstats_for_magma <- function(path){
@@ -25,7 +27,7 @@ format_sumstats_for_magma <- function(path){
   if (length(row_of_data) == 1) {
     if (grep(" ", row_of_data) == 1) {
       print("WARNING: This GWAS sumstat file has space field separators instead of tabs (unusual, not proper input for MAGMA). Temp file with corrected FS created and used instead.")
-      sumstats_file <- gsub(pattern = " ", replace = "\t", x = before)
+      sumstats_file <- gsub(pattern = " ", replace = "\t", x = sumstats_file)
     }
   }
   
@@ -145,11 +147,9 @@ format_sumstats_for_magma <- function(path){
     whichCHR = which(col_headers=="CHR")[1]
     whichBP = which(col_headers=="BP")[1]
     otherCols = setdiff(1:length(col_headers),c(whichSNP,whichCHR,whichBP))
-    #x=read.table(path)
-    x=fread(path)
-    #write.table(x=x[,c(whichSNP,whichCHR,whichBP,otherCols)], file=path, sep="\t", quote=FALSE, row.names = FALSE, col.names = FALSE)
-    xx = setcolorder(x, c(whichSNP,whichCHR,whichBP,otherCols))
-    fwrite(x=xx, file=path, sep="\t")
+    x=data.table::fread(path)
+    xx = data.table::setcolorder(x, c(whichSNP,whichCHR,whichBP,otherCols))
+    data.table::fwrite(x=xx, file=path, sep="\t")
     sumstats_file <- readLines(path)
   }
   
@@ -158,7 +158,7 @@ format_sumstats_for_magma <- function(path){
   rows_of_data <- c(sumstats_file[1], sumstats_file[2]); col_headers = strsplit(rows_of_data[1], "\t")[[1]]
   if(sum(duplicated(col_headers))>0){
     notDup = which(!duplicated(col_headers))
-    write.table(x=read.table(path)[,notDup], file=path, sep="\t", quote=FALSE, row.names = FALSE, col.names = FALSE); sumstats_file <- readLines(path)
+    write.table(x=utils::read.table(path)[,notDup], file=path, sep="\t", quote=FALSE, row.names = FALSE, col.names = FALSE); sumstats_file <- readLines(path)
   }
   
 
@@ -178,7 +178,7 @@ format_sumstats_for_magma <- function(path){
     #whichN = which(col_headers %in% "N")
     if (as.logical(as.numeric(readline("Sometimes the N column is not all integers. Do you want MAGMA.celltyping to (if such instances exist) round them up? 0 for NO, 1 for YES")))) {
       #rows_of_data <- c(sumstats_file[1], sumstats_file[2]); col_headers = strsplit(rows_of_data[1], "\t")[[1]]
-      sumstats <- fread(path) # read.table(path)
+      sumstats <- fread(path) 
       sumstats$N = round(as.numeric(as.character(sumstats$N))) # Note, I've not tested this since changing it from the original code... which was using gawk/sed
       fwrite(x=sumstats, file=path, sep="\t") #, quote=FALSE, row.names = FALSE, col.names = FALSE)
       #for (i in seq_along(sumstats[,which(col_headers=="N")])) {
@@ -206,7 +206,6 @@ format_sumstats_for_magma <- function(path){
   
   # Try to remove duplicated RSIDs
   print("Removing duplicated RSIDs.")
-  #sumstats <- read.table(path)
   sumstats <- fread(path)
   if(sum(duplicated(sumstats[,1]))>0){
     notDup = which(!duplicated(sumstats[,1]))

@@ -13,7 +13,8 @@
 #' @return Nothing returned but sends error if there is a fault with the arguments
 #'
 #' @examples
-#' check_inputs_to_magma_celltype_analysis(ctd,gwas_sumstats_path,analysis_name,upstream_kb,downstream_kb,genome_ref_path)
+#' check_inputs_to_magma_celltype_analysis(ctd,gwas_sumstats_path,analysis_name,upstream_kb,
+#' downstream_kb,genome_ref_path)
 #'
 #' @export
 check_inputs_to_magma_celltype_analysis <- function(ctd,gwas_sumstats_path,analysis_name,upstream_kb,downstream_kb,genome_ref_path){

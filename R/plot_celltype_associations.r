@@ -19,6 +19,8 @@
 #'
 #' @import ggplot2
 #' @importFrom cowplot theme_cowplot
+#' @importFrom grDevices dev.off
+#' @importFrom grDevices pdf
 #' @export
 plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,savePDF=TRUE,fileTag="",plotDendro=TRUE,gwas_title="",plotLegend=TRUE,figsDir=NA){
     
@@ -80,9 +82,9 @@ plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,sav
             if(savePDF){
                 fName = sprintf("%s/%s.%sUP.%sDOWN.annotLevel%s.Baseline.%s.%s.pdf",figsDir,magmaPaths$gwasFileName,ctAssocs$upstream_kb,ctAssocs$downstream_kb,annotLevel,fileTag,analysisType)
                 print("here")
-                pdf(file=fName,width=10,height=1+2*(dim(ctAssocs[[annotLevel]]$results)[1]/10))
+                grDevices::pdf(file=fName,width=10,height=1+2*(dim(ctAssocs[[annotLevel]]$results)[1]/10))
                     print(grid.arrange(a2,ctdDendro$dendroPlot,ncol=2,widths=c(0.8,0.2)))
-                dev.off()
+                grDevices::dev.off()
             }else{print(theFig)}            
         # IF THE RESULTS COME FROM A CONDITIONAL ANALYSIS    
         }else{
@@ -90,9 +92,9 @@ plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,sav
             
             if(savePDF){
                 fName = sprintf("%s/%s.%sUP.%sDOWN.annotLevel%s.ConditionalFacets.%s.%s.pdf",figsDir,magmaPaths$gwasFileName,ctAssocs$upstream_kb,ctAssocs$downstream_kb,annotLevel,fileTag,analysisType)
-                pdf(file=fName,width=25,height=1+2*(dim(ctAssocs[[annotLevel]]$results)[1]/30))
+                grDevices::pdf(file=fName,width=25,height=1+2*(dim(ctAssocs[[annotLevel]]$results)[1]/30))
                     print(theFig)
-                dev.off()
+                grDevices::dev.off()
             }else{print(theFig)}            
         }
         figures[[length(figures)+1]] = theFig

@@ -2,7 +2,6 @@
 #'
 #' Convenience function used in 'create_gene_covar_file()'
 #'
-#' @param genesOutFile The output of the second call to MAGMA (performed in the map.snps.to.genes function)
 #' @param ctd Cell type data structure. Must contain quantiles.
 #' @param annotLevel Annot level for which the gene covar file should be constructed
 #' @param specificity_species Species name relevant to the cell type data, i.e. "mouse" or "human"
@@ -13,7 +12,7 @@
 #' genesCovarFilePath = create_gene_covar_file(genesOutFile,ctd)
 #'
 #' @export
-map_specificity_to_entrez <- function(genesOutFile,ctd,annotLevel,specificity_species){
+map_specificity_to_entrez <- function(ctd,annotLevel,specificity_species){
     # Check specificity_species
     if(!specificity_species %in% c("human","mouse")){stop("Specificity species must be either 'human' or 'mouse'")}
     

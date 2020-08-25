@@ -27,13 +27,14 @@ calculate_celltype_associations(
 
 \item{downstream_kb}{How many kb downstream of the gene should SNPs be included?}
 
-\item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
+\item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be downloaded 
+from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
 
 \item{specificity_species}{Species name relevant to the cell type data, i.e. "mouse" or "human"}
 
 \item{genesOutCOND}{[Optional] Path to a genes.out file to condition on. Used if you want to condition on a different GWAS.}
 
-\item{EnrichmentMode}{[Optional] Should either 'Linear' or 'Top 10%' mode be used for testing enrichment?}
+\item{EnrichmentMode}{[Optional] Should either 'Linear' or 'Top 10\%' mode be used for testing enrichment?}
 }
 \value{
 Filepath for the genes.out file
@@ -42,10 +43,10 @@ Filepath for the genes.out file
 Assumes that you have already run map.snps.to.genes()
 }
 \examples{
-gwas_sumstats_path = "/Users/natske/Naomi_Wray_Conditional/Results/Conditional/scz_adj_all_withaut_gsmr_bxy_aric_reference.raw.NEW"
-upstream_kb=10;downstream_kb=1.5;genome_ref_path="~/Downloads/g1000_eur/g1000_eur";specificity_species="mouse"
-EnrichmentMode="Top 10\%"
-genesOutCOND = "/Users/natske/Naomi_Wray_Conditional/Results/Raw/scz_formtcojo.txt.NEW.10UP.1.5DOWN.genes.out"
-ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path)
+ctAssocs = calculate_celltype_associations(EWCE::ctd,gwas_sumstats_path,
+gwas_sumstats_path = "PATH_TO_SUMSTATS",
+upstream_kb=10,downstream_kb=1.5,genome_ref_path="~/Downloads/g1000_eur/g1000_eur",
+specificity_species="mouse",
+EnrichmentMode="Top 10\%")
 
 }

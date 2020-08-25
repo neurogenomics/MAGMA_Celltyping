@@ -17,6 +17,10 @@
 #'
 #' @export
 #' @importFrom dplyr rename
+#' @importFrom utils read.csv
+#' @importFrom utils read.table
+#' @importFrom utils write.csv
+#' @importFrom rlang .data
 load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,EnrichmentMode="Linear",ControlForCT="BASELINE"){
   # Check EnrichmentMode has correct values
   if(!EnrichmentMode %in% c("Linear","Top 10%")){stop("EnrichmentMode argument must be set to either 'Linear' or 'Top 10%")}
@@ -26,7 +30,7 @@ load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,Enrichme
   #if(EnrichmentMode=="Top 10%" & length(grep(".sets.out$",path))==0){stop("If EnrichmentMode=='Top 10%' then path must end in .sets.out")}  
    if(EnrichmentMode=="Linear" & length(grep(".gsa.out$",path))==0){stop("If EnrichmentMode=='Linear' then path must end in .gsa.out")}        
     
-  res = read.table(path,stringsAsFactors = FALSE)
+  res = utils::read.table(path,stringsAsFactors = FALSE)
   colnames(res) = as.character(res[1,])
   res$level=annotLevel
   res=res[-1,]
@@ -44,8 +48,8 @@ load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,Enrichme
     #if(numCTinCTD!=(numCTinRes+1)){stop(sprintf("%s celltypes in ctd but %s in results file. Expected %s-1 in results file. Did you provide the correct annotLevel?",numCTinCTD,numCTinRes,numCTinRes))}  
       tmpF = tempfile()
       tmpDat = t(data.frame(original=colnames(ctd[[annotLevel]]$specificity))) ;  colnames(tmpDat) = colnames(ctd[[annotLevel]]$specificity)
-      write.csv(tmpDat,file=tmpF)
-      editedNames = colnames(read.csv(tmpF,stringsAsFactors = FALSE))[-1]
+      utils::write.csv(tmpDat,file=tmpF)
+      editedNames = colnames(utils::read.csv(tmpF,stringsAsFactors = FALSE))[-1]
       transliterateMap = data.frame(original=colnames(ctd[[annotLevel]]$specificity),edited=editedNames,stringsAsFactors = FALSE)
       rownames(transliterateMap) = transliterateMap$edited
       #res = res[res$COVAR %in% rownames(transliterateMap),]
@@ -78,14 +82,14 @@ load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,Enrichme
   res$genesOutCOND = genesOutCOND
   res$EnrichmentMode = EnrichmentMode
   #res = res %>% dplyr::rename(Celltype=COVAR)
-  res = res %>% dplyr::rename(Celltype=VARIABLE)
+  res = res %>% dplyr::rename(Celltype=.data$VARIABLE)
   
   #if(EnrichmentMode=="Top 10%"){
   #  res = res %>%  dplyr::rename(OBS_GENES=NGENES) %>%  purrr::modify_at(c("SET"),~NULL)
   #  res = res[,c("Celltype","OBS_GENES","BETA","BETA_STD","SE","P","level","Method","GCOV_FILE","CONTROL","CONTROL_label","log10p","genesOutCOND","EnrichmentMode")]
   #}
   #if(EnrichmentMode=="Linear"){
-      res = res %>%  dplyr::rename(OBS_GENES=NGENES) %>%  purrr::modify_at(c("SET"),~NULL)
+      res = res %>%  dplyr::rename(OBS_GENES=.data$NGENES) %>%  purrr::modify_at(c("SET"),~NULL)
       res = res[,c("Celltype","OBS_GENES","BETA","BETA_STD","SE","P","level","Method","GCOV_FILE","CONTROL","CONTROL_label","log10p","genesOutCOND","EnrichmentMode")]
   #}
   

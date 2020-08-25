@@ -7,15 +7,20 @@
 #' data(SNP_LOC_DATA)
 #'
 # @import R.utils
-#' @import data.table
+#' @importFrom data.table fread
 #' @import SNPlocs.Hsapiens.dbSNP144.GRCh38
-#' @import SNPlocs.Hsapiens.dbSNP144.GRCh38
+#' @importFrom utils download.file
+#' @importFrom utils unzip
+#' @importFrom BSgenome snpsById
+#' @importFrom S4Vectors mcols
+#' @importFrom GenomeInfoDb seqnames
+#' @importFrom BiocGenerics pos
 #' @export
 build_snp_location_tables.r <- function(){
     tmpF1 = tempfile()
     tmpF2 = tempfile()
-    download.file("https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip",tmpF1)
-    unzip(tmpF1,exdir=dirname(tmpF1))    
+    utils::download.file("https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip",tmpF1)
+    utils::unzip(tmpF1,exdir=dirname(tmpF1))    
     snpsALL = data.table::fread(sprintf("%s/g1000_eur.bim",dirname(tmpF1)))
     g1000_snps = as.character(snpsALL$V2)
     
@@ -30,12 +35,12 @@ build_snp_location_tables.r <- function(){
     # Get GRCh37 locations
     #source("https://bioconductor.org/biocLite.R")
     #BiocManager::install("SNPlocs.Hsapiens.dbSNP144.GRCh37")
-    snps <- SNPlocs.Hsapiens.dbSNP144.GRCh37
+    snps <- SNPlocs.Hsapiens.dbSNP144.GRCh37::SNPlocs.Hsapiens.dbSNP144.GRCh37
     #g1000_snps = g1000_snps[grep("^rs",g1000_snps)]
-    snp_locs = snpsById(snps, g1000_snps,ifnotfound="drop")
-    SNP = mcols(snp_locs)$RefSNP_id
-    CHR = as.character(seqnames(snp_locs)) #seqnames(snp_locs)
-    BP = pos(snp_locs)
+    snp_locs = BSgenome::snpsById(snps, g1000_snps,ifnotfound="drop")
+    SNP = S4Vectors::mcols(snp_locs)$RefSNP_id
+    CHR = as.character(GenomeInfoDb::seqnames(snp_locs)) #seqnames(snp_locs)
+    BP = BiocGenerics::pos(snp_locs)
     SNP_DATA_GRCh37 = data.frame(SNP=SNP,CHR=CHR,BP=BP,Build="GRCh37",stringsAsFactors=FALSE)
     #SNP_DATA_GRCh37 = data.table(SNP=SNP,CHR=CHR,BP=BP,Build="GRCh37")
     #usethis::use_data(SNP_DATA_GRCh37,overwrite = TRUE)
@@ -44,11 +49,11 @@ build_snp_location_tables.r <- function(){
     #source("https://bioconductor.org/biocLite.R")
     #BiocManager::install("SNPlocs.Hsapiens.dbSNP144.GRCh38")
     #library(SNPlocs.Hsapiens.dbSNP144.GRCh38)
-    snps <- SNPlocs.Hsapiens.dbSNP144.GRCh38
-    snp_locs = snpsById(snps, g1000_snps,ifnotfound="drop")
-    SNP = mcols(snp_locs)$RefSNP_id
-    CHR = as.character(seqnames(snp_locs))
-    BP = pos(snp_locs)
+    snps <- SNPlocs.Hsapiens.dbSNP144.GRCh38::SNPlocs.Hsapiens.dbSNP144.GRCh38
+    snp_locs = BSgenome::snpsById(snps, g1000_snps,ifnotfound="drop")
+    SNP = S4Vectors::mcols(snp_locs)$RefSNP_id
+    CHR = as.character(GenomeInfoDb::seqnames(snp_locs))
+    BP = BiocGenerics::pos(snp_locs)
     SNP_DATA_GRCh38 = data.frame(SNP=SNP,CHR=CHR,BP=BP,Build="GRCh38",stringsAsFactors=FALSE)
     #usethis::use_data(SNP_DATA_GRCh38,overwrite = TRUE)
     

@@ -14,6 +14,7 @@
 #' genesCovarFilePath = create_gene_covar_file(genesOutFile,ctd)
 #'
 #' @export
+#' @importFrom utils read.table
 create_gene_covar_file <- function(genesOutFile,ctd,annotLevel,specificity_species,genesOutCOND=NA){
     quantDat2 = map_specificity_to_entrez(genesOutFile,ctd,annotLevel,specificity_species)
     #colnames(quantDat2)[2:length(colnames(quantDat2))] = colnames(ctd[[controlledAnnotLevel]]$quantiles)
@@ -25,7 +26,7 @@ create_gene_covar_file <- function(genesOutFile,ctd,annotLevel,specificity_speci
     
     # If the analysis is being run conditionally on another GWAS
     if(!is.na(genesOutCOND)){
-        genesOutCOND_data = read.table(file=genesOutCOND,stringsAsFactors = FALSE)
+        genesOutCOND_data = utils::read.table(file=genesOutCOND,stringsAsFactors = FALSE)
         colnames(genesOutCOND_data) = genesOutCOND_data[1,]
         genesOutCOND_data = genesOutCOND_data[-1,c("GENE","ZSTAT")]
         colnames(genesOutCOND_data)[1]="entrezgene"
