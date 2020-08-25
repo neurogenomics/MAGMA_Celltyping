@@ -33,6 +33,7 @@ Contents of the .gcov.out file
 Convenience function which just does a little formatting to make it easier to use
 }
 \examples{
-res = load.magma.results.file(path="Raw/adhd_formtcojo.txt.NEW.10UP.1DOWN.gov.out",annotLevel=1,ctd=ctd)
+res = load.magma.results.file(path="Raw/adhd_formtcojo.txt.NEW.10UP.1DOWN.gov.out",
+annotLevel=1,ctd=ctd)
 
 }

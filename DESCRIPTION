@@ -25,3 +25,4 @@ biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
         Genetics, scRNASeq, Single Cell RNAseq,
         BiomedicalInformatics, FunctionalGenomics
 RoxygenNote: 7.1.0
+Encoding: UTF-8
