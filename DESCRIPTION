@@ -17,7 +17,8 @@ Imports: EWCE,
         ggplot2, stringr, tibble,
         SNPlocs.Hsapiens.dbSNP144.GRCh38,
         magrittr, grDevices, limma,
-        BSgenome, BiocGenerics, GenomeInfoDb, S4Vectors, gridExtra, rlang
+        BSgenome, BiocGenerics, GenomeInfoDb, S4Vectors, gridExtra, rlang,
+        SNPlocs.Hsapiens.dbSNP144.GRCh37, purrr, usethis
 Suggests: knitr, BiocStyle,
     rmarkdown
 Remotes: nathanskene/ewce,
