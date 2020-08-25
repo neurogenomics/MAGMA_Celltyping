@@ -12,6 +12,20 @@
 #'
 "sumstatsColHeaders"
 
+#' Example of genesOut file
+#'
+#' Obtained from '/Users/natske/OneDrive - Imperial College London/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out'
+#'
+#' @source
+#' The code to prepare the .Rda file file from the marker file is:
+#' \code{
+#' genesOut = data.table::fread("/home/nskene/tmp_files/20016.assoc.tsv.10UP.1.5DOWN.genes.out")
+#' usethis::use_data(genesOut,overwrite = TRUE)
+#' }
+#'
+"genesOut"
+
+
 #' All HGNC gene symbols with ENTREZ gene IDs
 #'
 #' A dataset containing all HGNC symbols in first column, then entrez in second column

@@ -6,9 +6,15 @@
 #' @param sctSpecies Either 'human' or 'mouse'
 #'
 #' @examples
-#' magmaGenesOut = adjust.zstat.in.genesOut(ctd,magma_file="/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",sctSpecies="mouse")
+#' # The package stores an example genesOut file, so save this to a tempfile
+#' myGenesOut = tempfile()
+#' data.table::fwrite(MAGMA.Celltyping::genesOut,sep="\t",file=myGenesOut)
+#' magmaGenesOut = adjust.zstat.in.genesOut(EWCE::ctd,magma_file=myGenesOut,sctSpecies="mouse")
 #'
 #' @export
+#' @importFrom magrittr %>%
+#' @importFrom dplyr rename
+#' @importFrom dplyr filter
 calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,thresh=0.0001,sctSpecies="mouse"){
     library(limma)
     

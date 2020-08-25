@@ -16,6 +16,7 @@
 #' @return Filepath for the genes.out file
 #'
 #' @export
+#' @importFrom data.table data.table
 
 calculate_conditional_geneset_enrichment <- function(geneset,ctd,controlledAnnotLevel=1,controlledCTs,gwas_sumstats_path,analysis_name,upstream_kb=10,downstream_kb=1.5,genome_ref_path,geneset_species="mouse",specificity_species){
     gwas_sumstats_path = path.expand(gwas_sumstats_path)
@@ -80,7 +81,7 @@ calculate_conditional_geneset_enrichment <- function(geneset,ctd,controlledAnnot
     # Convert to one sided probability (that the conditional analysis is LESS significant than the baseline)
     if(res$BETA>res_cond$BETA){pOneSided=p/2}else{pOneSided=1-p/2}
     
-    full_res = data.table(SET=res$SET,NGENES=res$NGENES,BASELINE_BETA = res$BETA,BASELINE_BETA_STD=res$BETA_STD,BASELINE_SE=res$SE,BASELINE_P=res$P,COND_BETA=res_cond$BETA,COND_BETA_STD=res_cond$BETA_STD,COND_SE=res_cond$SE,COND_P=res_cond$P,conditionedCTs=ctrldCTs,z=z,p_twoSided=p,p_oneSided=pOneSided)
+    full_res = data.table::data.table(SET=res$SET,NGENES=res$NGENES,BASELINE_BETA = res$BETA,BASELINE_BETA_STD=res$BETA_STD,BASELINE_SE=res$SE,BASELINE_P=res$P,COND_BETA=res_cond$BETA,COND_BETA_STD=res_cond$BETA_STD,COND_SE=res_cond$SE,COND_P=res_cond$P,conditionedCTs=ctrldCTs,z=z,p_twoSided=p,p_oneSided=pOneSided)
     
     return(full_res)
 }

@@ -7,6 +7,10 @@
 #' @param useSignificanceLine TRUE or FALSE. Should their be a vertical line marking bonferroni signifiance? 
 #' @param savePDF TRUE or FALSE. Save figure to file or print to screen?
 #' @param fileTag String apprended to the names of the saved PDFs, i.e. the name of the celltype data file used
+#' @param plotDendro Should the dendrogram of celltypes be shown alongside the figure? TRUE or FALSE
+#' @param gwas_title Title to be displayed over the figure (string)
+#' @param plotLegend Should the figure legend be displayed?
+#' @param figsDir Directory where figures should be created
 #'
 #' @return NULL
 #'
@@ -14,7 +18,7 @@
 #' ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path)
 #'
 #' @import ggplot2
-#' @import cowplot
+#' @importFrom cowplot theme_cowplot
 #' @export
 plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,savePDF=TRUE,fileTag="",plotDendro=TRUE,gwas_title="",plotLegend=TRUE,figsDir=NA){
     
@@ -50,8 +54,7 @@ plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,sav
     }else{  analysisType = "Merged" }
     
     # Generate the plots (for each annotation level seperately)
-    library(cowplot)
-    theme_set(theme_cowplot())
+    theme_set(cowplot::theme_cowplot())
     figures = list()
     for(annotLevel in 1:sum(names(ctAssocs)=="")){
         # SET: NEW COLUMN COMBINING METHODS or ENRICHMENT TYPES

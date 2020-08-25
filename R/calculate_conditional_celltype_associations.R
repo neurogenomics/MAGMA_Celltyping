@@ -8,10 +8,11 @@
 #' @param upstream_kb How many kb upstream of the gene should SNPs be included?
 #' @param downstream_kb How many kb downstream of the gene should SNPs be included?
 #' @param genome_ref_path Path to the folder containing the 1000 genomes .bed files (which can be downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)
-#' @param specificity_species Species name relevant to the cell type data, i.e. "mouse" or "human"
+#' @param specificity_species Species name relevant to the cell type data, i.e. 'mouse' or 'human'
 #' @param controlledAnnotLevel Which annotation level should be controlled for
 #' @param controlTopNcells How many of the most significant cell types at that annotation level should be controlled for?
-#' @param controlledCTs Array of the celltype to be controlled for, i.e. c("Interneuron type 16","Medium Spiny Neuron)
+#' @param controlledCTs Array of the celltype to be controlled for, i.e. c('Interneuron type 16','Medium Spiny Neuron')
+#' @param EnrichmentMode [Optional] Either 'Linear' or 'Top 10\%'. Default assumes Linear.
 #'
 #' @return Filepath for the genes.out file
 #'

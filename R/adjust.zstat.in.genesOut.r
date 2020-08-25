@@ -7,7 +7,9 @@
 #' @param sctSpecies Either 'human' or 'mouse'
 #'
 #' @examples
-#' magmaGenesOut = adjust.zstat.in.genesOut(ctd,magma_file="/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",sctSpecies="mouse")
+#' magmaGenesOut = adjust.zstat.in.genesOut(ctd,magma_file=
+#' "/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",
+#' sctSpecies="mouse")
 #'
 #' @export
 adjust.zstat.in.genesOut <- function(ctd,magma_file="/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",sctSpecies="mouse"){
@@ -16,7 +18,7 @@ adjust.zstat.in.genesOut <- function(ctd,magma_file="/Users/natske/GWAS_Summary_
     if(sctSpecies=="mouse"){
         # Get mouse-->human othologs with human entrez
         orth = One2One::ortholog_data_Mouse_Human$orthologs_one2one[,2:3]
-        hgnc2entrez = all_hgnc_wtEntrez
+        hgnc2entrez = MAGMA.Celltyping::all_hgnc_wtEntrez
         colnames(hgnc2entrez)=c("human.symbol","entrez")
         orth2 = merge(orth,hgnc2entrez,by="human.symbol")
     }else{
@@ -29,7 +31,6 @@ adjust.zstat.in.genesOut <- function(ctd,magma_file="/Users/natske/GWAS_Summary_
         # hgnc_symbols = hgnc_symbols[!is.na(hgnc_symbols$entrez),]
         # hgnc2entrez = hgnc_symbols
         # usethis::use_data(hgnc2entrez,overwrite = TRUE)
-        data(hgnc2entrez)
     }
     
     # Load the MAGMA data
@@ -38,7 +39,7 @@ adjust.zstat.in.genesOut <- function(ctd,magma_file="/Users/natske/GWAS_Summary_
     if(sctSpecies=="mouse"){
         magma = merge(magma, orth2,by="entrez")
     }else if(sctSpecies=="human"){
-        magma = merge(magma, hgnc2entrez,by="entrez")
+        magma = merge(magma, MAGMA.Celltyping::hgnc2entrez,by="entrez")
     }
     
     magma = magma[order(magma$P),]

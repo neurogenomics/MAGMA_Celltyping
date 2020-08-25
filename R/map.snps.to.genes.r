@@ -2,7 +2,7 @@
 #'
 #' Make two external calls to MAGMA. First use it to annotate SNPs onto their neighbouring genes. Second, use it to calculate the gene level trait association.
 #'
-#' @param path Filepath of the summary statistics file
+#' @param path_formatted Filepath of the summary statistics file (which is expected to already be in the required format)
 #' @param upstream_kb How many kb upstream of the gene should SNPs be included?
 #' @param downstream_kb How many kb downstream of the gene should SNPs be included?
 #' @param N What is the N number for this GWAS? That is cases+controls

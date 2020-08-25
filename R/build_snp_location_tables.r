@@ -6,16 +6,16 @@
 #' build_snp_location_tables()
 #' data(SNP_LOC_DATA)
 #'
-#' @import R.utils
+# @import R.utils
 #' @import data.table
+#' @import SNPlocs.Hsapiens.dbSNP144.GRCh38
+#' @import SNPlocs.Hsapiens.dbSNP144.GRCh38
 #' @export
 build_snp_location_tables.r <- function(){
     tmpF1 = tempfile()
     tmpF2 = tempfile()
     download.file("https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip",tmpF1)
-    library(R.utils)
     unzip(tmpF1,exdir=dirname(tmpF1))    
-    library(data.table)
     snpsALL = data.table::fread(sprintf("%s/g1000_eur.bim",dirname(tmpF1)))
     g1000_snps = as.character(snpsALL$V2)
     
@@ -30,7 +30,6 @@ build_snp_location_tables.r <- function(){
     # Get GRCh37 locations
     #source("https://bioconductor.org/biocLite.R")
     #BiocManager::install("SNPlocs.Hsapiens.dbSNP144.GRCh37")
-    library("SNPlocs.Hsapiens.dbSNP144.GRCh37")
     snps <- SNPlocs.Hsapiens.dbSNP144.GRCh37
     #g1000_snps = g1000_snps[grep("^rs",g1000_snps)]
     snp_locs = snpsById(snps, g1000_snps,ifnotfound="drop")
@@ -44,7 +43,7 @@ build_snp_location_tables.r <- function(){
     # Get GRCh38 locations
     #source("https://bioconductor.org/biocLite.R")
     #BiocManager::install("SNPlocs.Hsapiens.dbSNP144.GRCh38")
-    library(SNPlocs.Hsapiens.dbSNP144.GRCh38)
+    #library(SNPlocs.Hsapiens.dbSNP144.GRCh38)
     snps <- SNPlocs.Hsapiens.dbSNP144.GRCh38
     snp_locs = snpsById(snps, g1000_snps,ifnotfound="drop")
     SNP = mcols(snp_locs)$RefSNP_id

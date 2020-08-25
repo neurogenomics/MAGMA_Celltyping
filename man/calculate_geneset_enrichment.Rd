@@ -28,6 +28,8 @@ calculate_geneset_enrichment(
 \item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
 
 \item{geneset_species}{Species name relevant to the genes in the geneset, i.e. "mouse" or "human"}
+
+\item{specificity_species}{Species name relevant to the cell type data, i.e. "mouse" or "human"}
 }
 \value{
 Filepath for the genes.out file

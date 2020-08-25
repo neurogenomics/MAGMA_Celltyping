@@ -14,7 +14,7 @@ load.magma.results.file(
 )
 }
 \arguments{
-\item{path}{Path to a .gcov.out file (if EnrichmentMode=='Linear') or .sets.out (if EnrichmentMode=='Top 10%')}
+\item{path}{Path to a .gcov.out file (if EnrichmentMode=='Linear') or .sets.out (if EnrichmentMode=='Top 10\%')}
 
 \item{annotLevel}{Which annotation level does this .gcov.out file relate to?}
 
@@ -22,7 +22,9 @@ load.magma.results.file(
 
 \item{genesOutCOND}{[Optional] If the analysis controlled for another GWAS, then this is included as a column, otherwise the column is NA}
 
-\item{EnrichmentMode}{[Optional] Either 'Linear' or 'Top 10%'. Default assumes Linear.}
+\item{EnrichmentMode}{[Optional] Either 'Linear' or 'Top 10\%'. Default assumes Linear.}
+
+\item{ControlForCT}{[Optional] May be an internal argument. I'd suggest ignoring or take a look at the code to figure it out.}
 }
 \value{
 Contents of the .gcov.out file

@@ -4,7 +4,9 @@
 \name{ctd_Tasic}
 \alias{ctd_Tasic}
 \title{Celltype data (Tasic)}
-\format{An object of class \code{list} of length 2.}
+\format{
+An object of class \code{list} of length 2.
+}
 \source{
 usethis::use_data(ctd_Tasic,overwrite = TRUE)
 }

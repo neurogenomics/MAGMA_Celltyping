@@ -9,6 +9,7 @@
 #' @param downstream_kb How many kb downstream of the gene should SNPs be included?
 #' @param genome_ref_path Path to the folder containing the 1000 genomes .bed files (which can be downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)
 #' @param geneset_species Species name relevant to the genes in the geneset, i.e. "mouse" or "human"
+#' @param specificity_species Species name relevant to the cell type data, i.e. "mouse" or "human"
 #'
 #' @return Filepath for the genes.out file
 #'

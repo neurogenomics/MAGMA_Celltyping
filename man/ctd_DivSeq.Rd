@@ -4,7 +4,9 @@
 \name{ctd_DivSeq}
 \alias{ctd_DivSeq}
 \title{Celltype data (DivSeq)}
-\format{An object of class \code{list} of length 2.}
+\format{
+An object of class \code{list} of length 2.
+}
 \source{
 usethis::use_data(ctd_DivSeq,overwrite = TRUE)
 }

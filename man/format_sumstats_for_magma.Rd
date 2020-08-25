@@ -6,6 +6,9 @@
 \usage{
 format_sumstats_for_magma(path)
 }
+\arguments{
+\item{path}{Filepath for the summary statistics file to be formatted}
+}
 \value{
 col_headers The new column headers for the sumstats file
 }
@@ -14,5 +17,4 @@ Check that sumstats has correct columns and that they are in the correct order f
 }
 \examples{
 format_sumstats_for_magma(path)
-
 }

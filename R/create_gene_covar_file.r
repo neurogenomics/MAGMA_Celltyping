@@ -31,8 +31,10 @@ create_gene_covar_file <- function(genesOutFile,ctd,annotLevel,specificity_speci
         colnames(genesOutCOND_data)[1]="entrezgene"
         
         # Expand the entrez definitions to include other entrez symbols matching the relevant gene symbols
-        data(all_hgnc_wtEntrez);    colnames(all_hgnc_wtEntrez)[1] = "human.symbol"        
-        genesOutCOND_data2 = merge(all_hgnc_wtEntrez,genesOutCOND_data,by="entrezgene")[,c(1,3)]
+        #MAGMA.Celltyping::all_hgnc_wtEntrez    
+        int_all_hgnc_wtEntrez = MAGMA.Celltyping::all_hgnc_wtEntrez
+        colnames(int_all_hgnc_wtEntrez)[1] = "human.symbol"        
+        genesOutCOND_data2 = merge(int_all_hgnc_wtEntrez,genesOutCOND_data,by="entrezgene")[,c(1,3)]
         colnames(genesOutCOND_data2)[1]="entrez"
         
         #quantDat2new = merge(quantDat2,genesOutCOND_data2,by="entrez")

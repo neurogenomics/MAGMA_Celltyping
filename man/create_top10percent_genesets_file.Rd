@@ -24,7 +24,8 @@ create_top10percent_genesets_file(
 Filepath for the gene covar file
 }
 \description{
-The gene covar file is the input to MAGMA for the celltype association analysis. This code was functonalised because it is called by both baseline and conditional analysis.
+The gene covar file is the input to MAGMA for the celltype association analysis. This code was functonalised 
+because it is called by both baseline and conditional analysis.
 }
 \examples{
 library(MAGMA.Celltyping)

@@ -2,18 +2,21 @@
 #'
 #' Convenience function which just does a little formatting to make it easier to use
 #'
-#' @param path Path to a .gcov.out file (if EnrichmentMode=='Linear') or .sets.out (if EnrichmentMode=='Top 10%')
+#' @param path Path to a .gcov.out file (if EnrichmentMode=='Linear') or .sets.out (if EnrichmentMode=='Top 10\%')
 #' @param annotLevel Which annotation level does this .gcov.out file relate to?
 #' @param ctd Cell type data strucutre containing $specificity_quantiles
 #' @param genesOutCOND [Optional] If the analysis controlled for another GWAS, then this is included as a column, otherwise the column is NA
-#' @param EnrichmentMode [Optional] Either 'Linear' or 'Top 10%'. Default assumes Linear.
+#' @param EnrichmentMode [Optional] Either 'Linear' or 'Top 10\%'. Default assumes Linear.
+#' @param ControlForCT [Optional] May be an internal argument. I'd suggest ignoring or take a look at the code to figure it out.
 #'
 #' @return Contents of the .gcov.out file
 #'
 #' @examples
-#' res = load.magma.results.file(path="Raw/adhd_formtcojo.txt.NEW.10UP.1DOWN.gov.out",annotLevel=1,ctd=ctd)
+#' res = load.magma.results.file(path="Raw/adhd_formtcojo.txt.NEW.10UP.1DOWN.gov.out",
+#' annotLevel=1,ctd=ctd)
 #'
 #' @export
+#' @importFrom dplyr rename
 load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,EnrichmentMode="Linear",ControlForCT="BASELINE"){
   # Check EnrichmentMode has correct values
   if(!EnrichmentMode %in% c("Linear","Top 10%")){stop("EnrichmentMode argument must be set to either 'Linear' or 'Top 10%")}
@@ -23,7 +26,6 @@ load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,Enrichme
   #if(EnrichmentMode=="Top 10%" & length(grep(".sets.out$",path))==0){stop("If EnrichmentMode=='Top 10%' then path must end in .sets.out")}  
    if(EnrichmentMode=="Linear" & length(grep(".gsa.out$",path))==0){stop("If EnrichmentMode=='Linear' then path must end in .gsa.out")}        
     
-  library(dplyr)
   res = read.table(path,stringsAsFactors = FALSE)
   colnames(res) = as.character(res[1,])
   res$level=annotLevel

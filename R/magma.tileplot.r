@@ -3,7 +3,8 @@
 #' Used after merging results from multiple GWAS studies
 #'
 #' @param ctd Cell type data strucutre containing $specificity_quantiles
-#' @param ctAssoc1 Output from either merge_magma_results()
+#' @param results Output from either calculate_celltype_associations() or calculate_conditional_celltype_associations()
+#' @param fileTag String apprended to the names of the saved PDFs, i.e. the name of the celltype data file used
 #' @param height Height of the output tileplot
 #' @param width Width of the output tileplot
 #' @param annotLevel Annotation level to plot the results for
