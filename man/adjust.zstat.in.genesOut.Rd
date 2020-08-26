@@ -18,7 +18,7 @@ Used when you want to directly analyse the gene level z-scores corrected for gen
 }
 \examples{
 myGenesOut = tempfile()
-data.table::fwrite(MAGMA.Celltyping::genesOut,sep="\t",file=myGenesOut)
+data.table::fwrite(x=MAGMA.Celltyping::genesOut,sep="\t",file=myGenesOut)
 magmaGenesOut = adjust.zstat.in.genesOut(EWCE::ctd,magma_GenesOut_file=myGenesOut,
 sctSpecies="mouse")
 

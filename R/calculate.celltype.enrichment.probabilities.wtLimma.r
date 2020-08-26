@@ -9,7 +9,7 @@
 #' # The package stores an example genesOut file, so save this to a tempfile
 #' myGenesOut = tempfile()
 #' data.table::fwrite(MAGMA.Celltyping::genesOut,sep="\t",file=myGenesOut)
-#' magmaGenesOut = adjust.zstat.in.genesOut(EWCE::ctd,magma_file=myGenesOut,sctSpecies="mouse")
+#' magmaGenesOut = adjust.zstat.in.genesOut(EWCE::ctd,magma_GenesOut_file=myGenesOut,sctSpecies="mouse")
 #'
 #' @export
 #' @importFrom magrittr %>%

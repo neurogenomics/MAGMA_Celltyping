@@ -3,8 +3,7 @@
 #' @return Save SNP_LOC_DATA to package data
 #'
 #' @examples
-#' build_snp_location_tables()
-#' data(SNP_LOC_DATA)
+#' # build_snp_location_tables()
 #'
 # @import R.utils
 #' @importFrom data.table fread
@@ -18,7 +17,7 @@
 #' @importFrom BiocGenerics pos
 #' @importFrom usethis use_data
 #' @export
-build_snp_location_tables.r <- function(){
+build_snp_location_tables <- function(){
     tmpF1 = tempfile()
     tmpF2 = tempfile()
     utils::download.file("https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip",tmpF1)
