@@ -3,6 +3,7 @@
 export(adjust.zstat.in.genesOut)
 export(build_snp_location_tables)
 export(calculate.celltype.enrichment.probabilities.wtLimma)
+export(calculate.conditional.celltype.enrichment.probabilities.wtLimma)
 export(calculate_celltype_associations)
 export(calculate_conditional_celltype_associations)
 export(calculate_conditional_geneset_enrichment)

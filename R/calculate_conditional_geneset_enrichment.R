@@ -59,7 +59,8 @@ calculate_conditional_geneset_enrichment <- function(geneset,ctd,controlledAnnot
     write.table(ctRows,file=geneSetFile,quote=FALSE,row.names=FALSE,sep="\t",col.names=FALSE)
     
     # Run conditional analysis
-    magma_cmd_cond = sprintf("magma --gene-results '%s.genes.raw' --set-annot '%s' --gene-covar '%s' --model direction=one-sided condition='%s' --out '%s.%s'",magmaPaths$filePathPrefix,geneSetFile,geneCovarFile,ctrldCTs,magmaPaths$filePathPrefix,analysis_name)
+    #magma_cmd_cond = sprintf("magma --gene-results '%s.genes.raw' --set-annot '%s' --gene-covar '%s' --model direction=one-sided condition='%s' --out '%s.%s'",magmaPaths$filePathPrefix,geneSetFile,geneCovarFile,ctrldCTs,magmaPaths$filePathPrefix,analysis_name)
+    magma_cmd_cond = sprintf("magma --gene-results '%s.genes.raw' --set-annot '%s' --gene-covar '%s' --model direction=positive condition='%s' --out '%s.%s'",magmaPaths$filePathPrefix,geneSetFile,geneCovarFile,ctrldCTs,magmaPaths$filePathPrefix,analysis_name)
 
     print(magma_cmd_cond)
     system(magma_cmd_cond)

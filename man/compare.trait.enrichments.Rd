@@ -14,15 +14,15 @@ compare.trait.enrichments(
 )
 }
 \arguments{
-\item{magmaPath1}{Filepath of magma file}
+\item{magmaPath1}{A magma results file}
 
-\item{magmaPath2}{Filepath of magma file}
+\item{magmaPath2}{A magma results file}
 
-\item{magma1}{Results of MAGMA analysis}
+\item{magma1}{A magma results data structure}
 
-\item{magma2}{Results of MAGMA analysis}
+\item{magma2}{A magma results data structure}
 
-\item{annotLevel}{At which annotation level of the CTD should the comparison be done?}
+\item{annotLevel}{Annotation level of the CTD / results file to use}
 
 \item{ctd}{Cell type data strucutre containing $specificity_quantiles}
 }

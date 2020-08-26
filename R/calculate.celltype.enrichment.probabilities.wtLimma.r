@@ -27,7 +27,7 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,th
     }
     
     # First get names of all cell types
-    allCellTypes = colnames(ctd[[1]]$specificity)
+    allCellTypes = colnames(ctd[[annotLevel]]$specificity)
     
     # Initialise variables
     ps = coef = rep(0,length(allCellTypes))
@@ -43,7 +43,7 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,th
         }else{
             mgiS = magmaAdjZ$human.symbol
         }
-        props = ctd[[1]]$specificity[mgiS,ct1]
+        props = ctd[[annotLevel]]$specificity[mgiS,ct1]
         notExp = rep(0,length(props))
         
         # Drop any genes with expression below threshold

@@ -37,8 +37,12 @@ load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,Enrichme
   res=res[-1,]
   
   # Check if some of the variables are ZSTAT (if so, this indicates that another GWAS is being controlled for)
-  isConditionedOnGWAS=sum("ZSTAT" %in% res$VARIABLE)!=0
+  isConditionedOnGWAS=sum(grepl("ZSTAT",colnames(res)))>0
   
+  # The VARIABLE column in MAGMA output is limited by 30 characters. 
+  # If so, use the FULL_NAME column.
+  if(!is.null(res$FULL_NAME)){res$VARIABLE <- res$FULL_NAME}
+
   # Do some error checking
   numCTinCTD = length(colnames(ctd[[annotLevel]]$specificity))
   numCTinRes = dim(res)[1]
@@ -80,7 +84,7 @@ load.magma.results.file <- function(path,annotLevel,ctd,genesOutCOND=NA,Enrichme
   res$CONTROL = paste(ControlForCT,collapse=",")
   res$CONTROL_label = paste(ControlForCT,collapse=",")
   res$log10p = log(res$P,10)
-  res$genesOutCOND = genesOutCOND
+  res$genesOutCOND = paste(genesOutCOND,collapse=" | ")
   res$EnrichmentMode = EnrichmentMode
   #res = res %>% dplyr::rename(Celltype=COVAR)
   res = res %>% dplyr::rename(Celltype=.data$VARIABLE)

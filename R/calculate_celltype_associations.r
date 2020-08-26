@@ -41,21 +41,24 @@ calculate_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name
             # First match quantiles to the genes in the genes.out file... then write as the genesCovar file (the input to MAGMA)
             geneCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",magmaPaths$filePathPrefix),ctd,annotLevel,specificity_species=specificity_species,genesOutCOND)
             
-            if(is.na(genesOutCOND)){
+            if(is.na(genesOutCOND[1])){
                 #magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' onesided --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
                 magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' --model direction=pos --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
             }else{
-                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' --model direction=pos  condition='ZSTAT' --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
+                conditionOn = paste(sprintf("ZSTAT%s",1:length(genesOutCOND)),collapse=",")
+                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' --model direction=pos  condition-residualize='%s' --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,conditionOn,sumstatsPrefix2,analysis_name)
+                #magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --gene-covar '%s' --model direction=pos  condition='%s' --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,conditionOn,sumstatsPrefix2,analysis_name)
             }
         }else if(EnrichmentMode=="Top 10%"){
             # First match quantiles to the genes in the genes.out file... then write as the genesCovar file (the input to MAGMA)
             geneCovarFile = create_top10percent_genesets_file(genesOutFile = sprintf("%s.genes.out",magmaPaths$filePathPrefix),ctd,annotLevel,specificity_species=specificity_species)
             
-            if(is.na(genesOutCOND)){
+            if(is.na(genesOutCOND[1])){
                 magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --set-annot '%s' --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)
             }else{
                 geneCovarFile2 = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",magmaPaths$filePathPrefix),ctd,annotLevel,specificity_species=specificity_species,genesOutCOND)
-                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --set-annot '%s' twosided --gene-covar '%s' condition-only='ZSTAT' --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,geneCovarFile2,sumstatsPrefix2,analysis_name)
+                conditionOn = paste(sprintf("ZSTAT%s",1:length(genesOutCOND)),collapse=",")
+                magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --set-annot '%s' twosided --gene-covar '%s' condition-only='%s' --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,geneCovarFile2,conditionOn,sumstatsPrefix2,analysis_name)
             }
         }
         print(magma_cmd)
