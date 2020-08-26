@@ -17,15 +17,17 @@ magma.tileplot(
 \arguments{
 \item{ctd}{Cell type data strucutre containing $specificity_quantiles}
 
+\item{results}{Output from either calculate_celltype_associations() or calculate_conditional_celltype_associations()}
+
 \item{height}{Height of the output tileplot}
 
 \item{width}{Width of the output tileplot}
 
 \item{annotLevel}{Annotation level to plot the results for}
 
-\item{output_path}{Location where the results should be plotted}
+\item{fileTag}{String apprended to the names of the saved PDFs, i.e. the name of the celltype data file used}
 
-\item{ctAssoc1}{Output from either merge_magma_results()}
+\item{output_path}{Location where the results should be plotted}
 }
 \description{
 Used after merging results from multiple GWAS studies

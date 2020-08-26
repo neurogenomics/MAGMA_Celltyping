@@ -1,6 +1,7 @@
 #' Create gene covar file
 #'
-#' The gene covar file is the input to MAGMA for the celltype association analysis. This code was functonalised because it is called by both baseline and conditional analysis.
+#' The gene covar file is the input to MAGMA for the celltype association analysis. This code was functonalised 
+#' because it is called by both baseline and conditional analysis.
 #'
 #' @param genesOutFile The output of the second call to MAGMA (performed in the map.snps.to.genes function)
 #' @param ctd Cell type data structure. Must contain quantiles.
@@ -11,15 +12,16 @@
 #'
 #' @examples
 #' library(MAGMA.Celltyping)
-#' genesOutFile="/Users/natske/Naomi_Wray_Conditional/Results/Conditional/scz_adj_all_withaut_gsmr_bxy_aric_reference.raw"
-#' load("/Users/natske/Box Sync/Patrick & Julien/CellTypeData_allKImouse_wtHypo_MergedStriatal_1to1only.rda")
-#' ctd = prepare.quantile.groups(ctd,specificity_species="mouse",numberOfBins=40)
-#' geneSetsFilePath = create_top10percent_genesets_file(genesOutFile="",ctd=ctd,annotLevel=1,specificity_species="mouse")
+#' myGenesOut = tempfile()
+#' data.table::fwrite(MAGMA.Celltyping::genesOut,sep="\t",file=myGenesOut)
+#' ctd = prepare.quantile.groups(EWCE::ctd,specificity_species="mouse",numberOfBins=40)
+#' geneSetsFilePath = create_top10percent_genesets_file(genesOutFile=myGenesOut,ctd=ctd,annotLevel=1,
+#' specificity_species="mouse")
 #'
 #' @export
 create_top10percent_genesets_file <- function(genesOutFile,ctd,annotLevel,specificity_species){
     ctd2 = prepare.quantile.groups(ctd,specificity_species=specificity_species,numberOfBins=10)
-    quantDat2 = map_specificity_to_entrez(genesOutFile,ctd2,annotLevel,specificity_species)
+    quantDat2 = map_specificity_to_entrez(ctd=ctd2,annotLevel=annotLevel,specificity_species=specificity_species)
     
     if(dim(quantDat2)[1]<100){stop("Less than one hundred genes detected after mapping genes between species. Was specificity_species defined correctly?")}
     

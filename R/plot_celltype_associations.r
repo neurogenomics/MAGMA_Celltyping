@@ -7,6 +7,10 @@
 #' @param useSignificanceLine TRUE or FALSE. Should their be a vertical line marking bonferroni signifiance? 
 #' @param savePDF TRUE or FALSE. Save figure to file or print to screen?
 #' @param fileTag String apprended to the names of the saved PDFs, i.e. the name of the celltype data file used
+#' @param plotDendro Should the dendrogram of celltypes be shown alongside the figure? TRUE or FALSE
+#' @param gwas_title Title to be displayed over the figure (string)
+#' @param plotLegend Should the figure legend be displayed?
+#' @param figsDir Directory where figures should be created
 #'
 #' @return NULL
 #'
@@ -14,7 +18,9 @@
 #' ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path)
 #'
 #' @import ggplot2
-#' @import cowplot
+#' @importFrom cowplot theme_cowplot
+#' @importFrom grDevices dev.off
+#' @importFrom grDevices pdf
 #' @export
 plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,savePDF=TRUE,fileTag="",plotDendro=TRUE,gwas_title="",plotLegend=TRUE,figsDir=NA){
     
@@ -50,8 +56,7 @@ plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,sav
     }else{  analysisType = "Merged" }
     
     # Generate the plots (for each annotation level seperately)
-    library(cowplot)
-    theme_set(theme_cowplot())
+    theme_set(cowplot::theme_cowplot())
     figures = list()
     for(annotLevel in 1:sum(names(ctAssocs)=="")){
         # SET: NEW COLUMN COMBINING METHODS or ENRICHMENT TYPES
@@ -63,11 +68,11 @@ plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,sav
             ctAssocs[[annotLevel]]$results$Celltype <- factor(ctAssocs[[annotLevel]]$results$Celltype, levels=gsub(" |\\(|\\)","\\.",ctdDendro$ordered_cells))
         }
         
-        a2 <- ggplot(ctAssocs[[annotLevel]]$results, aes(x = factor(Celltype), y = log10p, fill=FullMethod)) + scale_y_reverse()+geom_bar(stat = "identity",position="dodge") + coord_flip() + ylab(expression('-log'[10]*'(pvalue)')) + xlab("")
+        a2 <- ggplot(ctAssocs[[annotLevel]]$results, aes_string(x = "factor(Celltype)", y = "log10p", fill="FullMethod")) + scale_y_reverse()+geom_bar(stat = "identity",position="dodge") + coord_flip() + ylab(expression('-log'[10]*'(pvalue)')) + xlab("")
         a2 <- a2 + theme(legend.position = c(0.5, 0.8)) + ggtitle(gwas_title) + theme(legend.title=element_blank())
         if(plotLegend==FALSE){    a2 = a2 + theme(legend.position="none") }
         if(useSignificanceLine){  a2 = a2+geom_hline(yintercept=log(as.numeric(0.05/ctAssocs$total_baseline_tests_performed),10),colour="black")    }
-        theFig = a2
+        theFig = a2 + theme_cowplot()
         
         # If the results come from a BASELINE analysis... 
         if(length(unique(ctAssocs[[1]]$results$CONTROL))==1){
@@ -77,9 +82,9 @@ plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,sav
             if(savePDF){
                 fName = sprintf("%s/%s.%sUP.%sDOWN.annotLevel%s.Baseline.%s.%s.pdf",figsDir,magmaPaths$gwasFileName,ctAssocs$upstream_kb,ctAssocs$downstream_kb,annotLevel,fileTag,analysisType)
                 print("here")
-                pdf(file=fName,width=10,height=1+2*(dim(ctAssocs[[annotLevel]]$results)[1]/10))
-                    print(grid.arrange(a2,ctdDendro$dendroPlot,ncol=2,widths=c(0.8,0.2)))
-                dev.off()
+                grDevices::pdf(file=fName,width=10,height=1+2*(dim(ctAssocs[[annotLevel]]$results)[1]/10))
+                    print(grid.arrange(a2 + theme_cowplot(),ctdDendro$dendroPlot,ncol=2,widths=c(0.8,0.2)))
+                grDevices::dev.off()
             }else{print(theFig)}            
         # IF THE RESULTS COME FROM A CONDITIONAL ANALYSIS    
         }else{
@@ -87,9 +92,9 @@ plot_celltype_associations <- function(ctAssocs,ctd,useSignificanceLine=TRUE,sav
             
             if(savePDF){
                 fName = sprintf("%s/%s.%sUP.%sDOWN.annotLevel%s.ConditionalFacets.%s.%s.pdf",figsDir,magmaPaths$gwasFileName,ctAssocs$upstream_kb,ctAssocs$downstream_kb,annotLevel,fileTag,analysisType)
-                pdf(file=fName,width=25,height=1+2*(dim(ctAssocs[[annotLevel]]$results)[1]/30))
-                    print(theFig)
-                dev.off()
+                grDevices::pdf(file=fName,width=25,height=1+2*(dim(ctAssocs[[annotLevel]]$results)[1]/30))
+                    print(theFig + theme_cowplot())
+                grDevices::dev.off()
             }else{print(theFig)}            
         }
         figures[[length(figures)+1]] = theFig

@@ -8,7 +8,7 @@
 standardise.sumstats.column.headers.crossplatform(first_line)
 }
 \arguments{
-\item{path}{Filepath for the summary statistics file}
+\item{first_line}{String containing the first line of the sumstats file}
 }
 \value{
 The amended column headers (also the column headers will be written directly into the summary statistics file)

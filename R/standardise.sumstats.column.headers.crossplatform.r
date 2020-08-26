@@ -6,7 +6,7 @@
 #' 
 #' The amended header is written directly back into the file
 #'
-#' @param path Filepath for the summary statistics file
+#' @param first_line String containing the first line of the sumstats file
 #'
 #' @return The amended column headers (also the column headers will be written directly into the summary statistics file)
 #'
@@ -20,14 +20,14 @@ standardise.sumstats.column.headers.crossplatform <- function (first_line)
   print("First line of summary statistics file: ")
   print(first_line)
   print(column_headers)
-  data(sumstatsColHeaders) # Loads the pre-defined "common column names" for GWAS data
+  #data(sumstatsColHeaders) # Loads the pre-defined "common column names" for GWAS data
   
   column_headers = toupper(column_headers)
   print(column_headers)
   
-  for (headerI in 1:dim(sumstatsColHeaders)[1]) {
-    un = sumstatsColHeaders[headerI, 1]
-    cr = sumstatsColHeaders[headerI, 2]
+  for (headerI in 1:dim(MAGMA.Celltyping::sumstatsColHeaders)[1]) {
+    un = MAGMA.Celltyping::sumstatsColHeaders[headerI, 1]
+    cr = MAGMA.Celltyping::sumstatsColHeaders[headerI, 2]
     if (un %in% column_headers & (!cr %in% column_headers)) {
       column_headers = gsub(sprintf("^%s$", un), cr, column_headers)
     }

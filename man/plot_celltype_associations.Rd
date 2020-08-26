@@ -26,6 +26,14 @@ plot_celltype_associations(
 \item{savePDF}{TRUE or FALSE. Save figure to file or print to screen?}
 
 \item{fileTag}{String apprended to the names of the saved PDFs, i.e. the name of the celltype data file used}
+
+\item{plotDendro}{Should the dendrogram of celltypes be shown alongside the figure? TRUE or FALSE}
+
+\item{gwas_title}{Title to be displayed over the figure (string)}
+
+\item{plotLegend}{Should the figure legend be displayed?}
+
+\item{figsDir}{Directory where figures should be created}
 }
 \description{
 Can take input from either calculate_celltype_associations() or calculate_conditional_celltype_associations()

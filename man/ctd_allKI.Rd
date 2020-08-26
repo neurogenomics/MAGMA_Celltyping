@@ -4,7 +4,9 @@
 \name{ctd_allKI}
 \alias{ctd_allKI}
 \title{RSD / CHR / BP for GRCh37 and GRCh38}
-\format{An object of class \code{list} of length 2.}
+\format{
+An object of class \code{list} of length 2.
+}
 \source{
 build_snp_location_tables()
 

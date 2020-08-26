@@ -4,7 +4,9 @@
 \name{ctd_Zeisel2018}
 \alias{ctd_Zeisel2018}
 \title{Celltype data (Zeisel2018)}
-\format{An object of class \code{list} of length 5.}
+\format{
+An object of class \code{list} of length 5.
+}
 \source{
 # Generated on Nathan's Mac: ctd_ZieselAllLevels.Rda
 usethis::use_data(ctd_Zeisel2018,overwrite=TRUE)

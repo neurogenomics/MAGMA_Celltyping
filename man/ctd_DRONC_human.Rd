@@ -4,7 +4,9 @@
 \name{ctd_DRONC_human}
 \alias{ctd_DRONC_human}
 \title{Celltype data (DRONC_human)}
-\format{An object of class \code{list} of length 2.}
+\format{
+An object of class \code{list} of length 2.
+}
 \source{
 # http://www.hjerling-leffler-lab.org/data/scz_singlecell/
 usethis::use_data(ctd_DRONC_human,overwrite=TRUE)

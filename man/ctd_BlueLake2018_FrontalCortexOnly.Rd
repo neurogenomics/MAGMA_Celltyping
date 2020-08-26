@@ -4,7 +4,9 @@
 \name{ctd_BlueLake2018_FrontalCortexOnly}
 \alias{ctd_BlueLake2018_FrontalCortexOnly}
 \title{Celltype data (Blue Lake 2018 Frontal Cortex)}
-\format{An object of class \code{list} of length 2.}
+\format{
+An object of class \code{list} of length 2.
+}
 \source{
 # Generated on Nathan's Mac: ~/Single Cell Datasets/BlueLake2018
 usethis::use_data(ctd_BlueLake2018_FrontalCortexOnly,overwrite=TRUE)

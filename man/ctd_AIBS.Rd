@@ -4,7 +4,9 @@
 \name{ctd_AIBS}
 \alias{ctd_AIBS}
 \title{Celltype data (AIBS)}
-\format{An object of class \code{list} of length 1.}
+\format{
+An object of class \code{list} of length 1.
+}
 \source{
 # http://www.hjerling-leffler-lab.org/data/scz_singlecell/
 usethis::use_data(ctd_AIBS,overwrite=TRUE)

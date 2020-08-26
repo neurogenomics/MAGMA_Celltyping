@@ -4,7 +4,9 @@
 \name{rbfox_binding}
 \alias{rbfox_binding}
 \title{Rbfox binding genes in MGI format}
-\format{An object of class \code{character} of length 4143.}
+\format{
+An object of class \code{character} of length 4143.
+}
 \source{
 rbfox_binding = read.csv("/Users/natske/Google Drive/DiseaseLists/Rbfox_binding.txt",stringsAsFactors = FALSE)[-1,1]
 devtools::use_data(rbfox_binding,overwrite = TRUE)

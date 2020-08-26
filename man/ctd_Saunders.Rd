@@ -4,7 +4,9 @@
 \name{ctd_Saunders}
 \alias{ctd_Saunders}
 \title{Celltype data (Saunders)}
-\format{An object of class \code{list} of length 2.}
+\format{
+An object of class \code{list} of length 2.
+}
 \source{
 # Generated on Nathan's Mac: ctd_SaundersWithLvl1.Rda
 usethis::use_data(ctd_Saunders,overwrite=TRUE)

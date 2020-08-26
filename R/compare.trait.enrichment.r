@@ -1,4 +1,17 @@
-# Test to see which cell types are more enriched in magmaPath2 than magmaPath1
+#' Test to see which cell types are more enriched in magmaPath2 than magmaPath1
+#'
+#' @param magmaPath1 A magma results file
+#' @param magmaPath2 A magma results file
+#' @param magma1 A magma results data structure
+#' @param magma2 A magma results data structure 
+#' @param annotLevel Annotation level of the CTD / results file to use
+#' @param ctd Cell type data strucutre containing $specificity_quantiles
+#'
+#' @return Filepath for the genes.out file
+#'
+#' @export
+#' @importFrom data.table data.table
+#' @importFrom stats pnorm
 compare.trait.enrichments <- function(magmaPath1=NA,magmaPath2=NA,magma1=NA,magma2=NA,annotLevel,ctd){
     if(!is.na(magmaPath1) & !is.na(magmaPath2)){
         magma1 = load.magma.results.file(magmaPath1,annotLevel=annotLevel,ctd=ctd)

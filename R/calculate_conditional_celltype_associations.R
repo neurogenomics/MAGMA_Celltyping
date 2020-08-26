@@ -8,10 +8,11 @@
 #' @param upstream_kb How many kb upstream of the gene should SNPs be included?
 #' @param downstream_kb How many kb downstream of the gene should SNPs be included?
 #' @param genome_ref_path Path to the folder containing the 1000 genomes .bed files (which can be downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)
-#' @param specificity_species Species name relevant to the cell type data, i.e. "mouse" or "human"
+#' @param specificity_species Species name relevant to the cell type data, i.e. 'mouse' or 'human'
 #' @param controlledAnnotLevel Which annotation level should be controlled for
 #' @param controlTopNcells How many of the most significant cell types at that annotation level should be controlled for?
-#' @param controlledCTs Array of the celltype to be controlled for, i.e. c("Interneuron type 16","Medium Spiny Neuron)
+#' @param controlledCTs Array of the celltype to be controlled for, i.e. c('Interneuron type 16','Medium Spiny Neuron')
+#' @param EnrichmentMode [Optional] Either 'Linear' or 'Top 10\%'. Default assumes Linear.
 #'
 #' @return Filepath for the genes.out file
 #'
@@ -19,6 +20,7 @@
 #' ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path)
 #'
 #' @export
+#' @importFrom utils read.table
 calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,analysis_name="MainRun",upstream_kb=10,downstream_kb=1.5,genome_ref_path,controlledAnnotLevel=1,specificity_species="mouse",controlTopNcells=NA,controlledCTs=NA,EnrichmentMode="Linear"){
     # Check EnrichmentMode has correct values
     if(!EnrichmentMode %in% c("Linear","Top 10%")){stop("EnrichmentMode argument must be set to either 'Linear' or 'Top 10%")}
@@ -60,7 +62,7 @@ calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,a
     # Create gene covar file for the controlled for annotation level
     controlledCovarFile = create_gene_covar_file(genesOutFile = sprintf("%s.genes.out",magmaPaths$filePathPrefix),ctd,controlledAnnotLevel,specificity_species=specificity_species)
     # Read in the controlled Covar File
-    controlledCovarData = read.table(controlledCovarFile,stringsAsFactors = FALSE,header=TRUE)
+    controlledCovarData = utils::read.table(controlledCovarFile,stringsAsFactors = FALSE,header=TRUE)
     #colnames(controlledCovarData)[2:length(colnames(controlledCovarData))] = colnames(ctd[[controlledAnnotLevel]]$specificity_quantiles)
     transliterateMap = data.frame(original=colnames(ctd[[controlledAnnotLevel]]$specificity_quantiles),modified=colnames(controlledCovarData)[2:length(colnames(controlledCovarData))],stringsAsFactors = FALSE)
     if(!is.na(controlledCTs[1])){
@@ -86,7 +88,7 @@ calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,a
         for(controlFor in signifCells2){
             if(EnrichmentMode=="Linear"){
                 if(annotLevel!=controlledAnnotLevel){
-                    genesCovarData = read.table(genesCovarFile,stringsAsFactors = FALSE,header=TRUE)
+                    genesCovarData = utils::read.table(genesCovarFile,stringsAsFactors = FALSE,header=TRUE)
                     genesCovarData2 = merge(genesCovarData,controlledCovarCols[,c("entrez",controlFor)])
                     write.table(genesCovarData2,file=genesCovarFile,quote=FALSE,row.names=FALSE,sep="\t")
                 }                
@@ -120,7 +122,7 @@ calculate_conditional_celltype_associations <- function(ctd,gwas_sumstats_path,a
         pastedControls = paste(signifCells2,collapse=",")
         if(EnrichmentMode=="Linear"){
             if(annotLevel!=controlledAnnotLevel){
-                genesCovarData = read.table(genesCovarFile,stringsAsFactors = FALSE,header=TRUE)
+                genesCovarData = utils::read.table(genesCovarFile,stringsAsFactors = FALSE,header=TRUE)
                 genesCovarData2 = merge(genesCovarData,controlledCovarCols[,c("entrez",signifCells2)])
                 write.table(genesCovarData2,file=genesCovarFile,quote=FALSE,row.names=FALSE,sep="\t")
             }        

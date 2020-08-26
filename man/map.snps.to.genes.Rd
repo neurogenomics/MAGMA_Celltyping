@@ -5,7 +5,7 @@
 \title{Map SNPs to their nearby genes}
 \usage{
 map.snps.to.genes(
-  gwas_sumstats_path,
+  path_formatted,
   upstream_kb = 10,
   downstream_kb = 1.5,
   N = NULL,
@@ -13,6 +13,8 @@ map.snps.to.genes(
 )
 }
 \arguments{
+\item{path_formatted}{Filepath of the summary statistics file (which is expected to already be in the required format)}
+
 \item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}
 
 \item{downstream_kb}{How many kb downstream of the gene should SNPs be included?}
@@ -20,8 +22,6 @@ map.snps.to.genes(
 \item{N}{What is the N number for this GWAS? That is cases+controls}
 
 \item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
-
-\item{path}{Filepath of the summary statistics file}
 }
 \value{
 Filepath for the genes.out file
@@ -30,6 +30,6 @@ Filepath for the genes.out file
 Make two external calls to MAGMA. First use it to annotate SNPs onto their neighbouring genes. Second, use it to calculate the gene level trait association.
 }
 \examples{
-genesOutPath = map.snps.to.genes(gwas_sumstats_path)
+genesOutPath = map.snps.to.genes(path_formatted)
 
 }

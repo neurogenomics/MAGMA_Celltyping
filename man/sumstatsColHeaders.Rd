@@ -4,12 +4,14 @@
 \name{sumstatsColHeaders}
 \alias{sumstatsColHeaders}
 \title{Summary Statistics Column Headers}
-\format{An object of class \code{data.frame} with 82 rows and 2 columns.}
+\format{
+An object of class \code{data.frame} with 82 rows and 2 columns.
+}
 \source{
 The code to prepare the .Rda file file from the marker file is:
 \code{
 # Most the data in the below table comes from the LDSC github wiki
-sumstatsColHeaders = read.csv("Magma_Column_headers.csv",stringsAsFactors = FALSE)
+sumstatsColHeaders = read.csv("inst/extdata/Magma_Column_headers.csv",stringsAsFactors = FALSE)
 usethis::use_data(sumstatsColHeaders,overwrite = TRUE)
 }
 }

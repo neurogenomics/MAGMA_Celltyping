@@ -33,11 +33,13 @@ calculate_conditional_celltype_associations(
 
 \item{controlledAnnotLevel}{Which annotation level should be controlled for}
 
-\item{specificity_species}{Species name relevant to the cell type data, i.e. "mouse" or "human"}
+\item{specificity_species}{Species name relevant to the cell type data, i.e. 'mouse' or 'human'}
 
 \item{controlTopNcells}{How many of the most significant cell types at that annotation level should be controlled for?}
 
-\item{controlledCTs}{Array of the celltype to be controlled for, i.e. c("Interneuron type 16","Medium Spiny Neuron)}
+\item{controlledCTs}{Array of the celltype to be controlled for, i.e. c('Interneuron type 16','Medium Spiny Neuron')}
+
+\item{EnrichmentMode}{[Optional] Either 'Linear' or 'Top 10\%'. Default assumes Linear.}
 }
 \value{
 Filepath for the genes.out file

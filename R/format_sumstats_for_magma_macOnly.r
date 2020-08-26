@@ -4,8 +4,9 @@
 #'
 #' @examples
 #' format_sumstats_for_magma_macOnly(path)
-#'
-#' @import data.table
+#' @param path Filepath for the summary statistics file to be formatted
+#' @importFrom data.table fread
+#' @importFrom data.table fwrite
 #' @import stringr
 #' @export
 format_sumstats_for_magma_macOnly <- function(path){
@@ -104,7 +105,6 @@ format_sumstats_for_magma_macOnly <- function(path){
     # If SNP is present... BUT not CHR or BP then need to find the relevant locations
     con <- file(path,"r") ; rows_of_data <- readLines(con,n=2) ; close(con); col_headers = strsplit(rows_of_data[1],"\t")[[1]]
     if(sum(c("CHR","BP") %in% col_headers)==0 & sum("SNP" %in% col_headers)==1){
-        #library(data.table)
         #sumstats = fread(path)
         #SNP_LOC_DATA = load_snp_loc_data()
         #SNP_LOC_DATA_2 = SNP_LOC_DATA[SNP_LOC_DATA$Build=="GRCh37",1:3]
@@ -125,7 +125,6 @@ format_sumstats_for_magma_macOnly <- function(path){
         
         if(genomebuild==1){genomebuild="GRCh37"}else{genomebuild="GRCh38"}
         snpLocDat = SNP_LOC_DATA[SNP_LOC_DATA$Build==genomebuild,][,-4]
-        library(data.table)
         sumstats = fread(path)
         sumstats$CHR = as.factor(sumstats$CHR)
         if(length(grep("chr",sumstats$CHR[1]))!=0){sumstats$CHR = gsub("chr","",sumstats$CHR)}

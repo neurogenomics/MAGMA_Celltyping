@@ -28,11 +28,11 @@ standardise.sumstats.column.headers <- function(path){
     print(column_headers)
     
     # Amend the column headers based on a data table of commonly used names
-    data(sumstatsColHeaders)
+    #data(sumstatsColHeaders)
     column_headers = toupper(column_headers)
-    for(headerI in 1:dim(sumstatsColHeaders)[1]){
-        un = sumstatsColHeaders[headerI,1]
-        cr = sumstatsColHeaders[headerI,2]
+    for(headerI in 1:dim(MAGMA.Celltyping::sumstatsColHeaders)[1]){
+        un = MAGMA.Celltyping::sumstatsColHeaders[headerI,1]
+        cr = MAGMA.Celltyping::sumstatsColHeaders[headerI,2]
         #print(un)
         if(un %in% column_headers & (!cr %in% column_headers)){column_headers=gsub(sprintf("^%s$",un),cr,column_headers)}       
         #if(tolower(un) %in% column_headers){column_headers=gsub(sprintf("^%s$",tolower(un)),cr,column_headers)}               
