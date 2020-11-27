@@ -32,11 +32,18 @@ install_github("nathanskene/MAGMA_Celltyping")
 ```
 ## Using the package (basic usage)
 
-### Set parameters to be used for the analysis
+### Set parameters to be used for the analysis  
+
+Specify where you want the large files to be downloaded to.  
+
+```{r, eval=FALSE}
+storage_dir <- "~/Downloads"
+```
+
 
 ```{r, eval=FALSE}
 # Set path the 1000 genomes reference data.
-genome_ref_dir = "~/Downloads/g1000_eur"
+genome_ref_dir = file.path(storage_dir,"g1000_eur")
 if(!file.exists(sprintf("%s/g1000_eur.bed",genome_ref_dir))){
     download.file("https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip",destfile=sprintf("%s.zip",genome_ref_dir))
     unzip(sprintf("%s.zip",genome_ref_dir),exdir=genome_ref_dir)
@@ -49,7 +56,7 @@ genome_ref_path = sprintf("%s/g1000_eur",genome_ref_dir)
 The EWCE package comes with a celltype specificity dataset which we use as an example. If you want to import your own single cell RNA-seq dataset, then this needs converting into CTD format; please see the EWCE tutorial (https://github.com/NathanSkene/EWCE/) for explanation of how to do this.
 
 
-The One2One package is used to obtain 1:1 orthologs.
+The [One2One](https://github.com/NathanSkene/One2One) package is used to obtain 1:1 orthologs.
 
 ```{r, eval=FALSE }
 library(MAGMA.Celltyping)
@@ -57,13 +64,16 @@ library(MAGMA.Celltyping)
 # Load the celltype data
 data(ctd)
 
-# Load the mouse to human 1:1 orthologs
+# Load the mouse to human 1:1 orthologs from the One2One package
+if(!"One2One" %in% row.names(installed.packages())){
+  devtools::install_github("NathanSkene/One2One")
+}
 data(ortholog_data_Mouse_Human)
 ```
 
 Note that the cell type dataset loaded in the code above is the Karolinksa cortex/hippocampus data only. For the full Karolinska dataset with hypothalamus and midbrain instead use the following:
 
-```{ }
+```{r, eval=FALSE}
 data(ctd_allKI)
 ```
 
@@ -104,7 +114,7 @@ The UK Biobank data from Ben Neale uses GRCh37 so hit '1' when it asks. If you'r
 ```{r, eval=FALSE }
 # Download and unzip the summary statistics file
 library(R.utils)
-gwas_sumstats_path = "~/Downloads/20016_irnt.gwas.imputed_v3.both_sexes.tsv"
+gwas_sumstats_path = file.path(storage_dir,"20016_irnt.gwas.imputed_v3.both_sexes.tsv")
 if(!file.exists(gwas_sumstats_path)){
     #download.file("https://www.dropbox.com/s/shsiq0brkax886j/20016.assoc.tsv.gz?raw=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
     download.file("https://www.dropbox.com/s/t3lrfj1id8133sx/20016_irnt.gwas.imputed_v3.both_sexes.tsv.bgz?dl=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
@@ -112,7 +122,7 @@ if(!file.exists(gwas_sumstats_path)){
 }
 
 # Format it (i.e. column headers etc)
-tmpSumStatsPath = format_sumstats_for_magma(gwas_sumstats_path)
+tmpSumStatsPath = format_sumstats_for_magma(path=gwas_sumstats_path)
 gwas_sumstats_path_formatted = sprintf("%s.formatted",gwas_sumstats_path)
 file.copy(from=tmpSumStatsPath,to=gwas_sumstats_path_formatted,overwrite = TRUE)
 ```
@@ -121,7 +131,8 @@ file.copy(from=tmpSumStatsPath,to=gwas_sumstats_path_formatted,overwrite = TRUE)
 ### Map SNPs to Genes
 
 ```{r, eval=FALSE}
-genesOutPath = map.snps.to.genes(gwas_sumstats_path_formatted,genome_ref_path=genome_ref_path)
+genesOutPath = map.snps.to.genes(path_formatted=gwas_sumstats_path_formatted,
+                                 genome_ref_path=genome_ref_path)
 ```
 
 ### Run the main cell type association analysis
@@ -129,22 +140,32 @@ genesOutPath = map.snps.to.genes(gwas_sumstats_path_formatted,genome_ref_path=ge
 The analyses can be run in either linear or top10% enrichment modes. Let's start with linear:
 
 ```{r, eval=FALSE }
-ctAssocsLinear = calculate_celltype_associations(ctd,gwas_sumstats_path_formatted,genome_ref_path=genome_ref_path,specificity_species = "mouse")
-FigsLinear = plot_celltype_associations(ctAssocsLinear,ctd=ctd)
+ctAssocsLinear = calculate_celltype_associations(ctd=ctd,
+                                                 gwas_sumstats_path=gwas_sumstats_path_formatted,
+                                                 genome_ref_path=genome_ref_path,
+                                                 specificity_species = "mouse")
+FigsLinear = plot_celltype_associations(ctAssocs=ctAssocsLinear,
+                                        ctd=ctd)
 ```
 
 Now let's add the top 10% mode
 
 ```{r, eval=FALSE }
-ctAssocsTop = calculate_celltype_associations(ctd,gwas_sumstats_path_formatted,genome_ref_path=genome_ref_path,EnrichmentMode = "Top 10%")
-FigsTopDecile = plot_celltype_associations(ctAssocsTop,ctd=ctd)
+ctAssocsTop = calculate_celltype_associations(ctd=ctd,
+                                              gwas_sumstats_path=gwas_sumstats_path_formatted,
+                                              genome_ref_path=genome_ref_path,
+                                              EnrichmentMode="Top 10%")
+FigsTopDecile = plot_celltype_associations(ctAssocs=ctAssocsTop,
+                                           ctd=ctd)
 ```
 
 Then plot linear together with the top decile mode
 
 ```{r, eval=FALSE }
-ctAssocMerged = merge_magma_results(ctAssocsLinear,ctAssocsTop)
-FigsMerged = plot_celltype_associations(ctAssocMerged,ctd=ctd)
+ctAssocMerged = merge_magma_results(ctAssoc1=ctAssocsLinear,
+                                    ctAssoc2=ctAssocsTop)
+FigsMerged = plot_celltype_associations(ctAssocs=ctAssocMerged,
+                                        ctd=ctd)
 ```
 
 ### Run the conditional cell type association analysis (linear mode)

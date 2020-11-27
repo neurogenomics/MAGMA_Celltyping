@@ -47,7 +47,7 @@ map.snps.to.genes <- function(path_formatted,upstream_kb=10,downstream_kb=1.5,N=
     magma_cmd = sprintf("magma --annotate window=%s,%s --snp-loc '%s' --gene-loc '%s' --out '%s'",upstream_kb,downstream_kb,path_formatted,genomeLocFile,outPath)
     system(magma_cmd)
     
-    # SCHIZ CLOZUK N=35802
+    # SCHIZ CLOZUK N=35802 
     magma_cmd = sprintf("magma --bfile '%s' --pval '%s' %s --gene-annot '%s.genes.annot' --out '%s'",path.expand(genome_ref_path),path_formatted,n_arg,magmaPaths$filePathPrefix,outPath)
     #magma_cmd
     system(magma_cmd)

@@ -2,7 +2,41 @@ Using MAGMA to find causative celltypes for genetically complex traits
 using MAGMA
 ================
 Nathan Skene & Julien Bryois
-2020-04-02
+2020-11-27
+
+-   [Introduction](#introduction)
+-   [Installation](#installation)
+-   [Using the package (basic usage)](#using-the-package-basic-usage)
+    -   [Set parameters to be used for the
+        analysis](#set-parameters-to-be-used-for-the-analysis)
+    -   [Install and load all the required R packages and
+        data](#install-and-load-all-the-required-r-packages-and-data)
+    -   [Prepare quantile groups for
+        celltypes](#prepare-quantile-groups-for-celltypes)
+    -   [Download summary statistics file & check it is properly
+        formatted](#download-summary-statistics-file-check-it-is-properly-formatted)
+    -   [Map SNPs to Genes](#map-snps-to-genes)
+    -   [Run the main cell type association
+        analysis](#run-the-main-cell-type-association-analysis)
+    -   [Run the conditional cell type association analysis (linear
+        mode)](#run-the-conditional-cell-type-association-analysis-linear-mode)
+-   [Conditional analyses (top 10%
+    mode)](#conditional-analyses-top-10-mode)
+-   [Controlling for a second GWAS](#controlling-for-a-second-gwas)
+    -   [Download and prepare the ‘Prospective memory’ GWAS summary
+        statistics](#download-and-prepare-the-prospective-memory-gwas-summary-statistics)
+    -   [Check which cell types this GWAS is associated with at
+        baseline](#check-which-cell-types-this-gwas-is-associated-with-at-baseline)
+    -   [Compare enrichments in the two GWAS using a tile
+        plot](#compare-enrichments-in-the-two-gwas-using-a-tile-plot)
+    -   [Check which cell types ‘Fluid Intelligence’ is associated with
+        after controlling for ‘Prospective
+        memory’](#check-which-cell-types-fluid-intelligence-is-associated-with-after-controlling-for-prospective-memory)
+-   [Calculate cell type enrichments directly (using linear
+    model)](#calculate-cell-type-enrichments-directly-using-linear-model)
+-   [Gene set enrichments](#gene-set-enrichments)
+-   [Who do I talk to?](#who-do-i-talk-to)
+-   [Citation](#citation)
 
 <!-- Readme.md is generated from Readme.Rmd. Please edit that file -->
 
@@ -37,9 +71,15 @@ Then install this package as follows:
 
 ### Set parameters to be used for the analysis
 
+Specify where you want the large files to be downloaded to.
+
+``` r
+storage_dir <- "~/Downloads"
+```
+
 ``` r
 # Set path the 1000 genomes reference data.
-genome_ref_dir = "~/Downloads/g1000_eur"
+genome_ref_dir = file.path(storage_dir,"g1000_eur")
 if(!file.exists(sprintf("%s/g1000_eur.bed",genome_ref_dir))){
     download.file("https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip",destfile=sprintf("%s.zip",genome_ref_dir))
     unzip(sprintf("%s.zip",genome_ref_dir),exdir=genome_ref_dir)
@@ -55,7 +95,8 @@ dataset, then this needs converting into CTD format; please see the EWCE
 tutorial (<https://github.com/NathanSkene/EWCE/>) for explanation of how
 to do this.
 
-The One2One package is used to obtain 1:1 orthologs.
+The [One2One](https://github.com/NathanSkene/One2One) package is used to
+obtain 1:1 orthologs.
 
 ``` r
 library(MAGMA.Celltyping)
@@ -63,7 +104,10 @@ library(MAGMA.Celltyping)
 # Load the celltype data
 data(ctd)
 
-# Load the mouse to human 1:1 orthologs
+# Load the mouse to human 1:1 orthologs from the One2One package
+if(!"One2One" %in% row.names(installed.packages())){
+  devtools::install_github("NathanSkene/One2One")
+}
 data(ortholog_data_Mouse_Human)
 ```
 
@@ -71,7 +115,9 @@ Note that the cell type dataset loaded in the code above is the
 Karolinksa cortex/hippocampus data only. For the full Karolinska dataset
 with hypothalamus and midbrain instead use the following:
 
-    data(ctd_allKI)
+``` r
+data(ctd_allKI)
+```
 
 Or for the DRONC seq or AIBS datasets use
 
@@ -87,8 +133,7 @@ First we need to calculate the quantile groups for each celltype within
 the single cell dataset. This is done using the
 `prepare.quantile.groups` function. If your single cell dataset is not
 from mouse, then change the specificity\_species argument. If you wish
-to use a smaller number of bins
-then
+to use a smaller number of bins then
 
 ``` r
 ctd = prepare.quantile.groups(ctd,specificity_species="mouse",numberOfBins=40)
@@ -112,10 +157,10 @@ is not possible to write a generic function for this. If it doesn’t work
 then what you will need to roll your sleeves up and just reformat the
 file yourself such that the following criteria are met:
 
-  - SNP, CHR, BP as first three columns.
-  - It has at least one of these columns:
+-   SNP, CHR, BP as first three columns.
+-   It has at least one of these columns:
     (“Z”,“OR”,“BETA”,“LOG\_ODDS”,“SIGNED\_SUMSTAT”)
-  - It has all of these columns: (“SNP”,“CHR”,“BP”,“P”,“A1”,“A2”)
+-   It has all of these columns: (“SNP”,“CHR”,“BP”,“P”,“A1”,“A2”)
 
 The UK Biobank data from Ben Neale uses GRCh37 so hit ‘1’ when it asks.
 If you’re using your own data and it asks you’ll need to check this.
@@ -123,52 +168,58 @@ If you’re using your own data and it asks you’ll need to check this.
 ``` r
 # Download and unzip the summary statistics file
 library(R.utils)
-gwas_sumstats_path = "~/Downloads/20016_irnt.gwas.imputed_v3.both_sexes.tsv"
+gwas_sumstats_path = file.path(storage_dir,"20016_irnt.gwas.imputed_v3.both_sexes.tsv")
 if(!file.exists(gwas_sumstats_path)){
     #download.file("https://www.dropbox.com/s/shsiq0brkax886j/20016.assoc.tsv.gz?raw=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
-  download.file("https://www.dropbox.com/s/t3lrfj1id8133sx/20016_irnt.gwas.imputed_v3.both_sexes.tsv.bgz?dl=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
+    download.file("https://www.dropbox.com/s/t3lrfj1id8133sx/20016_irnt.gwas.imputed_v3.both_sexes.tsv.bgz?dl=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
     gunzip(sprintf("%s.gz",gwas_sumstats_path),gwas_sumstats_path)
 }
 
 # Format it (i.e. column headers etc)
-col_headers = format_sumstats_for_magma(gwas_sumstats_path)
+tmpSumStatsPath = format_sumstats_for_magma(path=gwas_sumstats_path)
+gwas_sumstats_path_formatted = sprintf("%s.formatted",gwas_sumstats_path)
+file.copy(from=tmpSumStatsPath,to=gwas_sumstats_path_formatted,overwrite = TRUE)
 ```
-
-If you are not using a mac to run this code, then
-`format_sumstats_for_magma` will probably crash. A crossplatform
-alternative was contributed by another user:
-`format_sumstats_for_magma_crossplatform`.
 
 ### Map SNPs to Genes
 
 ``` r
-genesOutPath = map.snps.to.genes(gwas_sumstats_path,genome_ref_path=genome_ref_path)
+genesOutPath = map.snps.to.genes(path_formatted=gwas_sumstats_path_formatted,
+                                 genome_ref_path=genome_ref_path)
 ```
 
 ### Run the main cell type association analysis
 
 The analyses can be run in either linear or top10% enrichment modes.
-Let’s start with
-linear:
+Let’s start with linear:
 
 ``` r
-ctAssocsLinear = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,specificity_species = "mouse")
-FigsLinear = plot_celltype_associations(ctAssocsLinear,ctd=ctd)
+ctAssocsLinear = calculate_celltype_associations(ctd=ctd,
+                                                 gwas_sumstats_path=gwas_sumstats_path_formatted,
+                                                 genome_ref_path=genome_ref_path,
+                                                 specificity_species = "mouse")
+FigsLinear = plot_celltype_associations(ctAssocs=ctAssocsLinear,
+                                        ctd=ctd)
 ```
 
-Now let’s add the top 10%
-mode
+Now let’s add the top 10% mode
 
 ``` r
-ctAssocsTop = calculate_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,EnrichmentMode = "Top 10%")
-FigsTopDecile = plot_celltype_associations(ctAssocsTop,ctd=ctd)
+ctAssocsTop = calculate_celltype_associations(ctd=ctd,
+                                              gwas_sumstats_path=gwas_sumstats_path_formatted,
+                                              genome_ref_path=genome_ref_path,
+                                              EnrichmentMode="Top 10%")
+FigsTopDecile = plot_celltype_associations(ctAssocs=ctAssocsTop,
+                                           ctd=ctd)
 ```
 
 Then plot linear together with the top decile mode
 
 ``` r
-ctAssocMerged = merge_magma_results(ctAssocsLinear,ctAssocsTop)
-FigsMerged = plot_celltype_associations(ctAssocMerged,ctd=ctd)
+ctAssocMerged = merge_magma_results(ctAssoc1=ctAssocsLinear,
+                                    ctAssoc2=ctAssocsTop)
+FigsMerged = plot_celltype_associations(ctAssocs=ctAssocMerged,
+                                        ctd=ctd)
 ```
 
 ### Run the conditional cell type association analysis (linear mode)
@@ -181,23 +232,21 @@ case, set controlTopNcells) or control for specific specified cell types
 
 ``` r
 # Conditional analysis
-ctCondAssocs = calculate_conditional_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,analysis_name = "Conditional",controlTopNcells=2)
+ctCondAssocs = calculate_conditional_celltype_associations(ctd,gwas_sumstats_path_formatted,genome_ref_path=genome_ref_path,analysis_name = "Conditional",controlTopNcells=2)
 plot_celltype_associations(ctCondAssocs,ctd=ctd)
 ```
 
 Let’s try as an alternative to control for expression of both the level
-1 pyramidal neuron types at the same
-time
+1 pyramidal neuron types at the same time
 
 ``` r
-ctCondAssocs = calculate_conditional_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,analysis_name = "Conditional",controlledCTs=c("pyramidal CA1","pyramidal SS","interneurons"),controlledAnnotLevel=1)
+ctCondAssocs = calculate_conditional_celltype_associations(ctd,gwas_sumstats_path_formatted,genome_ref_path=genome_ref_path,analysis_name = "Conditional",controlledCTs=c("pyramidal CA1","pyramidal SS","interneurons"),controlledAnnotLevel=1)
 plot_celltype_associations(ctCondAssocs,ctd=ctd)
 ```
 
 Note that Periventricular Microglia (PVM) go from totally
 non-significant to significant once the neurons are controlled for. Test
-if this change is significant as
-follows:
+if this change is significant as follows:
 
 ``` r
 magma1 = ctCondAssocs[[2]]$results[ctCondAssocs[[2]]$results$CONTROL=="BASELINE",]
@@ -206,18 +255,17 @@ resCompared = compare.trait.enrichments(magma1=magma1,magma2=magma2,annotLevel=2
 resCompared[1:3,]
 ```
 
-Using this approach we can see that the increasd enrichment is microglia
-in the controlled analysis is almost significantly increased relative to
-the baseline analysis.
+Using this approach we can see that the increased enrichment is
+microglia in the controlled analysis is almost significantly increased
+relative to the baseline analysis.
 
 ## Conditional analyses (top 10% mode)
 
 Conditional analyses can also be performed with top 10% mode (although
-the conditioning is done in linear
-mode)
+the conditioning is done in linear mode)
 
 ``` r
-ctCondAssocsTopTen = calculate_conditional_celltype_associations(ctd,gwas_sumstats_path,genome_ref_path=genome_ref_path,analysis_name = "Conditional",controlledCTs=c("pyramidal CA1","pyramidal SS","interneurons"),controlledAnnotLevel=1,EnrichmentMode = "Top 10%")
+ctCondAssocsTopTen = calculate_conditional_celltype_associations(ctd,gwas_sumstats_path_formatted,genome_ref_path=genome_ref_path,analysis_name = "Conditional",controlledCTs=c("pyramidal CA1","pyramidal SS","interneurons"),controlledAnnotLevel=1,EnrichmentMode = "Top 10%")
 plot_celltype_associations(ctCondAssocsTopTen,ctd=ctd)
 ```
 
@@ -234,30 +282,32 @@ from the UK Biobank.
 the UK Biobank.
 
 So let’s subtract genes associated with prospective memory from those
-involved in fluid
-intelligence.
+involved in fluid intelligence.
 
 ### Download and prepare the ‘Prospective memory’ GWAS summary statistics
 
 ``` r
 # Download and unzip the summary statistics file
 library(R.utils)
-gwas_sumstats_path = "~/Downloads/20018.assoc.tsv"
+gwas_sumstats_path = "~/Downloads/20018.gwas.imputed_v3.both_sexes.tsv"
 if(!file.exists(gwas_sumstats_path)){
-    download.file("https://www.dropbox.com/s/shsiq0brkax886j/20016.assoc.tsv.gz?raw=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
+    download.file("https://www.dropbox.com/s/j6mde051pl8k8vu/20018.gwas.imputed_v3.both_sexes.tsv.bgz?dl=1",destfile=sprintf("%s.gz",gwas_sumstats_path))
     gunzip(sprintf("%s.gz",gwas_sumstats_path),gwas_sumstats_path)
 }
 
 # Format & map SNPs to genes
-col_headers = format_sumstats_for_magma(gwas_sumstats_path)
-genesOutPath = map.snps.to.genes(gwas_sumstats_path,genome_ref_path=genome_ref_path)
+tmpSumStatsPath = format_sumstats_for_magma(gwas_sumstats_path)
+gwas_sumstats_path_formatted = sprintf("%s.formatted",gwas_sumstats_path)
+file.copy(from=tmpSumStatsPath,to=gwas_sumstats_path_formatted,overwrite = TRUE)
+
+genesOutPath = map.snps.to.genes(gwas_sumstats_path_formatted,genome_ref_path=genome_ref_path)
 ```
 
 ### Check which cell types this GWAS is associated with at baseline
 
 ``` r
-gwas_sumstats_path_Memory = "~/Downloads/20018.assoc.tsv"
-gwas_sumstats_path_Intelligence = "~/Downloads/20016.assoc.tsv"
+gwas_sumstats_path_Memory = "~/Downloads/20018.gwas.imputed_v3.both_sexes.tsv.formatted"
+gwas_sumstats_path_Intelligence = "~/Downloads/20016.gwas.imputed_v3.both_sexes.tsv.formatted"
 ctAssocsLinearMemory = calculate_celltype_associations(ctd,gwas_sumstats_path_Memory,genome_ref_path=genome_ref_path,specificity_species = "mouse")
 ctAssocsLinearIntelligence = calculate_celltype_associations(ctd,gwas_sumstats_path_Intelligence,genome_ref_path=genome_ref_path,specificity_species = "mouse")
 plot_celltype_associations(ctAssocsLinearMemory,ctd=ctd)
@@ -283,14 +333,13 @@ FigsLinear = plot_celltype_associations(ctAssocsLinear,ctd=ctd,fileTag = "Contro
 ```
 
 We find that after controlling for prospective memory, there is no
-significant enrichment left associated with fluid
-intelligence.
+significant enrichment left associated with fluid intelligence.
 
 ## Calculate cell type enrichments directly (using linear model)
 
 ``` r
 magmaGenesOut = adjust.zstat.in.genesOut(ctd,magma_file="/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",sctSpecies="mouse")
-output = calculate.celltype.enrichment.probabilities.wtLimma(magmaAdjZ=magmaGenesOut,ctd,thresh=0.0001,sctSpecies="mouse")
+output = calculate.celltype.enrichment.probabilities.wtLimma(magmaAdjZ=magmaGenesOut,ctd,thresh=0.0001,sctSpecies="mouse",annotLevel=4)
 ```
 
 We can then get the probability of the celltype being enriched as
@@ -337,7 +386,7 @@ cond_geneset_res = calculate_conditional_geneset_enrichment(geneset,ctd,controll
 
 If you have any issues using the package then please get in touch with
 Nathan Skene (nathan.skene at ki.se). Bug reports etc are all most
-welcome, we want the package to be easy to use for everyone\!
+welcome, we want the package to be easy to use for everyone!
 
 ## Citation
 
@@ -348,7 +397,7 @@ schizophrenia. Nature Genetics,
 2018.](https://www.nature.com/articles/s41588-018-0129-5)
 
 The package utilises the MAGMA package developed in the Complex Trait
-Genetics lab at VU university (not us\!) so please also cite their work:
+Genetics lab at VU university (not us!) so please also cite their work:
 
 [de Leeuw, et al. MAGMA: Generalized gene-set analysis of GWAS data.
 PLoS Comput Biol,
@@ -373,7 +422,7 @@ with the 2018 paper then please cite the following papers:
 
 [La Manno, et al. Molecular Diversity of Midbrain Development in Mouse,
 Human, and Stem Cells. Cell,
-2016.](http://www.cell.com/cell/fulltext/S0092-8674\(16\)31309-5)
+2016.](http://www.cell.com/cell/fulltext/S0092-8674(16)31309-5)
 
 [Romanov, et al. Molecular interrogation of hypothalamic organization
 reveals distinct dopamine neuronal subtypes. Nature Neuroscience,
