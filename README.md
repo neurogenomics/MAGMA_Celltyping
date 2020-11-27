@@ -62,10 +62,27 @@ publishable results then you must cite their publication (listed below).
 The executable should be copied to /usr/local/bin so that R can find it.
 Then install this package as follows:
 
-    install.packages("devtools")
-    library(devtools)
-    install_github("nathanskene/ewce")
-    install_github("nathanskene/MAGMA_Celltyping")
+``` r
+if(!"devtools" %in% row.names(installed.packages())){
+  install.packages("devtools")
+}
+library(devtools)
+
+if(!"EWCE" %in% row.names(installed.packages())){
+  install_github("NathanSkene/EWCE")
+}
+library(EWCE) 
+
+if(!"MAGMA.Celltyping" %in% row.names(installed.packages())){
+  install_github("NathanSkene/MAGMA_Celltyping")
+}
+library(MAGMA.Celltyping) # Note the "." instead of "_"
+
+if(!"One2One" %in% row.names(installed.packages())){
+  devtools::install_github("NathanSkene/One2One")
+}
+library(One2One)
+```
 
 ## Using the package (basic usage)
 
@@ -99,15 +116,10 @@ The [One2One](https://github.com/NathanSkene/One2One) package is used to
 obtain 1:1 orthologs.
 
 ``` r
-library(MAGMA.Celltyping)
-
 # Load the celltype data
 data(ctd)
 
 # Load the mouse to human 1:1 orthologs from the One2One package
-if(!"One2One" %in% row.names(installed.packages())){
-  devtools::install_github("NathanSkene/One2One")
-}
 data(ortholog_data_Mouse_Human)
 ```
 
