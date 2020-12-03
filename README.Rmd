@@ -22,7 +22,7 @@ This R package contains code used for testing which cell types can explain the h
 
 Before installing this package it is neccesary to install the magma software package. Please download it from https://ctg.cncr.nl/software/magma. Please do note, the magma software which forms the backend of this package was developed by Christian de Leeuw from Daniella Posthuma's lab. If you use this package to generate publishable results then you must cite their publication (listed below).
 
-The magma executable should be copied to a directory that is on the $PATH (e.g. '/usr/local/bin') so that R can find it. Alternatively you can download it to whereever you want to and add the folder containing it to your [$PATH](https://www.howtogeek.com/658904/how-to-add-a-directory-to-your-path-in-linux/). That is, if you've placed the file in "~/Packages/" and you use bash (instead of e.g. zsh) then add to '~/.bash_profile' this line "export PATH=~/Packages/magma:$PATH". Then install this package as follows:
+The magma executable should be copied to a directory that is on the $PATH (e.g. '/usr/local/bin') so that R can find it. Alternatively you can download it to whereever you want to and add the folder containing it to your [PATH](https://www.howtogeek.com/658904/how-to-add-a-directory-to-your-path-in-linux/). That is, if you've placed the file in '\~/Packages/' and you use bash (instead of e.g. zsh) then add to '~/.bash_profile' this line "export PATH=\~/Packages/magma:\$PATH". Then install this package as follows:
 
 ```{r, eval=FALSE}
 if(!"devtools" %in% row.names(installed.packages())){

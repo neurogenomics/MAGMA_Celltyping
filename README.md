@@ -2,41 +2,41 @@ Using MAGMA to find causative celltypes for genetically complex traits
 using MAGMA
 ================
 Nathan Skene & Julien Bryois
-2020-11-27
+2020-12-03
 
--   [Introduction](#introduction)
--   [Installation](#installation)
--   [Using the package (basic usage)](#using-the-package-basic-usage)
-    -   [Set parameters to be used for the
+  - [Introduction](#introduction)
+  - [Installation](#installation)
+  - [Using the package (basic usage)](#using-the-package-basic-usage)
+      - [Set parameters to be used for the
         analysis](#set-parameters-to-be-used-for-the-analysis)
-    -   [Install and load all the required R packages and
+      - [Install and load all the required R packages and
         data](#install-and-load-all-the-required-r-packages-and-data)
-    -   [Prepare quantile groups for
+      - [Prepare quantile groups for
         celltypes](#prepare-quantile-groups-for-celltypes)
-    -   [Download summary statistics file & check it is properly
+      - [Download summary statistics file & check it is properly
         formatted](#download-summary-statistics-file-check-it-is-properly-formatted)
-    -   [Map SNPs to Genes](#map-snps-to-genes)
-    -   [Run the main cell type association
+      - [Map SNPs to Genes](#map-snps-to-genes)
+      - [Run the main cell type association
         analysis](#run-the-main-cell-type-association-analysis)
-    -   [Run the conditional cell type association analysis (linear
+      - [Run the conditional cell type association analysis (linear
         mode)](#run-the-conditional-cell-type-association-analysis-linear-mode)
--   [Conditional analyses (top 10%
+  - [Conditional analyses (top 10%
     mode)](#conditional-analyses-top-10-mode)
--   [Controlling for a second GWAS](#controlling-for-a-second-gwas)
-    -   [Download and prepare the ‘Prospective memory’ GWAS summary
+  - [Controlling for a second GWAS](#controlling-for-a-second-gwas)
+      - [Download and prepare the ‘Prospective memory’ GWAS summary
         statistics](#download-and-prepare-the-prospective-memory-gwas-summary-statistics)
-    -   [Check which cell types this GWAS is associated with at
+      - [Check which cell types this GWAS is associated with at
         baseline](#check-which-cell-types-this-gwas-is-associated-with-at-baseline)
-    -   [Compare enrichments in the two GWAS using a tile
+      - [Compare enrichments in the two GWAS using a tile
         plot](#compare-enrichments-in-the-two-gwas-using-a-tile-plot)
-    -   [Check which cell types ‘Fluid Intelligence’ is associated with
+      - [Check which cell types ‘Fluid Intelligence’ is associated with
         after controlling for ‘Prospective
         memory’](#check-which-cell-types-fluid-intelligence-is-associated-with-after-controlling-for-prospective-memory)
--   [Calculate cell type enrichments directly (using linear
+  - [Calculate cell type enrichments directly (using linear
     model)](#calculate-cell-type-enrichments-directly-using-linear-model)
--   [Gene set enrichments](#gene-set-enrichments)
--   [Who do I talk to?](#who-do-i-talk-to)
--   [Citation](#citation)
+  - [Gene set enrichments](#gene-set-enrichments)
+  - [Who do I talk to?](#who-do-i-talk-to)
+  - [Citation](#citation)
 
 <!-- Readme.md is generated from Readme.Rmd. Please edit that file -->
 
@@ -59,8 +59,14 @@ which forms the backend of this package was developed by Christian de
 Leeuw from Daniella Posthuma’s lab. If you use this package to generate
 publishable results then you must cite their publication (listed below).
 
-The executable should be copied to /usr/local/bin so that R can find it.
-Then install this package as follows:
+The magma executable should be copied to a directory that is on the
+$PATH (e.g. ‘/usr/local/bin’) so that R can find it. Alternatively you
+can download it to whereever you want to and add the folder containing
+it to your
+[PATH](https://www.howtogeek.com/658904/how-to-add-a-directory-to-your-path-in-linux/).
+That is, if you’ve placed the file in ‘\~/Packages/’ and you use bash
+(instead of e.g. zsh) then add to ‘\~/.bash\_profile’ this line “export
+PATH=\~/Packages/magma:$PATH”. Then install this package as follows:
 
 ``` r
 if(!"devtools" %in% row.names(installed.packages())){
@@ -169,10 +175,10 @@ is not possible to write a generic function for this. If it doesn’t work
 then what you will need to roll your sleeves up and just reformat the
 file yourself such that the following criteria are met:
 
--   SNP, CHR, BP as first three columns.
--   It has at least one of these columns:
+  - SNP, CHR, BP as first three columns.
+  - It has at least one of these columns:
     (“Z”,“OR”,“BETA”,“LOG\_ODDS”,“SIGNED\_SUMSTAT”)
--   It has all of these columns: (“SNP”,“CHR”,“BP”,“P”,“A1”,“A2”)
+  - It has all of these columns: (“SNP”,“CHR”,“BP”,“P”,“A1”,“A2”)
 
 The UK Biobank data from Ben Neale uses GRCh37 so hit ‘1’ when it asks.
 If you’re using your own data and it asks you’ll need to check this.
@@ -398,7 +404,7 @@ cond_geneset_res = calculate_conditional_geneset_enrichment(geneset,ctd,controll
 
 If you have any issues using the package then please get in touch with
 Nathan Skene (nathan.skene at ki.se). Bug reports etc are all most
-welcome, we want the package to be easy to use for everyone!
+welcome, we want the package to be easy to use for everyone\!
 
 ## Citation
 
@@ -409,7 +415,7 @@ schizophrenia. Nature Genetics,
 2018.](https://www.nature.com/articles/s41588-018-0129-5)
 
 The package utilises the MAGMA package developed in the Complex Trait
-Genetics lab at VU university (not us!) so please also cite their work:
+Genetics lab at VU university (not us\!) so please also cite their work:
 
 [de Leeuw, et al. MAGMA: Generalized gene-set analysis of GWAS data.
 PLoS Comput Biol,
@@ -434,7 +440,7 @@ with the 2018 paper then please cite the following papers:
 
 [La Manno, et al. Molecular Diversity of Midbrain Development in Mouse,
 Human, and Stem Cells. Cell,
-2016.](http://www.cell.com/cell/fulltext/S0092-8674(16)31309-5)
+2016.](http://www.cell.com/cell/fulltext/S0092-8674\(16\)31309-5)
 
 [Romanov, et al. Molecular interrogation of hypothalamic organization
 reveals distinct dopamine neuronal subtypes. Nature Neuroscience,
