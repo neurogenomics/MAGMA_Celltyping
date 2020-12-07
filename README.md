@@ -403,7 +403,7 @@ cond_geneset_res = calculate_conditional_geneset_enrichment(geneset,ctd,controll
 ## Who do I talk to?
 
 If you have any issues using the package then please get in touch with
-Nathan Skene (nathan.skene at ki.se). Bug reports etc are all most
+Nathan Skene (n.skene at imperial.ac.uk). Bug reports etc are all most
 welcome, we want the package to be easy to use for everyone\!
 
 ## Citation
