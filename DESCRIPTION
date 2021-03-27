@@ -21,7 +21,7 @@ Imports: EWCE,
         SNPlocs.Hsapiens.dbSNP144.GRCh37, purrr, usethis
 Suggests: knitr, BiocStyle,
     rmarkdown
-Remotes: nathanskene/ewce,
+Remotes: neurogenomics/ewce,
     nathanskene/one2one
 SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
 biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
