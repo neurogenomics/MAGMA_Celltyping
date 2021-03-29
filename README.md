@@ -75,7 +75,7 @@ if(!"devtools" %in% row.names(installed.packages())){
 library(devtools)
 
 if(!"EWCE" %in% row.names(installed.packages())){
-  install_github("NathanSkene/EWCE")
+  install_github("neurogenomics/EWCE")
 }
 library(EWCE) 
 
@@ -115,7 +115,7 @@ genome_ref_path = sprintf("%s/g1000_eur",genome_ref_dir)
 The EWCE package comes with a celltype specificity dataset which we use
 as an example. If you want to import your own single cell RNA-seq
 dataset, then this needs converting into CTD format; please see the EWCE
-tutorial (<https://github.com/NathanSkene/EWCE/>) for explanation of how
+tutorial (<https://github.com/neurogenomics/EWCE/>) for explanation of how
 to do this.
 
 The [One2One](https://github.com/NathanSkene/One2One) package is used to
