@@ -12,7 +12,7 @@
 #' genesCovarFilePath = create_gene_covar_file(genesOutFile,ctd)
 #'
 #' @export
-map_specificity_to_entrez <- function(ctd,annotLevel,specificity_species){
+map_specificity_to_entrez <- function(ctd,annotLevel,specificity_species, return_ctd=F){
     # Check specificity_species
     if(!specificity_species %in% c("human","mouse")){stop("Specificity species must be either 'human' or 'mouse'")}
     
@@ -39,5 +39,8 @@ map_specificity_to_entrez <- function(ctd,annotLevel,specificity_species){
         quantDat2 = suppressWarnings(data.frame(entrez=entrezTable$entrez,quantDat))
         quantDat2 = quantDat2[!duplicated(quantDat2$entrez),]
     }
-    return(quantDat2)
+    if(return_ctd){
+        ctd[[annotLevel]]$quantDat2 <- quantDat2
+        return(ctd)
+    }else {return(quantDat2)} 
 }

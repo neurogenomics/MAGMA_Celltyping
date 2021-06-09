@@ -31,12 +31,12 @@ if(!"devtools" %in% row.names(installed.packages())){
 library(devtools)
 
 if(!"EWCE" %in% row.names(installed.packages())){
-  install_github("NathanSkene/EWCE")
+  devtools::install_github("NathanSkene/EWCE")
 }
 library(EWCE) 
 
 if(!"MAGMA.Celltyping" %in% row.names(installed.packages())){
-  install_github("NathanSkene/MAGMA_Celltyping")
+  devtools::install_github("NathanSkene/MAGMA_Celltyping")
 }
 library(MAGMA.Celltyping) # Note the "." instead of "_"
 

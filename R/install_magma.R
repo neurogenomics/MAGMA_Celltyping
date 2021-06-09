@@ -8,7 +8,7 @@
 #' 
 #' @source [MAGMA website](https://ctg.cncr.nl/software/magma)
 #' @source [MAGMA.celltyping documentation](https://github.com/NathanSkene/MAGMA_Celltyping)
-install_magma <- function(dest="~"){ 
+install_magma <- function(dest_dir="~"){ 
     
     get_os <- function () {
         OS=""
@@ -16,10 +16,13 @@ install_magma <- function(dest="~"){
                Windows= {OS="Windows"},
                Linux  = {OS="Linux"},
                Darwin = {OS="Mac"})
-        return(OS)
+        return(OS) 
     }
-    
-    check_magma <- system("magma", intern=T)
+    check_magma <- ""
+    try({
+        check_magma <- system("magma", intern=T)
+    })
+   
     
     if(check_magma[1]=="No arguments specified. Please consult manual for usage instructions."){
         message("MAGMA already installed.")
@@ -40,7 +43,7 @@ install_magma <- function(dest="~"){
         message("MAGMA installation complete.")
         message("MAGMA path:\n",destpath)
         # Create a symlink to the actualy magma executable
-        # R.utils::createLink(link="/usr/local/bin/magma",
-        #                     target=file.path(gsub(".zip","",destfile),"magma")) 
+        R.utils::createLink(link="/usr/local/bin/magma",
+                            target=file.path(destpath,"magma"))
     }
 }

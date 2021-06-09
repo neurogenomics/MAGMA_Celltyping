@@ -13,7 +13,10 @@
 #' magmaPaths = get.magma.paths(gwas_sumstats_path,upstream_kb,downstream_kb)
 #'
 #' @export
-get.magma.paths <- function(gwas_sumstats_path=NA,upstream_kb=NA,downstream_kb=NA,output_path=NA){
+get.magma.paths <- function(gwas_sumstats_path=NA,
+                            upstream_kb=NA,
+                            downstream_kb=NA,
+                            output_path=NA){
     # Error checking
     if(is.na(gwas_sumstats_path) & is.na(output_path)){stop("Either gwas_sumstats_path or output_path must be specified")}
     #if(!is.na(gwas_sumstats_path) & !is.na(output_path)){stop("Only gwas_sumstats_path or output_path should be specified, not both")}

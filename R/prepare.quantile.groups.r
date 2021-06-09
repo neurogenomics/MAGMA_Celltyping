@@ -20,6 +20,10 @@
 #' @importFrom One2One analyse.orthology
 #' @export
 prepare.quantile.groups <- function(ctd,specificity_species="mouse",gwas_species="human",numberOfBins=41){
+    ### Account for changes in naming conventions across EWCE versions ####
+    bin_columns_func <- if(packageVersion("EWCE")>="1.0.0"){EWCE::bin_columns_into_quantiles}else EWCE::bin.columns.into.quantiles
+    bin_specificity_func <- if(packageVersion("EWCE")>="1.0.0"){EWCE::bin_specificity_into_quantiles}else EWCE::bin.specificity.into.quantiles
+    
     #library(tibble)
     # First drop all genes without 1:1 homologs
     if(specificity_species != gwas_species){
@@ -43,7 +47,7 @@ prepare.quantile.groups <- function(ctd,specificity_species="mouse",gwas_species
     }
     
     bin.expression.into.quantiles <- function(spcMatrix,numberOfBins){
-        spcMatrix$expr_quantiles = apply(spcMatrix$linear_normalised_mean_exp,2,FUN=EWCE::bin.columns.into.quantiles,numberOfBins=numberOfBins)
+        spcMatrix$expr_quantiles = apply(spcMatrix$linear_normalised_mean_exp,2,FUN=bin_columns_func,numberOfBins=numberOfBins)
         rownames(spcMatrix$expr_quantiles) = rownames(spcMatrix$linear_normalised_mean_exp)
         return(spcMatrix)
     }
@@ -58,15 +62,15 @@ prepare.quantile.groups <- function(ctd,specificity_species="mouse",gwas_species
         spcMatrix$spec_dist = max(spcMatrix$spec_dist)-spcMatrix$spec_dist
         return(spcMatrix)
     }
-    bin.specificityDistance.into.quantiles <- function(spcMatrix){
-        spcMatrix$specDist_quantiles = apply(spcMatrix$spec_dist,2,FUN=EWCE::bin.columns.into.quantiles)
+    bin.specificityDistance.into.quantiles <- function(spcMatrix){  
+        spcMatrix$specDist_quantiles = apply(spcMatrix$spec_dist,2,FUN=bin_columns_func)
         rownames(spcMatrix$specDist_quantiles) = rownames(spcMatrix$spec_dist)
         return(spcMatrix)
-    }    
-    ctd = lapply(ctd,normalise.mean.exp)
-    ctd = lapply(ctd,EWCE::bin.specificity.into.quantiles,numberOfBins=numberOfBins)
+    }     
+    ctd = lapply(ctd, normalise.mean.exp)
+    ctd = lapply(ctd, bin_specificity_func, numberOfBins=numberOfBins)
     #ctd = lapply(ctd,bin.expression.into.quantiles)
-    ctd = lapply(ctd,use.distance.to.add.expression.level.info)
-    ctd = lapply(ctd,bin.specificityDistance.into.quantiles)
+    ctd = lapply(ctd, use.distance.to.add.expression.level.info)
+    ctd = lapply(ctd, bin.specificityDistance.into.quantiles)
     return(ctd)
 }
