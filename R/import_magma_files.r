@@ -20,7 +20,7 @@
 #' @examples 
 #' local_files <- import_magma_files(download_dir=".")
 #' @export 
-import_magma_files <- function(download_dir=".",
+import_magma_files <- function(download_dir=tempdir(),
                                file_types=c(".genes.raw",".genes.out"),
                                overwrite=F,
                                nThread=parallel::detectCores()-2){ 
@@ -67,7 +67,7 @@ GITHUB.list_files <- function(creator="neurogenomics",
 
 
 GITHUB.download_files <- function(filelist,
-                                  download_dir="./", 
+                                  download_dir=tempdir(), 
                                   overwrite=F,
                                   nThread=parallel::detectCores()-2,
                                   verbose=T){ 

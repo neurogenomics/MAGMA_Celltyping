@@ -16,17 +16,19 @@ map_specificity_to_entrez <- function(ctd,annotLevel,specificity_species, return
     # Check specificity_species
     if(!specificity_species %in% c("human","mouse")){stop("Specificity species must be either 'human' or 'mouse'")}
     
-    int_all_hgnc_wtEntrez = MAGMA.Celltyping::all_hgnc_wtEntrez
+    int_all_hgnc_wtEntrez <- MAGMA.Celltyping::all_hgnc_wtEntrez
     colnames(int_all_hgnc_wtEntrez)[1] = "human.symbol"
     
     if(specificity_species=="mouse"){
         # Because sumstats use entrez genes & ctd uses gene symbols, match entrez-->symbols
-        entrez_mgi = merge(int_all_hgnc_wtEntrez,One2One::ortholog_data_Mouse_Human$orthologs_one2one[,2:3],by="human.symbol")
+        entrez_mgi = merge(int_all_hgnc_wtEntrez,
+                           One2One::ortholog_data_Mouse_Human$orthologs_one2one[,2:3],
+                           by="human.symbol")
         entrez_mgi = entrez_mgi[!is.na(entrez_mgi$entrezgene),]
         entrez_mgi = entrez_mgi[entrez_mgi$mouse.symbol %in% rownames(ctd[[annotLevel]]$specificity_quantiles),] 
         
         # Get the quantiles from ctd and put into correct format, using entrez symbols
-        quantDat = ctd[[annotLevel]]$specificity_quantiles[entrez_mgi$mouse.symbol,]
+        quantDat = as.matrix(ctd[[annotLevel]]$specificity_quantiles[entrez_mgi$mouse.symbol,])
         quantDat2 = suppressWarnings(data.frame(entrez=entrez_mgi$entrezgene,quantDat))
         quantDat2 = quantDat2[!duplicated(quantDat2$entrez),]
     }
@@ -35,7 +37,7 @@ map_specificity_to_entrez <- function(ctd,annotLevel,specificity_species, return
         # Get the quantiles from ctd and put into correct format, using entrez symbols
         humanSymsPresent = as.character(int_all_hgnc_wtEntrez$human.symbol[int_all_hgnc_wtEntrez$human.symbol %in% rownames(ctd[[annotLevel]]$specificity_quantiles)])
         entrezTable = int_all_hgnc_wtEntrez[int_all_hgnc_wtEntrez$human.symbol %in% humanSymsPresent,]
-        quantDat = ctd[[annotLevel]]$specificity_quantiles[as.character(entrezTable$human.symbol),]
+        quantDat = as.matrix(ctd[[annotLevel]]$specificity_quantiles[as.character(entrezTable$human.symbol),])
         quantDat2 = suppressWarnings(data.frame(entrez=entrezTable$entrez,quantDat))
         quantDat2 = quantDat2[!duplicated(quantDat2$entrez),]
     }

@@ -9,7 +9,7 @@
 [MAGMA.celltyping documentation](https://github.com/NathanSkene/MAGMA_Celltyping)
 }
 \usage{
-install_magma(dest = "~")
+install_magma(dest_dir = "~")
 }
 \description{
 Install the MAGMA command line tool

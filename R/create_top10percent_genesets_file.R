@@ -17,15 +17,15 @@
 #' ctd = prepare.quantile.groups(ctd=ewceData::ctd(),specificity_species="mouse",numberOfBins=40)
 #' geneSetsFilePath = create_top10percent_genesets_file(genesOutFile=myGenesOut,ctd=ctd,annotLevel=1, specificity_species="mouse")
 #' @export
-create_top10percent_genesets_file <- function(genesOutFile,ctd,annotLevel,specificity_species){
+create_top10percent_genesets_file <- function(genesOutFile,
+                                              ctd,
+                                              annotLevel,
+                                              specificity_species){
     #### Map genes first so that the deciles computed in the following step only include usable genes ####
-    ctd2 =lapply(ctd, function(ctd_lvl){
-        map_specificity_to_entrez(ctd=ctd_lvl,annotLevel=annotLevel,specificity_species=specificity_species, return_ctd = T)
-    })
-    
     ctd2 = map_specificity_to_entrez(ctd=ctd,annotLevel=annotLevel,specificity_species=specificity_species, return_ctd = T)
-    quantDat2 = prepare.quantile.groups(ctd2,specificity_species=specificity_species,numberOfBins=10)
-    
+    ctd3 = prepare.quantile.groups(ctd2,specificity_species=specificity_species,numberOfBins=10)
+    quantDat2 <- ctd3[[annotLevel]]$quantDat2
+    print(paste("+",dim(quantDat2)[1],"genes extracted from top10% specificity."))
     if(dim(quantDat2)[1]<100){stop("Less than one hundred genes detected after mapping genes between species. Was specificity_species defined correctly?")}
     
     cts = setdiff(colnames(quantDat2),"entrez")

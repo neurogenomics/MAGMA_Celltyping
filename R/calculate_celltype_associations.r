@@ -67,7 +67,10 @@ calculate_celltype_associations <- function(ctd,
                 }
             }else if(EnrichmentMode=="Top 10%"){
                 # First match quantiles to the genes in the genes.out file... then write as the genesCovar file (the input to MAGMA)
-                geneCovarFile = create_top10percent_genesets_file(genesOutFile = sprintf("%s.genes.out",magmaPaths$filePathPrefix),ctd,annotLevel,specificity_species=specificity_species)
+                geneCovarFile = create_top10percent_genesets_file(genesOutFile = sprintf("%s.genes.out",magmaPaths$filePathPrefix),
+                                                                  ctd = ctd,
+                                                                  annotLevel = annotLevel,
+                                                                  specificity_species=specificity_species)
                 
                 if(is.na(genesOutCOND[1])){
                     magma_cmd = sprintf("magma --gene-results '%s.genes.raw' --set-annot '%s' --out '%s.%s'",magmaPaths$filePathPrefix,geneCovarFile,sumstatsPrefix2,analysis_name)

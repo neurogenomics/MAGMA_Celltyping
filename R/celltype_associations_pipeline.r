@@ -55,7 +55,7 @@ celltype_associations_pipeline <- function(ctd,
         if(run_linear){
             message("+ Calculating celltype associations: linear mode") 
             ctAssocsLinear <- tryCatch(expr = {
-                calculate_celltype_associations(ctd = CTD,
+                calculate_celltype_associations(ctd = ctd,
                                                 gwas_sumstats_path = fake_gwas_ss,
                                                 genome_ref_path=genome_ref_path,
                                                 upstream_kb = upstream_kb,
@@ -70,7 +70,7 @@ celltype_associations_pipeline <- function(ctd,
         if(run_top10){
             message("+ Calculating celltype associations: top10% mode") 
             ctAssocsTop <- tryCatch(expr = { 
-                calculate_celltype_associations(ctd = CTD,
+                calculate_celltype_associations(ctd = ctd,
                                                 gwas_sumstats_path=fake_gwas_ss,
                                                 genome_ref_path=genome_ref_path,
                                                 EnrichmentMode="Top 10%",
@@ -94,7 +94,7 @@ celltype_associations_pipeline <- function(ctd,
         if(run_condition){ 
             message("+ Calculating celltype associations: conditional mode") 
             ctCondAssocs <- tryCatch({
-                calculate_conditional_celltype_associations(ctd = CTD,
+                calculate_conditional_celltype_associations(ctd = ctd,
                                                             gwas_sumstats_path = fake_gwas_ss,
                                                             genome_ref_path=genome_ref_path,
                                                             analysis_name = paste(ctd_name,suffix_condition,sep="."),
