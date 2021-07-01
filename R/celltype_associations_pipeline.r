@@ -24,6 +24,7 @@
 #'
 #' @examples
 #' \dontrun{
+#' library(MAGMA.Celltyping)
 #' local_files <- import_magma_files(download_dir=".")
 #' magma_dirs <- unique(dirname(local_files))
 #' res <- celltype_associations_pipeline(ctd=ewceData::ctd(), ctd_name="Zeisel2018", magma_dirs=magma_dirs, genome_ref_path="~/Downloads/g1000_eur/g1000_eur")
