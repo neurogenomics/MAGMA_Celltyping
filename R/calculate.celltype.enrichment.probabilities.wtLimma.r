@@ -31,13 +31,27 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,
                                                                 thresh=0.0001,
                                                                 sctSpecies="mouse",
                                                                 annotLevel=1,
+                                                                celltypes=NULL,
                                                                 return_all=F){ 
     if("hgnc_symbol" %in% colnames(magmaAdjZ)){
         magmaAdjZ = magmaAdjZ %>% dplyr::rename(human.symbol=.data$hgnc_symbol)
     }
     
     # First get names of all cell types
-    allCellTypes = colnames(ctd[[annotLevel]]$specificity)
+    #### Ensure cell-type names are processed the same as in the MAGMA.Celltyping pipeline
+    message("+ Preparing specificity matrix")
+    spec <- ctd[[annotLevel]]$specificity
+    og_colnames <- colnames(spec)
+    spec <- as.matrix(data.frame(spec))
+    allCellTypes = colnames(spec)
+    celltype_dict <- setNames(og_colnames, allCellTypes)
+  
+    if(!is.null(celltypes)){ 
+        selected_celltypes <- unname(get_celltype_dict(all_df = data.frame(Celltype=celltypes, dummy=1))) 
+        allCellTypes <- allCellTypes[tolower(allCellTypes) %in% tolower(selected_celltypes)]
+        message("+ ",length(allCellTypes)," cell-types selected.") 
+    }
+    
     
     # Initialise variables
     ps = coef = rep(0,length(allCellTypes))
@@ -55,7 +69,7 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,
         }else{
             mgiS = magmaAdjZ$human.symbol
         }
-        props = ctd[[annotLevel]]$specificity[mgiS,ct1]
+        props = spec[mgiS,ct1]
         notExp = rep(0,length(props))
         
         # Drop any genes with expression below threshold
@@ -100,18 +114,22 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,
     }
     
     if(return_all){ 
-     
-        res_all_df <- data.table::rbindlist(res_all, idcol = "Celltype")
-        input_all_df <- data.table::rbindlist(input_all,idcol = "Celltype") %>%
+        #### res df
+        res_all_df <- data.table::rbindlist(res_all, idcol = "Celltype_id") 
+        res_all_df <- res_all_df %>%
+            tibble::add_column(res_all_df, 
+                               Celltype=celltype_dict[res_all_df$Celltype_id],
+                               .after = "Celltype_id")  %>%
+            dplyr::mutate(ctd_level=annotLevel)
+        #### input df
+        input_all_df <- data.table::rbindlist(input_all,idcol = "Celltype_id") %>%
             dplyr::rename(specificity_proportion=proportion, 
-                          specificity_decile=percentile)
-        celltype_dict <- get_celltype_dict(all_df = res_all_df)
-        res_all_df <- tibble::add_column(res_all_df, 
-                                          Celltype_id=celltype_dict[res_all_df$Celltype],
-                                          .after = "Celltype")
-         input_all_df <- tibble::add_column(input_all_df, 
-                                   Celltype_id=celltype_dict[input_all_df$Celltype],
-                                   .after = "Celltype")
+                          specificity_decile=percentile) 
+        input_all_df <- input_all_df %>%
+            tibble::add_column(input_all_df, 
+                               Celltype=celltype_dict[input_all_df$Celltype_id],
+                               .after = "Celltype_id") %>%
+            dplyr::mutate(ctd_level=annotLevel)
         
         return(list(input=input_all_df,
                     results=res_all_df

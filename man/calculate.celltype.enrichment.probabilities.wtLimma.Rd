@@ -11,6 +11,7 @@ calculate.celltype.enrichment.probabilities.wtLimma(
   thresh = 1e-04,
   sctSpecies = "mouse",
   annotLevel = 1,
+  celltypes = NULL,
   return_all = F
 )
 }
