@@ -30,7 +30,7 @@ calculate_celltype_associations <- function(ctd,
                                              specificity_species="mouse",
                                              genesOutCOND=NA,
                                              EnrichmentMode="Linear",
-                                             force_new=F){
+                                             force_new=F){ 
     # Check EnrichmentMode has correct values
     if(!EnrichmentMode %in% c("Linear","Top 10%")){stop("EnrichmentMode argument must be set to either 'Linear' or 'Top 10%")}
     
@@ -40,15 +40,14 @@ calculate_celltype_associations <- function(ctd,
     # Check for errors in arguments
     check_inputs_to_magma_celltype_analysis(ctd,gwas_sumstats_path,analysis_name,upstream_kb,downstream_kb,genome_ref_path)
     
-    
-    
     output = list()
     for(annotLevel in 1:length(ctd)){
         # Prepare output list
         tmp = list() 
         sumstatsPrefix2 = sprintf("%s.level%s",magmaPaths$filePathPrefix, annotLevel) 
         path = sprintf("%s.%s.gsa.out", sumstatsPrefix2, analysis_name)
-        
+        #### Need to make sure colnames still match after theyre edited by prepare.quantile.groups step
+        ctd <- standardise_ctd(ctd = ctd, lvl = annotLevel) 
         geneCovarFile <- NULL 
         print(path)
         
@@ -86,8 +85,9 @@ calculate_celltype_associations <- function(ctd,
             message("+ Importing precomputed MAGMA results...")
         }
         tmp$geneCovarFile = geneCovarFile
-        tmp$results = load.magma.results.file(path,annotLevel,
-                                              ctd,
+        tmp$results = load.magma.results.file(path = path,
+                                              annotLevel = annotLevel,
+                                              ctd = ctd,
                                               genesOutCOND=genesOutCOND,
                                               EnrichmentMode=EnrichmentMode,
                                               ControlForCT="BASELINE")
@@ -108,4 +108,17 @@ calculate_celltype_associations <- function(ctd,
     output$genome_ref_path = genome_ref_path
     
     return(output)
+}
+
+
+standardise_ctd <- function(ctd, lvl){
+    #### Need to make sure colnames still match after theyre edited by prepare.quantile.groups step
+    message("+ Standardising CTD.")
+    for(nm in names(ctd[[lvl]])){
+        if(nm!="annot" & !is.null(dim(ctd[[lvl]][[nm]])) ){ 
+            ctd[[lvl]][[nm]] <- as.matrix(data.frame(as.matrix(ctd[[lvl]][[nm]])))
+            colnames(ctd[[lvl]][[nm]]) <- make.unique(colnames(ctd[[lvl]][[nm]]))
+        } 
+    }
+    return(ctd)
 }

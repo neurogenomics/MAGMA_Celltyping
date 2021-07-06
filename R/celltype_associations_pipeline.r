@@ -45,6 +45,10 @@ celltype_associations_pipeline <- function(ctd,
                                           suffix_condition="condition",
                                           controlTopNcells=1,
                                           force_new=F){ 
+    ### Example 
+    # magma_dir<- "/Users/schilder/Desktop/model_celltype_conservation/raw_data/MAGMA/MAGMA_Files/ADHD_iPSYCH.all.annotated.35UP.10DOWN";upstream_kb=35;downstream_kb=10; specificity_species="human"; genome_ref_path=path.expand("~/Desktop/model_celltype_conservation/raw_data/MAGMA/g1000_eur/g1000_eur"); suffix_linear="linear";suffix_top10="top10";suffix_condition="condition";controlTopNcells=1; ctd_name="Aerts2021"
+    
+    
     ## Establish vars in case some are not computed.
     ctAssocsLinear <- NULL; ctAssocsTop <- NULL; ctCondAssocs <- NULL; ctAssocMerged <- NULL;
     

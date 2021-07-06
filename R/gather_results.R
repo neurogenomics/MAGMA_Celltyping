@@ -30,6 +30,7 @@ gather_results <- function(MAGMA_results,
         # Remove unlabeled cell clusters
         subset(!startsWith(Celltype,"X")) %>%
         dplyr::mutate(FDR=p.adjust(p = P, method="fdr"),
+                      Celltype_id=Celltype,
                       Celltype=gsub(paste(dataset_name,species,"[.]",sep="|")," ", Celltype)) %>% 
         dplyr::arrange(FDR)
     ### Save 
