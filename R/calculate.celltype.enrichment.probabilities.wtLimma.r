@@ -1,15 +1,21 @@
 #' Calculate celltype enrichments without MAGMA using adjusted MAGMA Z-statistic from .genes.out files
 #'
 #' @param magmaAdjZ Output from adjust.zstat.in.genesOut()
-#' @param ctd Cell type data structure
+#' @param ctd CellTypeData object
 #' @param thresh A threshold on low specificity values (used to drop genes)
 #' @param sctSpecies Either 'human' or 'mouse'
-#'
+#' @param annotLevel CellTypeData level to test
+#' #'
 #' @examples
-#' # The package stores an example genesOut file, so save this to a tempfile
+#' library(MAGMA.Celltyping)
+#' library(ewceData)
+#' ctd <- ewceData::ctd()
+#'
+#'  # The package stores an example genesOut file, so save this to a tempfile
 #' myGenesOut = tempfile()
 #' data.table::fwrite(MAGMA.Celltyping::genesOut,sep="\t",file=myGenesOut)
-#' magmaGenesOut = adjust.zstat.in.genesOut(EWCE::ctd,magma_GenesOut_file=myGenesOut,sctSpecies="mouse")
+#' magmaAdjZ = adjust.zstat.in.genesOut(ctd, magma_GenesOut_file=myGenesOut,sctSpecies="mouse")
+#' ps <- calculate.celltype.enrichment.probabilities.wtLimma(magmaAdjZ=magmaAdjZ, ctd=ctd)
 #'
 #' @export
 #' @importFrom magrittr %>%
@@ -20,8 +26,12 @@
 #' @importFrom limma topTable
 #' @importFrom stats quantile
 #' @importFrom rlang .data
-calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,thresh=0.0001,sctSpecies="mouse"){
-    
+calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,
+                                                                ctd,
+                                                                thresh=0.0001,
+                                                                sctSpecies="mouse",
+                                                                annotLevel=1,
+                                                                return_all=F){ 
     if("hgnc_symbol" %in% colnames(magmaAdjZ)){
         magmaAdjZ = magmaAdjZ %>% dplyr::rename(human.symbol=.data$hgnc_symbol)
     }
@@ -35,6 +45,8 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,th
     
     # Loop over each celltype testing for enrichment
     count=0
+    res_all <- list()
+    input_all <- list()
     for(ct1 in allCellTypes){
         count=count+1
         print(ct1)
@@ -68,8 +80,9 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,th
                 dplyr::rename(human.symbol=.data$hgnc_symbol) %>% merge(magmaAdjZ,by="human.symbol") %>%
                 dplyr::filter(.data$percentile>=0)            
         }
+        input_all[[ct1]] <- magma_with_ct1
         
-        # Fit a linear model and get p,-value and coefficient (slope)
+        # Fit a linear model and get p-value and coefficient (slope)
         expMat = matrix(0,nrow=1,ncol=dim(magma_with_ct1)[1])
         expMat[1,] = magma_with_ct1$ADJ_ZSTAT
         rownames(expMat) = c("actual")
@@ -83,6 +96,37 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,ctd,th
         
         # Convert p-value to one-sided
         ps[count] = res$P.Value
+        res_all[[ct1]] <- res
     }
-    return(ps)
+    
+    if(return_all){ 
+     
+        res_all_df <- data.table::rbindlist(res_all, idcol = "Celltype")
+        input_all_df <- data.table::rbindlist(input_all,idcol = "Celltype") %>%
+            dplyr::rename(specificity_proportion=proportion, 
+                          specificity_decile=percentile)
+        celltype_dict <- get_celltype_dict(all_df = res_all_df)
+        res_all_df <- tibble::add_column(res_all_df, 
+                                          Celltype_id=celltype_dict[res_all_df$Celltype],
+                                          .after = "Celltype")
+         input_all_df <- tibble::add_column(input_all_df, 
+                                   Celltype_id=celltype_dict[input_all_df$Celltype],
+                                   .after = "Celltype")
+        
+        return(list(input=input_all_df,
+                    results=res_all_df
+        ))
+    }else {return(ps)}
+}
+
+
+get_celltype_dict <- function(all_df){
+    ##### Celltype names get changed during MAGMA_Celltyping. Translate here
+    tmp <- all_df
+    tmp$dummy <- 1
+    tmp <- t(unique(tmp[,c("Celltype","dummy")]))
+    colnames(tmp) <- tmp[1,]
+    tmp <- data.frame(tmp)
+    celltype_dict <- setNames(colnames(tmp),tmp[1,])
+    return(celltype_dict)
 }
