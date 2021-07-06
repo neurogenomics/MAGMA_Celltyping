@@ -56,11 +56,11 @@ load.magma.results.file <- function(path,
   if(ControlForCT[1]=="BASELINE" & !isConditionedOnGWAS){
     if(numCTinCTD!=numCTinRes){
      if( abs(numCTinCTD-numCTinRes)>as.integer(numCTinRes*.5)){
-       stop(sprintf("%s celltypes in ctd but %s in results file. Did you provide the correct annotLevel?",numCTinCTD,numCTinRes)) 
+       stop(sprintf(">50% of celltypes missing. %s celltypes in ctd but %s in results file. Did you provide the correct annotLevel?",numCTinCTD,numCTinRes)) 
      }
       message(sprintf("%s celltypes in ctd but %s in results file. 
                       Some cell-types may have been dropped due to 'variance is too low (set contains only one gene used in analysis)'.",numCTinCTD,numCTinRes))
-      message("<50% of celltypes mismatched. Attemping to fix by removing mismatching cell-types:\n   ",
+      message("<50% of celltypes missing. Attemping to fix by removing missing cell-types:\n   ",
               paste(BiocGenerics::setdiff(colnames(ctd[[annotLevel]]$specificity), res$VARIABLE),collapse = "\n   "))
       ctd_colnames <- colnames(ctd[[annotLevel]]$specificity)
       res <- subset(res, VARIABLE %in% ctd_colnames) 
