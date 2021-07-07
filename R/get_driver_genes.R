@@ -6,7 +6,9 @@
 #' @param magma_res Merged results from \code{MAGMA.Celltyping::gather_results}. 
 #' @param fdr_thresh FDR threshold for \code{magma_res}.
 #' @param GenesOut_dir Folder to search for \emph{.genes.out} files implicated in \code{magma_res}.  
-#' 
+#' @param n_genes Max number of drive genes to return per cell-type enrichment.
+#' @param spec_deciles Which \emph{specificity_proportion} deciles to include when calculating driver genes. 
+#' (10 = most specific). 
 #' 
 #' @export
 get_driver_genes <- function(ctd,

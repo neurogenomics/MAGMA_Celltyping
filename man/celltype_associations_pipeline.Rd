@@ -19,7 +19,8 @@ celltype_associations_pipeline(
   suffix_top10 = "top10",
   suffix_condition = "condition",
   controlTopNcells = 1,
-  force_new = F
+  force_new = F,
+  save_dir = tempdir()
 )
 }
 \arguments{
@@ -54,6 +55,8 @@ from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
 \item{controlTopNcells}{How many of the most significant cell types at that annotation level should be controlled for?}
 
 \item{force_new}{[Optional] Force new MAGMA analyses even if the pre-existing results files are detected.}
+
+\item{save_dir}{Folder to save results in (\code{save_dir=NULL} to not save any results).}
 }
 \value{
 A list containing the results of each selected celltype associations analysis.

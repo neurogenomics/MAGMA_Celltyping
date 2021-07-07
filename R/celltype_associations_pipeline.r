@@ -19,6 +19,7 @@
 #' @param suffix_condition This will be added to the conditional results file name.
 #' @inheritParams calculate_celltype_associations
 #' @inheritParams calculate_conditional_celltype_associations
+#' @param save_dir Folder to save results in (\code{save_dir=NULL} to not save any results).
 #' 
 #' @return A list containing the results of each selected celltype associations analysis.
 #'
@@ -44,7 +45,8 @@ celltype_associations_pipeline <- function(ctd,
                                           suffix_top10="top10",
                                           suffix_condition="condition",
                                           controlTopNcells=1,
-                                          force_new=F){ 
+                                          force_new=F,
+                                          save_dir=tempdir()){ 
     ### Example 
     # magma_dir<- "/Users/schilder/Desktop/model_celltype_conservation/raw_data/MAGMA/MAGMA_Files/ADHD_iPSYCH.all.annotated.35UP.10DOWN";upstream_kb=35;downstream_kb=10; specificity_species="human"; genome_ref_path=path.expand("~/Desktop/model_celltype_conservation/raw_data/MAGMA/g1000_eur/g1000_eur"); suffix_linear="linear";suffix_top10="top10";suffix_condition="condition";controlTopNcells=1; ctd_name="Aerts2021"
     
@@ -116,5 +118,13 @@ celltype_associations_pipeline <- function(ctd,
                     ctAssocMerged=ctAssocMerged,
                     ctCondAssocs=ctCondAssocs))
     }) %>% `names<-`(basename(magma_dirs)) 
+    
+    
+    if(!is.null(save_dir)){
+        save_path <- file.path(save_dir,ctd_name,paste0("MAGMA_celltyping.",ctd_name,".rds"))
+        print(paste("+ Saving results ==>",save_path))
+        dir.create(dirname(save_path), showWarnings = F, recursive = T)
+        saveRDS(MAGMA_results, save_path) 
+    }
     return(MAGMA_results)
 }

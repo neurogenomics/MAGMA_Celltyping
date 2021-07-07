@@ -4,7 +4,7 @@ find_GenesOut_files <- function(sig_res,
                      paste, collapse=".") %>% unique()    
     magma_GenesOut_file <- list.files(root_dir,paste0(matches,".genes.out"), 
                                       recursive = T, full.names = T)
-    message(length(magma_GenesOut_file)," .genes.out files found.")
+    message(length(magma_GenesOut_file)," .genes.out file(s) found.")
     return(magma_GenesOut_file)
 }
 
