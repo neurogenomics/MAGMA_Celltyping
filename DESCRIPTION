@@ -1,27 +1,46 @@
 Package: MAGMA.Celltyping
 Type: Package
 Title: MAGMA.Celltyping
-Version: 1.0.0
-Date: 2018-8-01
-Author: Dr Nathan Skene
-Maintainer: Nathan Skene <nathan.skene@gmail.com>
+Version: 1.0.0 
+Authors@R:
+    c(person(given = "Alan",
+           family = "Murphy",
+           role = c("aut"),
+           email = "alanmurph94@hotmail.com",
+           comment = c(ORCID = "0000-0002-2487-8753")),
+     person(given = "Brian",
+           family = "Schilder",
+           role = c("aut"),
+           email = "brian_schilder@alumni.brown.edu",
+           comment = c(ORCID = "0000-0001-5949-2191")),
+     person(given = "Nathan",
+           family = "Skene",
+           role = c("cre"),
+           email = "nathan.skene@gmail.com",
+           comment = c(ORCID = "0000-0002-6807-3180")))   
 Description: Used to test for cell type enrichments using MAGMA.
 License: Artistic-2.0
 LazyData: TRUE
 Depends: R(>= 3.2)
 VignetteBuilder: knitr
-Imports: EWCE, 
-        One2One,
-        R.utils,
-        ggdendro, cowplot, dplyr, data.table,
-        ggplot2, stringr, tibble,
-        SNPlocs.Hsapiens.dbSNP144.GRCh38,
-        magrittr, grDevices, limma,
-        BSgenome, BiocGenerics, GenomeInfoDb, S4Vectors, gridExtra, rlang,
-        SNPlocs.Hsapiens.dbSNP144.GRCh37, purrr, usethis
-Suggests: knitr, BiocStyle,
-    rmarkdown
-Remotes: nathanskene/ewce,
+Imports: 
+    EWCE, 
+    One2One,
+    R.utils,
+    ggdendro, cowplot, dplyr, data.table,
+    ggplot2, stringr, tibble,
+    magrittr, grDevices, limma,
+    BSgenome, BiocGenerics, GenomeInfoDb, S4Vectors, gridExtra, rlang,
+    SNPlocs.Hsapiens.dbSNP144.GRCh37, 
+    SNPlocs.Hsapiens.dbSNP144.GRCh38, 
+    purrr, usethis
+Suggests: 
+    knitr, 
+    BiocStyle,
+    rmarkdown,
+    MungeSumstats 
+Remotes: 
+    nathanskene/ewce,
     nathanskene/one2one
 SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
 biocViews: GeneExpression, Transcription, GWAS Summary Statistics,

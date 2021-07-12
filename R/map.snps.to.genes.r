@@ -14,7 +14,11 @@
 #' genesOutPath = map.snps.to.genes(path_formatted)
 #'
 #' @export
-map.snps.to.genes <- function(path_formatted,upstream_kb=10,downstream_kb=1.5,N=NULL,genome_ref_path){
+map.snps.to.genes <- function(path_formatted,
+                              upstream_kb=10,
+                              downstream_kb=1.5,
+                              N=NULL,
+                              genome_ref_path){
     path_formatted = path.expand(path_formatted)
     magmaPaths = get.magma.paths(path_formatted,upstream_kb,downstream_kb)
     
@@ -35,7 +39,7 @@ map.snps.to.genes <- function(path_formatted,upstream_kb=10,downstream_kb=1.5,N=
     }
     
     # Determine which genome build it uses & get path to gene loc file
-    genome_build = get_genomebuild_for_sumstats(path_formatted)
+    genome_build = get_genomebuild_for_sumstats(path = path_formatted)
     gene_loc_dir = sprintf("%s/data/",system.file(package="MAGMA.Celltyping"))
     if(genome_build == "GRCh37"){genomeLocFile=sprintf("%s/NCBI37.3.gene.loc",gene_loc_dir)}
     if(genome_build == "GRCh38"){genomeLocFile=sprintf("%s/NCBI38.gene.loc",gene_loc_dir)}

@@ -9,7 +9,7 @@ An object of class \code{character} of length 4143.
 }
 \source{
 rbfox_binding = read.csv("/Users/natske/Google Drive/DiseaseLists/Rbfox_binding.txt",stringsAsFactors = FALSE)[-1,1]
-devtools::use_data(rbfox_binding,overwrite = TRUE)
+usethis::use_data(rbfox_binding,overwrite = TRUE)
 }
 \usage{
 rbfox_binding

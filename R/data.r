@@ -63,7 +63,7 @@
 #' all_hgnc_wtEntrez = allHGNC[,2:1]
 #' colnames(all_hgnc_wtEntrez) = c("hgnc_symbol","entrezgene")
 #' all_hgnc_wtEntrez = unique(all_hgnc_wtEntrez)
-#' devtools::use_data(all_hgnc_wtEntrez,overwrite = TRUE)
+#' usethis::use_data(all_hgnc_wtEntrez,overwrite = TRUE)
 #' }
 #'
 "all_hgnc_wtEntrez"
@@ -176,7 +176,23 @@
 #'
 #' @source
 #' rbfox_binding = read.csv("/Users/natske/Google Drive/DiseaseLists/Rbfox_binding.txt",stringsAsFactors = FALSE)[-1,1]
-#' devtools::use_data(rbfox_binding,overwrite = TRUE)
+#' usethis::use_data(rbfox_binding,overwrite = TRUE)
 "rbfox_binding"
+
+
+
+#' Subsampled SNP location data 
+#'
+#' SNP location data used for inferring genome build 
+#' in \code{get_genomebuild_for_sumstats}. 
+#'
+#' @source
+#' \dontrun{
+#'  filePath = sprintf("%s/MAGMA.Celltyping/data/SNP_LOC_DATA.rda",.libPaths()[1])
+#'  load(filePath)
+#'  sub_SNP_LOC_DATA = SNP_LOC_DATA[sample(1:dim(SNP_LOC_DATA)[1],100000),]
+#'  usethis::use_data(sub_SNP_LOC_DATA, overwrite = TRUE)
+#' } 
+"sub_SNP_LOC_DATA"
 
 
