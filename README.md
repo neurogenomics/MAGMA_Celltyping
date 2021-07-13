@@ -422,6 +422,13 @@ Disorders Using Single Cell Transcriptomes and Expression Weighted Cell
 Type Enrichment. Front. Neurosci,
 2016.](https://www.frontiersin.org/articles/10.3389/fnins.2016.00016/full)
 
+If you use MungeSumstats to format your summary statistics then please
+cite
+
+[Murphy and Skene, MungeSumstats: A Bioconductor package for the
+standardisation and quality control of many GWAS summary statistics.
+2021.](https://www.biorxiv.org/content/10.1101/2021.06.21.449239v1)
+
 If you use the cortex/hippocampus single cell data associated with this
 package then please cite the following papers:
 
