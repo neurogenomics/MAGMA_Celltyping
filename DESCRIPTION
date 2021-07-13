@@ -1,7 +1,7 @@
 Package: MAGMA.Celltyping
 Type: Package
 Title: MAGMA.Celltyping
-Version: 1.0.0 
+Version: 1.0.1
 Authors@R:
     c(person(given = "Alan",
            family = "Murphy",
@@ -21,10 +21,12 @@ Authors@R:
 Description: Used to test for cell type enrichments using MAGMA.
 License: Artistic-2.0
 LazyData: TRUE
-Depends: R(>= 3.2)
+Depends: R(>= 4.1)
 VignetteBuilder: knitr
+BiocViews:
 Imports: 
-    EWCE, 
+    EWCE,
+    ewceData,
     One2One,
     R.utils,
     ggdendro, cowplot, dplyr, data.table,
@@ -40,7 +42,6 @@ Suggests:
     rmarkdown,
     MungeSumstats 
 Remotes: 
-    nathanskene/ewce,
     nathanskene/one2one
 SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
 biocViews: GeneExpression, Transcription, GWAS Summary Statistics,

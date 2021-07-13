@@ -8,8 +8,9 @@
 #' @param annotLevel Annotation level of CellTypeData to use (integer)
 #'
 #' @examples
+#' \dontrun{
 #' magmaGenesOut = adjust.zstat.in.genesOut(ctd,magma_file="/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",sctSpecies="mouse")
-#'
+#' }
 #' @export
 calculate.conditional.celltype.enrichment.probabilities.wtLimma <- function(magma1,magma2,ctd,thresh=0.0001,sctSpecies="mouse",annotLevel=1){
     library(limma)

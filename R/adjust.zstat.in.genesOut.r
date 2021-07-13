@@ -9,8 +9,8 @@
 #' @examples
 #' myGenesOut = tempfile()
 #' data.table::fwrite(x=MAGMA.Celltyping::genesOut,sep="\t",file=myGenesOut)
-#' magmaGenesOut = adjust.zstat.in.genesOut(EWCE::ctd,magma_GenesOut_file=myGenesOut,
-#' sctSpecies="mouse")
+#' magmaGenesOut = adjust.zstat.in.genesOut(ewceData::ctd(),
+#' magma_GenesOut_file=myGenesOut,sctSpecies="mouse")
 #'
 #' @export
 #' @importFrom stats lm
