@@ -68,20 +68,15 @@ if(!"devtools" %in% row.names(installed.packages())){
 }
 library(devtools)
 
-if(!"EWCE" %in% row.names(installed.packages())){
-  devtools::install_github("NathanSkene/EWCE")
+if(!"One2One" %in% row.names(installed.packages())){
+  devtools::install_github("NathanSkene/One2One")
 }
-library(EWCE) 
+library(One2One)
 
 if(!"MAGMA.Celltyping" %in% row.names(installed.packages())){
   devtools::install_github("NathanSkene/MAGMA_Celltyping")
 }
 library(MAGMA.Celltyping) # Note the "." instead of "_"
-
-if(!"One2One" %in% row.names(installed.packages())){
-  devtools::install_github("NathanSkene/One2One")
-}
-library(One2One)
 ```
 
 ## Using the package (basic usage)
