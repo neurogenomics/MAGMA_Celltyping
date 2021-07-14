@@ -26,7 +26,11 @@ knitr::opts_chunk$set(tidy         = FALSE,
                       message      = FALSE)
 ```
 
-```{r setup}
+```{r setup, include=T}
+
+#### TO install the dev branch of MAGMA.Celltyping, use:
+# remotes::install_github("NathanSkene/MAGMA_Celltyping@bschilder_dev")
+
 library(MAGMA.Celltyping)
 library(ggplot2)
 library(dplyr)
