@@ -1,0 +1,223 @@
+---
+title: "MAGMA_Celltyping"
+author: "Brian M. Schilder"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    self_contained: yes
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_folding: show
+    df_print: paged
+csl: nature.csl
+vignette: >
+    %\VignetteIndexEntry{MAGMA_Celltyping} 
+    %\usepackage[utf8]{inputenc}
+    %\VignetteEngine{knitr::rmarkdown}  
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r style, echo=FALSE, results='asis', message=FALSE}
+BiocStyle::markdown()
+knitr::opts_chunk$set(tidy         = FALSE,
+                      message      = FALSE)
+```
+
+```{r setup}
+library(MAGMA.Celltyping)
+library(ggplot2)
+library(dplyr)
+```
+
+
+# Prepare inputs
+
+Specify where you want large files (e.g. GWAS sum stats) to be stored.
+
+```{r Specify storage directory, attr.output='style="max-height: 400px;"'}
+storage_dir <- "~/Desktop/model_celltype_conservation/raw_data/MAGMA"# here::here("raw_data/MAGMA")
+```
+
+
+## Genome reference
+
+```{r Prepare genome reference, attr.output='style="max-height: 400px;"'}
+# Set path the 1000 genomes reference data.
+genome_ref_dir = file.path(storage_dir,"g1000_eur")
+if(!file.exists(sprintf("%s/g1000_eur.bed",genome_ref_dir))){
+    download.file("https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip",
+                  destfile=sprintf("%s.zip",genome_ref_dir))
+    unzip(sprintf("%s.zip",genome_ref_dir),
+          exdir=genome_ref_dir)
+    file.remove(sprintf("%s.zip",genome_ref_dir))
+}
+genome_ref_path = sprintf("%s/g1000_eur",genome_ref_dir)
+
+```
+
+## MAGMA_Files
+
+Import premade MAGMA files from a variety of GWAS datasets, stored in the [MAGMA_Files](https://github.com/neurogenomics/MAGMA_Files) repo. 
+
+
+Currently you can't use the `import_magma_files()` function because the rep is private for now.
+Instead, you can clone the repo if you're a collaborator in that repo.   
+
+
+General cloning command: 
+
+```
+git clone https://github.com/neurogenomics/MAGMA_Files.git 
+```
+
+If you're cloning within a GitHub repo, use `git submodule` instead. 
+
+```
+git submodule add -f https://github.com/neurogenomics/MAGMA_Files.git
+```
+
+```{r, eval=FALSE}
+magma_files <- MAGMA.Celltyping::import_magma_files(download_dir = storage_dir,
+                                                    nThread = 4)
+```
+
+Gather the magma directory names; these will be used as input to `celltype_associations_pipeline()`.
+
+```{r Gather MAGMA files}
+magma_dirs <- list.dirs(file.path(storage_dir,"MAGMA_Files"), 
+                        full.names = T)
+magma_dirs <- magma_dirs[endsWith(magma_dirs,"35UP.10DOWN")]
+ 
+paste(length(magma_dirs),"pre-computed MAGMA files found")
+
+
+### Let's just select two as an example 
+magma_dirs <- grep("SCZ|Parkinson", magma_dirs, value = T, ignore.case = T)
+print(magma_dirs)
+```
+
+
+## CellTypeDataset 
+
+Make sure the CTD is converted to all human gene symbols first using [EWCE](https://github.com/NathanSkene/EWCE).  
+
+`MAGMA.Celltyping` now includes a wide variety of CTD built-in. Here's several examples.
+
+```{r}
+# ctd <- MAGMA.Celltyping::ctd_allKI
+# ctd <- MAGMA.Celltyping::ctd_AIBS
+CTD <- MAGMA.Celltyping::ctd_BlueLake2018_FrontalCortexOnly 
+
+
+CTD <- MAGMA.Celltyping::prepare.quantile.groups(ctd = CTD,
+                                                 specificity_species="human",
+                                                 numberOfBins=40)
+### These variables will be needed for calculate_celltype_associations()
+dataset_name <- "ctd_BlueLake2018_FrontalCortexOnly"
+species <- "human"
+```
+
+# `calculate_celltype_associations` 
+
+You can now run cell-type enrichment tests for all GWAS against all cell-types in a single function.
+
+Within your specified `save_dir`, a subfolder will be created with the name of your CTD `dataset_name`. 
+This is where your aggregated enrichment results will be stored (as nested lists in a .rds file). 
+
+```{r Iterate cell-type-association analyses, attr.output='style="max-height: 400px;"'}   
+### Where you want to save the aggregated results 
+save_dir <- file.path(dirname(dirname(storage_dir)),"processed_data/MAGMA")
+message("Results summary will be saved to ==> ",save_dir)
+
+MAGMA_results <- MAGMA.Celltyping::celltype_associations_pipeline(ctd = CTD,
+                                                ctd_name = dataset_name, 
+                                                magma_dirs = magma_dirs,
+                                                genome_ref_path = genome_ref_path, 
+                                                specificity_species = species, 
+                                                run_linear = T, 
+                                                run_top10 = T, 
+                                                upstream_kb = 35, 
+                                                downstream_kb = 10, 
+                                                force_new = T,
+                                                save_dir = save_dir)
+# MAGMA_results <- readRDS("~/Desktop/model_celltype_conservation/processed_data/MAGMA/DescartesHuman/MAGMA_celltyping.DescartesHuman.rds")
+# dataset_name <- "DescartesHuman"
+```
+
+
+# Merge all results
+
+Create a list of the results files with the name of the CTD as the name of each item in the list. 
+
+This is helpful in situations where you've run `celltype_associations_pipeline()` multiple times with different CTD references. 
+
+```{r} 
+rds_files <- list.files(save_dir, pattern = "MAGMA_celltyping.*.rds",
+                        recursive = T, full.names = T)
+names(rds_files) <- basename(dirname(rds_files)) 
+```
+
+Now gather and merge the results into an easy-to-read data.frame. 
+Select the level of interest within the CTD. 
+
+```{r Merge all results, fig.height=5, fig.width=12}  
+merged_results <- MAGMA.Celltyping::gather_results(MAGMA_results = MAGMA_results, 
+                                                   level = 2,
+                                                   dataset_name = dataset_name,
+                                                   species = species,
+                                                   save_dir = file.path(save_dir,dataset_name),
+                                                   fdr_thresh = .05) 
+```
+
+## Top phenotypes 
+
+Get the phenotypes with the greatest number of significant celltype enrichment results. 
+
+```{r}
+top_phenos <- merged_results %>% 
+  dplyr::group_by(EnrichmentMode, GWAS) %>%
+  dplyr::summarise(Celltype=dplyr::n_distinct(Celltype)) %>%
+  dplyr::arrange(desc(Celltype))
+print(top_phenos)
+```
+
+## Top enrichments 
+
+Get the phenotypes-celltype enrichment results with the most significant p-values (per phenotype).
+
+```{r} 
+top_enrich <- merged_results %>% 
+  dplyr::group_by(EnrichmentMode, GWAS) %>%
+  dplyr::slice_min(FDR, n = 2)
+print(top_enrich) 
+```
+
+
+# Plot 
+
+## Heatmap  
+
+```{r Heatmap}  
+heat <- MAGMA.Celltyping::results_heatmap(merged_results = merged_results, 
+                                          title=dataset_name,  
+                                          x_lab=paste0("Celltype (level",2,")"),
+                                          fdr_thresh = .05)
+
+ggsave(paste0("processed_data/MAGMA/",dataset_name,"/MAGMA_celltyping.",dataset_name,".heatmap.jpg"), 
+       plot = heat, 
+       dpi = 300, height = 5, width=7)
+```
+
+
+# Session Info
+
+<details>
+
+```{r}
+utils::sessionInfo()
+```
+
+</details>
