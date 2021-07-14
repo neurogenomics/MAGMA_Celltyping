@@ -28,7 +28,7 @@ knitr::opts_chunk$set(tidy         = FALSE,
 
 ```{r setup, include=T}
 
-#### TO install the dev branch of MAGMA.Celltyping, use:
+#### To install the dev branch of MAGMA.Celltyping, use:
 # remotes::install_github("NathanSkene/MAGMA_Celltyping@bschilder_dev")
 
 library(MAGMA.Celltyping)
@@ -42,7 +42,7 @@ library(dplyr)
 Specify where you want large files (e.g. GWAS sum stats) to be stored.
 
 ```{r Specify storage directory, attr.output='style="max-height: 400px;"'}
-storage_dir <- "~/Desktop/model_celltype_conservation/raw_data/MAGMA"# here::here("raw_data/MAGMA")
+storage_dir <- here::here("raw_data/MAGMA")
 ```
 
 
