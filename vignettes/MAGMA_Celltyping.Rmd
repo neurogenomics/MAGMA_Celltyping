@@ -43,6 +43,7 @@ Specify where you want large files (e.g. GWAS sum stats) to be stored.
 
 ```{r Specify storage directory, attr.output='style="max-height: 400px;"'}
 storage_dir <- here::here("raw_data/MAGMA")
+dir.create(storage_dir, showWarnings = F, recursive = T)
 ```
 
 
