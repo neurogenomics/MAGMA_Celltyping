@@ -35,14 +35,16 @@ Imports:
     BSgenome, BiocGenerics, GenomeInfoDb, S4Vectors, gridExtra, rlang,
     SNPlocs.Hsapiens.dbSNP144.GRCh37, 
     SNPlocs.Hsapiens.dbSNP144.GRCh38, 
-    purrr, usethis
+    purrr, 
+    usethis,
+    MungeSumstats
 Suggests: 
     knitr, 
     BiocStyle,
-    rmarkdown,
-    MungeSumstats 
+    rmarkdown
 Remotes: 
-    nathanskene/one2one
+    nathanskene/one2one,
+    neurogenomics/MungeSumstats
 SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
 biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
         Genetics, scRNASeq, Single Cell RNAseq,

@@ -3,6 +3,7 @@
 #' Make two external calls to MAGMA. First use it to annotate SNPs onto their neighbouring genes. Second, use it to calculate the gene level trait association.
 #'
 #' @param path_formatted Filepath of the summary statistics file (which is expected to already be in the required format)
+#' @param genome_build The build of the reference genome (GRCh37 or GRCh38). If left null, it will be inferred with MungeSumstats::get_genome_build(path_formatted)
 #' @param upstream_kb How many kb upstream of the gene should SNPs be included?
 #' @param downstream_kb How many kb downstream of the gene should SNPs be included?
 #' @param N What is the N number for this GWAS? That is cases+controls
@@ -15,6 +16,7 @@
 #'
 #' @export
 map.snps.to.genes <- function(path_formatted,
+                              genome_build=NULL,
                               upstream_kb=10,
                               downstream_kb=1.5,
                               N=NULL,
@@ -39,10 +41,14 @@ map.snps.to.genes <- function(path_formatted,
     }
     
     # Determine which genome build it uses & get path to gene loc file
-    genome_build = get_genomebuild_for_sumstats(path = path_formatted)
+    if(is.null(genome_build))
+        genome_build <- MungeSumstats::get_genome_build(sumstats = path_formatted)
+    if(toupper(genome_build) == "GRCH37"){genomeLocFile=sprintf("%s/NCBI37.3.gene.loc",gene_loc_dir)}
+    if(toupper(genome_build) == "GRCH38"){genomeLocFile=sprintf("%s/NCBI38.gene.loc",gene_loc_dir)}
+    
     gene_loc_dir = sprintf("%s/data/",system.file(package="MAGMA.Celltyping"))
-    if(genome_build == "GRCh37"){genomeLocFile=sprintf("%s/NCBI37.3.gene.loc",gene_loc_dir)}
-    if(genome_build == "GRCh38"){genomeLocFile=sprintf("%s/NCBI38.gene.loc",gene_loc_dir)}
+    if(toupper(genome_build == "GRCH37")){genomeLocFile=sprintf("%s/NCBI37.3.gene.loc",gene_loc_dir)}
+    if(toupper(genome_build == "GRCH38")){genomeLocFile=sprintf("%s/NCBI38.gene.loc",gene_loc_dir)}
     print(sprintf("GWAS Sumstats appear to come from genome build: %s",genome_build))
     
     #sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",path_formatted,upstream_kb,downstream_kb)

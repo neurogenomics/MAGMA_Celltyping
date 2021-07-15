@@ -9,7 +9,7 @@
 #'
 #' @return Filepath for the genes.out file
 #'
-#' @export
+#' @export compare.trait.enrichments
 #' @importFrom data.table data.table
 #' @importFrom stats pnorm
 compare.trait.enrichments <- function(magmaPath1=NA,magmaPath2=NA,magma1=NA,magma2=NA,annotLevel,ctd){

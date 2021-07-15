@@ -2,7 +2,7 @@ Using MAGMA to find causative celltypes for genetically complex traits
 using MAGMA
 ================
 Nathan Skene & Julien Bryois
-2021-07-13
+2021-07-15
 
 -   [Introduction](#introduction)
 -   [Installation](#installation)
@@ -185,7 +185,8 @@ The UK Biobank data from Ben Neale uses GRCh37 so we will specify this.
 ``` r
 library(MungeSumstats)
 # Format it (i.e. column headers etc)
-tmpSumStatsPath = format_sumstats(path=gwas_sumstats_path,ref_genome ="GRCh37")
+tmpSumStatsPath = 
+  MungeSumstats::format_sumstats(path=gwas_sumstats_path,ref_genome ="GRCh37")
 
 gwas_sumstats_path_formatted = gsub(".tsv",".formatted.tsv",gwas_sumstats_path)
 file.copy(from=tmpSumStatsPath,
@@ -193,10 +194,21 @@ file.copy(from=tmpSumStatsPath,
           overwrite = TRUE)
 ```
 
+If you are unsure of the build of your summary statistics file, run this
+to infer it from your data:
+
+``` r
+genome_build = MungeSumstats::get_genome_build(sumstats = gwas_sumstats_path)
+```
+
 ### Map SNPs to Genes
+
+Note you can input the genome build of your summary statistics for this
+step or it can be inferred if left null:
 
 ``` r
 genesOutPath = map.snps.to.genes(path_formatted=gwas_sumstats_path_formatted,
+                                 genome_build = genome_build
                                  genome_ref_path=genome_ref_path)
 ```
 
@@ -307,12 +319,16 @@ if(!file.exists(gwas_sumstats_path)){
     gunzip(sprintf("%s.gz",gwas_sumstats_path),gwas_sumstats_path)
 }
 
-# Format & map SNPs to genes
-tmpSumStatsPath = format_sumstats_for_magma(gwas_sumstats_path)
+# Format sumstats - infer genome build from the data
+tmpSumStatsPath = 
+  MungeSumstats::format_sumstats(path=gwas_sumstats_path)
 gwas_sumstats_path_formatted = sprintf("%s.formatted",gwas_sumstats_path)
-file.copy(from=tmpSumStatsPath,to=gwas_sumstats_path_formatted,overwrite = TRUE)
-
-genesOutPath = map.snps.to.genes(gwas_sumstats_path_formatted,genome_ref_path=genome_ref_path)
+file.copy(from=tmpSumStatsPath,
+          to=gwas_sumstats_path_formatted,
+          overwrite = TRUE)
+#map SNPs to genes and infer the genome build fromt he data whilst doing so
+genesOutPath = map.snps.to.genes(gwas_sumstats_path_formatted,
+                                 genome_ref_path=genome_ref_path)
 ```
 
 ### Check which cell types this GWAS is associated with at baseline
