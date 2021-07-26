@@ -6,6 +6,7 @@
 \usage{
 map.snps.to.genes(
   path_formatted,
+  genome_build = NULL,
   upstream_kb = 10,
   downstream_kb = 1.5,
   N = NULL,
@@ -14,6 +15,8 @@ map.snps.to.genes(
 }
 \arguments{
 \item{path_formatted}{Filepath of the summary statistics file (which is expected to already be in the required format)}
+
+\item{genome_build}{The build of the reference genome (GRCh37 or GRCh38). If left null, it will be inferred with MungeSumstats::get_genome_build(path_formatted)}
 
 \item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}
 
