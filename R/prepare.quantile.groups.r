@@ -40,14 +40,13 @@ prepare.quantile.groups <- function(ctd,
     # - Function below 'bin.columns.into.quantiles' has been moved to EWCE
     # bin.columns.into.quantiles <- function(spcValues,numberOfBins){
     #     quantileValues = rep(0,length(spcValues))
-    #     quantileValues[spcValues>0] = as.numeric(cut(spcValues[spcValues>0], 
-    #                                                  breaks=unique(quantile(spcValues[spcValues>0], probs=seq(0,1, by=1/numberOfBins), na.rm=TRUE)), 
+    #     quantileValues[spcValues>0] = as.numeric(cut(spcValues[spcValues>0],
+    #                                                  breaks=unique(quantile(spcValues[spcValues>0], probs=seq(0,1, by=1/numberOfBins), na.rm=TRUE)),
     #                                                  include.lowest=TRUE))
     #     return(quantileValues)
     # }
     normalise.mean.exp <- function(spcMatrix){
-        spcMatrix$mean_exp <- as(spcMatrix$mean_exp,"matrix")
-        spcMatrix$specificity_quantiles <- as(spcMatrix$specificity_quantiles,"matrix")
+        spcMatrix$mean_exp <- as(spcMatrix$mean_exp,"matrix")  
         spcMatrix$linear_normalised_mean_exp = t(t(spcMatrix$mean_exp) *
                                                      (1/colSums(spcMatrix$mean_exp)))
         return(spcMatrix)
@@ -78,7 +77,7 @@ prepare.quantile.groups <- function(ctd,
         spcMatrix$specDist_quantiles <- as(spcMatrix$specDist_quantiles,"matrix")
         return(spcMatrix) 
     }     
-    ctd = lapply(ctd, normalise.mean.exp)
+    ctd = lapply(ctd, normalise.mean.exp) 
     ctd = lapply(ctd, bin_specificity_func, numberOfBins=numberOfBins)
     #ctd = lapply(ctd,bin.expression.into.quantiles)
     ctd = lapply(ctd, use.distance.to.add.expression.level.info)

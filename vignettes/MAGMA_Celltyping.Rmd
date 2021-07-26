@@ -39,7 +39,7 @@ library(dplyr)
 
 # Prepare inputs
 
-Specify where you want large files (e.g. GWAS sum stats) to be stored.
+Specify where you want large files (e.g. genome reference files) to be stored.
 
 ```{r Specify storage directory, attr.output='style="max-height: 400px;"'}
 storage_dir <- here::here("raw_data/MAGMA")
@@ -114,10 +114,9 @@ Make sure the CTD is converted to all human gene symbols first using [EWCE](http
 ```{r}
 # ctd <- MAGMA.Celltyping::ctd_allKI
 # ctd <- MAGMA.Celltyping::ctd_AIBS
-CTD <- MAGMA.Celltyping::ctd_BlueLake2018_FrontalCortexOnly 
+CTD <- MAGMA.Celltyping::ctd_AIBS 
 
-
-CTD <- MAGMA.Celltyping::prepare.quantile.groups(ctd = CTD,
+CTD <- prepare.quantile.groups(ctd = CTD,
                                                  specificity_species="human",
                                                  numberOfBins=40)
 ### These variables will be needed for calculate_celltype_associations()
@@ -179,7 +178,7 @@ merged_results <- MAGMA.Celltyping::gather_results(MAGMA_results = MAGMA_results
 
 ## Top phenotypes 
 
-Get the phenotypes with the greatest number of significant celltype enrichment results. 
+Get the phenotypes with the greatest number of significant cell-type enrichment results. 
 
 ```{r}
 top_phenos <- merged_results %>% 
