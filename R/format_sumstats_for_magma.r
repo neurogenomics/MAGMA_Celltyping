@@ -12,7 +12,15 @@
 #' @import stringr
 #' @export
 format_sumstats_for_magma <- function(path){
-  
+  msg <- paste0("FUNCTION DEPRECATED: Our lab have created a robust ",
+                "bioconductor package for ",
+                "formatting multiple types of summary\nstatistics files: ",
+                "MungeSumstats. The function MungeSumstats::format_sumstats ",
+                "will perform better than\nformat_sumstats_for_magma as it can",
+                " handle more types of summary statistics files and issues and",
+                " also offers\nmore flexibility to the user. We strongly adv",
+                "ise using it instead!")
+  message(msg)
   # Checking if the file exists should happen first
   if (!file.exists(path)) {stop("Path to GWAS sumstats is not valid")}
   

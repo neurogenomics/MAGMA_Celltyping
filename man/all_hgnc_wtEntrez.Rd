@@ -20,7 +20,7 @@ allHGNC=read.table(file="/Users/natske/geneInfo.txt",fill  = TRUE)
 all_hgnc_wtEntrez = allHGNC[,2:1]
 colnames(all_hgnc_wtEntrez) = c("hgnc_symbol","entrezgene")
 all_hgnc_wtEntrez = unique(all_hgnc_wtEntrez)
-devtools::use_data(all_hgnc_wtEntrez,overwrite = TRUE)
+usethis::use_data(all_hgnc_wtEntrez,overwrite = TRUE)
 }
 }
 \usage{

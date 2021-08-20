@@ -31,6 +31,7 @@ calculate.conditional.celltype.enrichment.probabilities.wtLimma(
 Calculate celltype enrichments without MAGMA using adjusted MAGMA Z-statistic from .genes.out files
 }
 \examples{
+\dontrun{
 magmaGenesOut = adjust.zstat.in.genesOut(ctd,magma_file="/Users/natske/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out",sctSpecies="mouse")
-
+}
 }
