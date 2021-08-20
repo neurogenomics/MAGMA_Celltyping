@@ -12,11 +12,12 @@
 #' @export
 #' @importFrom utils read.table
 get_genomebuild_for_sumstats <- function(path){
+
     msg <- paste0("FUNCTION DEPRECATED: Our lab have created a robust ",
-                  "bioconductor package fo",
-                  "r formatting multiple types of summary\nstatistics files: ",
-                  "MungeSumstats. MungeSumstats includes functionality to chec",
-                  "k a summary statistics file's genome\nbuild. We strongly ",
+                  "bioconductor package for ",
+                  "formatting multiple types of summary\nstatistics files: ",
+                  "MungeSumstats. MungeSumstats includes functionality to check ",
+                  "a summary statistics file's genome\nbuild. We strongly ",
                   "advise using MungeSumstats instead!")
     message(msg)
     # Get first 20 lines of sumstats
