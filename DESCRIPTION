@@ -25,26 +25,36 @@ Depends: R(>= 4.1)
 VignetteBuilder: knitr
 BiocViews:
 Imports: 
-    EWCE,
-    ewceData,
-    One2One,
+    EWCE (>= 1.0.1),
+    ewceData, 
+    MungeSumstats,
+    orthogene,
     R.utils,
-    ggdendro, cowplot, dplyr, data.table,
-    ggplot2, stringr, tibble,
-    magrittr, grDevices, limma,
-    BSgenome, BiocGenerics, GenomeInfoDb, S4Vectors, gridExtra, rlang,
+    ggdendro, 
+    cowplot, 
+    dplyr, 
+    data.table,
+    ggplot2, 
+    stringr, 
+    tibble,
+    magrittr, 
+    grDevices, 
+    limma,
+    BSgenome, 
+    BiocGenerics, 
+    GenomeInfoDb, 
+    S4Vectors, 
+    gridExtra, 
+    rlang,
     SNPlocs.Hsapiens.dbSNP144.GRCh37, 
     SNPlocs.Hsapiens.dbSNP144.GRCh38, 
     purrr, 
-    usethis,
-    MungeSumstats
+    parallel,
+    usethis
 Suggests: 
     knitr, 
     BiocStyle,
-    rmarkdown
-Remotes: 
-    nathanskene/one2one,
-    neurogenomics/MungeSumstats
+    rmarkdown 
 SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
 biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
         Genetics, scRNASeq, Single Cell RNAseq,

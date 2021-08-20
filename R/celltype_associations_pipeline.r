@@ -1,11 +1,8 @@
-
-
-
-#' Calculate celltype associations using MAGMA
+#' Calculate cell type associations using MAGMA
 #'
 #' Has the option of running multiple analyses with a single function.  
 #' Assumes that you already have all MAGMA GWAS files precomputed.
-#' Precomputed MAGMA GWAS files can be downlaoded via the \code{import_magma_files} fucnction. 
+#' Precomputed MAGMA GWAS files can be downloaded via the \code{import_magma_files} function. 
 #'
 #' @param ctd Cell type data structure containing $specificity_quantiles
 #' @param ctd_name Used in file names 
@@ -17,9 +14,9 @@
 #' @param suffix_linear This will be added to the linear results file name.
 #' @param suffix_top10 This will be added to the top 10% results file name.
 #' @param suffix_condition This will be added to the conditional results file name.
+#' @param save_dir Folder to save results in (\code{save_dir=NULL} to not save any results).
 #' @inheritParams calculate_celltype_associations
 #' @inheritParams calculate_conditional_celltype_associations
-#' @param save_dir Folder to save results in (\code{save_dir=NULL} to not save any results).
 #' 
 #' @return A list containing the results of each selected celltype associations analysis.
 #'
@@ -36,16 +33,16 @@ celltype_associations_pipeline <- function(ctd,
                                           magma_dirs,
                                           genome_ref_path,
                                           specificity_species="mouse",
-                                          run_linear=T,
-                                          run_top10=T,
-                                          run_condition=F,
+                                          run_linear=TRUE,
+                                          run_top10=TRUE,
+                                          run_condition=FALSE,
                                           upstream_kb=35,
                                           downstream_kb=10, 
                                           suffix_linear="linear",
                                           suffix_top10="top10",
                                           suffix_condition="condition",
                                           controlTopNcells=1,
-                                          force_new=F,
+                                          force_new=FALSE,
                                           save_dir=tempdir()){ 
     ### Example 
     # magma_dir<- "/Users/schilder/Desktop/model_celltype_conservation/raw_data/MAGMA/MAGMA_Files/ADHD_iPSYCH.all.annotated.35UP.10DOWN";upstream_kb=35;downstream_kb=10; specificity_species="human"; genome_ref_path=path.expand("~/Desktop/model_celltype_conservation/raw_data/MAGMA/g1000_eur/g1000_eur"); suffix_linear="linear";suffix_top10="top10";suffix_condition="condition";controlTopNcells=1; ctd_name="Aerts2021"
@@ -123,7 +120,7 @@ celltype_associations_pipeline <- function(ctd,
     if(!is.null(save_dir)){
         save_path <- file.path(save_dir,ctd_name,paste0("MAGMA_celltyping.",ctd_name,".rds"))
         print(paste("+ Saving results ==>",save_path))
-        dir.create(dirname(save_path), showWarnings = F, recursive = T)
+        dir.create(dirname(save_path), showWarnings = FALSE, recursive = TRUE)
         saveRDS(MAGMA_results, save_path) 
     }
     return(MAGMA_results)

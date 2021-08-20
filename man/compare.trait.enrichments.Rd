@@ -4,7 +4,7 @@
 \alias{compare.trait.enrichments}
 \title{Test to see which cell types are more enriched in magmaPath2 than magmaPath1}
 \usage{
-\method{compare}{trait.enrichments}(
+compare.trait.enrichments(
   magmaPath1 = NA,
   magmaPath2 = NA,
   magma1 = NA,

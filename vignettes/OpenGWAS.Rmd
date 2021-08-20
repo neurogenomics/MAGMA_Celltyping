@@ -1,0 +1,154 @@
+---
+title: "OpenGWAS"
+author: "Brian M. Schilder"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    self_contained: yes
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_folding: show
+    df_print: paged
+csl: nature.csl
+vignette: >
+    %\VignetteIndexEntry{OpenGWAS} 
+    %\usepackage[utf8]{inputenc}
+    %\VignetteEngine{knitr::rmarkdown}  
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r style, echo=FALSE, results='asis', message=FALSE}
+BiocStyle::markdown()
+knitr::opts_chunk$set(tidy         = FALSE,
+                      message      = FALSE)
+```
+
+```{r setup, include=TRUE}
+#### To install the dev branch of MAGMA.Celltyping, use:
+# remotes::install_github("NathanSkene/MAGMA_Celltyping@bschilder_dev")
+
+# devtools::install_github("neurogenomics/MungeSumstats")
+library(MAGMA.Celltyping)
+library(MungeSumstats)
+
+library(ggplot2)
+library(dplyr)
+
+save_dir <- "/Volumes/bms20/projects/neurogenomics-lab/live/GWAS_sumstats/OpenGWAS"
+```
+
+# Munge sum stats
+
+## Find sum stats
+
+```{r} 
+metagwas <- MungeSumstats::find_sumstats(traits = c("Alzheimer","Parkinson",
+                                                    "amyotrophic","dementia"))
+knitr::kable(metagwas)
+```
+
+## Import sum stats
+
+```{r}
+gwas <- MungeSumstats::import_sumstats(ids = metagwas$id, 
+                                       save_dir = save_dir, 
+                                       nThread = 10, 
+                                       parallel_across_ids = FALSE,
+                                       force_new = FALSE) 
+```
+
+
+## Create metadata file
+
+```{r}
+munged_files <- list.files(save_dir,".tsv.gz", full.names = TRUE)
+munged_ids <- gsub(".tsv.gz","",basename(munged_files))
+metagwas_all <- MungeSumstats::find_sumstats(ids = munged_ids)
+
+metagwas_all$path <- munged_files
+```
+
+### Check genome builds
+
+`MungeSumstats` automatically keeps log files in the `tempdir()`. But if you restart your R session mid-way, they'll be erased.
+
+Instead, infer the genome build here.
+
+```{r}
+builds <- lapply(munged_files, function(x){
+  message(x)
+  MungeSumstats::get_genome_build(x)
+}) %>% `names<-`(munged_ids)
+metagwas_all$build_inferred <- unlist(builds)
+
+table(metagwas_all$build_inferred)
+```
+
+## Save metadata
+
+```{r} 
+utils::write.csv(metagwas_all, file.path(save_dir,"OpenGWAS_metadata.csv"))
+# metagwas_all <- read.csv(file.path(save_dir,"OpenGWAS_metadata.csv"))
+```
+
+
+# Map SNPs to genes
+
+## Genome reference
+
+```{r Prepare genome reference, attr.output='style="max-height: 400px;"'}
+storage_dir <- "/Desktop/model_celltype_conservation/raw_data/MAGMA"
+
+# Set path the 1000 genomes reference data.
+genome_ref_dir = file.path(storage_dir,"g1000_eur")
+if(!file.exists(sprintf("%s/g1000_eur.bed",genome_ref_dir))){
+    download.file("https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip",
+                  destfile=sprintf("%s.zip",genome_ref_dir))
+    unzip(sprintf("%s.zip",genome_ref_dir),
+          exdir=genome_ref_dir)
+    file.remove(sprintf("%s.zip",genome_ref_dir))
+}
+genome_ref_path = sprintf("%s/g1000_eur",genome_ref_dir)
+
+```
+
+### Filter metadata
+
+Must have sample size.
+
+```{r}
+metagwas_all <- metagwas_all %>% 
+  dplyr::mutate(N = ifelse(is.na(sample_size), sum(ncase, ncontrol, na.rm = TRUE), sample_size))
+metagwas_all <- subset(metagwas_all, !is.na(N))
+```
+
+
+```{r}
+
+magma_files <- lapply(1:nrow(metagwas_all), function(i){
+  message("----- ", metagwas_all$id[i]," -----")
+  MAGMA.Celltyping::map.snps.to.genes(path_formatted = metagwas_all$path[i],
+                                      genome_build = metagwas_all$build_inferred[i],
+                                      upstream_kb = 35,  
+                                      downstream_kb = 10,
+                                      N = metagwas_all$N[i],
+                                      genome_ref_path = genome_ref_path,
+                                      force_new = FALSE)
+}) %>% `names<-`(metagwas_all$id)
+
+
+```
+
+
+# Session Info
+
+<details>
+
+```{r}
+utils::sessionInfo()
+```
+
+</details>

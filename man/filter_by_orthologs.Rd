@@ -19,5 +19,4 @@ Created so that lapply can be used to do this
 }
 \examples{
 ctd2 = lapply(ctd,filter.by.orthologs,one2one_ortholog_symbols = ortholog_data[,2])
-
 }

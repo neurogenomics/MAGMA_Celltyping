@@ -7,7 +7,7 @@
 import_magma_files(
   download_dir = tempdir(),
   file_types = c(".genes.raw", ".genes.out"),
-  overwrite = F,
+  overwrite = FALSE,
   nThread = parallel::detectCores() - 2
 )
 }

@@ -9,9 +9,8 @@
 #'
 #' @examples
 #' ctd2 = lapply(ctd,filter.by.orthologs,one2one_ortholog_symbols = ortholog_data[,2])
-#'
-#' @export
-filter_by_orthologs <- function(ctd_oneLevel,one2one_ortholog_symbols){
+filter_by_orthologs <- function(ctd_oneLevel,
+                                one2one_ortholog_symbols){
     #ctd_oneLevel$specificity = ctd_oneLevel$specificity[rownames(ctd_oneLevel$specificity) %in% ortholog_data[,2],]
     #ctd_oneLevel$mean_exp = ctd_oneLevel$mean_exp[rownames(ctd_oneLevel$mean_exp) %in% ortholog_data[,2],]
     ctd_oneLevel$specificity = ctd_oneLevel$specificity[rownames(ctd_oneLevel$specificity) %in% one2one_ortholog_symbols,]

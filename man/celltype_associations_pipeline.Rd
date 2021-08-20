@@ -2,7 +2,7 @@
 % Please edit documentation in R/celltype_associations_pipeline.r
 \name{celltype_associations_pipeline}
 \alias{celltype_associations_pipeline}
-\title{Calculate celltype associations using MAGMA}
+\title{Calculate cell type associations using MAGMA}
 \usage{
 celltype_associations_pipeline(
   ctd,
@@ -10,16 +10,16 @@ celltype_associations_pipeline(
   magma_dirs,
   genome_ref_path,
   specificity_species = "mouse",
-  run_linear = T,
-  run_top10 = T,
-  run_condition = F,
+  run_linear = TRUE,
+  run_top10 = TRUE,
+  run_condition = FALSE,
   upstream_kb = 35,
   downstream_kb = 10,
   suffix_linear = "linear",
   suffix_top10 = "top10",
   suffix_condition = "condition",
   controlTopNcells = 1,
-  force_new = F,
+  force_new = FALSE,
   save_dir = tempdir()
 )
 }
@@ -64,7 +64,7 @@ A list containing the results of each selected celltype associations analysis.
 \description{
 Has the option of running multiple analyses with a single function.  
 Assumes that you already have all MAGMA GWAS files precomputed.
-Precomputed MAGMA GWAS files can be downlaoded via the \code{import_magma_files} fucnction.
+Precomputed MAGMA GWAS files can be downloaded via the \code{import_magma_files} function.
 }
 \examples{
 \dontrun{
