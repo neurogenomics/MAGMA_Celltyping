@@ -1,4 +1,8 @@
 
 
 
-printer <- function(..., v=T){if(v){print(paste(...))}}
+printer <- function(..., v = T) {
+    if (v) {
+        print(paste(...))
+    }
+}

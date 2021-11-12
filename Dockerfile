@@ -1,19 +1,103 @@
-FROM rocker/rstudio:3.6.0
-#FROM rocker/r-ubuntu:18.04 
+## Use rstudio installs binaries from RStudio's RSPM service by default, 
+## Uses the latest stable ubuntu, R and Bioconductor versions. Created on unbuntu 20.04, R 4.0 and BiocManager 3.12
+FROM rocker/rstudio
 
 # required
 MAINTAINER Nathan Skene <nskene@imperial.ac.uk>
 
-#RUN apt-get update \
- #   && apt-get install -y --no-install-recommends \
-  #  libxml2-dev # add any additional libraries you need
-
-#RUN apt-get update -qq \
-#	&& apt-get install -t -y --no-install-recommends \
-#    liblzma-dev \
-#    libcurl4-openssl-dev \
-#    libxml2-dev
-
+## Add packages dependencies
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends apt-utils \
+	&& apt-get install -y --no-install-recommends \
+	## Basic deps
+	gdb \
+	libxml2-dev \
+	python3-pip \
+	libz-dev \
+	liblzma-dev \
+	libbz2-dev \
+	libpng-dev \
+	libgit2-dev \
+	## sys deps from bioc_full
+	pkg-config \
+	fortran77-compiler \
+	byacc \
+	automake \
+	curl \
+	## This section installs libraries
+	libpcre2-dev \
+	libnetcdf-dev \
+	libhdf5-serial-dev \
+	libfftw3-dev \
+	libopenbabel-dev \
+	libopenmpi-dev \
+	libxt-dev \
+	libudunits2-dev \
+	libgeos-dev \
+	libproj-dev \
+	libcairo2-dev \
+	libtiff5-dev \
+	libreadline-dev \
+	libgsl0-dev \
+	libgslcblas0 \
+	libgtk2.0-dev \
+	libgl1-mesa-dev \
+	libglu1-mesa-dev \
+	libgmp3-dev \
+	libhdf5-dev \
+	libncurses-dev \
+	libbz2-dev \
+	libxpm-dev \
+	liblapack-dev \
+	libv8-dev \
+	libgtkmm-2.4-dev \
+	libmpfr-dev \
+	libmodule-build-perl \
+	libapparmor-dev \
+	libprotoc-dev \
+	librdf0-dev \
+	libmagick++-dev \
+	libsasl2-dev \
+	libpoppler-cpp-dev \
+	libprotobuf-dev \
+	libpq-dev \
+	libperl-dev \
+	## software - perl extentions and modules
+	libarchive-extract-perl \
+	libfile-copy-recursive-perl \
+	libcgi-pm-perl \
+	libdbi-perl \
+	libdbd-mysql-perl \
+	libxml-simple-perl \
+	libmysqlclient-dev \
+	default-libmysqlclient-dev \
+	libgdal-dev \
+	## new libs
+	libglpk-dev \
+	## Databases and other software
+	sqlite \
+	openmpi-bin \
+	mpi-default-bin \
+	openmpi-common \
+	openmpi-doc \
+	tcl8.6-dev \
+	tk-dev \
+	default-jdk \
+	imagemagick \
+	tabix \
+	ggobi \
+	graphviz \
+	protobuf-compiler \
+	jags \
+	## Additional resources
+	xfonts-100dpi \
+	xfonts-75dpi \
+	biber \
+	libsbml5-dev \
+	## qpdf needed to stop R CMD Check warning
+	qpdf \
+	&& apt-get clean \
+	&& rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -52,20 +136,39 @@ RUN apt-get update \
     && chmod +x magma \
     && cp magma /usr/local/bin/ 
 
-# Install required libraries -- using prebuild binaries where available
-#RUN apt-get update && apt-get install -y \
-#    git \
-    #r-cran-litter 
-   # r-cran-gert \
-   # r-cran-usethis \
-   # r-cran-devtools \
-   # r-cran-gh \
-   # r-cran-git2r
+RUN install2.r -e \
+purrr \
+dplyr \
+knitr \
+data.table \
+R.utils \
+rmarkdown \
+rlang \
+ggplot2 \
+ggdendro \
+cowplot \
+stringr \
+tibble \
+tidyr \
+parallel \
+magrittr \
+grDevices \
+usethis \
+gridExtra \
+devtools
 
-# Install additional R packages from CRAN (on top of the ones 
-# pre-built as r-cran-*)
-#RUN install.r devtools
-RUN Rscript -e "install.packages('devtools',repos = 'http://cran.us.r-project.org')"
+## Install remaining packages from source
+RUN Rscript -e 'install.packages(c("BiocManager"))'
+
+## Install Bioconductor packages
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+   libfftw3-dev \
+   gcc && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+RUN Rscript -e 'requireNamespace("BiocManager"); BiocManager::install(ask=F);' \
+&& Rscript -e 'requireNamespace("BiocManager"); BiocManager::install(c("SNPlocs.Hsapiens.dbSNP144.GRCh37","SNPlocs.Hsapiens.dbSNP144.GRCh38","BiocStyle","EWCE","MungeSumstats","ewceData","limma","GenomeInfoDb","BiocGenerics","BSgenome","S4Vectors"),ask=F)'
+
     
 # Install from GH the following
-RUN installGithub.r NathanSkene/One2One neurogenomics/EWCE NathanSkene/MAGMA_Celltyping
+RUN installGithub.r neurogenomics/orthogene NathanSkene/One2One NathanSkene/MAGMA_Celltyping

@@ -39,6 +39,5 @@ plot_celltype_associations(
 Can take input from either calculate_celltype_associations() or calculate_conditional_celltype_associations()
 }
 \examples{
-ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path)
-
+ctAssocs <- calculate_celltype_associations(ctd, gwas_sumstats_path)
 }

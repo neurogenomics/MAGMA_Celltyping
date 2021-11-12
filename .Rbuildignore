@@ -1,5 +1,14 @@
-^.*\.Rproj$
+.*\.Rproj$
 ^\.Rproj\.user$
-README.Rmd
+^README.Rmd
+^\.github$
+^doc$
+^Meta$
+^codecov\.yml$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+
 magma.log
 Dockerfile
+^LICENSE\.md$

@@ -21,5 +21,4 @@ set.seed(1)
 ctd <- ewceData::ctd()
 gene_subset <- sample(rownames(ctd[[1]]$mean_exp), 1000)
 ctd_subset <- filter_ctd_genes(ctd = ctd, gene_subset = gene_subset)
-
 }

@@ -35,10 +35,9 @@ library(MAGMA.Celltyping)
 library(ewceData)
 ctd <- ewceData::ctd()
 
- # The package stores an example genesOut file, so save this to a tempfile
-myGenesOut = tempfile()
-data.table::fwrite(MAGMA.Celltyping::genesOut,sep="\t",file=myGenesOut)
-magmaAdjZ = adjust.zstat.in.genesOut(ctd, magma_GenesOut_file=myGenesOut,sctSpecies="mouse")
-ps <- calculate.celltype.enrichment.probabilities.wtLimma(magmaAdjZ=magmaAdjZ, ctd=ctd)
-
+# The package stores an example genesOut file, so save this to a tempfile
+myGenesOut <- tempfile()
+data.table::fwrite(MAGMA.Celltyping::genesOut, sep = "\t", file = myGenesOut)
+magmaAdjZ <- adjust.zstat.in.genesOut(ctd, magma_GenesOut_file = myGenesOut, sctSpecies = "mouse")
+ps <- calculate.celltype.enrichment.probabilities.wtLimma(magmaAdjZ = magmaAdjZ, ctd = ctd)
 }

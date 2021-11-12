@@ -1,0 +1,145 @@
+---
+title: "MAGMA_Celltyping: Getting started"
+author: "Brian M. Schilder"
+date: "<h4>Updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
+output:
+  BiocStyle::html_document:
+vignette: >
+    %\VignetteIndexEntry{MAGMA_Celltyping} 
+    %\usepackage[utf8]{inputenc}
+    %\VignetteEngine{knitr::rmarkdown}
+---
+
+
+```{r setup, include=TRUE}
+library(MAGMA.Celltyping)
+library(ggplot2)
+library(dplyr)
+```
+
+
+# Setup 
+
+Specify where you want the large files to be downloaded to. 
+
+*NOTE*: Make sure you change `storage_dir` to somewhere other than `tempdir()` 
+if you want to make sure the results aren't deleted after this R session closes!
+
+```{r, eval=FALSE}
+storage_dir <- tempdir()
+```
+
+
+# Prepare data
+
+## Import GWAS
+
+- We need to have a summary statistics file to analyse as input.  
+- As an example, you can download UK Biobank summary statistics 
+for 'fluid_intelligence' using `get_example_gwas()`.
+
+Here we provide a 
+pre-munged version of the above file.
+
+### Munging 
+
+Our lab have created [`MungeSumstats`](https://github.com/neurogenomics/MungeSumstats), a robust Bioconductor package for formatting multiple types
+of summary statistics files. We highly recommend processing your GWAS summary statistics with
+`MungeSumstats` before continuing.
+See the *full_workflow* vignette for more details.
+
+The minimum info needed *after* munging is:  
+- "SNP", "CHR", and "BP" as first three columns.
+- It has at least one of these columns: "Z","OR","BETA","LOG_ODDS","SIGNED_SUMSTAT"
+
+```{r, eval=FALSE}
+path_formatted <- MAGMA.Celltyping::get_example_gwas(
+  trait = "prospective_memory",
+  munged = TRUE)
+```
+
+## Map SNPs to Genes
+
+Note you can input the genome build of your summary statistics for this step or
+it can be inferred if left `NULL`:
+
+```{r, eval=FALSE}
+genesOutPath <- map_snps_to_genes(
+  path_formatted = path_formatted,
+  genome_build = "GRCh37")
+```
+
+
+## CellTypeDataset
+
+### Import CTD 
+
+The EWCE package comes with a celltype specificity dataset which we use as an example. If you want to import your own single cell RNA-seq dataset, then this needs converting into CTD format; please see the [EWCE tutorial](https://github.com/NathanSkene/EWCE/) for explanation of how to do this.
+
+```{r, eval=FALSE } 
+ctd <- ewceData::ctd()
+```
+
+Note that the cell type dataset loaded in the code above is the Karolinksa cortex/hippocampus data only. For the full Karolinska dataset with hypothalamus and midbrain instead use the following:
+
+```
+ctd <- MAGMA.Celltyping:: get_ctd("ctd_allKI")
+```
+
+Or for the DRONC seq or AIBS datasets use:
+
+```
+ctd <- get_ctd("ctd_Tasic")
+ctd <- get_ctd("ctd_DivSeq")
+ctd <- get_ctd("ctd_AIBS")
+ctd <- get_ctd("ctd_DRONC_human")
+ctd <- get_ctd("ctd_DRONC_mouse")
+ctd <- get_ctd("ctd_BlueLake2018_FrontalCortexOnly")
+ctd <- get_ctd("ctd_BlueLake2018_VisualCortexOnly")
+ctd <- get_ctd("ctd_Saunders")
+```
+
+### Prepare quantiles
+
+First we need to calculate the quantile groups for each celltype within the single-cell dataset. This is done using the `prepare_quantile_groups` function. If your single-cell dataset is not from mouse, then change the `specificity_species` argument.
+
+```{r, eval=FALSE }
+EWCE::
+ctd <- MAGMA.Celltyping::prepare_quantile_groups(ctd = ctd, 
+                                                 specificity_species="human")
+# Examine how the quantile groups look
+print(ctd[[1]]$specificity_quantiles[c("Gfap","Dlg4","Aif1"),])
+print(table(ctd[[1]]$specificity_quantiles[,1]))
+```
+
+### Run cell-type enrichment analyses
+
+```{r}
+
+MAGMA_results <- MAGMA.Celltyping::celltype_associations_pipeline(
+  ctd = ctd, 
+  specificity_species = "mouse", 
+  ctd_name = "KI", 
+  run_linear = TRUE, 
+  run_top10 = TRUE,
+  run_condition = FALSE)
+
+```
+
+# Plot results
+
+```{r}
+MAGMA.Celltyping::gather_results(MAGMA_results = MAGMA_results)
+
+```
+
+
+# Session Info
+
+<details>
+
+```{r}
+utils::sessionInfo()
+```
+
+</details>

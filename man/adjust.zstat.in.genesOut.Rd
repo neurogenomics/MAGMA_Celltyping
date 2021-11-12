@@ -17,9 +17,9 @@ adjust.zstat.in.genesOut(ctd, magma_GenesOut_file = NA, sctSpecies = "mouse")
 Used when you want to directly analyse the gene level z-scores corrected for gene length etc
 }
 \examples{
-myGenesOut = tempfile()
-data.table::fwrite(x=MAGMA.Celltyping::genesOut,sep="\t",file=myGenesOut)
-magmaGenesOut = adjust.zstat.in.genesOut(ewceData::ctd(),
-magma_GenesOut_file=myGenesOut,sctSpecies="mouse")
-
+myGenesOut <- tempfile()
+data.table::fwrite(x = MAGMA.Celltyping::genesOut, sep = "\t", file = myGenesOut)
+magmaGenesOut <- adjust.zstat.in.genesOut(ewceData::ctd(),
+    magma_GenesOut_file = myGenesOut, sctSpecies = "mouse"
+)
 }

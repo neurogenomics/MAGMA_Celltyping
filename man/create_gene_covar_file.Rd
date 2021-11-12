@@ -13,7 +13,7 @@ create_gene_covar_file(
 )
 }
 \arguments{
-\item{genesOutFile}{The output of the second call to MAGMA (performed in the map.snps.to.genes function)}
+\item{genesOutFile}{The output of the second call to MAGMA (performed in the map_snps_to_genes function)}
 
 \item{ctd}{Cell type data structure. Must contain quantiles.}
 
@@ -30,6 +30,5 @@ Filepath for the gene covar file
 The gene covar file is the input to MAGMA for the celltype association analysis. This code was functonalised because it is called by both baseline and conditional analysis.
 }
 \examples{
-genesCovarFilePath = create_gene_covar_file(genesOutFile,ctd)
-
+genesCovarFilePath <- create_gene_covar_file(genesOutFile, ctd)
 }

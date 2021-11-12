@@ -27,27 +27,32 @@ calculate_conditional_celltype_associations(
 
 \item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}
 
-\item{downstream_kb}{How many kb downstream of the gene should SNPs be included?}
+\item{downstream_kb}{How many kb downstream of the
+gene should SNPs be included?}
 
-\item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
+\item{genome_ref_path}{Path to the folder containing the 1000 genomes
+.bed files, downladed using \link[MAGMA.Celltyping]{get_genome_ref}.}
 
-\item{controlledAnnotLevel}{Which annotation level should be controlled for}
+\item{controlledAnnotLevel}{Which annotation level should be controlled for.}
 
-\item{specificity_species}{Species name relevant to the cell type data, i.e. 'mouse' or 'human'}
+\item{specificity_species}{Species name relevant to the cell type
+data (e.g. 'mouse' or 'human').}
 
-\item{controlTopNcells}{How many of the most significant cell types at that annotation level should be controlled for?}
+\item{controlTopNcells}{How many of the most significant cell types at
+that annotation level should be controlled for?}
 
-\item{controlledCTs}{Array of the celltype to be controlled for, i.e. c('Interneuron type 16','Medium Spiny Neuron')}
+\item{controlledCTs}{Array of the celltype to be controlled for,
+e.g. \code{c('Interneuron type 16','Medium Spiny Neuron')}.}
 
-\item{EnrichmentMode}{[Optional] Either 'Linear' or 'Top 10\%'. Default assumes Linear.}
+\item{EnrichmentMode}{[Optional] Either 'Linear' or 'Top 10\%'.
+(\emph{DEFAULT: "Linear"}).}
 }
 \value{
 Filepath for the genes.out file
 }
 \description{
-Assumes that you have already run map.snps.to.genes()
+Assumes that you have already run map_snps_to_genes()
 }
 \examples{
-ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path)
-
+ctAssocs <- calculate_celltype_associations(ctd, gwas_sumstats_path)
 }

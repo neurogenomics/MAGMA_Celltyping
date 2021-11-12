@@ -1,7 +1,7 @@
 Package: MAGMA.Celltyping
 Type: Package
-Title: MAGMA.Celltyping
-Version: 1.0.1
+Title: Find causal cell-types underlying complex trait genetics
+Version: 2.0.0
 Authors@R:
     c(person(given = "Alan",
            family = "Murphy",
@@ -13,22 +13,27 @@ Authors@R:
            role = c("aut"),
            email = "brian_schilder@alumni.brown.edu",
            comment = c(ORCID = "0000-0001-5949-2191")),
+     person(given = "Julien",
+           family = "Bryois",
+           role = c("aut"),
+           email = "julien.bryois@gmail.com",
+           comment = c(ORCID = "0000-0002-4747-2166")),
      person(given = "Nathan",
            family = "Skene",
-           role = c("cre"),
+           role = c("aut","cre"),
            email = "nathan.skene@gmail.com",
            comment = c(ORCID = "0000-0002-6807-3180")))   
-Description: Used to test for cell type enrichments using MAGMA.
-License: Artistic-2.0
-LazyData: TRUE
-Depends: R(>= 4.1)
+Description: This R package contains code used for testing which cell types can explain the heritability signal from GWAS summary statistics.
+License: GPL (>= 3)
+LazyData: true
+Depends: R(>= 4.0.0)
 VignetteBuilder: knitr
 BiocViews:
-Imports: 
-    EWCE (>= 1.0.1),
+Imports:
+    EWCE (>= 1.3.1),
     ewceData, 
     MungeSumstats,
-    orthogene,
+    XML,
     R.utils,
     ggdendro, 
     cowplot, 
@@ -46,18 +51,23 @@ Imports:
     S4Vectors, 
     gridExtra, 
     rlang,
-    SNPlocs.Hsapiens.dbSNP144.GRCh37, 
-    SNPlocs.Hsapiens.dbSNP144.GRCh38, 
     purrr, 
     parallel,
     usethis
 Suggests: 
-    knitr, 
+    markdown,
+    rmarkdown,
+    knitr,
     BiocStyle,
-    rmarkdown 
+    xml2,
+    covr,
+    testthat (>= 3.0.0), 
+    SNPlocs.Hsapiens.dbSNP144.GRCh37, 
+    SNPlocs.Hsapiens.dbSNP144.GRCh38,
+    piggyback
 SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
 biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
         Genetics, scRNASeq, Single Cell RNAseq,
         BiomedicalInformatics, FunctionalGenomics
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Encoding: UTF-8

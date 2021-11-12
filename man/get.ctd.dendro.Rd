@@ -18,5 +18,5 @@ List containing ddata and ordered_cells
 Get all dendrogram features used for plotting a dendrogram of cell type
 }
 \examples{
-get.ctd.dendro(ctd,annotLevel=2)
+get.ctd.dendro(ctd, annotLevel = 2)
 }

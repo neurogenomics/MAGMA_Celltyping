@@ -45,5 +45,5 @@ calculate_conditional_geneset_enrichment(
 Filepath for the genes.out file
 }
 \description{
-Assumes that you have already run map.snps.to.genes()
+Assumes that you have already run map_snps_to_genes()
 }

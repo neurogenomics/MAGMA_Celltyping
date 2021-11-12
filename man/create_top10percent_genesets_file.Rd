@@ -12,7 +12,7 @@ create_top10percent_genesets_file(
 )
 }
 \arguments{
-\item{genesOutFile}{The output of the second call to MAGMA (performed in the map.snps.to.genes function)}
+\item{genesOutFile}{The output of the second call to MAGMA (performed in the map_snps_to_genes function)}
 
 \item{ctd}{Cell type data structure. Must contain quantiles.}
 
@@ -24,13 +24,13 @@ create_top10percent_genesets_file(
 Filepath for the gene covar file
 }
 \description{
-The gene covar file is the input to MAGMA for the celltype association analysis. This code was functonalised 
+The gene covar file is the input to MAGMA for the celltype association analysis. This code was functonalised
 because it is called by both baseline and conditional analysis.
 }
 \examples{
 library(MAGMA.Celltyping)
-myGenesOut = tempfile()
-data.table::fwrite(MAGMA.Celltyping::genesOut,sep="\t",file=myGenesOut)
-ctd = prepare.quantile.groups(ctd=ewceData::ctd(),specificity_species="mouse",numberOfBins=40)
-geneSetsFilePath = create_top10percent_genesets_file(genesOutFile=myGenesOut,ctd=ctd,annotLevel=1, specificity_species="mouse")
+myGenesOut <- tempfile()
+data.table::fwrite(MAGMA.Celltyping::genesOut, sep = "\t", file = myGenesOut)
+ctd <- prepare_quantile_groups(ctd = ewceData::ctd(), specificity_species = "mouse", bins = 40)
+geneSetsFilePath <- create_top10percent_genesets_file(genesOutFile = myGenesOut, ctd = ctd, annotLevel = 1, specificity_species = "mouse")
 }

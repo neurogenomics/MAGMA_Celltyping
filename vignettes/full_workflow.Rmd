@@ -1,0 +1,464 @@
+---
+title: "MAGMA_Celltyping: full_workflow"
+author: "Brian M. Schilder"
+date: "<h4>Updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
+output:
+  BiocStyle::html_document:
+vignette: >
+    %\VignetteIndexEntry{full_workflow} 
+    %\usepackage[utf8]{inputenc}
+    %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include=TRUE}
+library(MAGMA.Celltyping)
+library(ggplot2)
+library(dplyr)
+```
+
+
+The following vignette shows the step-by-step version of the `MAGMA.Celltyping` pipeline. For the newer streamlined version of the pipeline (that wraps many of these functions),
+please see the *Get Started* vignette.
+
+# Setup 
+
+Specify where you want the large files to be downloaded to.  
+
+```{r, eval=FALSE}
+storage_dir <- tempdir()
+```
+
+## Get genome reference
+
+Set path the 1000 genomes reference data.
+
+```{r, eval=FALSE}
+genome_ref_path <- MAGMA.Celltyping::get_genome_ref(storage_dir = storage_dir)
+```
+
+# Prepare data
+
+## Import GWAS
+
+- We need to have a summary statistics file to analyse as input.  
+- As an example, you can download UK Biobank summary statistics 
+for 'fluid_intelligence' using `get_example_gwas()`.
+
+```{r, eval=FALSE }
+gwas_sumstats_path <- MAGMA.Celltyping:: get_example_gwas(trait = "fluid_intelligence",
+                                                         munged = FALSE)
+```
+
+## Munge GWAS 
+
+Our lab have created a robust Bioconductor package for formatting multiple types
+of summary statistics files: [`MungeSumstats`](https://www.biorxiv.org/content/10.1101/2021.06.21.449239v1)
+(please cite the associated publication if you use this package). 
+
+- We will use `Mungesumstats` here to reformat the summary statistics for Fluid Intelligence. 
+The minimum info needed *after* munging is:  
+- SNP, CHR, BP as first three columns.
+- It has at least one of these columns: ("Z","OR","BETA","LOG_ODDS","SIGNED_SUMSTAT")
+
+Genome builds:  
+- The UK Biobank data from Ben Neale uses "GRCh37" so we will specify this.  
+- However, if you don't know which genome build you GWAS sum stats are in, 
+`MungeSumstats` will infer this information by default.
+
+```{r, eval=FALSE}
+path_formatted <- MungeSumstats::format_sumstats(path=gwas_sumstats_path,
+                                                 save_path = tempfile(fileext = ".formatted.tsv.gz"),
+                                                 ref_genome ="GRCh37")
+```
+
+For the sake of this example, we also provide a 
+pre-munged version of the above file. 
+If you use this, you can skip the previous two steps.
+
+```{r, eval=FALSE}
+path_formatted <- MAGMA.Celltyping:: get_example_gwas(trait = "fluid_intelligence",
+                                                     munged = TRUE)
+```
+
+
+## Map SNPs to Genes
+
+Note you can input the genome build of your summary statistics for this step or
+it can be inferred if left null:
+
+```{r, eval=FALSE}
+genesOutPath <- MAGMA.Celltyping:: map_snps_to_genes(path_formatted = path_formatted,
+                                                     genome_build = "GRCh37",
+                                                     genome_ref_path = genome_ref_path)
+```
+
+
+## CellTypeDataset
+
+### Import CTD 
+
+The EWCE package comes with a celltype specificity dataset which we use as an example. If you want to import your own single cell RNA-seq dataset, then this needs converting into CTD format; please see the [EWCE tutorial](https://github.com/NathanSkene/EWCE/) for explanation of how to do this.
+
+```{r, eval=FALSE } 
+ctd <- ewceData::ctd()
+```
+
+Note that the cell type dataset loaded in the code above is the Karolinksa cortex/hippocampus data only. For the full Karolinska dataset with hypothalamus and midbrain instead use the following:
+
+```
+ctd <- MAGMA.Celltyping::get_ctd("ctd_allKI")
+```
+
+Or for the DRONC seq or AIBS datasets use:
+
+```
+ctd <- get_ctd("ctd_Tasic")
+ctd <- get_ctd("ctd_DivSeq")
+ctd <- get_ctd("ctd_AIBS")
+ctd <- get_ctd("ctd_DRONC_human")
+ctd <- get_ctd("ctd_DRONC_mouse")
+ctd <- get_ctd("ctd_BlueLake2018_FrontalCortexOnly")
+ctd <- get_ctd("ctd_BlueLake2018_VisualCortexOnly")
+ctd <- get_ctd("ctd_Saunders")
+ctd <- get_ctd("ctd_Zeisel2018")
+```
+
+### Prepare quantiles
+
+First we need to calculate the quantile groups for each celltype within the single-cell dataset. This is done using the `prepare_quantile_groups` function. If your single-cell dataset is not from mouse, then change the `specificity_species` argument.
+
+```{r, eval=FALSE }
+ctd <- MAGMA.Celltyping::prepare_quantile_groups(ctd = ctd,
+                                                 specificity_species="mouse")
+# Examine how the quantile groups look
+print(ctd[[1]]$specificity_quantiles[c("Gfap","Dlg4","Aif1"),])
+print(table(ctd[[1]]$specificity_quantiles[,1]))
+```
+
+
+
+
+# Run the main cell type association analysis
+
+The analyses can be run in either linear or top10% enrichment modes.
+
+Let's start with linear:
+
+```{r, eval=FALSE }
+ctAssocsLinear <- MAGMA.Celltyping::calculate_celltype_associations(
+  ctd=ctd,
+  gwas_sumstats_path=gwas_sumstats_path_formatted,
+  genome_ref_path=genome_ref_path,
+  specificity_species = "mouse")
+
+FigsLinear <- MAGMA.Celltyping::plot_celltype_associations(
+  ctAssocs=ctAssocsLinear,
+  ctd=ctd)
+```
+
+Now let's add the top 10% mode
+
+```{r, eval=FALSE }
+ctAssocsTop <- MAGMA.Celltyping::calculate_celltype_associations(
+  ctd = ctd,
+  gwas_sumstats_path = gwas_sumstats_path_formatted,
+  genome_ref_path = genome_ref_path,
+  EnrichmentMode = "Top 10%")
+
+FigsTopDecile <- MAGMA.Celltyping::plot_celltype_associations(
+  ctAssocs = ctAssocsTop,
+  ctd = ctd)
+```
+
+Then plot linear together with the top decile mode.
+
+```{r, eval=FALSE }
+ctAssocMerged <- MAGMA.Celltyping::merge_magma_results(
+  ctAssoc1 = ctAssocsLinear,
+  ctAssoc2 = ctAssocsTop)
+
+FigsMerged <- MAGMA.Celltyping::plot_celltype_associations(
+  ctAssocs = ctAssocMerged,
+  ctd = ctd)
+```
+
+### Conditional analysis (linear mode)
+
+By default, it is assumed that you want to run the linear enrichment analysis. There are two modes for conditional analyses, you can either control for the top N cell types from the baseline analysis (in which case, set `controlTopNcells`) or control for specific specified cell types (in which case, set `controlledCTs`).
+
+```{r, eval=FALSE }
+# Conditional analysis
+ctCondAssocs <- MAGMA.Celltyping::calculate_conditional_celltype_associations(
+  ctd = ctd,
+  gwas_sumstats_path_formatted = path_formatted,
+  genome_ref_path = genome_ref_path,
+  analysis_name = "Conditional",
+  controlTopNcells= 2)
+
+MAGMA.Celltyping::plot_celltype_associations(ctAssocs = ctCondAssocs,
+                                             ctd = ctd)
+```
+
+Let's try as an alternative to control for expression of both the level 1 pyramidal neuron types at the same time
+
+```{r , eval=FALSE}
+ctCondAssocs <- MAGMA.Celltyping::calculate_conditional_celltype_associations(
+  ctd = ctd,
+  gwas_sumstats_path = path_formatted,
+  genome_ref_path=genome_ref_path,
+  analysis_name = "Conditional",
+  controlledCTs = c("pyramidal CA1","pyramidal SS","interneurons"),
+  controlledAnnotLevel = 1)
+
+MAGMA.Celltyping::plot_celltype_associations(ctAssocs = ctCondAssocs,
+                                             ctd=ctd)
+```
+
+Note that Periventricular Microglia (PVM) go from totally non-significant to significant once the neurons are controlled for. Test if this change is significant as follows:
+
+```{r , eval=FALSE}
+magma1 = ctCondAssocs[[2]]$results[ctCondAssocs[[2]]$results$CONTROL=="BASELINE",]
+magma2 = ctCondAssocs[[2]]$results[ctCondAssocs[[2]]$results$CONTROL=="pyramidal CA1,pyramidal SS,interneurons",]
+
+resCompared <- MAGMA.Celltyping:::compare.trait.enrichments(magma1=magma1,
+                                                            magma2=magma2,
+                                                            annotLevel=2,
+                                                            ctd=ctd)
+resCompared[1:3,]
+```
+
+Using this approach we can see that the increased enrichment is microglia in the controlled analysis is almost significantly increased relative to the baseline analysis.
+
+## Conditional analyses (top 10% mode)
+
+Conditional analyses can also be performed with top 10% mode (although the conditioning is done in linear mode)
+
+```{r , eval=FALSE}
+ctCondAssocsTopTen = MAGMA.Celltyping::calculate_conditional_celltype_associations(
+  ctd = ctd,
+  gwas_sumstats_path = path_formatted,
+  genome_ref_path = genome_ref_path,
+  analysis_name = "Conditional",
+  controlledCTs=c("pyramidal CA1","pyramidal SS","interneurons"),
+  controlledAnnotLevel=1,
+  EnrichmentMode = "Top 10%")
+
+MAGMA.Celltyping::plot_celltype_associations(ctAssocs = ctCondAssocsTopTen,
+                                             ctd=ctd)
+```
+
+## Controlling for a second GWAS
+
+We now want to test enrichments that remain in a GWAS after we control
+for a second GWAS. 
+So let's download a second GWAS sumstats file and prepare it for analysis.
+ 
+20016.assoc.tsv is the sumstats file for 'Fluid Intelligence Score'
+from the UK Biobank. 
+
+So let's subtract genes associated with prospective memory from those involved in fluid intelligence.
+
+### Download and prepare the 'Prospective memory' GWAS summary statistics
+
+```{r, eval=FALSE }
+
+gwas_sumstats_path = MAGMA.Celltyping::get_example_gwas(storage_dir = storage_dir, 
+                                                        trait = "prospective_memory")
+# Format sumstats - infer genome build from the data
+tmpSumStatsPath =  MungeSumstats::format_sumstats(path=gwas_sumstats_path)
+path_formatted_memory = sprintf("%s.formatted",gwas_sumstats_path)
+file.copy(from=tmpSumStatsPath,
+          to=path_formatted_memory,
+          overwrite = TRUE)
+#map SNPs to genes and infer the genome build fromt he data whilst doing so
+genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(path_formatted = path_formatted_memory,
+                                                   genome_ref_path=genome_ref_path)
+```
+
+### Check which cell types this GWAS is associated with at baseline
+
+```{r, eval=FALSE }
+path_formatted_intelligence <- path_formatted
+
+ctAssocsLinear_memory <- MAGMA.Celltyping::calculate_celltype_associations(
+  ctd = ctd,
+  gwas_sumstats_path = path_formatted_memory,
+  genome_ref_path = genome_ref_path,
+  specificity_species = "mouse")
+
+ctAssocsLinear_intelligence <- MAGMA.Celltyping::calculate_celltype_associations(
+  ctd = ctd,
+  gwas_sumstats_path = path_formatted_intelligence,
+  genome_ref_path = genome_ref_path,
+  specificity_species = "mouse")
+
+MAGMA.Celltyping::plot_celltype_associations(ctAssocs = ctAssocsLinear_memory,
+                                             ctd=ctd)
+```
+
+### Compare enrichments in the two GWAS using a tile plot
+
+```{r, eval=FALSE}
+ctAssocMerged_MemInt = MAGMA.Celltyping::merge_magma_results(
+  ctAssoc1 = ctAssocsLinear_memory,
+  ctAssoc2 = ctAssocsLinear_intelligence)
+
+FigsMerged_MemInt <- MAGMA.Celltyping::magma.tileplot(ctd=ctd,
+                                                      results=ctAssocMerged_MemInt[[1]]$results,
+                                                      annotLevel=1,
+                                                      fileTag="Merged_MemInt_lvl1",
+                                                      output_path = storage_dir)
+
+FigsMerged_MemInt = MAGMA.Celltyping::magma.tileplot(ctd=ctd,
+                                                     results=ctAssocMerged_MemInt[[2]]$results,
+                                                     annotLevel=2,
+                                                     fileTag="Merged_MemInt_lvl2",
+                                                     output_path = storage_dir)
+```
+
+### Check which cell types 'Fluid Intelligence' is associated with after controlling for 'Prospective memory'
+
+```{r, eval=FALSE }
+# Set paths for GWAS sum stats + .genes.out file (with the z-scores)
+gwas_sumstats_path <- path_formatted_intelligence # "/Users/natske/GWAS_Summary_Statistics/20016.assoc.tsv"
+memoryGenesOut <- sprintf("%s.genes.out",
+                         MAGMA.Celltyping::get.magma.paths(
+                           gwas_sumstats_path = path_formatted_memory,
+                           upstream_kb = 10,
+                           downstream_kb = 1.5)$filePathPrefix)
+
+ctAssocsLinear <- MAGMA.Celltyping::calculate_celltype_associations(
+  ctd = ctd,
+  gwas_sumstats_path = gwas_sumstats_path,
+  genome_ref_path = genome_ref_path,
+  specificity_species = "mouse",
+  genesOutCOND = memoryGenesOut,
+  analysis_name = "ControllingForPropMemory")
+
+FigsLinear = MAGMA.Celltyping::plot_celltype_associations(ctAssocs = ctAssocsLinear,
+                                                          ctd = ctd,
+                                                          fileTag = "ControllingForPropMemory")
+```
+
+We find that after controlling for prospective memory, there is no significant enrichment left associated with fluid intelligence.
+
+## Calculate cell type enrichments directly (using linear model)
+
+```{r, eval=FALSE}
+magmaGenesOut <- MAGMA.Celltyping::adjust.zstat.in.genesOut(
+  ctd = ctd,
+  magma_file=file.path("/Users/natske/GWAS_Summary_Statistics/MAGMA_Files",
+                       "20016.assoc.tsv.10UP.1.5DOWN",
+                       "20016.assoc.tsv.10UP.1.5DOWN.genes.out"),
+  sctSpecies="mouse")
+
+output <- MAGMA.Celltyping::calculate.celltype.enrichment.probabilities.wtLimma(
+  magmaAdjZ = magmaGenesOut,
+  ctd = ctd,
+  thresh = 0.0001,
+  sctSpecies = "mouse",
+  annotLevel = 4)
+```
+
+We can then get the probability of the celltype being enriched as follows
+
+```{r, eval=FALSE}
+print(sort(output))
+```
+
+The results should closely resemble those obtained using MAGMA
+
+## Gene set enrichments
+
+To test whether a gene set (in HGNC or MGI format) is enriched using MAGMA the following commands can be used:
+
+```{r, eval=FALSE}
+data("rbfox_binding")
+
+gwas_sumstats_path = "/Users/natske/GWAS_Summary_Statistics/20016.assoc.tsv"
+geneset_res = MAGMA.Celltyping::calculate_geneset_enrichment(
+  geneset = rbfox_binding,
+  gwas_sumstats_path = gwas_sumstats_path,
+  analysis_name = "Rbfox_20016",
+  upstream_kb = 10,
+  downstream_kb = 1.5,
+  genome_ref_path = genome_ref_path,
+  geneset_species = "mouse")
+print(geneset_res)
+```
+
+We can then test whether the geneset is still enriched after controlling for celltype enrichment:
+
+```{r, eval=FALSE}
+ctd <- MAGMA.Celltyping::get_ctd("ctd_allKI")
+
+ctd <- MAGMA.Celltyping::prepare_quantile_groups(ctd = ctd,
+                                                 specificity_species = "mouse",
+                                                 bins = 40)
+analysis_name <- "Rbfox_16_pyrSS"
+controlledCTs <- c("pyramidal SS")
+
+cond_geneset_res_pyrSS = MAGMA.Celltyping::calculate_conditional_geneset_enrichment(
+  geneset = geneset,
+  ctd = ctd,
+  controlledAnnotLevel = 1,
+  controlledCTs = controlledCTs,
+  gwas_sumstats_path = gwas_sumstats_path,
+  analysis_name = analysis_name,
+  genome_ref_path = genome_ref_path,
+  specificity_species = "mouse")
+
+controlledCTs <- c("pyramidal CA1")
+cond_geneset_res_pyrCA1 <- MAGMA.Celltyping::calculate_conditional_geneset_enrichment(
+  geneset = geneset,
+  ctd = ctd,
+  controlledAnnotLevel = 1,
+  controlledCTs = controlledCTs,
+  gwas_sumstats_path = gwas_sumstats_path,
+  analysis_name = analysis_name,
+  genome_ref_path = genome_ref_path,
+  specificity_species = "mouse")
+
+controlledCTs <- c("pyramidal CA1","pyramidal SS")
+cond_geneset_res_pyr = MAGMA.Celltyping::calculate_conditional_geneset_enrichment(
+  geneset = geneset,
+  ctd = ctd,
+  controlledAnnotLevel = 1,
+  controlledCTs = controlledCTs,
+  gwas_sumstats_path = gwas_sumstats_path,
+  analysis_name = analysis_name,
+  genome_ref_path = genome_ref_path,
+  specificity_species = "mouse")
+
+controlledCTs <- c("Medium Spiny Neuron")
+cond_geneset_res_MSN = MAGMA.Celltyping::calculate_conditional_geneset_enrichment(
+  geneset = geneset,
+  ctd = ctd,
+  controlledAnnotLevel = 1,
+  controlledCTs = controlledCTs,
+  gwas_sumstats_path = gwas_sumstats_path,
+  analysis_name = analysis_name,
+  genome_ref_path = genome_ref_path,
+  specificity_species = "mouse")
+
+controlledCTs <- c("Medium Spiny Neuron","pyramidal CA1","pyramidal SS","interneurons")
+cond_geneset_res = MAGMA.Celltyping::calculate_conditional_geneset_enrichment(
+  geneset = geneset,
+  ctd = ctd,
+  controlledAnnotLevel = 1,
+  controlledCTs = controlledCTs,
+  gwas_sumstats_path = gwas_sumstats_path,
+  analysis_name = analysis_name,
+  genome_ref_path = genome_ref_path,
+  specificity_species = "mouse")
+```
+
+# Session Info
+
+<details>
+
+```{r}
+utils::sessionInfo()
+```
+
+</details>

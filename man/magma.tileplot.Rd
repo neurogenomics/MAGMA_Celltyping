@@ -33,6 +33,5 @@ magma.tileplot(
 Used after merging results from multiple GWAS studies
 }
 \examples{
-ctAssocs = merge_magma_results.r(ctAssoc1,ctAssoc2)
-
+ctAssocs <- merge_magma_results.r(ctAssoc1, ctAssoc2)
 }

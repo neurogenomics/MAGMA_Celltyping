@@ -14,7 +14,7 @@ import_magma_files(
 \arguments{
 \item{download_dir}{Parent folder where you want to save the MAGMA files.}
 
-\item{overwrite}{If the files have already been downloaded in the specified directory, 
+\item{overwrite}{If the files have already been downloaded in the specified directory,
 these downloads will be skipped. Set \code{overwrite=T} to force them to be re-downloaded.}
 
 \item{nThread}{Number of threads to parallelize downloading.}
@@ -25,9 +25,9 @@ Paths to where the MAGMA files have been downloaded locally.
 \description{
 Import preprocessed MAGMA GWAS files from remote
  \href{https://github.com/neurogenomics/MAGMA_Files}{GitHub repository}.
-Each MAGMA file will be put into its own folder of the same name as the file. 
+Each MAGMA file will be put into its own folder of the same name as the file.
 \bold{WARNING}:
 }
 \examples{
-local_files <- import_magma_files(download_dir=".")
+local_files <- import_magma_files(download_dir = ".")
 }

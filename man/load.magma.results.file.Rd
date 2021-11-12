@@ -34,8 +34,9 @@ Convenience function which just does a little formatting to make it easier to us
 }
 \examples{
 library(MAGMA.Celltyping)
-ctd <- ewceData::ctd()  
-res = load.magma.results.file(path="Raw/adhd_formtcojo.txt.NEW.10UP.1DOWN.gov.out",
-                              annotLevel=1,ctd=ctd) 
-
+ctd <- ewceData::ctd()
+res <- load.magma.results.file(
+    path = "Raw/adhd_formtcojo.txt.NEW.10UP.1DOWN.gov.out",
+    annotLevel = 1, ctd = ctd
+)
 }

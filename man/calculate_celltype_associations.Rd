@@ -10,11 +10,11 @@ calculate_celltype_associations(
   analysis_name = "MainRun",
   upstream_kb = 10,
   downstream_kb = 1.5,
-  genome_ref_path,
+  genome_ref_path = NULL,
   specificity_species = "mouse",
   genesOutCOND = NA,
   EnrichmentMode = "Linear",
-  force_new = F
+  force_new = FALSE
 )
 }
 \arguments{
@@ -24,30 +24,42 @@ calculate_celltype_associations(
 
 \item{analysis_name}{Used in file names which area created}
 
-\item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}
+\item{upstream_kb}{How many kb upstream of the gene
+should SNPs be included?}
 
-\item{downstream_kb}{How many kb downstream of the gene should SNPs be included?}
+\item{downstream_kb}{How many kb downstream of the gene
+should SNPs be included?}
 
-\item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be downloaded 
-from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
+\item{genome_ref_path}{Path to the folder containing the 1000
+genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
 
-\item{specificity_species}{Species name relevant to the cell type data, i.e. "mouse" or "human"}
+\item{specificity_species}{Species name relevant to the cell type data,
+i.e. "mouse" or "human"}
 
-\item{genesOutCOND}{[Optional] Path to a genes.out file to condition on. Used if you want to condition on a different GWAS.}
+\item{genesOutCOND}{[Optional] Path to a genes.out file to condition on.
+Used if you want to condition on a different GWAS.}
 
-\item{EnrichmentMode}{[Optional] Should either 'Linear' or 'Top 10\%' mode be used for testing enrichment?}
+\item{EnrichmentMode}{[Optional] Should either 'Linear' or 'Top 10\%' mode
+be used for testing enrichment?}
 
-\item{force_new}{[Optional] Force new MAGMA analyses even if the pre-existing results files are detected.}
+\item{force_new}{[Optional] Force new MAGMA analyses even if the
+pre-existing results files are detected.}
 }
 \value{
 File path for the genes.out file
 }
 \description{
-Assumes that you have already run \code{map.snps.to.genes()}
+Assumes that you have already run 
+\link[MAGMA.Celltyping]{map_snps_to_genes()}.
 }
 \examples{
 \dontrun{
-ctAssocs = calculate_celltype_associations(ewceData::ctd(), gwas_sumstats_path, gwas_sumstats_path = "<PATH_TO_SUMSTATS>", upstream_kb=10, downstream_kb=1.5, genome_ref_path="<PATH_TO_g1000_eur>", specificity_species="mouse", EnrichmentMode="Top 10\%")
+genome_ref_path <- get_genome_ref()
+ctAssocs <- calculate_celltype_associations(
+    ctd = ewceData::ctd(),
+    gwas_sumstats_path = gwas_ss,
+    genome_ref_path = genome_ref_path,
+    specificity_species = "mouse"
+)
 }
-
 }

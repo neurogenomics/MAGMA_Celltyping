@@ -18,6 +18,5 @@ List with same format as output from either calculate_celltype_associations() or
 Used for instance when you want to merge results from 'Linear' and 'Top 10%' enrichment modes
 }
 \examples{
-ctAssocs = merge_magma_results.r(ctAssoc1,ctAssoc2)
-
+ctAssocs <- merge_magma_results.r(ctAssoc1, ctAssoc2)
 }

@@ -27,7 +27,7 @@ get_driver_genes(
 
 \item{n_genes}{Max number of drive genes to return per cell-type enrichment.}
 
-\item{spec_deciles}{Which \emph{specificity_proportion} deciles to include when calculating driver genes. 
+\item{spec_deciles}{Which \emph{specificity_proportion} deciles to include when calculating driver genes.
 (10 = most specific).}
 }
 \description{

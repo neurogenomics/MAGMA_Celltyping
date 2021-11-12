@@ -15,23 +15,28 @@ calculate_geneset_enrichment(
 )
 }
 \arguments{
-\item{geneset}{Genes which are to be tested (as HGNC / MGI symbols)}
+\item{geneset}{Genes which are to be tested (as HGNC / MGI symbols).}
 
-\item{gwas_sumstats_path}{Filepath of the summary statistics file}
+\item{gwas_sumstats_path}{File path of the summary statistics file}
 
-\item{analysis_name}{Used in filenames which area created}
+\item{analysis_name}{Used in file names which area created}
 
-\item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}
+\item{upstream_kb}{How many kb upstream of the gene
+should SNPs be included?}
 
-\item{downstream_kb}{How many kb downstream of the gene should SNPs be included?}
+\item{downstream_kb}{How many kb downstream of the gene
+should SNPs be included?}
 
-\item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
+\item{genome_ref_path}{Path to the folder containing the 1000
+genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
 
-\item{geneset_species}{Species name relevant to the genes in the geneset, i.e. "mouse" or "human"}
+\item{geneset_species}{Species name relevant to the genes in the 
+geneset, i.e. "mouse" or "human"}
 }
 \value{
 Filepath for the genes.out file
 }
 \description{
-Assumes that you have already run map.snps.to.genes()
+Assumes that you have already run 
+\link[MAGMA.Celltyping]{map_snps_to_genes()}.
 }

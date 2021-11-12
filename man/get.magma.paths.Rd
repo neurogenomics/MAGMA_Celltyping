@@ -27,6 +27,5 @@ Filepath for where MAGMA files should be created
 Gets paths to folders based on location of the GWAS summary statistics file. This avoids the GWAS sumstats folder becoming a mess.
 }
 \examples{
-magmaPaths = get.magma.paths(gwas_sumstats_path,upstream_kb,downstream_kb)
-
+magmaPaths <- get.magma.paths(gwas_sumstats_path, upstream_kb, downstream_kb)
 }

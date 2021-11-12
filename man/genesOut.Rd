@@ -8,16 +8,16 @@
 An object of class \code{data.table} (inherits from \code{data.frame}) with 18250 rows and 9 columns.
 }
 \source{
-The code to prepare the .Rda file file from the marker file is:
 \code{
-genesOut = data.table::fread("/home/nskene/tmp_files/20016.assoc.tsv.10UP.1.5DOWN.genes.out")
+genesOut = data.table::fread(
+    "/home/nskene/tmp_files/20016.assoc.tsv.10UP.1.5DOWN.genes.out")
 usethis::use_data(genesOut,overwrite = TRUE)
 }
 }
 \usage{
-genesOut
+data("genesOut")
 }
 \description{
-Obtained from '/Users/natske/OneDrive - Imperial College London/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out'
+Obtained from \url{'/Users/natske/OneDrive - Imperial College London/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out'}
 }
 \keyword{datasets}

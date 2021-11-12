@@ -24,7 +24,7 @@ check_inputs_to_magma_celltype_analysis(
 
 \item{downstream_kb}{How many kb downstream of the gene should SNPs be included?}
 
-\item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be 
+\item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be
 downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
 }
 \value{
@@ -34,7 +34,8 @@ Nothing returned but sends error if there is a fault with the arguments
 This code was functonalised because it is called by both baseline and conditional analysis.
 }
 \examples{
-check_inputs_to_magma_celltype_analysis(ctd,gwas_sumstats_path,analysis_name,upstream_kb,
-downstream_kb,genome_ref_path)
-
+check_inputs_to_magma_celltype_analysis(
+    ctd, gwas_sumstats_path, analysis_name, upstream_kb,
+    downstream_kb, genome_ref_path
+)
 }

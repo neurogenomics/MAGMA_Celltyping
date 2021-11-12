@@ -15,4 +15,5 @@ Build data table with RSID / CHR / BP / GenomeBuild for all Hapmap3 SNPs in GRCh
 \examples{
 # build_snp_location_tables()
 
+# @import R.utils
 }

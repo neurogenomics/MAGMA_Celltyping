@@ -1,49 +1,74 @@
-
-
-
-
-
-
 #' Install the MAGMA command line tool
-#' 
-#' @source [MAGMA website](https://ctg.cncr.nl/software/magma)
-#' @source [MAGMA.celltyping documentation](https://github.com/NathanSkene/MAGMA_Celltyping)
-install_magma <- function(dest_dir="~"){ 
-    
-    get_os <- function () {
-        OS=""
-        switch(Sys.info()[['sysname']],
-               Windows= {OS="Windows"},
-               Linux  = {OS="Linux"},
-               Darwin = {OS="Mac"})
-        return(OS) 
+#'
+#'
+#' @param dest_dir Folder in which to install MAGMA.
+#' @param version Which version of MAGMA to install.
+#' @param verbose Print messages.
+#' @source \href{https://ctg.cncr.nl/software/magma}{MAGMA website}
+#' @source \href{https://github.com/NathanSkene/MAGMA_Celltyping}{
+#' MAGMA.celltyping documentation}
+#'
+#'
+#' @export
+#' @importFrom utils unzip
+#' @importFrom R.utils createLink
+install_magma <- function(dest_dir = "/usr/local/bin",
+                          upgrade = FALSE,
+                          verbose = TRUE) {
+    version <- magma_installed_version(verbose = verbose)
+    magma_url <- magma_links(latest_only = TRUE)
+    latest_version <- magma_versions(links = magma_url)
+    is_installed <- magma_installed()
+
+    if (is_installed) {
+        if ((version != latest_version) & upgrade) {
+            messager("A newer version of MAGMA is available.",
+                "Upgrading from", version, "==>", latest_version,
+                v = verbose
+            )
+        } else {
+            if (version != latest_version) {
+                messager("An older version of MAGMA",
+                    "(", version, ") is installed.",
+                    "Latest MAGMA:",
+                    v = verbose
+                )
+            } else {
+                messager("The latest version of MAGMA",
+                    "(", version, ") is installed.",
+                    v = verbose
+                )
+            }
+            upgrade <- FALSE
+            version <- latest_version
+            path <- magma_path()
+            return(path)
+        }
     }
-    check_magma <- ""
-    try({
-        check_magma <- system("magma", intern=T)
-    })
-   
-    
-    if(check_magma[1]=="No arguments specified. Please consult manual for usage instructions."){
-        message("MAGMA already installed.")
-    }else {
-        message("MAGMA not installed. Downloading...")
-        magma_url <- switch(get_os(),  
-                            Mac="https://ctg.cncr.nl/software/MAGMA/prog/magma_v1.08a_mac.zip",
-                            Linux="https://ctg.cncr.nl/software/MAGMA/prog/magma_v1.08a.zip",
-                            NULL="https://ctg.cncr.nl/software/MAGMA/prog/magma_v1.08a.zip")
-        destfile <- file.path(dest_dir,basename(magma_url))
-        destpath <- gsub(".zip","",destfile)
-        download.file(magma_url,
-                      destfile = destfile) 
-        unzip(destfile, junkpaths = T,
-              exdir = gsub(".zip","",destfile),
-              overwrite = T)
-        file.remove(destfile)
-        message("MAGMA installation complete.")
-        message("MAGMA path:\n",destpath)
-        # Create a symlink to the actualy magma executable
-        R.utils::createLink(link="/usr/local/bin/magma",
-                            target=file.path(destpath,"magma"))
+
+    if ((!is_installed) | upgrade) {
+        messager("Installing MAGMA", version, v = verbose)
+        messager("Downloading MAGMA executable.", v = verbose)
+        destpath <- magma_download_binary(
+            magma_url = magma_url,
+            destdir = destdir
+        )
+        #### Create a symlink to the actually magma executable ####
+        messager("Creating symlink so MAGMA can be executed",
+            "using the command 'magma ...'",
+            v = verbose
+        )
+        dest_magma <- file.path(destpath, "magma")
+        #### Change magma file permissions ####
+        system(paste0("chmod u=rx,go=rx ", dest_magma))
+        symlink <- R.utils::createLink(
+            link = "magma",
+            target = dest_magma,
+            overwrite = upgrade
+        )
+        ##### Check that installation was successful ####
+        success <- magma_installation_successful(desired_version = version)
+        messager("MAGMA path:", dest_magma, v = verbose)
+        return(dest_magma)
     }
 }

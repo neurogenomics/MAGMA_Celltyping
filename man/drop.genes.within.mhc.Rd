@@ -7,9 +7,11 @@
 drop.genes.within.mhc(geneLocFilePath, geneLocFilePathOut)
 }
 \arguments{
-\item{geneLocFilePath}{The gene loc file as downloaded from MAGMA website (e.g. NCBI37.3.gene.loc)}
+\item{geneLocFilePath}{The gene loc file as downloaded from
+MAGMA website (e.g. NCBI37.3.gene.loc).}
 
-\item{geneLocFilePathOut}{The file path to write the gene loc file with MHC removed}
+\item{geneLocFilePathOut}{The file path to write the gene
+loc file with MHC removed.}
 }
 \value{
 NULL (the output is written to the filepath provided as an argument)
@@ -18,8 +20,7 @@ NULL (the output is written to the filepath provided as an argument)
 Drop genes within MHC
 }
 \examples{
-drop.genes.within.mhc("data/NCBI37.3.gene.loc","data/NCBI37.3.gene.loc")
-drop.genes.within.mhc("data/NCBI38.gene.loc","data/NCBI38.gene.loc")
-drop.genes.within.mhc("data/NCBI36.3.gene.loc","data/NCBI36.3.gene.loc")
-
+drop.genes.within.mhc("data/NCBI37.3.gene.loc", "data/NCBI37.3.gene.loc")
+drop.genes.within.mhc("data/NCBI38.gene.loc", "data/NCBI38.gene.loc")
+drop.genes.within.mhc("data/NCBI36.3.gene.loc", "data/NCBI36.3.gene.loc")
 }

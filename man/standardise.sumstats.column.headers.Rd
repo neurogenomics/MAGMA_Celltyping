@@ -21,6 +21,5 @@ This function does not check that all the required column headers are present
 The amended header is written directly back into the file
 }
 \examples{
-col_headers = standardise.sumstats.column.headers("~/Downloads/202040.assoc.tsv")
-
+col_headers <- standardise.sumstats.column.headers("~/Downloads/202040.assoc.tsv")
 }

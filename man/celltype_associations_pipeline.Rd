@@ -24,53 +24,71 @@ celltype_associations_pipeline(
 )
 }
 \arguments{
-\item{ctd}{Cell type data structure containing $specificity_quantiles}
+\item{ctd}{Cell type data structure containing
+\code{\$specificity_quantiles}.}
 
 \item{ctd_name}{Used in file names}
 
-\item{magma_dirs}{Names of folders containing the pre-computed MAGMA GWAS files. 
-\bold{NOTE}: Files within these folders must have the same naming scheme as the folders themselves.}
+\item{magma_dirs}{Names of folders containing the
+pre-computed MAGMA GWAS files.
+\bold{NOTE}: Files within these folders must have the same naming scheme
+as the folders themselves.}
 
-\item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be downloaded 
-from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
+\item{genome_ref_path}{Path to the folder containing the 1000
+genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
 
-\item{specificity_species}{Species name relevant to the cell type data, i.e. "mouse" or "human"}
+\item{specificity_species}{Species name relevant to the cell type data,
+i.e. "mouse" or "human"}
 
-\item{run_linear}{Run \code{calculate_celltype_associations} in linear mode.}
+\item{run_linear}{Run in linear mode.}
 
-\item{run_top10}{Run \code{calculate_celltype_associations} in top 10% mode.}
+\item{run_top10}{Run  in top 10% mode.}
 
-\item{run_condition}{Run \code{calculate_celltype_associations} in conditional mode.}
+\item{run_condition}{Run in conditional mode.}
 
-\item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}
+\item{upstream_kb}{How many kb upstream of the gene
+should SNPs be included?}
 
-\item{downstream_kb}{How many kb downstream of the gene should SNPs be included?}
+\item{downstream_kb}{How many kb downstream of the gene
+should SNPs be included?}
 
 \item{suffix_linear}{This will be added to the linear results file name.}
 
 \item{suffix_top10}{This will be added to the top 10% results file name.}
 
-\item{suffix_condition}{This will be added to the conditional results file name.}
+\item{suffix_condition}{This will be added to the
+conditional results file name.}
 
-\item{controlTopNcells}{How many of the most significant cell types at that annotation level should be controlled for?}
+\item{controlTopNcells}{How many of the most significant cell types at
+that annotation level should be controlled for?}
 
-\item{force_new}{[Optional] Force new MAGMA analyses even if the pre-existing results files are detected.}
+\item{force_new}{[Optional] Force new MAGMA analyses even if the
+pre-existing results files are detected.}
 
-\item{save_dir}{Folder to save results in (\code{save_dir=NULL} to not save any results).}
+\item{save_dir}{Folder to save results in (\code{save_dir=NULL}
+to not save any results).}
 }
 \value{
-A list containing the results of each selected celltype associations analysis.
+A list containing the results of each selected
+celltype associations analysis.
 }
 \description{
-Has the option of running multiple analyses with a single function.  
+Has the option of running multiple analyses with a single function.
 Assumes that you already have all MAGMA GWAS files precomputed.
-Precomputed MAGMA GWAS files can be downloaded via the \code{import_magma_files} function.
+Precomputed MAGMA GWAS files can be downloaded via the
+\link[MAGMA.Celltyping]{import_magma_files} function.
 }
 \examples{
 \dontrun{
-library(MAGMA.Celltyping)
-local_files <- import_magma_files(download_dir=".")
+local_files <- import_magma_files(download_dir = ".")
 magma_dirs <- unique(dirname(local_files))
-res <- celltype_associations_pipeline(ctd=ewceData::ctd(), ctd_name="Zeisel2018", magma_dirs=magma_dirs, genome_ref_path="~/Downloads/g1000_eur/g1000_eur")
+genome_ref_path <- get_genome_ref()
+ctd <- ewceData::ctd()
+res <- celltype_associations_pipeline(
+    ctd = ctd,
+    ctd_name = "Zeisel2018",
+    magma_dirs = magma_dirs,
+    genome_ref_path = genome_ref_path
+)
 }
 }

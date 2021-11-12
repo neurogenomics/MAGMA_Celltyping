@@ -11,7 +11,9 @@ An object of class \code{data.frame} with 25839 rows and 2 columns.
 The code to prepare the .Rda file file from the marker file is:
 \code{
 library("biomaRt")
-human <- useMart(host="www.ensembl.org", "ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl")
+human <- useMart(host="www.ensembl.org",
+                 "ENSEMBL_MART_ENSEMBL",
+                 dataset="hsapiens_gene_ensembl")
 attrib_hum = listAttributes(human)
 hgnc_symbols = getBM(attributes=c("hgnc_symbol","entrezgene"), mart=human)
 colnames(hgnc_symbols) = c("hgnc_symbol","entrez")
@@ -22,7 +24,7 @@ usethis::use_data(hgnc2entrez,overwrite = TRUE)
 }
 }
 \usage{
-hgnc2entrez
+data("hgnc2entrez")
 }
 \description{
 HGNC to Entrez symbol mapping

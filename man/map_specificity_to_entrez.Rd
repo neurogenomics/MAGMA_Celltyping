@@ -20,6 +20,5 @@ Matrix in which the first column is 'entrez' and then the specificity decile for
 Convenience function used in 'create_gene_covar_file()'
 }
 \examples{
-genesCovarFilePath = create_gene_covar_file(genesOutFile,ctd)
-
+genesCovarFilePath <- create_gene_covar_file(genesOutFile, ctd)
 }

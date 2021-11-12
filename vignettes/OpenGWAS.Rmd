@@ -22,8 +22,7 @@ editor_options:
 
 ```{r style, echo=FALSE, results='asis', message=FALSE}
 BiocStyle::markdown()
-knitr::opts_chunk$set(tidy         = FALSE,
-                      message      = FALSE)
+knitr::opts_chunk$set(tidy = FALSE, message  = FALSE)
 ```
 
 ```{r setup, include=TRUE}
@@ -37,7 +36,8 @@ library(MungeSumstats)
 library(ggplot2)
 library(dplyr)
 
-save_dir <- "/Volumes/bms20/projects/neurogenomics-lab/live/GWAS_sumstats/OpenGWAS"
+save_dir <- tempdir()
+# save_dir <- "/Volumes/bms20/projects/neurogenomics-lab/live/GWAS_sumstats/OpenGWAS"
 ```
 
 # Munge sum stats
@@ -61,41 +61,60 @@ gwas <- MungeSumstats::import_sumstats(ids = metagwas$id,
 ```
 
 
-## Create metadata file
+# Create metadata file
 
 ```{r}
 munged_files <- list.files(save_dir,".tsv.gz", full.names = TRUE)
 munged_ids <- gsub(".tsv.gz","",basename(munged_files))
 metagwas_all <- MungeSumstats::find_sumstats(ids = munged_ids)
-
 metagwas_all$path <- munged_files
 ```
 
-### Check genome builds
+## Check genome builds
 
 `MungeSumstats` automatically keeps log files in the `tempdir()`. But if you restart your R session mid-way, they'll be erased.
 
 Instead, infer the genome build here.
 
 ```{r}
-builds <- lapply(munged_files, function(x){
-  message(x)
-  MungeSumstats::get_genome_build(x)
-}) %>% `names<-`(munged_ids)
-metagwas_all$build_inferred <- unlist(builds)
-
+builds <- MungeSumstats::get_genome_builds(sumstats_list = munged_files, 
+                                           header_only = 1000, 
+                                           names_from_paths =TRUE)
 table(metagwas_all$build_inferred)
 ```
+
+## Filter metadata
+
+Must have sample size.
+
+```{r}
+metagwas_all <- metagwas_all %>% 
+  dplyr::mutate(N = ifelse(is.na(sample_size), sum(ncase, ncontrol, na.rm = TRUE), sample_size))
+metagwas_all <- subset(metagwas_all, !is.na(N))
+```
+
 
 ## Save metadata
 
 ```{r} 
+metagwas_all <- metagwas_all %>% `rownames<-`(gsub("-|[:]|[.]","_",rownames(metagwas_all)))
 utils::write.csv(metagwas_all, file.path(save_dir,"OpenGWAS_metadata.csv"))
-# metagwas_all <- read.csv(file.path(save_dir,"OpenGWAS_metadata.csv"))
 ```
 
 
 # Map SNPs to genes
+
+## Read metadata
+
+```{r}
+metagwas_all <- read.csv(file.path(save_dir,"OpenGWAS_metadata.csv"), row.names = 1)
+
+metagwas_all$trait_group <- stringr::str_extract(
+  tolower(metagwas_all$trait),
+  "(alzheimer)|(parkinson)|(amyotrophic)|(frontotemporal dementia)|(dementia)")
+metagwas_all[is.na(metagwas_all$trait_group),"trait_group"] <- "other"
+
+```
 
 ## Genome reference
 
@@ -111,35 +130,36 @@ if(!file.exists(sprintf("%s/g1000_eur.bed",genome_ref_dir))){
           exdir=genome_ref_dir)
     file.remove(sprintf("%s.zip",genome_ref_dir))
 }
+
 genome_ref_path = sprintf("%s/g1000_eur",genome_ref_dir)
 
 ```
-
-### Filter metadata
-
-Must have sample size.
+ 
+## Map SNPs
 
 ```{r}
-metagwas_all <- metagwas_all %>% 
-  dplyr::mutate(N = ifelse(is.na(sample_size), sum(ncase, ncontrol, na.rm = TRUE), sample_size))
-metagwas_all <- subset(metagwas_all, !is.na(N))
-```
-
-
-```{r}
-
-magma_files <- lapply(1:nrow(metagwas_all), function(i){
-  message("----- ", metagwas_all$id[i]," -----")
-  MAGMA.Celltyping::map.snps.to.genes(path_formatted = metagwas_all$path[i],
+magma_files <- parallel::mclapply(1:nrow(metagwas_all), function(i){
+  MAGMA.Celltyping:::message_parallel("----- ", metagwas_all$id[i]," -----")
+  MAGMA.Celltyping::map_snps_to_genes(path_formatted = metagwas_all$path[i],
                                       genome_build = metagwas_all$build_inferred[i],
                                       upstream_kb = 35,  
                                       downstream_kb = 10,
                                       N = metagwas_all$N[i],
                                       genome_ref_path = genome_ref_path,
                                       force_new = FALSE)
-}) %>% `names<-`(metagwas_all$id)
+}, mc.cores = 10) %>% `names<-`(metagwas_all$id)
+```
 
 
+# Construct gene x trait matrix
+
+Can construct gene x trait matrix from gene-level MAGMA results across multiple GWAS traits.
+
+```{r}
+magma_matrix <- phenomix::gene_trait_matrix(magma_files = magma_files,
+                                            metric = "ADJ_ZSTAT", 
+                                            save_path = file.path(save_dir,"OpenGWAS_neurodegenGWAS_ADJZSTAT.rds"),
+                                            mc.cores = 10) 
 ```
 
 

@@ -4,12 +4,20 @@
 \alias{install_magma}
 \title{Install the MAGMA command line tool}
 \source{
-[MAGMA website](https://ctg.cncr.nl/software/magma)
+\href{https://ctg.cncr.nl/software/magma}{MAGMA website}
 
-[MAGMA.celltyping documentation](https://github.com/NathanSkene/MAGMA_Celltyping)
+\href{https://github.com/NathanSkene/MAGMA_Celltyping}{
+MAGMA.celltyping documentation}
 }
 \usage{
-install_magma(dest_dir = "~")
+install_magma(dest_dir = "/usr/local/bin", upgrade = FALSE, verbose = TRUE)
+}
+\arguments{
+\item{dest_dir}{Folder in which to install MAGMA.}
+
+\item{verbose}{Print messages.}
+
+\item{version}{Which version of MAGMA to install.}
 }
 \description{
 Install the MAGMA command line tool
