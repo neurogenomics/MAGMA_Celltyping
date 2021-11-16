@@ -12,30 +12,30 @@
 #' @export
 #' @importFrom utils unzip
 #' @importFrom R.utils createLink
-install_magma <- function(dest_dir = "/usr/local/bin",
+magma_install <- function(dest_dir = "/usr/local/bin",
                           upgrade = FALSE,
                           verbose = TRUE) {
     version <- magma_installed_version(verbose = FALSE)
     magma_url <- magma_links(latest_only = TRUE)
-    latest_version <- magma_versions(links = magma_url)
-    is_installed <- magma_installed()
+    latest_version <- magma_links_versions(links = magma_url)
+    is_installed <- magma_installed(verbose = FALSE)
 
     if (is_installed) {
         if ((version != latest_version) & upgrade) {
             messager("A newer version of MAGMA is available.",
-                "Upgrading from", version, "==>", latest_version,
+                "\nUpgrading from", version, "==>", latest_version,
                 v = verbose
             )
         } else {
             if (version != latest_version) {
                 messager("An older version of MAGMA",
-                    "(", version, ") is installed.",
-                    "Latest MAGMA:",
+                    paste0("(", version, ")"),"is installed.",
+                    "\nLatest MAGMA:",latest_version,
                     v = verbose
                 )
             } else {
                 messager("The latest version of MAGMA",
-                    "(", version, ") is installed.",
+                    paste0("(", version, ")"),"is installed.",
                     v = verbose
                 )
             }
