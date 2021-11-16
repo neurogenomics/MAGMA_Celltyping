@@ -10,7 +10,7 @@
 MAGMA.celltyping documentation}
 }
 \usage{
-magma_install(dest_dir = "/usr/local/bin", upgrade = FALSE, verbose = TRUE)
+magma_install(dest_dir = NULL, upgrade = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{dest_dir}{Folder in which to install MAGMA.}

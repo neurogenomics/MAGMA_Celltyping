@@ -12,9 +12,10 @@
 #' @export
 #' @importFrom utils unzip
 #' @importFrom R.utils createLink
-magma_install <- function(dest_dir = "/usr/local/bin",
+magma_install <- function(dest_dir = NULL,
                           upgrade = FALSE,
                           verbose = TRUE) {
+    
     version <- magma_installed_version(verbose = FALSE)
     magma_url <- magma_links(latest_only = TRUE,
                              verbose = verbose)
@@ -46,8 +47,9 @@ magma_install <- function(dest_dir = "/usr/local/bin",
             return(path)
         }
     }
-
+    
     if ((!is_installed) | upgrade) {
+        if(is.null(dest_dir)) dest_dir <- find_install_dir(verbose = verbose)
         try({ 
             messager("Installing MAGMA:", version, v = verbose)
             messager("Downloading MAGMA executable.", v = verbose)
