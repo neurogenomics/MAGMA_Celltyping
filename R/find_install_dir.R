@@ -17,5 +17,10 @@ find_install_dir <- function(dest_dir_opts = c("/usr/local/bin",
     messager("Searching for viable installation directory.",v=verbose)
     have_access <- check_access(dest_dir = dest_dir_opts)
     use_dir <- names(have_access[have_access][1])
+    if(length(use_dir)>0){
+        messager("Found viable installation directory:",use_dir)    
+    } else {
+        stop("No viable installation directory identified.")
+    }
     return(use_dir)
 }
