@@ -60,7 +60,7 @@ magma_install <- function(dest_dir = NULL,
             dest_magma <- file.path(destpath, "magma")
             #### Change magma file permissions ####
             try({system(paste0("chmod u=rx,go=rx ", dest_magma))})
-            Sys.chmod(dest_magma, "777", use_umask = FALSE)
+            try({Sys.chmod(dest_magma, "777", use_umask = FALSE)})
             #### Create a symlink to the actually magma executable #### 
             symlink <- magma_create_symlink(dest_magma = dest_magma,
                                             upgrade = upgrade,
