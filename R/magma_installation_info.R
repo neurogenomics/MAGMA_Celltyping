@@ -7,12 +7,12 @@ magma_installation_info <- function() {
             "Please download MAGMA manually ",
             "from https://ctg.cncr.nl/software/magma\n",
             "The executable should then be copied to /usr/local/bin\n\n",
-            "Alternatively, you can download it to whereever you want",
+            "Alternatively, you can download it to wherever you want",
             " and add the folder containing it to your PATH.\n",
             "That is, if you’ve placed the file in ‘~/Packages/’",
             "and you use bash (instead of e.g. zsh) then add to ",
-            "‘~/.bash_profile’ this line",
-            "'export PATH=~/Packages/magma:$PATH'."
+            "‘~/.bash_profile’ the following line:\n",
+            "'export PATH=~/Packages/magma:$PATH'"
         )
     )
 }
