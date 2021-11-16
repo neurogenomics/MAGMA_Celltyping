@@ -5,13 +5,12 @@
 #' @param ctd CellTypeDataset
 #' @param gene_subset Genes to subset to.
 #'
-#' @examples
-#' library(MAGMA.Celltyping)
-#' library(ewceData)
-#' set.seed(1)
+#' @examples  
+#' set.seed(1234)
 #' ctd <- ewceData::ctd()
 #' gene_subset <- sample(rownames(ctd[[1]]$mean_exp), 1000)
-#' ctd_subset <- filter_ctd_genes(ctd = ctd, gene_subset = gene_subset)
+#' ctd_subset <- MAGMA.Celltyping::filter_ctd_genes(ctd = ctd, 
+#'                                                  gene_subset = gene_subset)
 #' @export
 filter_ctd_genes <- function(ctd,
                              gene_subset) {

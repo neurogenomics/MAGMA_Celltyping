@@ -4,10 +4,35 @@
 \alias{get_genome_ref}
 \title{Download genome ref}
 \usage{
-get_genome_ref(storage_dir = tempdir(), verbose = TRUE)
+get_genome_ref(
+  genome_ref_path = NULL,
+  storage_dir = tempdir(),
+  method = c("bioc", "magma"),
+  population = c("eur", "afr", "amr", "eas", "sas"),
+  verbose = TRUE
+)
 }
 \arguments{
+\item{genome_ref_path}{If not \code{NULL} and file exists,
+this file path will be returned.}
+
 \item{storage_dir}{Where to store genome ref.}
+
+\item{method}{Get reference genome data from the
+\href{https://ctg.cncr.nl/software/MAGMA/ref_data}{MAGMA server} (slow) or
+ the Bioconductor package XXXXX.}
+
+\item{population}{Which population subset of the genome reference
+to include.
+\itemize{
+\item{"eur" : }{European descent
+(Default simply because this is currently
+the most common GWAS subpopulation).}
+\item{"afr" : }{African descent.}
+\item{"amr" : }{Ad Mixed American descent.}
+\item{"eas" : }{East Asian descent.}
+\item{"sas" : }{South Asian descent.}
+}}
 
 \item{verbose}{Print messages.}
 }
@@ -21,6 +46,6 @@ If the file already exists, it will simply return the path.
 }
 \examples{
 \dontrun{
-genome_ref_path <- get_genome_ref()
+genome_ref_path <- MAGMA.Celltyping::get_genome_ref()
 }
 }

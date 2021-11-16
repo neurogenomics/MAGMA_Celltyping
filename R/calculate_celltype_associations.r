@@ -1,90 +1,116 @@
 #' Calculate celltype associations using MAGMA
 #'
-#' Assumes that you have already run 
-#' \link[MAGMA.Celltyping]{map_snps_to_genes()}.
+#' Assumes that you have already run
+#' \link[MAGMA.Celltyping]{map_snps_to_genes}.
 #'
-#' @param ctd Cell type data structure containing $specificity_quantiles
-#' @param gwas_sumstats_path File path of the summary statistics file
-#' @param analysis_name Used in file names which area created
+#' @param ctd Cell type data structure containing $specificity_quantiles.
+#' @param gwas_sumstats_path File path of the summary statistics file.
+#' @param analysis_name Used in file names which area created.
+#' @param ctd_levels Which levels of \code{ctd} to
+#' iterate the enrichment analysis over.
+#' @param prepare_ctd Whether to run
+#' \link[MAGMA.Celltyping]{prepare_quantile_groups} on the \code{ctd} first.
 #' @param upstream_kb How many kb upstream of the gene
 #'  should SNPs be included?
 #' @param downstream_kb How many kb downstream of the gene
 #' should SNPs be included?
 #' @param genome_ref_path Path to the folder containing the 1000
 #' genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).
-#' @param specificity_species Species name relevant to the cell type data,
-#' i.e. "mouse" or "human"
+#' @param sctSpecies Species name relevant to the cell type data.
+#' See \link[EWCE]{list_species} for all available species.
 #' @param genesOutCOND [Optional] Path to a genes.out file to condition on.
 #' Used if you want to condition on a different GWAS.
 #' @param EnrichmentMode [Optional] Should either 'Linear' or 'Top 10\%' mode
 #'  be used for testing enrichment?
 #' @param force_new [Optional] Force new MAGMA analyses even if the
 #'  pre-existing results files are detected.
+#' @param verbose Print messages.
 #'
 #' @returns File path for the genes.out file
 #'
 #' @examples
-#' \dontrun{
-#' genome_ref_path <- get_genome_ref()
-#' ctAssocs <- calculate_celltype_associations(
-#'     ctd = ewceData::ctd(),
-#'     gwas_sumstats_path = gwas_ss,
-#'     genome_ref_path = genome_ref_path,
-#'     specificity_species = "mouse"
+#' #### Prepare data ####
+#' #' ctd <- ewceData::ctd()
+#' path_formatted <- MAGMA.Celltyping::get_example_gwas()
+#'
+#' ##### Map SNPs to genes ####
+#' genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(
+#'     path_formatted = path_formatted,
+#'     genome_build = "GRCh37"
 #' )
-#' }
+#'
+#' #### Run pipeline ####
+#' ctAssocs <- MAGMA.Celltyping::calculate_celltype_associations(
+#'     ctd = ctd,
+#'     gwas_sumstats_path = path_formatted,
+#'     sctSpecies = "mouse"
+#' )
 #' @export
+#' @keywords main_function
 calculate_celltype_associations <- function(ctd,
                                             gwas_sumstats_path,
                                             analysis_name = "MainRun",
-                                            upstream_kb = 10,
-                                            downstream_kb = 1.5,
+                                            ctd_levels = seq_len(length(ctd)),
+                                            prepare_ctd = TRUE,
+                                            upstream_kb = 35,
+                                            downstream_kb = 10,
                                             genome_ref_path = NULL,
-                                            specificity_species = "mouse",
+                                            sctSpecies = "mouse",
                                             genesOutCOND = NA,
                                             EnrichmentMode = "Linear",
-                                            force_new = FALSE) {
-    # Check EnrichmentMode has correct values
-    if (!EnrichmentMode %in% c("Linear", "Top 10%")) {
-        stop(
-            "EnrichmentMode argument must be set to either ",
-            "'Linear' or 'Top 10%"
+                                            force_new = FALSE,
+                                            verbose = TRUE) {
+
+    #### Process args ####
+    check_enrichment_mode(EnrichmentMode = EnrichmentMode)
+    #### prepare quantile groups ####
+    # MAGMA.Celltyping can only use human GWAS
+    if (prepare_ctd) {
+        output_species <- "human"
+        ctd <- prepare_quantile_groups(
+            ctd = ctd,
+            input_species = sctSpecies,
+            output_species = output_species,
+            verbose = verbose
         )
+        sctSpecies <- output_species
     }
+    #### Prepare genome_ref ####
+    genome_ref_path <- get_genome_ref(
+        genome_ref_path = genome_ref_path,
+        verbose = verbose
+    )
     #### Setup paths ####
     gwas_sumstats_path <- path.expand(gwas_sumstats_path)
-    magmaPaths <- get.magma.paths(
+    magmaPaths <- get_magma_paths(
         gwas_sumstats_path = gwas_sumstats_path,
         upstream_kb = upstream_kb,
         downstream_kb = downstream_kb
     )
-
-    # Check for errors in arguments
+    #### Check for errors in arguments ####
     check_inputs_to_magma_celltype_analysis(
         ctd = ctd,
         gwas_sumstats_path = gwas_sumstats_path,
         analysis_name = analysis_name,
-        upstream_kb = upstream_kb, downstream_kb = downstream_kb,
+        upstream_kb = upstream_kb,
+        downstream_kb = downstream_kb,
         genome_ref_path = genome_ref_path
     )
 
     output <- list()
-    for (annotLevel in 1:length(ctd)) {
-        # Prepare output list
+    for (annotLevel in ctd_levels) {
+        #### Prepare output list ####
         tmp <- list()
         sumstatsPrefix2 <- sprintf(
             "%s.level%s",
             magmaPaths$filePathPrefix, annotLevel
         )
         path <- sprintf("%s.%s.gsa.out", sumstatsPrefix2, analysis_name)
-        # Need to make sure colnames still match after
-        # theyre edited by prepare_quantile_groups step
-        ctd <- standardise_ctd(ctd = ctd, lvl = annotLevel)
         geneCovarFile <- NULL
         print(path)
 
         if ((!file.exists(path)) | force_new) {
-            message("+ Running MAGMA")
+            messager("Running MAGMA.", v = verbose)
 
             if (EnrichmentMode == "Linear") {
                 # First match quantiles to the genes in the genes.out file...
@@ -96,22 +122,38 @@ calculate_celltype_associations <- function(ctd,
                     ),
                     ctd = ctd,
                     annotLevel = annotLevel,
-                    specificity_species = specificity_species,
+                    sctSpecies = sctSpecies,
                     genesOutCOND = genesOutCOND
                 )
 
                 if (is.na(genesOutCOND[1])) {
                     magma_cmd <- sprintf(
-                        "magma --gene-results '%s.genes.raw' --gene-covar '%s' --model direction=pos --out '%s.%s'",
+                        paste(
+                            "magma",
+                            "--gene-results '%s.genes.raw'",
+                            "--gene-covar '%s'",
+                            "--model direction=pos --out '%s.%s'"
+                        ),
                         magmaPaths$filePathPrefix,
                         geneCovarFile,
                         sumstatsPrefix2,
                         analysis_name
                     )
                 } else {
-                    conditionOn <- paste(sprintf("ZSTAT%s", 1:length(genesOutCOND)), collapse = ",")
+                    conditionOn <- paste(sprintf(
+                        "ZSTAT%s",
+                        seq_len(length(genesOutCOND))
+                    ),
+                    collapse = ","
+                    )
                     magma_cmd <- sprintf(
-                        "magma --gene-results '%s.genes.raw' --gene-covar '%s' --model direction=pos  condition-residualize='%s' --out '%s.%s'",
+                        paste(
+                            "magma",
+                            "--gene-results '%s.genes.raw'",
+                            "--gene-covar '%s'",
+                            "--model direction=pos  condition-residualize='%s'",
+                            "--out '%s.%s'"
+                        ),
                         magmaPaths$filePathPrefix,
                         geneCovarFile,
                         conditionOn,
@@ -123,15 +165,23 @@ calculate_celltype_associations <- function(ctd,
                 # First match quantiles to the genes in the genes.out file...
                 # then write as the genesCovar file (the input to MAGMA)
                 geneCovarFile <- create_top10percent_genesets_file(
-                    genesOutFile = sprintf("%s.genes.out", magmaPaths$filePathPrefix),
+                    genesOutFile = sprintf(
+                        "%s.genes.out",
+                        magmaPaths$filePathPrefix
+                    ),
                     ctd = ctd,
                     annotLevel = annotLevel,
-                    specificity_species = specificity_species
+                    sctSpecies = sctSpecies
                 )
 
                 if (is.na(genesOutCOND[1])) {
                     magma_cmd <- sprintf(
-                        "magma --gene-results '%s.genes.raw' --set-annot '%s' --out '%s.%s'",
+                        paste(
+                            "magma",
+                            "--gene-results '%s.genes.raw'",
+                            "--set-annot '%s'",
+                            "--out '%s.%s'"
+                        ),
                         magmaPaths$filePathPrefix,
                         geneCovarFile,
                         sumstatsPrefix2,
@@ -145,7 +195,7 @@ calculate_celltype_associations <- function(ctd,
                         ),
                         ctd = ctd,
                         annotLevel = annotLevel,
-                        specificity_species = specificity_species,
+                        sctSpecies = sctSpecies,
                         genesOutCOND = genesOutCOND
                     )
                     conditionOn <- paste(sprintf(
@@ -155,7 +205,13 @@ calculate_celltype_associations <- function(ctd,
                     collapse = ","
                     )
                     magma_cmd <- sprintf(
-                        "magma --gene-results '%s.genes.raw' --set-annot '%s' twosided --gene-covar '%s' condition-only='%s' --out '%s.%s'",
+                        paste(
+                            "magma",
+                            "--gene-results '%s.genes.raw'",
+                            "--set-annot '%s' twosided",
+                            "--gene-covar '%s' condition-only='%s'",
+                            "--out '%s.%s'"
+                        ),
                         magmaPaths$filePathPrefix,
                         geneCovarFile,
                         geneCovarFile2,
@@ -168,10 +224,10 @@ calculate_celltype_associations <- function(ctd,
             print(magma_cmd)
             system(magma_cmd)
         } else {
-            message("+ Importing precomputed MAGMA results...")
+            messager("Importing precomputed MAGMA results.", v = verbose)
         }
         tmp$geneCovarFile <- geneCovarFile
-        tmp$results <- load.magma.results.file(
+        tmp$results <- load_magma_results_file(
             path = path,
             annotLevel = annotLevel,
             ctd = ctd,

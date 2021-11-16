@@ -8,8 +8,8 @@ calculate_geneset_enrichment(
   geneset,
   gwas_sumstats_path,
   analysis_name,
-  upstream_kb = 10,
-  downstream_kb = 1.5,
+  upstream_kb = 35,
+  downstream_kb = 10,
   genome_ref_path,
   geneset_species = "mouse"
 )
@@ -17,9 +17,9 @@ calculate_geneset_enrichment(
 \arguments{
 \item{geneset}{Genes which are to be tested (as HGNC / MGI symbols).}
 
-\item{gwas_sumstats_path}{File path of the summary statistics file}
+\item{gwas_sumstats_path}{File path of the summary statistics file.}
 
-\item{analysis_name}{Used in file names which area created}
+\item{analysis_name}{Used in file names which area created.}
 
 \item{upstream_kb}{How many kb upstream of the gene
 should SNPs be included?}
@@ -30,13 +30,13 @@ should SNPs be included?}
 \item{genome_ref_path}{Path to the folder containing the 1000
 genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
 
-\item{geneset_species}{Species name relevant to the genes in the 
+\item{geneset_species}{Species name relevant to the genes in the
 geneset, i.e. "mouse" or "human"}
 }
 \value{
 Filepath for the genes.out file
 }
 \description{
-Assumes that you have already run 
-\link[MAGMA.Celltyping]{map_snps_to_genes()}.
+Assumes that you have already run
+\link[MAGMA.Celltyping]{map_snps_to_genes}.
 }

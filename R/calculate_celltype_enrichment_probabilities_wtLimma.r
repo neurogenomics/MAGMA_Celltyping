@@ -1,54 +1,74 @@
-#' Calculate celltype enrichments without MAGMA using adjusted MAGMA Z-statistic from .genes.out files
+#' Calculate celltype enrichment
 #'
-#' @param magmaAdjZ Output from adjust.zstat.in.genesOut()
-#' @param ctd CellTypeData object
-#' @param thresh A threshold on low specificity values (used to drop genes)
-#' @param sctSpecies Either 'human' or 'mouse'
-#' @param annotLevel CellTypeData level to test
-#' #'
+#' Calculate celltype enrichments without MAGMA
+#' using adjusted MAGMA Z-statistic from .genes.out files.
+#'
+#' @param magmaAdjZ Output from
+#'  \link[MAGMA.Celltyping]{adjust_zstat_in_genesOut}.
+#' @param thresh A threshold on low specificity values (used to drop genes).
+#' @inheritParams calculate_celltype_associations
+#'
 #' @examples
-#' library(MAGMA.Celltyping)
-#' library(ewceData)
 #' ctd <- ewceData::ctd()
 #'
 #' # The package stores an example genesOut file, so save this to a tempfile
 #' myGenesOut <- tempfile()
-#' data.table::fwrite(MAGMA.Celltyping::genesOut, sep = "\t", file = myGenesOut)
-#' magmaAdjZ <- adjust.zstat.in.genesOut(ctd, magma_GenesOut_file = myGenesOut, sctSpecies = "mouse")
-#' ps <- calculate.celltype.enrichment.probabilities.wtLimma(magmaAdjZ = magmaAdjZ, ctd = ctd)
+#' data.table::fwrite(
+#'     x = MAGMA.Celltyping::genesOut,
+#'     sep = "\t",
+#'     file = myGenesOut
+#' )
+#' magmaAdjZ <- MAGMA.Celltyping::adjust_zstat_in_genesOut(
+#'     ctd = ctd,
+#'     magma_GenesOut_file = myGenesOut
+#' )
+#' ps <- calculate_celltype_enrichment_probabilities_wtLimma(
+#'     magmaAdjZ = magmaAdjZ,
+#'     ctd = ctd
+#' )
 #' @export
-#' @importFrom magrittr %>%
-#' @importFrom dplyr rename
-#' @importFrom dplyr filter
-#' @importFrom limma lmFit
-#' @importFrom limma eBayes
-#' @importFrom limma topTable
-#' @importFrom stats quantile
+#' @importFrom dplyr %>% rename filter
+#' @importFrom limma lmFit eBayes topTable
+#' @importFrom stats quantile setNames
 #' @importFrom rlang .data
-calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,
+calculate_celltype_enrichment_probabilities_wtLimma <- function(magmaAdjZ,
                                                                 ctd,
                                                                 thresh = 0.0001,
                                                                 sctSpecies = "mouse",
                                                                 annotLevel = 1,
                                                                 celltypes = NULL,
-                                                                return_all = F) {
+                                                                return_all = FALSE,
+                                                                verbose = TRUE) {
     if ("hgnc_symbol" %in% colnames(magmaAdjZ)) {
-        magmaAdjZ <- magmaAdjZ %>% dplyr::rename(human.symbol = .data$hgnc_symbol)
+        magmaAdjZ <- magmaAdjZ %>%
+            dplyr::rename(human.symbol = .data$hgnc_symbol)
     }
-
     # First get names of all cell types
-    #### Ensure cell-type names are processed the same as in the MAGMA.Celltyping pipeline
-    message("+ Preparing specificity matrix")
+    #### Ensure cell-type names are processed
+    ## the same as in the MAGMA.Celltyping pipeline
+    messager("Preparing specificity matrix.", v = verbose)
     spec <- ctd[[annotLevel]]$specificity
     og_colnames <- colnames(spec)
-    spec <- as.matrix(data.frame(spec))
+    spec <- as.matrix(data.frame(spec,
+        check.rows = FALSE,
+        check.names = FALSE
+    ))
     allCellTypes <- colnames(spec)
-    celltype_dict <- setNames(og_colnames, allCellTypes)
+    celltype_dict <- stats::setNames(og_colnames, allCellTypes)
 
     if (!is.null(celltypes)) {
-        selected_celltypes <- unname(get_celltype_dict(all_df = data.frame(Celltype = celltypes, dummy = 1)))
-        allCellTypes <- allCellTypes[tolower(allCellTypes) %in% tolower(selected_celltypes)]
-        message("+ ", length(allCellTypes), " cell-types selected.")
+        selected_celltypes <- unname(
+            get_celltype_dict(all_df = data.frame(
+                Celltype = celltypes,
+                dummy = 1,
+                check.rows = FALSE,
+                check.names = FALSE
+            ))
+        )
+        allCellTypes <- allCellTypes[
+            tolower(allCellTypes) %in% tolower(selected_celltypes)
+        ]
+        messager(length(allCellTypes), "cell-types selected.", v = verbose)
     }
 
 
@@ -77,19 +97,29 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,
         notExp[props < thresh] <- -1
 
         # Determine which expression decile genes fall into
-        quantiles <- stats::quantile(props[props > thresh], probs = seq(from = 0, to = 1, by = 0.1))
+        quantiles <- stats::quantile(props[props > thresh],
+            probs = seq(from = 0, to = 1, by = 0.1)
+        )
         perc <- as.numeric(cut(props, quantiles, include.lowest = TRUE))
         perc[is.na(perc)] <- 0
 
         # Merge decile groups with MAGMA zscores
         if (sctSpecies == "mouse") {
-            geneGroups <- data.frame(mgi_symbol = mgiS, proportion = props, percentile = perc)
+            geneGroups <- data.frame(
+                mgi_symbol = mgiS,
+                proportion = props,
+                percentile = perc
+            )
             magma_with_ct1 <- geneGroups %>%
                 dplyr::rename(mouse.symbol = .data$mgi_symbol) %>%
                 merge(magmaAdjZ, by = "mouse.symbol") %>%
                 dplyr::filter(.data$percentile >= 0)
         } else {
-            geneGroups <- data.frame(hgnc_symbol = mgiS, proportion = props, percentile = perc)
+            geneGroups <- data.frame(
+                hgnc_symbol = mgiS,
+                proportion = props,
+                percentile = perc
+            )
             magma_with_ct1 <- geneGroups %>%
                 dplyr::rename(human.symbol = .data$hgnc_symbol) %>%
                 merge(magmaAdjZ, by = "human.symbol") %>%
@@ -124,7 +154,9 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,
             ) %>%
             dplyr::mutate(ctd_level = annotLevel)
         #### input df
-        input_all_df <- data.table::rbindlist(input_all, idcol = "Celltype_id") %>%
+        input_all_df <- data.table::rbindlist(input_all,
+            idcol = "Celltype_id"
+        ) %>%
             dplyr::rename(
                 specificity_proportion = proportion,
                 specificity_decile = percentile
@@ -145,14 +177,7 @@ calculate.celltype.enrichment.probabilities.wtLimma <- function(magmaAdjZ,
     }
 }
 
-
-get_celltype_dict <- function(all_df) {
-    ##### Celltype names get changed during MAGMA_Celltyping. Translate here
-    tmp <- all_df
-    tmp$dummy <- 1
-    tmp <- t(unique(tmp[, c("Celltype", "dummy")]))
-    colnames(tmp) <- tmp[1, ]
-    tmp <- data.frame(tmp)
-    celltype_dict <- setNames(colnames(tmp), tmp[1, ])
-    return(celltype_dict)
+calculate_celltype_enrichment_probabilities_wtLimma <- function(...) {
+    .Deprecated("calculate_celltype_enrichment_probabilities_wtLimma")
+    calculate_celltype_enrichment_probabilities_wtLimma(...)
 }

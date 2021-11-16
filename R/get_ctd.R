@@ -82,10 +82,13 @@ get_ctd <- function(ctd_name = c(
                         "ctd_DRONC_mouse",
                         "ctd_Saunders",
                         "ctd_Tasic",
-                        "ctd_Zeisel2018"),
+                        "ctd_Zeisel2018"
+                    ),
                     storage_dir = tempdir()) {
-    tmp <- get_data(fname = paste0(ctd_name, ".rda"), 
-                    storage_dir = storage_dir)
+    tmp <- get_data(
+        fname = paste0(ctd_name, ".rda"),
+        storage_dir = storage_dir
+    )
     obj <- load_rdata(tmp)
     return(obj)
 }

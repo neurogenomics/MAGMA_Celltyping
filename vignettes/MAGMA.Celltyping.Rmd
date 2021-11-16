@@ -11,7 +11,7 @@ vignette: >
 ---
 
 
-```{r setup, include=TRUE}
+```{r setup, include=TRUE, message=FALSE}
 library(MAGMA.Celltyping)
 library(ggplot2)
 library(dplyr)
@@ -64,7 +64,7 @@ Note you can input the genome build of your summary statistics for this step or
 it can be inferred if left `NULL`:
 
 ```{r, eval=FALSE}
-genesOutPath <- map_snps_to_genes(
+genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(
   path_formatted = path_formatted,
   genome_build = "GRCh37")
 ```
@@ -74,7 +74,12 @@ genesOutPath <- map_snps_to_genes(
 
 ### Import CTD 
 
-The EWCE package comes with a celltype specificity dataset which we use as an example. If you want to import your own single cell RNA-seq dataset, then this needs converting into CTD format; please see the [EWCE tutorial](https://github.com/NathanSkene/EWCE/) for explanation of how to do this.
+`ewceData` provides a number of CellTypeDatasets (CTD) to be used a cell-type
+transcriptomic signature reference files.
+
+If you want to create your own single-cell transcriptomic reference, you'll need
+to first convert it to CTD using the instructions found in the `EWCE` package
+[documentation here](https://github.com/NathanSkene/EWCE/).
 
 ```{r, eval=FALSE } 
 ctd <- ewceData::ctd()
@@ -83,7 +88,7 @@ ctd <- ewceData::ctd()
 Note that the cell type dataset loaded in the code above is the Karolinksa cortex/hippocampus data only. For the full Karolinska dataset with hypothalamus and midbrain instead use the following:
 
 ```
-ctd <- MAGMA.Celltyping:: get_ctd("ctd_allKI")
+ctd <- MAGMA.Celltyping::get_ctd("ctd_allKI")
 ```
 
 Or for the DRONC seq or AIBS datasets use:
@@ -98,28 +103,15 @@ ctd <- get_ctd("ctd_BlueLake2018_FrontalCortexOnly")
 ctd <- get_ctd("ctd_BlueLake2018_VisualCortexOnly")
 ctd <- get_ctd("ctd_Saunders")
 ```
-
-### Prepare quantiles
-
-First we need to calculate the quantile groups for each celltype within the single-cell dataset. This is done using the `prepare_quantile_groups` function. If your single-cell dataset is not from mouse, then change the `specificity_species` argument.
-
-```{r, eval=FALSE }
-EWCE::
-ctd <- MAGMA.Celltyping::prepare_quantile_groups(ctd = ctd, 
-                                                 specificity_species="human")
-# Examine how the quantile groups look
-print(ctd[[1]]$specificity_quantiles[c("Gfap","Dlg4","Aif1"),])
-print(table(ctd[[1]]$specificity_quantiles[,1]))
-```
-
+ 
 ### Run cell-type enrichment analyses
 
 ```{r}
-
 MAGMA_results <- MAGMA.Celltyping::celltype_associations_pipeline(
+  magma_dirs = dirname(genesOutPath),
   ctd = ctd, 
-  specificity_species = "mouse", 
-  ctd_name = "KI", 
+  sctSpecies = "mouse", 
+  ctd_name = "Zeisel2015", 
   run_linear = TRUE, 
   run_top10 = TRUE,
   run_condition = FALSE)
@@ -143,3 +135,4 @@ utils::sessionInfo()
 ```
 
 </details>
+<hr>

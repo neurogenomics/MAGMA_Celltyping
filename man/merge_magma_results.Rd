@@ -7,16 +7,25 @@
 merge_magma_results(ctAssoc1, ctAssoc2)
 }
 \arguments{
-\item{ctAssoc1}{Output from either calculate_celltype_associations() or calculate_conditional_celltype_associations()}
+\item{ctAssoc1}{Output from either 
+\link[MAGMA.Celltyping]{calculate_celltype_associations} or 
+\link[MAGMA.Celltyping]{calculate_conditional_celltype_associations}.}
 
-\item{ctAssoc2}{Output from either calculate_celltype_associations() or calculate_conditional_celltype_associations()}
+\item{ctAssoc2}{Output from either 
+\link[MAGMA.Celltyping]{calculate_celltype_associations} or 
+\link[MAGMA.Celltyping]{calculate_conditional_celltype_associations}.}
 }
 \value{
-List with same format as output from either calculate_celltype_associations() or calculate_conditional_celltype_associations()
+List with same format as output from either 
+\link[MAGMA.Celltyping]{calculate_celltype_associations} or
+\link[MAGMA.Celltyping]{calculate_conditional_celltype_associations}.
 }
 \description{
-Used for instance when you want to merge results from 'Linear' and 'Top 10%' enrichment modes
+Used for instance when you want to merge results from 
+'Linear' and 'Top 10\%' enrichment modes.
 }
 \examples{
-ctAssocs <- merge_magma_results.r(ctAssoc1, ctAssoc2)
+\dontrun{
+ctAssocs <- MAGMA.Celltyping::merge_magma_results(ctAssoc1, ctAssoc2)
+}
 }

@@ -1,10 +1,10 @@
 #' Use MAGMA to test enrichment in a geneset
 #'
-#' Assumes that you have already run 
-#' \link[MAGMA.Celltyping]{map_snps_to_genes()}.
+#' Assumes that you have already run
+#' \link[MAGMA.Celltyping]{map_snps_to_genes}.
 #'
 #' @param geneset Genes which are to be tested (as HGNC / MGI symbols).
-#' @param geneset_species Species name relevant to the genes in the 
+#' @param geneset_species Species name relevant to the genes in the
 #' geneset, i.e. "mouse" or "human"
 #' @inheritParams calculate_celltype_associations
 #'
@@ -13,15 +13,15 @@
 #' @export
 #' @importFrom utils read.table
 #' @importFrom utils write.table
-calculate_geneset_enrichment <- function(geneset, 
-                                         gwas_sumstats_path, 
-                                         analysis_name, 
-                                         upstream_kb = 10, 
-                                         downstream_kb = 1.5, 
+calculate_geneset_enrichment <- function(geneset,
+                                         gwas_sumstats_path,
+                                         analysis_name,
+                                         upstream_kb = 35,
+                                         downstream_kb = 10,
                                          genome_ref_path,
                                          geneset_species = "mouse") {
     gwas_sumstats_path <- path.expand(gwas_sumstats_path)
-    magmaPaths <- get.magma.paths(gwas_sumstats_path, upstream_kb, downstream_kb)
+    magmaPaths <- get_magma_paths(gwas_sumstats_path, upstream_kb, downstream_kb)
 
     # First, check that the genes are HGNC/MGI IDs
     if (geneset_species == "human") {

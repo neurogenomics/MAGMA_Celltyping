@@ -8,35 +8,41 @@ calculate_conditional_celltype_associations(
   ctd,
   gwas_sumstats_path,
   analysis_name = "MainRun",
-  upstream_kb = 10,
-  downstream_kb = 1.5,
+  prepare_ctd = TRUE,
+  upstream_kb = 35,
+  downstream_kb = 10,
   genome_ref_path,
   controlledAnnotLevel = 1,
-  specificity_species = "mouse",
+  sctSpecies = "mouse",
   controlTopNcells = NA,
   controlledCTs = NA,
-  EnrichmentMode = "Linear"
+  EnrichmentMode = "Linear",
+  verbose = TRUE
 )
 }
 \arguments{
-\item{ctd}{Cell type data strucutre containing $specificity_quantiles}
+\item{ctd}{Cell type data structure containing $specificity_quantiles.}
 
-\item{gwas_sumstats_path}{Filepath of the summary statistics file}
+\item{gwas_sumstats_path}{File path of the summary statistics file.}
 
-\item{analysis_name}{Used in filenames which area created}
+\item{analysis_name}{Used in file names which area created.}
 
-\item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}
+\item{prepare_ctd}{Whether to run
+\link[MAGMA.Celltyping]{prepare_quantile_groups} on the \code{ctd} first.}
 
-\item{downstream_kb}{How many kb downstream of the
-gene should SNPs be included?}
+\item{upstream_kb}{How many kb upstream of the gene
+should SNPs be included?}
 
-\item{genome_ref_path}{Path to the folder containing the 1000 genomes
-.bed files, downladed using \link[MAGMA.Celltyping]{get_genome_ref}.}
+\item{downstream_kb}{How many kb downstream of the gene
+should SNPs be included?}
+
+\item{genome_ref_path}{Path to the folder containing the 1000
+genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
 
 \item{controlledAnnotLevel}{Which annotation level should be controlled for.}
 
-\item{specificity_species}{Species name relevant to the cell type
-data (e.g. 'mouse' or 'human').}
+\item{sctSpecies}{Species name relevant to the cell type data.
+See \link[EWCE]{list_species} for all available species.}
 
 \item{controlTopNcells}{How many of the most significant cell types at
 that annotation level should be controlled for?}
@@ -46,9 +52,11 @@ e.g. \code{c('Interneuron type 16','Medium Spiny Neuron')}.}
 
 \item{EnrichmentMode}{[Optional] Either 'Linear' or 'Top 10\%'.
 (\emph{DEFAULT: "Linear"}).}
+
+\item{verbose}{Print messages.}
 }
 \value{
-Filepath for the genes.out file
+File path for the genes.out file
 }
 \description{
 Assumes that you have already run map_snps_to_genes()

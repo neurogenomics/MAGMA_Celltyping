@@ -11,39 +11,45 @@ calculate_conditional_geneset_enrichment(
   controlledCTs,
   gwas_sumstats_path,
   analysis_name,
-  upstream_kb = 10,
-  downstream_kb = 1.5,
+  upstream_kb = 35,
+  downstream_kb = 10,
   genome_ref_path,
   geneset_species = "mouse",
-  specificity_species
+  sctSpecies = "mouse"
 )
 }
 \arguments{
-\item{geneset}{Genes which are to be tested (as HGNC / MGI symbols)}
+\item{geneset}{Genes which are to be tested (as HGNC / MGI symbols).}
 
-\item{ctd}{Cell type data strucutre containing $specificity_quantiles}
+\item{ctd}{Cell type data structure containing $specificity_quantiles.}
 
-\item{controlledAnnotLevel}{Annotation level of the celltypes being controlled for}
+\item{controlledAnnotLevel}{Annotation level of the celltypes
+being controlled for.}
 
-\item{controlledCTs}{Array of the celltype to be controlled for, i.e. c("Interneuron type 16","Medium Spiny Neuron)}
+\item{controlledCTs}{Array of the celltype to be controlled for,
+e.g. c("Interneuron type 16","Medium Spiny Neuron).}
 
-\item{gwas_sumstats_path}{Filepath of the summary statistics file}
+\item{gwas_sumstats_path}{File path of the summary statistics file.}
 
-\item{analysis_name}{Used in filenames which area created}
+\item{analysis_name}{Used in file names which area created.}
 
-\item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}
+\item{upstream_kb}{How many kb upstream of the gene
+should SNPs be included?}
 
-\item{downstream_kb}{How many kb downstream of the gene should SNPs be included?}
+\item{downstream_kb}{How many kb downstream of the gene
+should SNPs be included?}
 
-\item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
+\item{genome_ref_path}{Path to the folder containing the 1000
+genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
 
-\item{geneset_species}{Species name relevant to the genes in the geneset, i.e. "mouse" or "human"}
+\item{geneset_species}{Species name relevant to the genes in the geneset.}
 
-\item{specificity_species}{Species name relevant to the cell type data, i.e. "mouse" or "human"}
+\item{sctSpecies}{Species name relevant to the cell type data.
+See \link[EWCE]{list_species} for all available species.}
 }
 \value{
-Filepath for the genes.out file
+File path for the genes.out file
 }
 \description{
-Assumes that you have already run map_snps_to_genes()
+Assumes that you have already run \link[MAGMA.Celltyping]{map_snps_to_genes}.
 }

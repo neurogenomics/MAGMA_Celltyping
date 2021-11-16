@@ -10,22 +10,24 @@
 #' @return Filepath for where MAGMA files should be created
 #'
 #' @examples
-#' magmaPaths <- get.magma.paths(gwas_sumstats_path, upstream_kb, downstream_kb)
+#' magmaPaths <- get_magma_paths(gwas_sumstats_path, upstream_kb, downstream_kb)
 #' @export
-get.magma.paths <- function(gwas_sumstats_path = NA,
+get_magma_paths <- function(gwas_sumstats_path = NA,
                             upstream_kb = NA,
                             downstream_kb = NA,
                             output_path = NA) {
     # Error checking
-    if (is.na(gwas_sumstats_path) & 
+    if (is.na(gwas_sumstats_path) &
         is.na(output_path)) {
         stop("Either gwas_sumstats_path or output_path must be specified")
     }
     if (!is.na(gwas_sumstats_path) &
-        (is.na(upstream_kb) | 
-         is.na(downstream_kb))) {
-        stop(paste("If gwas_sumstats_path is specified then upstream_kb",
-                   "and downstream_kb must also be specified"))
+        (is.na(upstream_kb) |
+            is.na(downstream_kb))) {
+        stop(paste(
+            "If gwas_sumstats_path is specified then upstream_kb",
+            "and downstream_kb must also be specified"
+        ))
     }
 
     # If output_path is not specified, then use the folder containing gwas_sumstats
@@ -37,12 +39,18 @@ get.magma.paths <- function(gwas_sumstats_path = NA,
         gwasFileName <- basename(gwas_sumstats_path)
 
         # Set the paths
-        pathMagmaFiles <- sprintf("%s/MAGMA_Files/%s.%sUP.%sDOWN", 
-                                  output_path, gwasFileName, upstream_kb, downstream_kb)
-        pathFigs <- sprintf("%s/MAGMA_Figures/%s FIGS",
-                            output_path, gwasFileName)
-        pathTiles <- sprintf("%s/MAGMA_Figures/Tileplots",
-                             output_path)
+        pathMagmaFiles <- sprintf(
+            "%s/MAGMA_Files/%s.%sUP.%sDOWN",
+            output_path, gwasFileName, upstream_kb, downstream_kb
+        )
+        pathFigs <- sprintf(
+            "%s/MAGMA_Figures/%s FIGS",
+            output_path, gwasFileName
+        )
+        pathTiles <- sprintf(
+            "%s/MAGMA_Figures/Tileplots",
+            output_path
+        )
 
         # Create the folders (in case they don't exist yet)
         dir.create(sprintf("%s/MAGMA_Files", output_path), showWarnings = FALSE, recursive = TRUE)

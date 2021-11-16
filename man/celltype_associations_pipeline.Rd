@@ -8,8 +8,8 @@ celltype_associations_pipeline(
   ctd,
   ctd_name,
   magma_dirs,
-  genome_ref_path,
-  specificity_species = "mouse",
+  genome_ref_path = NULL,
+  sctSpecies = "mouse",
   run_linear = TRUE,
   run_top10 = TRUE,
   run_condition = FALSE,
@@ -20,29 +20,30 @@ celltype_associations_pipeline(
   suffix_condition = "condition",
   controlTopNcells = 1,
   force_new = FALSE,
-  save_dir = tempdir()
+  save_dir = tempdir(),
+  verbose = TRUE
 )
 }
 \arguments{
 \item{ctd}{Cell type data structure containing
-\code{\$specificity_quantiles}.}
+\code{specificity_quantiles}.}
 
 \item{ctd_name}{Used in file names}
 
 \item{magma_dirs}{Names of folders containing the
 pre-computed MAGMA GWAS files.
-\bold{NOTE}: Files within these folders must have the same naming scheme
+\emph{NOTE}: Files within these folders must have the same naming scheme
 as the folders themselves.}
 
 \item{genome_ref_path}{Path to the folder containing the 1000
 genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
 
-\item{specificity_species}{Species name relevant to the cell type data,
-i.e. "mouse" or "human"}
+\item{sctSpecies}{Species name relevant to the cell type data.
+See \link[EWCE]{list_species} for all available species.}
 
 \item{run_linear}{Run in linear mode.}
 
-\item{run_top10}{Run  in top 10% mode.}
+\item{run_top10}{Run  in top 10\% mode.}
 
 \item{run_condition}{Run in conditional mode.}
 
@@ -54,7 +55,7 @@ should SNPs be included?}
 
 \item{suffix_linear}{This will be added to the linear results file name.}
 
-\item{suffix_top10}{This will be added to the top 10% results file name.}
+\item{suffix_top10}{This will be added to the top 10\% results file name.}
 
 \item{suffix_condition}{This will be added to the
 conditional results file name.}
@@ -67,6 +68,8 @@ pre-existing results files are detected.}
 
 \item{save_dir}{Folder to save results in (\code{save_dir=NULL}
 to not save any results).}
+
+\item{verbose}{Print messages.}
 }
 \value{
 A list containing the results of each selected
@@ -80,15 +83,15 @@ Precomputed MAGMA GWAS files can be downloaded via the
 }
 \examples{
 \dontrun{
-local_files <- import_magma_files(download_dir = ".")
+local_files <- MAGMA.Celltyping::import_magma_files()
 magma_dirs <- unique(dirname(local_files))
-genome_ref_path <- get_genome_ref()
 ctd <- ewceData::ctd()
-res <- celltype_associations_pipeline(
+
+res <- MAGMA.Celltyping::celltype_associations_pipeline(
     ctd = ctd,
-    ctd_name = "Zeisel2018",
-    magma_dirs = magma_dirs,
-    genome_ref_path = genome_ref_path
+    ctd_name = "Zeisel2015",
+    magma_dirs = magma_dirs
 )
 }
 }
+\keyword{main_function}

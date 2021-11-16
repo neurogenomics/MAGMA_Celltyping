@@ -1,55 +1,90 @@
-
-
-#' Gather enrichment results from \code{celltype_associations_pipeline}
+#' Gather enrichment results 
+#' 
+#' Gather enrichment results from 
+#' \link[MAGMA.Celltyping]{celltype_associations_pipeline} and converted them 
+#' into harmonised, machine-readable tables.
+#' 
+#' @param MAGMA_results The output of
+#'  \link[MAGMA.Celltyping]{celltype_associations_pipeline}.
+#' @param level Which level in the CellTypeDataset (CTD) to show results for.
+#' @param dataset_name [Optional] Name of the CellTypeDataset (CTD).
+#' @param species Species that the CellTypeDataset (CTD) came from.
+#' @param filetype Type of analysis to gather the results of.
+#' These correspond to the modes of data analysis in 
+#' \link[MAGMA.Celltyping]{celltype_associations_pipeline}:
+#' \itemize{
+#' \item{\code{"ctAssocsLinear"} : }{Linear mode results.}  
+#' \item{\code{"ctAssocsTop"} : }{Top 10\% mode results.}  
+#' \item{\code{"ctAssocMerged"} : }{Merged linear and top 10\% results.}  
+#' \item{\code{"ctCondAssocs"} : }{Conditional results.}  
+#' }  
+#' 
+#' \emph{Note:} Only those analyses that were actually run in 
+#' \link[MAGMA.Celltyping]{celltype_associations_pipeline} can be retrieved.
+#' @param q_thresh Multiple-testing corrected p-value (q-value) 
+#' filtering threshold.
+#' @param save_dir Directory to save the gathered results to.
+#' @param verbose Print messages.
+#' @inheritParams stats::p.adjust
 #'
 #' @examples
 #' \dontrun{
-#' library(MAGMA.Celltyping)
-#' local_files <- import_magma_files(download_dir = ".")
-#' #' magma_dirs <- unique(dirname(local_files))
-#' res <- celltype_associations_pipeline(
-#'     ctd = ewceData::ctd(),
+#' #### Prepare data ####
+#' local_files <- MAGMA.Celltyping::import_magma_files()
+#' magma_dirs <- unique(dirname(local_files))
+#' ctd <- ewceData::ctd()
+#' 
+#' res <- MAGMA.Celltyping::celltype_associations_pipeline(
+#'     ctd = ctd,
 #'     ctd_name = "Zeisel2018",
-#'     magma_dirs = magma_dirs,
-#'     genome_ref_path = "~/Downloads/g1000_eur/g1000_eur"
+#'     magma_dirs = magma_dirs
 #' )
-#' merged_res <- gather_results(res)
+#' merged_res <- MAGMA.Celltyping::gather_results(res)
 #' }
 #' @export
+#' @importFrom data.table rbindlist fwrite
+#' @importFrom dplyr %>% mutate arrange
+#' @importFrom stats p.adjust
+#' @importFrom stringr str_split
 gather_results <- function(MAGMA_results,
-                           level = 2,
+                           level = 1,
                            dataset_name = NULL,
                            species = "mouse",
                            filetype = "ctAssocMerged",
-                           fdr_thresh = NULL,
-                           save_dir = NULL) {
+                           q_thresh = NULL,
+                           method = "fdr",
+                           save_dir = tempdir(),
+                           verbose = TRUE) {
     merged_results <- lapply(names(MAGMA_results), function(nm) {
         cbind(
             GWAS = stringr::str_split(nm, ".annotated")[[1]][1],
             MAGMA_results[[nm]][[filetype]][[level]]$results
-            # MAGMA_results[[nm]]$ctAssocsLinear[[level]]$results
         )
     }) %>%
         data.table::rbindlist() %>%
         # Remove unlabeled cell clusters
         subset(!startsWith(Celltype, "X")) %>%
         dplyr::mutate(
-            FDR = p.adjust(p = P, method = "fdr"),
+            FDR = stats::p.adjust(p = P, method = method),
             Celltype_id = Celltype,
-            Celltype = gsub(paste(dataset_name, species, "[.]", sep = "|"), " ", Celltype)
+            Celltype = gsub(paste(dataset_name, species, "[.]", sep = "|"),
+                            " ", Celltype)
         ) %>%
         dplyr::arrange(FDR)
     ### Save
     if (!is.null(save_dir)) {
-        save_path <- paste0(save_dir, "/MAGMA_celltyping.", dataset_name, ".lvl", level, ".csv")
-        message("+ Saving full merged results to ==>", save_path)
+        save_path <- paste0(save_dir, "/MAGMA_celltyping.",
+                            dataset_name, ".lvl", level, ".csv")
+        messager("Saving full merged results to ==>", save_path, v=verbose)
         data.table::fwrite(merged_results, save_path)
     }
     ## Filter to only FDR-sig results
-    if (!is.null(fdr_thresh)) {
-        message("+ Filtering results @ FDR<", fdr_thresh)
-        merged_results <- subset(merged_results, FDR < fdr_thresh)
-        message("+ ", nrow(merged_results), " significant results remaining.")
+    if (!is.null(q_thresh)) {
+        messager("Filtering results @ FDR<", q_thresh,v=verbose)
+        merged_results <- subset(merged_results, FDR < q_thresh)
+        messager(nrow(merged_results), 
+                " significant results remaining.",
+                v=verbose)
     }
     return(merged_results)
 }

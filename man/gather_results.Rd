@@ -2,32 +2,70 @@
 % Please edit documentation in R/gather_results.R
 \name{gather_results}
 \alias{gather_results}
-\title{Gather enrichment results from \code{celltype_associations_pipeline}}
+\title{Gather enrichment results}
 \usage{
 gather_results(
   MAGMA_results,
-  level = 2,
+  level = 1,
   dataset_name = NULL,
   species = "mouse",
   filetype = "ctAssocMerged",
-  fdr_thresh = NULL,
-  save_dir = NULL
+  q_thresh = NULL,
+  method = "fdr",
+  save_dir = tempdir(),
+  verbose = TRUE
 )
 }
+\arguments{
+\item{MAGMA_results}{The output of
+\link[MAGMA.Celltyping]{celltype_associations_pipeline}.}
+
+\item{level}{Which level in the CellTypeDataset (CTD) to show results for.}
+
+\item{dataset_name}{[Optional] Name of the CellTypeDataset (CTD).}
+
+\item{species}{Species that the CellTypeDataset (CTD) came from.}
+
+\item{filetype}{Type of analysis to gather the results of.
+These correspond to the modes of data analysis in 
+\link[MAGMA.Celltyping]{celltype_associations_pipeline}:
+\itemize{
+\item{\code{"ctAssocsLinear"} : }{Linear mode results.}  
+\item{\code{"ctAssocsTop"} : }{Top 10\% mode results.}  
+\item{\code{"ctAssocMerged"} : }{Merged linear and top 10\% results.}  
+\item{\code{"ctCondAssocs"} : }{Conditional results.}  
+}  
+
+\emph{Note:} Only those analyses that were actually run in 
+\link[MAGMA.Celltyping]{celltype_associations_pipeline} can be retrieved.}
+
+\item{q_thresh}{Multiple-testing corrected p-value (q-value) 
+filtering threshold.}
+
+\item{method}{correction method, a \code{\link{character}} string.
+    Can be abbreviated.}
+
+\item{save_dir}{Directory to save the gathered results to.}
+
+\item{verbose}{Print messages.}
+}
 \description{
-Gather enrichment results from \code{celltype_associations_pipeline}
+Gather enrichment results from 
+\link[MAGMA.Celltyping]{celltype_associations_pipeline} and converted them 
+into harmonised, machine-readable tables.
 }
 \examples{
 \dontrun{
-library(MAGMA.Celltyping)
-local_files <- import_magma_files(download_dir = ".")
-#' magma_dirs <- unique(dirname(local_files))
-res <- celltype_associations_pipeline(
-    ctd = ewceData::ctd(),
+#### Prepare data ####
+local_files <- MAGMA.Celltyping::import_magma_files()
+magma_dirs <- unique(dirname(local_files))
+ctd <- ewceData::ctd()
+
+res <- MAGMA.Celltyping::celltype_associations_pipeline(
+    ctd = ctd,
     ctd_name = "Zeisel2018",
-    magma_dirs = magma_dirs,
-    genome_ref_path = "~/Downloads/g1000_eur/g1000_eur"
+    magma_dirs = magma_dirs
 )
-merged_res <- gather_results(res)
+merged_res <- MAGMA.Celltyping::gather_results(res)
 }
 }

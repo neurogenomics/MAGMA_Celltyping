@@ -3,8 +3,10 @@ decompress <- function(path_formatted,
                        overwrite = FALSE) {
     if (endsWith(path_formatted, ".gz")) {
         #### Decompress gzipped file #####
-        destname <- file.path(tempdir(), 
-                              gsub(".gz", "", basename(path_formatted)))
+        destname <- file.path(
+            tempdir(),
+            gsub(".gz", "", basename(path_formatted))
+        )
         message("Saving decompressed copy of path_formatted ==> ", destname)
         if (!file.exists(destname) | overwrite) {
             path_formatted2 <- R.utils::gunzip(path_formatted,
@@ -17,8 +19,10 @@ decompress <- function(path_formatted,
         }
     } else if (endsWith(path_formatted, ".bgz")) {
         #### Decompress bgzipped file #####
-        destname <- file.path(tempdir(), 
-                              sub(".bgz", "", basename(path_formatted)))
+        destname <- file.path(
+            tempdir(),
+            sub(".bgz", "", basename(path_formatted))
+        )
         message("Saving decompressed copy of path_formatted ==> ", destname)
         if (!file.exists(destname) | overwrite) {
             path_formatted2 <- R.utils::bunzip2(path_formatted,

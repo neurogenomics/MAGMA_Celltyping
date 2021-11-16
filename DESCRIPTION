@@ -71,3 +71,4 @@ biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
         BiomedicalInformatics, FunctionalGenomics
 RoxygenNote: 7.1.2
 Encoding: UTF-8
+Config/testthat/edition: 3

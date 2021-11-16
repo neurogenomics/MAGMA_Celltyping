@@ -1,48 +1,58 @@
-#' Map specificity to entrez
+#' Map specificity to Entrez gene IDs
 #'
-#' Convenience function used in 'create_gene_covar_file()'
+#' Convenience function used in \link[MAGMA.Celltyping]{create_gene_covar_file}.
 #'
-#' @param ctd Cell type data structure. Must contain quantiles.
-#' @param annotLevel Annot level for which the gene covar file should be constructed
-#' @param specificity_species Species name relevant to the cell type data, i.e. "mouse" or "human"
+#' @param return_ctd Return the actual CellTypeDataset,
+#'  rather than path to where it is saved.
+#' @inheritParams calculate_celltype_associations
 #'
-#' @return Matrix in which the first column is 'entrez' and then the specificity decile for each cell type
+#' @returns Matrix in which the first column is 'entrez'
+#' and then the specificity decile for each cell type
 #'
-#' @examples
-#' genesCovarFilePath <- create_gene_covar_file(genesOutFile, ctd)
-#' @export
-map_specificity_to_entrez <- function(ctd, annotLevel, specificity_species, return_ctd = F) {
-    # Check specificity_species
-    if (!specificity_species %in% c("human", "mouse")) {
-        stop("Specificity species must be either 'human' or 'mouse'")
-    }
+#' @keywords internal
+map_specificity_to_entrez <- function(ctd,
+                                      annotLevel,
+                                      sctSpecies,
+                                      return_ctd = FALSE,
+                                      verbose = TRUE) {
+    # Because sumstats use entrez genes & ctd uses
+    # gene symbols, match entrez-->symbols
 
-    int_all_hgnc_wtEntrez <- MAGMA.Celltyping::all_hgnc_wtEntrez
-    colnames(int_all_hgnc_wtEntrez)[1] <- "human.symbol"
-
-    if (specificity_species == "mouse") {
-        # Because sumstats use entrez genes & ctd uses gene symbols, match entrez-->symbols
-        entrez_mgi <- merge(int_all_hgnc_wtEntrez,
-            One2One::ortholog_data_Mouse_Human$orthologs_one2one[, 2:3],
-            by = "human.symbol"
+    #### Extract gene list ####
+    mat <- ctd[[annotLevel]]$specificity_quantiles
+    genes <- rownames(mat)
+    #### Find 1:1 orthologs ####
+    # Skip this step if the genes are already human
+    if (sctSpecies != "human") {
+        orths <- orthogene::convert_orthologs(
+            gene_df = genes,
+            gene_output = "columns",
+            input_species = sctSpecies,
+            output_species = "human",
+            method = "homologene",
+            verbose = verbose
         )
-        entrez_mgi <- entrez_mgi[!is.na(entrez_mgi$entrezgene), ]
-        entrez_mgi <- entrez_mgi[entrez_mgi$mouse.symbol %in% rownames(ctd[[annotLevel]]$specificity_quantiles), ]
-
-        # Get the quantiles from ctd and put into correct format, using entrez symbols
-        quantDat <- as.matrix(ctd[[annotLevel]]$specificity_quantiles[entrez_mgi$mouse.symbol, ])
-        quantDat2 <- suppressWarnings(data.frame(entrez = entrez_mgi$entrezgene, quantDat))
-        quantDat2 <- quantDat2[!duplicated(quantDat2$entrez), ]
+        genes <- orths$input_gene
     }
-
-    if (specificity_species == "human") {
-        # Get the quantiles from ctd and put into correct format, using entrez symbols
-        humanSymsPresent <- as.character(int_all_hgnc_wtEntrez$human.symbol[int_all_hgnc_wtEntrez$human.symbol %in% rownames(ctd[[annotLevel]]$specificity_quantiles)])
-        entrezTable <- int_all_hgnc_wtEntrez[int_all_hgnc_wtEntrez$human.symbol %in% humanSymsPresent, ]
-        quantDat <- as.matrix(ctd[[annotLevel]]$specificity_quantiles[as.character(entrezTable$human.symbol), ])
-        quantDat2 <- suppressWarnings(data.frame(entrez = entrezTable$entrez, quantDat))
-        quantDat2 <- quantDat2[!duplicated(quantDat2$entrez), ]
-    }
+    #### Map gene symbols to Entrez IDs ####
+    # Queries the respective species
+    gene_map <- orthogene::map_genes(
+        genes = genes,
+        species = sctSpecies,
+        numeric_ns = "ENTREZGENE",
+        drop_na = TRUE,
+        verbose = verbose
+    )
+    #### Subset matrix ####
+    quantDat <- as.matrix(mat[gene_map$input, ])
+    quantDat2 <- data.frame(
+        entrez = gene_map$target,
+        quantDat,
+        check.rows = FALSE,
+        check.names = FALSE
+    )
+    quantDat2 <- quantDat2[!duplicated(quantDat2$entrez), ]
+    #### Return resusults ####
     if (return_ctd) {
         ctd[[annotLevel]]$quantDat2 <- quantDat2
         return(ctd)

@@ -33,14 +33,14 @@ get_driver_genes <- function(ctd,
     GENESETS <- lapply(magma_GenesOut_files, function(genesout,
                                                       .sctSpecies = sctSpecies) {
         message("+ Finding driver genes for: ", gwas_dict[[genesout]], " GWAS x CTD")
-        magmaAdjZ <- adjust.zstat.in.genesOut(
+        magmaAdjZ <- adjust_zstat_in_genesOut(
             ctd = ctd,
             magma_GenesOut_file = genesout,
             sctSpecies = .sctSpecies
         )
         lapply(unique(sig_res$level), function(annotLevel) {
             message("+ Level ", annotLevel)
-            res <- calculate.celltype.enrichment.probabilities.wtLimma(
+            res <- calculate_celltype_enrichment_probabilities_wtLimma(
                 magmaAdjZ = magmaAdjZ,
                 ctd = ctd,
                 annotLevel = annotLevel,

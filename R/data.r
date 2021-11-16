@@ -2,7 +2,7 @@
 #'
 #' List of uncorrected column headers often found in GWAS
 #' Summary Statistics column headers.
-#' 
+#'
 #' @source \href{https://github.com/neurogenomics/MungeSumstats}{MungeSumstats}
 #' @source
 #' \code{
@@ -113,5 +113,3 @@
 #'  }
 #' @usage data("gwas_munged")
 "gwas_munged"
-
-

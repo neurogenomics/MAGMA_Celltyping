@@ -7,8 +7,8 @@
 map_snps_to_genes(
   path_formatted,
   genome_build = NULL,
-  upstream_kb = 10,
-  downstream_kb = 1.5,
+  upstream_kb = 35,
+  downstream_kb = 10,
   N = NULL,
   genome_ref_path = NULL,
   force_new = FALSE
@@ -21,21 +21,22 @@ Can be uncompressed or compressed (".gz" or ".bgz").}
 
 \item{genome_build}{The build of the reference genome
  (\code{"GRCh37"} or \code{"GRCh38"}).
-If \code{NULL}, it will be inferred with 
+If \code{NULL}, it will be inferred with
 \link[MungeSumstats]{get_genome_build}.}
 
-\item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}
+\item{upstream_kb}{How many kilobases (kb) upstream of the gene
+should SNPs be included?}
 
-\item{downstream_kb}{How many kb downstream of the gene 
+\item{downstream_kb}{How many kilobases (kb) downstream of the gene
 should SNPs be included?}
 
 \item{N}{What is the N number for this GWAS? That is cases+controls}
 
-\item{genome_ref_path}{Path to the folder containing the 
-1000 genomes .bed files (which can be downloaded from 
+\item{genome_ref_path}{Path to the folder containing the
+1000 genomes .bed files (which can be downloaded from
  https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
 
-\item{force_new}{Set to \code{TRUE} to 
+\item{force_new}{Set to \code{TRUE} to
 rerun \code{MAGMA} even if the output files already exist.
  \emph{DEFAULT=}\code{FALSE}.}
 }
@@ -44,7 +45,7 @@ Filepath for the genes.out file
 }
 \description{
 Make two external calls to MAGMA. First use it to annotate SNPs
- onto their neighbouring genes. Second, use it to calculate 
+ onto their neighbouring genes. Second, use it to calculate
  the gene level trait association.
 }
 \examples{

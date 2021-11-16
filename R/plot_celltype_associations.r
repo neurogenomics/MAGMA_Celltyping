@@ -29,7 +29,7 @@ plot_celltype_associations <- function(ctAssocs, ctd, useSignificanceLine = TRUE
         stop("Only results for one GWAS at a tile should be provided to plot_celltype_association. For multiple GWAS, use magma.tileplot()")
     }
 
-    magmaPaths <- get.magma.paths(ctAssocs$gwas_sumstats_path, ctAssocs$upstream_kb, ctAssocs$downstream_kb)
+    magmaPaths <- get_magma_paths(ctAssocs$gwas_sumstats_path, ctAssocs$upstream_kb, ctAssocs$downstream_kb)
 
     if (is.na(figsDir)) {
         figsDir <- magmaPaths$figs
@@ -69,7 +69,7 @@ plot_celltype_associations <- function(ctAssocs, ctd, useSignificanceLine = TRUE
 
         if (plotDendro == TRUE) {
             # Order cells by dendrogram
-            ctdDendro <- get.ctd.dendro(ctd, annotLevel = annotLevel)
+            ctdDendro <- get_ctd_dendro(ctd, annotLevel = annotLevel)
             ctAssocs[[annotLevel]]$results$Celltype <- factor(ctAssocs[[annotLevel]]$results$Celltype, levels = gsub(" |\\(|\\)", "\\.", ctdDendro$ordered_cells))
         }
 

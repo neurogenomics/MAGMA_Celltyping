@@ -38,11 +38,11 @@ magma.tileplot <- function(ctd, results, height = 13, width = 4, annotLevel = 1,
     results <- results[results$level == annotLevel, ]
 
     # Setup folder for saving figures
-    magmaPaths <- get.magma.paths(output_path = output_path)
+    magmaPaths <- get_magma_paths(output_path = output_path)
     figurePath <- magmaPaths$tiles
 
     # Then prep
-    ctdDendro <- get.ctd.dendro(ctd, annotLevel = annotLevel)
+    ctdDendro <- get_ctd_dendro(ctd, annotLevel = annotLevel)
 
     # Order cells by dendrogram
     results$Celltype <- factor(results$Celltype, levels = ctdDendro$ordered_cells)

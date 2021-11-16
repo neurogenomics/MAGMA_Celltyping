@@ -101,7 +101,7 @@ Make sure the CTD is converted to all human gene symbols first using [EWCE](http
 CTD <- MAGMA.Celltyping::get_ctd(ctd_name = "ctd_AIBS") 
 
 CTD <- prepare_quantile_groups(ctd = CTD,
-                               specificity_species="human",
+                               sctSpecies="human",
                                bins=40)
 ### These variables will be needed for calculate_celltype_associations()
 dataset_name <- "ctd_BlueLake2018_FrontalCortexOnly"
@@ -124,7 +124,7 @@ MAGMA_results <- MAGMA.Celltyping::celltype_associations_pipeline(ctd = CTD,
                                                 ctd_name = dataset_name, 
                                                 magma_dirs = magma_dirs,
                                                 genome_ref_path = genome_ref_path, 
-                                                specificity_species = species, 
+                                                sctSpecies = species, 
                                                 run_linear = TRUE, 
                                                 run_top10 = TRUE, 
                                                 upstream_kb = 35, 

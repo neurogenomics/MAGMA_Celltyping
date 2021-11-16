@@ -6,24 +6,63 @@
 \usage{
 prepare_quantile_groups(
   ctd,
-  specificity_species = "mouse",
-  gwas_species = "human",
-  bins = 40
+  standardise = TRUE,
+  non121_strategy = "drop_both_species",
+  input_species = "mouse",
+  output_species = "human",
+  numberOfBins = 40,
+  verbose = TRUE,
+  ...
 )
 }
 \arguments{
-\item{ctd}{Cell type data}
+\item{ctd}{Input CellTypeData.}
 
-\item{specificity_species}{Species name relevant to the cell type data,
-(e.g. "mouse" or "human").}
+\item{standardise}{Whether to run \link[EWCE]{standardise_ctd} first.
+Provides gene ortholog conversion.}
 
-\item{gwas_species}{Species name relevant to the GWAS data, in almost all
-cases this will be "human"}
+\item{non121_strategy}{How to handle genes that don't have
+1:1 mappings between \code{input_species}:\code{output_species}.
+Options include:\cr
+\itemize{
+\item{\code{"drop_both_species" or "dbs" or 1} : \cr}{
+Drop genes that have duplicate
+mappings in either the \code{input_species} or \code{output_species} \cr
+(\emph{DEFAULT}).}
+\item{\code{"drop_input_species" or "dis" or 2} : \cr}{
+Only drop genes that have duplicate
+mappings in the \code{input_species}.}
+\item{\code{"drop_output_species" or "dos" or 3} : \cr}{
+Only drop genes that have duplicate
+mappings in the \code{output_species}.}
+\item{\code{"keep_both_species" or "kbs" or 4} : \cr}{
+Keep all genes regardless of whether
+they have duplicate mappings in either species.}
+\item{\code{"keep_popular" or "kp" or 5} : \cr}{
+Return only the most "popular" interspecies ortholog mappings.
+ This procedure tends to yield a greater number of returned genes
+ but at the cost of many of them not being true biological 1:1 orthologs.}
+ \item{\code{"sum","mean","median","min" or "max"} : \cr}{
+ When \code{gene_df} is a matrix and \code{gene_output="rownames"},
+  these options will aggregate many-to-one gene mappings
+  (\code{input_species}-to-\code{output_species})
+  after dropping any duplicate genes in the \code{output_species}.
+ }
+}}
 
-\item{bins}{How many bins should specificity be divided into?}
+\item{input_species}{Which species the gene names in \code{exp} come from.
+See \link[EWCE]{list_species} for all available species.}
+
+\item{output_species}{Which species' genes names to convert \code{exp} to.
+See \link[EWCE]{list_species} for all available species.}
+
+\item{numberOfBins}{Number of non-zero quantile bins.}
+
+\item{verbose}{Print messages.}
 }
 \value{
-The ctd with additional quantiles matrix
+The ctd converted to \code{output_species} gene symbols
+with additional quantiles matrix.
 }
 \description{
 Quantile groups are stored in an extra matrix ('quantiles')
@@ -32,7 +71,8 @@ from the CTD data which are not 1:1 orthologs with the GWAS species.
 }
 \examples{
 \dontrun{
-ctd <- prepare_quantile_groups(ctd = ewceData::ctd())
+ctd_orig <- ewceData::ctd()
+ctd <- prepare_quantile_groups(ctd = ctd_orig)
 }
 
 }

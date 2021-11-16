@@ -31,14 +31,14 @@ get_example_gwas_raw <- function(storage_dir = tempdir(),
     } else {
         stop("trait must be 'prospective_memory' or 'fluid_intelligence'")
     }
-    
+
     gwas_sumstats_path <- file.path(storage_dir, basename(URL))
-    unzipped_path <- gsub(".bgz|.gz|[?]|dl=1","",gwas_sumstats_path)
+    unzipped_path <- gsub(".bgz|.gz|[?]|dl=1", "", gwas_sumstats_path)
     if (file.exists(unzipped_path)) {
         message("Importing pe-existing file.")
     } else {
-        message(paste("Downloading example GWAS:",trait))
-        options(timeout = 60*5)
+        message(paste("Downloading example GWAS:", trait))
+        options(timeout = 60 * 5)
         utils::download.file(
             url = URL,
             destfile = gwas_sumstats_path
@@ -49,6 +49,6 @@ get_example_gwas_raw <- function(storage_dir = tempdir(),
             unzipped_path
         )
     }
-    message(paste("File saved at:",unzipped_path))
+    message(paste("File saved at:", unzipped_path))
     return(unzipped_path)
 }

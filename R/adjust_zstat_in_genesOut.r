@@ -1,6 +1,7 @@
 #' Adjust MAGMA Z-statistic from .genes.out files
 #'
-#' Used when you want to directly analyse the gene level z-scores corrected for gene length etc
+#' Used when you want to directly analyse the gene level
+#'  z-scores corrected for gene length etc
 #'
 #' @param ctd Cell type data structure
 #' @param magma_GenesOut_file A MAGMA .genes.out file
@@ -8,34 +9,48 @@
 #'
 #' @examples
 #' myGenesOut <- tempfile()
-#' data.table::fwrite(x = MAGMA.Celltyping::genesOut, sep = "\t", file = myGenesOut)
-#' magmaGenesOut <- adjust.zstat.in.genesOut(ewceData::ctd(),
-#'     magma_GenesOut_file = myGenesOut, sctSpecies = "mouse"
+#' data.table::fwrite(
+#'     x = MAGMA.Celltyping::genesOut,
+#'     file = myGenesOut,
+#'     sep = "\t"
+#' )
+#' magmaGenesOut <- MAGMA.Celltyping::adjust_zstat_in_genesOut(
+#'     ctd = ewceData::ctd(),
+#'     magma_GenesOut_file = myGenesOut,
+#'     sctSpecies = "mouse"
 #' )
 #' @export
 #' @importFrom stats lm
 #' @importFrom stats p.adjust
 #' @importFrom utils read.table
-adjust.zstat.in.genesOut <- function(ctd,
+adjust_zstat_in_genesOut <- function(ctd,
                                      magma_GenesOut_file = NA,
                                      sctSpecies = "mouse") {
     allGenes <- rownames(ctd[[1]]$specificity)
 
     if (sctSpecies == "mouse") {
         # Get mouse-->human othologs with human entrez
-        orth <- One2One::ortholog_data_Mouse_Human$orthologs_one2one[, 2:3]
+        orth <- One2One::ortholog_data_Mouse_Human$orthologs_one2one[, c(2, 3)]
         hgnc2entrez <- MAGMA.Celltyping::all_hgnc_wtEntrez
         colnames(hgnc2entrez) <- c("human.symbol", "entrez")
         orth2 <- merge(orth, hgnc2entrez, by = "human.symbol")
     }
 
     # Load the MAGMA data
-    magma <- utils::read.table(magma_GenesOut_file, stringsAsFactors = FALSE, header = TRUE)
+    magma <- utils::read.table(magma_GenesOut_file,
+        stringsAsFactors = FALSE,
+        header = TRUE,
+        check.names = FALSE
+    )
     magma$entrez <- magma$GENE
     if (sctSpecies == "mouse") {
         magma <- merge(magma, orth2, by = "entrez")
     } else if (sctSpecies == "human") {
-        magma <- merge(magma, MAGMA.Celltyping::hgnc2entrez, by = "entrez")
+        magma <- merge(
+            x = magma,
+            y = MAGMA.Celltyping::hgnc2entrez,
+            by = "entrez"
+        )
     }
 
     magma <- magma[order(magma$P), ]
@@ -62,4 +77,10 @@ adjust.zstat.in.genesOut <- function(ctd,
     # magma = arrange(magma,desc(magma$ADJ_ZSTAT))
     # magma = magma[order(magma$ADJ_ZSTAT,decreasing=TRUE),]
     return(magma)
+}
+
+
+adjust.zstat.in.genesOut <- function(...) {
+    .Deprecated(adjust_zstat_in_genesOut)
+    adjust_zstat_in_genesOut(...)
 }

@@ -8,21 +8,30 @@ calculate_celltype_associations(
   ctd,
   gwas_sumstats_path,
   analysis_name = "MainRun",
-  upstream_kb = 10,
-  downstream_kb = 1.5,
+  ctd_levels = seq_len(length(ctd)),
+  prepare_ctd = TRUE,
+  upstream_kb = 35,
+  downstream_kb = 10,
   genome_ref_path = NULL,
-  specificity_species = "mouse",
+  sctSpecies = "mouse",
   genesOutCOND = NA,
   EnrichmentMode = "Linear",
-  force_new = FALSE
+  force_new = FALSE,
+  verbose = TRUE
 )
 }
 \arguments{
-\item{ctd}{Cell type data structure containing $specificity_quantiles}
+\item{ctd}{Cell type data structure containing $specificity_quantiles.}
 
-\item{gwas_sumstats_path}{File path of the summary statistics file}
+\item{gwas_sumstats_path}{File path of the summary statistics file.}
 
-\item{analysis_name}{Used in file names which area created}
+\item{analysis_name}{Used in file names which area created.}
+
+\item{ctd_levels}{Which levels of \code{ctd} to
+iterate the enrichment analysis over.}
+
+\item{prepare_ctd}{Whether to run
+\link[MAGMA.Celltyping]{prepare_quantile_groups} on the \code{ctd} first.}
 
 \item{upstream_kb}{How many kb upstream of the gene
 should SNPs be included?}
@@ -33,8 +42,8 @@ should SNPs be included?}
 \item{genome_ref_path}{Path to the folder containing the 1000
 genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
 
-\item{specificity_species}{Species name relevant to the cell type data,
-i.e. "mouse" or "human"}
+\item{sctSpecies}{Species name relevant to the cell type data.
+See \link[EWCE]{list_species} for all available species.}
 
 \item{genesOutCOND}{[Optional] Path to a genes.out file to condition on.
 Used if you want to condition on a different GWAS.}
@@ -44,22 +53,32 @@ be used for testing enrichment?}
 
 \item{force_new}{[Optional] Force new MAGMA analyses even if the
 pre-existing results files are detected.}
+
+\item{verbose}{Print messages.}
 }
 \value{
 File path for the genes.out file
 }
 \description{
-Assumes that you have already run 
-\link[MAGMA.Celltyping]{map_snps_to_genes()}.
+Assumes that you have already run
+\link[MAGMA.Celltyping]{map_snps_to_genes}.
 }
 \examples{
-\dontrun{
-genome_ref_path <- get_genome_ref()
-ctAssocs <- calculate_celltype_associations(
-    ctd = ewceData::ctd(),
-    gwas_sumstats_path = gwas_ss,
-    genome_ref_path = genome_ref_path,
-    specificity_species = "mouse"
+#### Prepare data ####
+#' ctd <- ewceData::ctd()
+path_formatted <- MAGMA.Celltyping::get_example_gwas()
+
+##### Map SNPs to genes ####
+genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(
+    path_formatted = path_formatted,
+    genome_build = "GRCh37"
+)
+
+#### Run pipeline ####
+ctAssocs <- MAGMA.Celltyping::calculate_celltype_associations(
+    ctd = ctd,
+    gwas_sumstats_path = path_formatted,
+    sctSpecies = "mouse"
 )
 }
-}
+\keyword{main_function}

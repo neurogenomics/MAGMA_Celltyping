@@ -14,8 +14,8 @@
 #' @importFrom stats pnorm
 compare.trait.enrichments <- function(magmaPath1 = NA, magmaPath2 = NA, magma1 = NA, magma2 = NA, annotLevel, ctd) {
     if (!is.na(magmaPath1) & !is.na(magmaPath2)) {
-        magma1 <- load.magma.results.file(magmaPath1, annotLevel = annotLevel, ctd = ctd)
-        magma2 <- load.magma.results.file(magmaPath2, annotLevel = annotLevel, ctd = ctd)
+        magma1 <- load_magma_results_file(magmaPath1, annotLevel = annotLevel, ctd = ctd)
+        magma2 <- load_magma_results_file(magmaPath2, annotLevel = annotLevel, ctd = ctd)
     }
     rownames(magma1) <- magma1$Celltype
     rownames(magma2) <- magma2$Celltype

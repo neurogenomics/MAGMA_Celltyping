@@ -13,7 +13,7 @@ path_formatted <- MungeSumstats::format_sumstats(
     save_path = tempfile(fileext = ".formatted.tsv.gz"),
     ref_genome ="GRCh37")
 ss <- data.table::fread(path_formatted)
-ss2 <- ss[MINOR_AF>=.05 & P<.05,] 
+ss2 <- ss[MINOR_AF>=.05 & P<.05,]
 data.table::fwrite(ss2, path_formatted, sep = "\t")
 piggyback::pb_upload(file = path_formatted,
                      name = "fluid_intelligence.ukb.tsv.gz",
@@ -28,7 +28,7 @@ path_formatted <- MungeSumstats::format_sumstats(
     save_path = tempfile(fileext = ".formatted.tsv.gz"),
     ref_genome ="GRCh37")
 ss <- data.table::fread(path_formatted)
-ss2 <- ss[MINOR_AF>=.05 & P<.05,] 
+ss2 <- ss[MINOR_AF>=.05 & P<.05,]
 data.table::fwrite(ss2, path_formatted, sep = "\t")
 piggyback::pb_upload(file = path_formatted,
                      name = "prospective_memory.ukb.tsv.gz",
@@ -56,9 +56,9 @@ Path to downloaded GWAS summary statistics.
 }
 \description{
 Write example GWAS summary statistics to disk.
-All examples originally come from the 
-\href{https://www.ukbiobank.ac.uk/}{UK Biobank}. 
-To reduce file size, SNPs have been filtered to Minor Allele Frequency (MAF) 
+All examples originally come from the
+\href{https://www.ukbiobank.ac.uk/}{UK Biobank}.
+To reduce file size, SNPs have been filtered to Minor Allele Frequency (MAF)
 > 5% and a nominal p-value < 0.05. However, in practice we
  recommend using full GWAS summary statistics
   (after applying \link[MungeSumstats]{format_sumstats}).
