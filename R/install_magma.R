@@ -71,7 +71,11 @@ magma_install <- function(dest_dir = "/usr/local/bin",
         })
         ##### Check that installation was successful ####
         success <- magma_installation_successful(desired_version = version)
-        messager("MAGMA path:", dest_magma, v = verbose)
+        if(success){
+            messager("MAGMA path:", dest_magma, v = verbose)
+        }else {
+            dest_magma <- NULL
+        }
         return(dest_magma)
     }
 }

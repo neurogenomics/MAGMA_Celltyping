@@ -8,7 +8,9 @@
 }
 
 .onLoad <- function(libname, pkgname) {
-    if (is.null(magma_installed_version())) magma_install()
+    if (is.null(magma_installed_version())) {
+        dest_magma <- magma_install()
+    }
 
     # HAD TO COMMENT OUT BELOW CODE EVEN THOUGH IT IS USEFUL
     # BECAUSE IT CAUSES MAGMA TO THROW AN ERROR...
