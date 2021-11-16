@@ -6,11 +6,14 @@
 \usage{
 find_install_dir(
   dest_dir_opts = c("/usr/local/bin", dirname(dirname(R.home("bin"))),
-    Sys.getenv("HOME"), getwd())
+    Sys.getenv("HOME"), getwd()),
+  verbose = TRUE
 )
 }
 \arguments{
 \item{dest_dir_opts}{Potential installation directory options.}
+
+\item{verbose}{Print messages.}
 }
 \value{
 Path to viable installation directory.

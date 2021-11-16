@@ -56,20 +56,15 @@ magma_install <- function(dest_dir = NULL,
             destpath <- magma_download_binary(
                 magma_url = magma_url,
                 dest_dir = dest_dir
-            )
-            #### Create a symlink to the actually magma executable ####
-            messager("Creating symlink so MAGMA can be executed",
-                     "using the command 'magma ...'",
-                     v = verbose
-            )
+            ) 
             dest_magma <- file.path(destpath, "magma")
             #### Change magma file permissions ####
-            system(paste0("chmod u=rx,go=rx ", dest_magma))
-            symlink <- R.utils::createLink(
-                link = "magma",
-                target = dest_magma,
-                overwrite = upgrade
-            )
+            try({system(paste0("chmod u=rx,go=rx ", dest_magma))})
+            Sys.chmod(dest_magma, "777", use_umask = FALSE)
+            #### Create a symlink to the actually magma executable #### 
+            symlink <- magma_create_symlink(dest_magma = dest_magma,
+                                            upgrade = upgrade,
+                                            verbose = verbose)
         })
         ##### Check that installation was successful ####
         success <- magma_installation_successful(desired_version = version)
