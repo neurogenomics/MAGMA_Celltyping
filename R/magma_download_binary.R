@@ -1,5 +1,5 @@
 magma_download_binary <- function(magma_url,
-                                  destdir = "/usr/local/bin") {
+                                  dest_dir = "/usr/local/bin") {
     #### Download the appropriate executable ####
     destfile <- file.path(dest_dir, basename(magma_url))
     # Create the decompressed file name in advance

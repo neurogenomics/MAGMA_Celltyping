@@ -16,10 +16,10 @@ calculate_conditional_celltype_enrichment_probabilities_wtLimma(
 }
 \arguments{
 \item{magma1}{Output from \link[MAGMA.Celltyping]{adjust_zstat_in_genesOut}
-(Alzheimers, for instance).}
+(e.g. trait 1).}
 
 \item{magma2}{Output from \link[MAGMA.Celltyping]{adjust_zstat_in_genesOut}
-(EduYears, for instance).}
+(e.g. trait 2).}
 
 \item{ctd}{Cell type data structure containing $specificity_quantiles.}
 

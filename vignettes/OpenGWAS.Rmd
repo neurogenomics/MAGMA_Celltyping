@@ -2,22 +2,13 @@
 title: "OpenGWAS"
 author: "Brian M. Schilder"
 date: "`r Sys.Date()`"
+csl: nature.csl
 output:
   BiocStyle::html_document:
-    self_contained: yes
-    toc: true
-    toc_float: true
-    toc_depth: 3
-    code_folding: show
-    df_print: paged
-csl: nature.csl
 vignette: >
     %\VignetteIndexEntry{OpenGWAS} 
     %\usepackage[utf8]{inputenc}
-    %\VignetteEngine{knitr::rmarkdown}  
-editor_options: 
-  markdown: 
-    wrap: 72
+    %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ```{r style, echo=FALSE, results='asis', message=FALSE}
@@ -116,24 +107,6 @@ metagwas_all[is.na(metagwas_all$trait_group),"trait_group"] <- "other"
 
 ```
 
-## Genome reference
-
-```{r Prepare genome reference, attr.output='style="max-height: 400px;"'}
-storage_dir <- "/Desktop/model_celltype_conservation/raw_data/MAGMA"
-
-# Set path the 1000 genomes reference data.
-genome_ref_dir = file.path(storage_dir,"g1000_eur")
-if(!file.exists(sprintf("%s/g1000_eur.bed",genome_ref_dir))){
-    download.file("https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip",
-                  destfile=sprintf("%s.zip",genome_ref_dir))
-    unzip(sprintf("%s.zip",genome_ref_dir),
-          exdir=genome_ref_dir)
-    file.remove(sprintf("%s.zip",genome_ref_dir))
-}
-
-genome_ref_path = sprintf("%s/g1000_eur",genome_ref_dir)
-
-```
  
 ## Map SNPs
 

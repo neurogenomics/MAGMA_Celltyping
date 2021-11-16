@@ -122,7 +122,6 @@ MAGMA_results <- MAGMA.Celltyping::celltype_associations_pipeline(
 
 ```{r}
 MAGMA.Celltyping::gather_results(MAGMA_results = MAGMA_results)
-
 ```
 
 

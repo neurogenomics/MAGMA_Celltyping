@@ -47,25 +47,28 @@ install_magma <- function(dest_dir = "/usr/local/bin",
     }
 
     if ((!is_installed) | upgrade) {
-        messager("Installing MAGMA", version, v = verbose)
-        messager("Downloading MAGMA executable.", v = verbose)
-        destpath <- magma_download_binary(
-            magma_url = magma_url,
-            destdir = destdir
-        )
-        #### Create a symlink to the actually magma executable ####
-        messager("Creating symlink so MAGMA can be executed",
-            "using the command 'magma ...'",
-            v = verbose
-        )
-        dest_magma <- file.path(destpath, "magma")
-        #### Change magma file permissions ####
-        system(paste0("chmod u=rx,go=rx ", dest_magma))
-        symlink <- R.utils::createLink(
-            link = "magma",
-            target = dest_magma,
-            overwrite = upgrade
-        )
+        try({
+            
+            messager("Installing MAGMA", version, v = verbose)
+            messager("Downloading MAGMA executable.", v = verbose)
+            destpath <- magma_download_binary(
+                magma_url = magma_url,
+                dest_dir = dest_dir
+            )
+            #### Create a symlink to the actually magma executable ####
+            messager("Creating symlink so MAGMA can be executed",
+                     "using the command 'magma ...'",
+                     v = verbose
+            )
+            dest_magma <- file.path(destpath, "magma")
+            #### Change magma file permissions ####
+            system(paste0("chmod u=rx,go=rx ", dest_magma))
+            symlink <- R.utils::createLink(
+                link = "magma",
+                target = dest_magma,
+                overwrite = upgrade
+            )
+        })
         ##### Check that installation was successful ####
         success <- magma_installation_successful(desired_version = version)
         messager("MAGMA path:", dest_magma, v = verbose)
