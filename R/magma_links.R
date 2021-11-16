@@ -22,12 +22,12 @@ magma_links <- function(latest_only = TRUE,
         files <- c(files, archive_files)
     }
     #### Filter by OS ####
-    if (is.null(os_suffix)) {
-        os_suffix <- magma_os_suffix()
-        files <- files[grepl(os_suffix, names(files))]
+    if (is.null(os_suffix)) { 
+        suffix <- paste0(version,magma_os_suffix(),".zip")
+        files <- files[endsWith(files,suffix)]
     }
     #### Filter by MAGMA version ####
-    if (!is.null(version) | (!latest_only)) {
+    if (!is.null(version) && (!latest_only)) {
         files <- files[grepl(paste0(version, "_"), names(files))]
     }
     #### Remove duplicates ####

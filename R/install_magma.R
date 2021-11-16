@@ -15,7 +15,7 @@
 install_magma <- function(dest_dir = "/usr/local/bin",
                           upgrade = FALSE,
                           verbose = TRUE) {
-    version <- magma_installed_version(verbose = verbose)
+    version <- magma_installed_version(verbose = FALSE)
     magma_url <- magma_links(latest_only = TRUE)
     latest_version <- magma_versions(links = magma_url)
     is_installed <- magma_installed()
@@ -47,9 +47,8 @@ install_magma <- function(dest_dir = "/usr/local/bin",
     }
 
     if ((!is_installed) | upgrade) {
-        try({
-            
-            messager("Installing MAGMA", version, v = verbose)
+        try({ 
+            messager("Installing MAGMA:", version, v = verbose)
             messager("Downloading MAGMA executable.", v = verbose)
             destpath <- magma_download_binary(
                 magma_url = magma_url,
