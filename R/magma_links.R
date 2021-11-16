@@ -1,6 +1,7 @@
 magma_links <- function(latest_only = TRUE,
                         os_suffix = NULL,
-                        version = NULL) {
+                        version = NULL,
+                        verbose = TRUE) {
 
     #### Latest MAGMA files are in the Parent Directory ####
     latest_files <- list_remote_files(

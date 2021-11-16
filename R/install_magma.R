@@ -16,7 +16,8 @@ magma_install <- function(dest_dir = "/usr/local/bin",
                           upgrade = FALSE,
                           verbose = TRUE) {
     version <- magma_installed_version(verbose = FALSE)
-    magma_url <- magma_links(latest_only = TRUE)
+    magma_url <- magma_links(latest_only = TRUE,
+                             verbose = verbose)
     latest_version <- magma_links_versions(links = magma_url)
     is_installed <- magma_installed(verbose = FALSE)
 
