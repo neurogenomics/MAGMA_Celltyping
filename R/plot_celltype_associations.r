@@ -23,10 +23,10 @@
 #' @export
 plot_celltype_associations <- function(ctAssocs, ctd, useSignificanceLine = TRUE, savePDF = TRUE, fileTag = "", plotDendro = TRUE, gwas_title = "", plotLegend = TRUE, figsDir = NA) {
 
-    # CHECK: THAT RESULTS FOR ONLY ONE GWAS WERE PROVIDED (for more than one use magma.tileplot.r)
+    # CHECK: THAT RESULTS FOR ONLY ONE GWAS WERE PROVIDED (for more than one use magma_tileplot.r)
     whichGWAS <- unique(gsub("DOWN\\..*", "DOWN", unique(ctAssocs[[1]]$results$GCOV_FILE)))
     if (length(whichGWAS) > 1) {
-        stop("Only results for one GWAS at a tile should be provided to plot_celltype_association. For multiple GWAS, use magma.tileplot()")
+        stop("Only results for one GWAS at a tile should be provided to plot_celltype_association. For multiple GWAS, use magma_tileplot()")
     }
 
     magmaPaths <- get_magma_paths(ctAssocs$gwas_sumstats_path, ctAssocs$upstream_kb, ctAssocs$downstream_kb)

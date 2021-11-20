@@ -4,19 +4,21 @@ get_genome_ref_magma <- function(genome_ref_dir,
                                      "ref_data/g1000_eur.zip"),
                                  verbose = TRUE) {
     ##### Link to 1000 genomes reference data. ####
-    destfile <- sprintf("%s.zip", genome_ref_dir)
+    zipfile <- sprintf("%s.zip", genome_ref_dir)
     #### Download file ####
     options(timeout = 60 * 5)
     utils::download.file(
         url = input_url,
-        destfile = destfile
+        destfile = zipfile
     )
     #### Unzip file ####
-    messager("Unzipping file.", v = verbose)
+    messager("Unzipping file.", v = verbose) 
     utils::unzip(
-        zipfile = sprintf("%s.zip", genome_ref_dir),
+        zipfile = zipfile,
         exdir = genome_ref_dir
     )
-    out <- file.remove(sprintf("%s.zip", genome_ref_dir), 
-                       showWarnings = FALSE)
+    if(file.exists(zipfile)){
+        out <- file.remove(zipfile, 
+                           showWarnings = FALSE)
+    }
 }

@@ -2,32 +2,54 @@
 % Please edit documentation in R/import_magma_files.r
 \name{import_magma_files}
 \alias{import_magma_files}
-\title{Import remote MAGMA files}
+\title{Import preprocessed MAGMA files}
+\source{
+\href{https://github.com/neurogenomics/MAGMA_Files_Public}{
+\emph{MAGMA_Files_Public} GitHub repository}
+}
 \usage{
 import_magma_files(
-  download_dir = tempdir(),
-  file_types = c(".genes.raw", ".genes.out"),
+  save_dir = tempdir(),
+  ids = NULL,
+  file_types = c(".genes.out", ".genes.raw"),
   overwrite = FALSE,
-  nThread = parallel::detectCores() - 2
+  nThread = 1,
+  verbose = TRUE
 )
 }
 \arguments{
-\item{download_dir}{Parent folder where you want to save the MAGMA files.}
+\item{save_dir}{Parent folder where you want to save the MAGMA files.}
 
-\item{overwrite}{If the files have already been downloaded in the specified directory,
-these downloads will be skipped. Set \code{overwrite=T} to force them to be re-downloaded.}
+\item{ids}{[Optional] \href{https://gwas.mrcieu.ac.uk/}{OpenGWAS} dataset IDs. 
+You see metadata for the GWAS 
+\href{https://github.com/neurogenomics/MAGMA_Files_Public/blob/master/metadata.csv}{here}.}
 
-\item{nThread}{Number of threads to parallelize downloading.}
+\item{file_types}{MAGMA file types to import. 
+Both ".genes.out" and ".genes.raw" are needed to run \pkg{MAGMA.Celltyping}
+cell-type enrichment functions}
+
+\item{overwrite}{If the files have already been downloaded in 
+the specified directory,
+these downloads will be skipped. Set \code{overwrite=TRUE} to force 
+them to be re-downloaded (Default: \code{FALSE})}
+
+\item{nThread}{Number of threads to parallelise downloads across.}
+
+\item{verbose}{Print messages.}
 }
 \value{
-Paths to where the MAGMA files have been downloaded locally.
+Named vector of paths to downloaded MAGMA files.
 }
 \description{
-Import preprocessed MAGMA GWAS files from remote
- \href{https://github.com/neurogenomics/MAGMA_Files}{GitHub repository}.
-Each MAGMA file will be put into its own folder of the same name as the file.
-\bold{WARNING}:
+Import preprocessed MAGMA SNPs-to-genes mapping files for many GWAS. 
+These files were generated using 
+\link[MAGMA.Celltyping]{map_snps_to_genes} and are publicly available via the 
+\href{https://github.com/neurogenomics/MAGMA_Files_Public}{
+\emph{MAGMA_Files_Public} GitHub repository}. 
+Metadata for each dataset (including trait descriptions) can be found here 
+\href{https://github.com/neurogenomics/MAGMA_Files_Public/blob/master/metadata.csv}{here}.
 }
 \examples{
-local_files <- import_magma_files(download_dir = ".")
+local_files <- MAGMA.Celltyping::import_magma_files(ids = c("ieu-a-298",
+                                                            "ukb-b-6548"))
 }

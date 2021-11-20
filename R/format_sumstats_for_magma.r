@@ -43,7 +43,7 @@ format_sumstats_for_magma <- function(path) {
         }
     }
 
-    sumstats_file[1] <- standardise.sumstats.column.headers.crossplatform(sumstats_file[1])
+    sumstats_file[1] <- standardise_sumstats_column_headers_crossplatform(sumstats_file[1])
     col_headers <- sumstats_file[1]
     col_headers <- strsplit(col_headers, "\t")[[1]]
 
@@ -95,7 +95,7 @@ format_sumstats_for_magma <- function(path) {
         }
 
         # Restandardise in case the joined column headers were unusual
-        sumstats_file[1] <- standardise.sumstats.column.headers.crossplatform(sumstats_file[1])
+        sumstats_file[1] <- standardise_sumstats_column_headers_crossplatform(sumstats_file[1])
         col_headers <- strsplit(sumstats_file[1], "\t")[[1]]
     }
 

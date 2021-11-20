@@ -2,6 +2,7 @@ bin_specificity <- function(ctd_1lvl,
                             numberOfBins = 40,
                             defaultBin = as.integer(numberOfBins / 2),
                             new_matrix_name = "expr_quantiles",
+                            check_quantiles = TRUE,
                             verbose = FALSE) {
     messager("Computing specificity distance quantiles.", v = verbose)
     bin_specificity_func <- choose_ewce_bin_function()

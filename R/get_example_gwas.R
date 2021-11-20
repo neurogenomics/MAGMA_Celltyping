@@ -11,7 +11,7 @@
 #' @param storage_dir Folder in which to store the GWAS summary stats.
 #' @param trait Which trait to get GWAS summary stats for.
 #' @param munged Whether to download the raw or pre-munged
-#'  version of each GWAS (\emph{DEFAULT:} \code{TRUE}).
+#'  version of each GWAS (\emph{Default:} \code{TRUE}).
 #'
 #' @source
 #' \code{
@@ -48,12 +48,16 @@
 #' }
 #' @return Path to downloaded GWAS summary statistics.
 #'
+#' @examples 
+#' path_formatted <- MAGMA.Celltyping::get_example_gwas()
+#' 
 #' @export
+#' @importFrom data.table fwrite
 get_example_gwas <- function(storage_dir = tempdir(),
                              trait = c(
+                                 "educational_attainment",
                                  "fluid_intelligence",
-                                 "prospective_memory",
-                                 "educational_attainment"
+                                 "prospective_memory"
                              ),
                              munged = TRUE) {
     trait <- tolower(trait)[1]

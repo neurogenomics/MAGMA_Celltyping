@@ -1,16 +1,25 @@
 github_download_files <- function(filelist,
-                                  download_dir = tempdir(),
-                                  overwrite = F,
-                                  nThread = parallel::detectCores() - 2,
-                                  verbose = T) {
-    printer("+ Downloading", length(filelist), "files...", v = verbose)
-    local_files <- unlist(parallel::mclapply(filelist, function(x) {
-        print(paste("Downloading", x))
+                                  save_dir = tempdir(),
+                                  overwrite = FALSE,
+                                  nThread = 1,
+                                  verbose = TRUE) {
+    requireNamespace("stringr")
+    requireNamespace("parallel")
+    
+    messager("Downloading", length(filelist),"files.", v = verbose)
+    local_files <- unlist(parallel::mclapply(filelist, function(x) { 
         branch <- stringr::str_split(string = x, pattern = "/")[[1]][7]
-        folder_structure <- paste(stringr::str_split(string = x, pattern = "/")[[1]][-c(1:7)], collapse = "/")
-        destfile <- file.path(download_dir, folder_structure)
-        dir.create(dirname(destfile), showWarnings = F, recursive = T)
-        if (!file.exists(destfile) & overwrite == F) download.file(url = x, destfile = destfile)
+        folder_structure <- paste(
+            stringr::str_split(string = x, pattern = "/")[[1]][-c(seq(1,7))], 
+            collapse = "/")
+        destfile <- file.path(save_dir, folder_structure)
+        dir.create(dirname(destfile), showWarnings = FALSE, recursive = TRUE)
+        if (!file.exists(destfile) | isTRUE(overwrite)) {
+            message_parallel("Downloading file ==> ",destfile)
+            download.file(url = x, destfile = destfile)
+        }else {
+            message_parallel("Importing previously downloaded file: ",destfile)
+        }
         return(destfile)
     }, mc.cores = nThread))
     return(local_files)

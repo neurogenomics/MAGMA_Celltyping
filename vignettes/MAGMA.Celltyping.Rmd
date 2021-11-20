@@ -120,8 +120,23 @@ MAGMA_results <- MAGMA.Celltyping::celltype_associations_pipeline(
 
 # Plot results
 
+## Gather results 
+
 ```{r}
-MAGMA.Celltyping::gather_results(MAGMA_results = MAGMA_results)
+merged_results <- MAGMA.Celltyping::gather_results(MAGMA_results = MAGMA_results)
+```
+
+## Heatmap  
+
+```{r Heatmap}  
+heat <- MAGMA.Celltyping::results_heatmap(merged_results = merged_results, 
+                                          title=dataset_name,  
+                                          x_lab=paste0("Celltype (level",2,")"),
+                                          fdr_thresh = .05)
+
+ggsave(paste0("processed_data/MAGMA/",dataset_name,"/MAGMA_celltyping.",dataset_name,".heatmap.jpg"), 
+       plot = heat, 
+       dpi = 300, height = 5, width=7)
 ```
 
 

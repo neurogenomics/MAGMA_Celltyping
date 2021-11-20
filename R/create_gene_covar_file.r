@@ -39,10 +39,7 @@ create_gene_covar_file <- function(genesOutFile,
         ctd = ctd,
         annotLevel = annotLevel,
         sctSpecies = sctSpecies
-    )
-    # colnames(quantDat2)[2:length(colnames(quantDat2))] =
-    #     colnames(ctd[[controlledAnnotLevel]]$quantiles)
-
+    ) 
     if (dim(quantDat2)[1] < 100) {
         stop_msg <- paste(
             "Less than one hundred genes detected after",

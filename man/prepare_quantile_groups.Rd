@@ -58,7 +58,9 @@ See \link[EWCE]{list_species} for all available species.}
 
 \item{numberOfBins}{Number of non-zero quantile bins.}
 
-\item{verbose}{Print messages.}
+\item{verbose}{Print messages.
+Set \code{verbose=2} if you want to print all messages
+ from internal functions as well.}
 }
 \value{
 The ctd converted to \code{output_species} gene symbols

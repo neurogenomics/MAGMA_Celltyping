@@ -31,15 +31,7 @@ storage_dir <- here::here("raw_data/MAGMA")
 dir.create(storage_dir, showWarnings = FALSE, recursive = TRUE)
 ```
 
-
-## Genome reference
-
-Set path the 1000 genomes reference data.
-
-```{r Prepare genome reference}
-genome_ref_path = get_genome_ref()
-```
-
+ 
 ## MAGMA_Files
 
 Import premade MAGMA files from a variety of GWAS datasets, stored in the [MAGMA_Files](https://github.com/neurogenomics/MAGMA_Files) repo. 

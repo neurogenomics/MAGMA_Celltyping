@@ -30,8 +30,9 @@
 #'
 #' @examples
 #' #### Prepare data ####
-#' #' ctd <- ewceData::ctd()
-#' path_formatted <- MAGMA.Celltyping::get_example_gwas()
+#' ctd <- ewceData::ctd()
+#' path_formatted <- MAGMA.Celltyping::get_example_gwas(
+#'     trait = "fluid_intelligence")
 #'
 #' ##### Map SNPs to genes ####
 #' genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(
@@ -40,7 +41,7 @@
 #' )
 #'
 #' #### Run pipeline ####
-#' ctAssocs <- MAGMA.Celltyping::calculate_celltype_associations(
+#' ctAssocs <- calculate_celltype_associations(
 #'     ctd = ctd,
 #'     gwas_sumstats_path = path_formatted,
 #'     sctSpecies = "mouse"
@@ -107,11 +108,10 @@ calculate_celltype_associations <- function(ctd,
         )
         path <- sprintf("%s.%s.gsa.out", sumstatsPrefix2, analysis_name)
         geneCovarFile <- NULL
-        print(path)
+        messager(path,v=verbose)
 
         if ((!file.exists(path)) | force_new) {
-            messager("Running MAGMA.", v = verbose)
-
+            messager("Running MAGMA:",EnrichmentMode,"mode", v = verbose) 
             if (EnrichmentMode == "Linear") {
                 # First match quantiles to the genes in the genes.out file...
                 # then write as the genesCovar file (the input to MAGMA)
@@ -221,7 +221,8 @@ calculate_celltype_associations <- function(ctd,
                     )
                 }
             }
-            print(magma_cmd)
+            #### Run MAGMA command ####
+            message_cmd(magma_cmd)
             system(magma_cmd)
         } else {
             messager("Importing precomputed MAGMA results.", v = verbose)
@@ -238,18 +239,16 @@ calculate_celltype_associations <- function(ctd,
         output[[length(output) + 1]] <- tmp
     } # //End for loop
 
-    # Calculate total number of tests performed
+    #### Calculate total number of tests performed ####
     totalTests <- 0
-    for (annotLevel in 1:length(output)) {
+    for (annotLevel in ctd_levels) {
         totalTests <- totalTests + dim(output[[annotLevel]]$results)[1]
     }
     output$total_baseline_tests_performed <- totalTests
-
     output$gwas_sumstats_path <- gwas_sumstats_path
     output$analysis_name <- analysis_name
     output$upstream_kb <- upstream_kb
     output$downstream_kb <- downstream_kb
     output$genome_ref_path <- genome_ref_path
-
     return(output)
 }

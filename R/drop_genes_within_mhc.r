@@ -8,13 +8,13 @@
 #' @return NULL (the output is written to the filepath provided as an argument)
 #'
 #' @examples
-#' drop.genes.within.mhc("data/NCBI37.3.gene.loc", "data/NCBI37.3.gene.loc")
-#' drop.genes.within.mhc("data/NCBI38.gene.loc", "data/NCBI38.gene.loc")
-#' drop.genes.within.mhc("data/NCBI36.3.gene.loc", "data/NCBI36.3.gene.loc")
+#' drop_genes_within_mhc("data/NCBI37.3.gene.loc", "data/NCBI37.3.gene.loc")
+#' drop_genes_within_mhc("data/NCBI38.gene.loc", "data/NCBI38.gene.loc")
+#' drop_genes_within_mhc("data/NCBI36.3.gene.loc", "data/NCBI36.3.gene.loc")
 #' @export
 #' @importFrom utils read.table
 #' @importFrom utils write.table
-drop.genes.within.mhc <- function(geneLocFilePath, geneLocFilePathOut) {
+drop_genes_within_mhc <- function(geneLocFilePath, geneLocFilePathOut) {
     # chr6 25-34 mb
     # ncbi = read.table("data/NCBI37.3.gene.loc")
     # ncbi_wo = read.table(
@@ -30,4 +30,9 @@ drop.genes.within.mhc <- function(geneLocFilePath, geneLocFilePathOut) {
         quote = FALSE,
         row.names = FALSE, col.names = FALSE, sep = "\t"
     )
+}
+
+drop.genes.within.mhc <- function(...){
+    .Deprecated("drop_genes_within_mhc")
+    drop_genes_within_mhc(...)
 }

@@ -17,7 +17,8 @@ map_specificity_to_entrez <- function(ctd,
                                       verbose = TRUE) {
     # Because sumstats use entrez genes & ctd uses
     # gene symbols, match entrez-->symbols
-
+    messager("Mapping gene symbols in specificity quantiles matrix",
+             "to entrez IDs.",v=verbose)
     #### Extract gene list ####
     mat <- ctd[[annotLevel]]$specificity_quantiles
     genes <- rownames(mat)
@@ -39,8 +40,10 @@ map_specificity_to_entrez <- function(ctd,
     gene_map <- orthogene::map_genes(
         genes = genes,
         species = sctSpecies,
-        numeric_ns = "ENTREZGENE",
+        target = "ENTREZGENE_ACC",
         drop_na = TRUE,
+        # only return 1 Entrez ID per gene symbol
+        mthreshold = 1,
         verbose = verbose
     )
     #### Subset matrix ####

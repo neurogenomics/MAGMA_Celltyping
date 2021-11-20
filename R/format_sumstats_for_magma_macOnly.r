@@ -51,9 +51,9 @@ format_sumstats_for_magma_macOnly <- function(path) {
     }
 
     if (OS == "Mac") {
-        col_headers <- standardise.sumstats.column.headers(path)
+        col_headers <- standardise_sumstats_column_headers(path)
     } else {
-        col_headers <- standardise.sumstats.column.headers.crossplatform(path)
+        col_headers <- standardise_sumstats_column_headers_crossplatform(path)
     }
 
 
@@ -115,7 +115,7 @@ format_sumstats_for_magma_macOnly <- function(path) {
         }
 
         # Restandardise incase the joined column headers were unusual
-        col_headers <- standardise.sumstats.column.headers(path)
+        col_headers <- standardise_sumstats_column_headers(path)
     }
 
     # If SNP is present... BUT not CHR or BP then need to find the relevant locations

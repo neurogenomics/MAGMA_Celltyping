@@ -177,7 +177,7 @@ calculate_celltype_enrichment_probabilities_wtLimma <- function(magmaAdjZ,
     }
 }
 
-calculate_celltype_enrichment_probabilities_wtLimma <- function(...) {
+calculate.celltype.enrichment.probabilities.wtLimma <- function(...) {
     .Deprecated("calculate_celltype_enrichment_probabilities_wtLimma")
     calculate_celltype_enrichment_probabilities_wtLimma(...)
 }

@@ -82,16 +82,16 @@ Precomputed MAGMA GWAS files can be downloaded via the
 \link[MAGMA.Celltyping]{import_magma_files} function.
 }
 \examples{
-\dontrun{
-local_files <- MAGMA.Celltyping::import_magma_files()
+local_files <- import_magma_files(ids = c("ieu-a-298",
+                                                            "ukb-b-6548"))
 magma_dirs <- unique(dirname(local_files))
 ctd <- ewceData::ctd()
 
 res <- MAGMA.Celltyping::celltype_associations_pipeline(
     ctd = ctd,
     ctd_name = "Zeisel2015",
+    sctSpecies = "mouse",
     magma_dirs = magma_dirs
 )
-}
 }
 \keyword{main_function}

@@ -11,9 +11,9 @@
 #' @return The amended column headers (also the column headers will be written directly into the summary statistics file)
 #'
 #' @examples
-#' col_headers <- standardise.sumstats.column.headers("~/Downloads/202040.assoc.tsv")
+#' col_headers <- standardise_sumstats_column_headers("~/Downloads/202040.assoc.tsv")
 #' @export
-standardise.sumstats.column.headers <- function(path) {
+standardise_sumstats_column_headers <- function(path) {
     # Check the sumstats file exists
     if (!file.exists(path)) {
         stop("Path to GWAS sumstats is not valid")
@@ -50,4 +50,9 @@ standardise.sumstats.column.headers <- function(path) {
 
     # column_headers = strsplit(column_headers," ")[[1]]
     return(column_headers)
+}
+
+standardise_sumstats_column_headers <- function(...){
+    .Deprecated("standardise_sumstats_column_headers")
+    standardise_sumstats_column_headers(...)
 }

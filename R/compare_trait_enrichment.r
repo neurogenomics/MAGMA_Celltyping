@@ -5,17 +5,25 @@
 #' @param magma1 A magma results data structure
 #' @param magma2 A magma results data structure
 #' @param annotLevel Annotation level of the CTD / results file to use
-#' @param ctd Cell type data strucutre containing $specificity_quantiles
+#' @param ctd Cell type data structure containing $specificity_quantiles
 #'
-#' @return Filepath for the genes.out file
+#' @return File path for the genes.out file
 #'
-#' @export compare.trait.enrichments
+#' @export compare_trait_enrichments
 #' @importFrom data.table data.table
 #' @importFrom stats pnorm
-compare.trait.enrichments <- function(magmaPath1 = NA, magmaPath2 = NA, magma1 = NA, magma2 = NA, annotLevel, ctd) {
+compare_trait_enrichments <- function(magmaPath1 = NA, 
+                                      magmaPath2 = NA, 
+                                      magma1 = NA,
+                                      magma2 = NA, 
+                                      annotLevel, ctd) {
     if (!is.na(magmaPath1) & !is.na(magmaPath2)) {
-        magma1 <- load_magma_results_file(magmaPath1, annotLevel = annotLevel, ctd = ctd)
-        magma2 <- load_magma_results_file(magmaPath2, annotLevel = annotLevel, ctd = ctd)
+        magma1 <- load_magma_results_file(magmaPath1,
+                                          annotLevel = annotLevel,
+                                          ctd = ctd)
+        magma2 <- load_magma_results_file(magmaPath2, 
+                                          annotLevel = annotLevel, 
+                                          ctd = ctd)
     }
     rownames(magma1) <- magma1$Celltype
     rownames(magma2) <- magma2$Celltype
@@ -32,8 +40,11 @@ compare.trait.enrichments <- function(magmaPath1 = NA, magmaPath2 = NA, magma1 =
     magma2$P_magma2 <- magma2$P
     magma2$SE_magma1 <- magma1$SE
     magma2$SE_magma2 <- magma2$SE
-    # magma3 = magma2[,c("COVAR","BETA_magma1","BETA_magma2","P_magma1","P_magma2","SE_magma1","SE_magma2","z","comparisonP2sided")]
-    magma3 <- magma2[, c("Celltype", "BETA_magma1", "BETA_magma2", "P_magma1", "P_magma2", "SE_magma1", "SE_magma2", "z", "comparisonP2sided")]
+    magma3 <- magma2[, c("Celltype", 
+                         "BETA_magma1", "BETA_magma2",
+                         "P_magma1", "P_magma2", 
+                         "SE_magma1", "SE_magma2", 
+                         "z", "comparisonP2sided")]
     magma3$moreSignifIn2 <- magma3$BETA_magma2 > magma3$BETA_magma1
     magma3$lessSignifIn2 <- magma3$BETA_magma2 < magma3$BETA_magma1
     p <- magma3$comparisonP2sided
@@ -51,4 +62,10 @@ compare.trait.enrichments <- function(magmaPath1 = NA, magmaPath2 = NA, magma1 =
     # magma2[magma2$P<0.05 & magma2$moreSignif==TRUE,]
     # print(magma3[magma3$comparisonP2sided<0.05,])
     return(magma3)
+}
+
+
+compare.trait.enrichments <- function(...){
+    .Deprecated("compare_trait_enrichments")
+    compare_trait_enrichments(...)
 }

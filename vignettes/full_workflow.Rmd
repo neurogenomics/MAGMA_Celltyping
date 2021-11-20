@@ -220,7 +220,7 @@ Note that Periventricular Microglia (PVM) go from totally non-significant to sig
 magma1 = ctCondAssocs[[2]]$results[ctCondAssocs[[2]]$results$CONTROL=="BASELINE",]
 magma2 = ctCondAssocs[[2]]$results[ctCondAssocs[[2]]$results$CONTROL=="pyramidal CA1,pyramidal SS,interneurons",]
 
-resCompared <- MAGMA.Celltyping:::compare.trait.enrichments(magma1=magma1,
+resCompared <- MAGMA.Celltyping:::compare_trait_enrichments(magma1=magma1,
                                                             magma2=magma2,
                                                             annotLevel=2,
                                                             ctd=ctd)
@@ -303,13 +303,13 @@ ctAssocMerged_MemInt = MAGMA.Celltyping::merge_magma_results(
   ctAssoc1 = ctAssocsLinear_memory,
   ctAssoc2 = ctAssocsLinear_intelligence)
 
-FigsMerged_MemInt <- MAGMA.Celltyping::magma.tileplot(ctd=ctd,
+FigsMerged_MemInt <- MAGMA.Celltyping::magma_tileplot(ctd=ctd,
                                                       results=ctAssocMerged_MemInt[[1]]$results,
                                                       annotLevel=1,
                                                       fileTag="Merged_MemInt_lvl1",
                                                       output_path = storage_dir)
 
-FigsMerged_MemInt = MAGMA.Celltyping::magma.tileplot(ctd=ctd,
+FigsMerged_MemInt = MAGMA.Celltyping::magma_tileplot(ctd=ctd,
                                                      results=ctAssocMerged_MemInt[[2]]$results,
                                                      annotLevel=2,
                                                      fileTag="Merged_MemInt_lvl2",

@@ -11,7 +11,10 @@ map_snps_to_genes(
   downstream_kb = 10,
   N = NULL,
   genome_ref_path = NULL,
-  force_new = FALSE
+  population = "eur",
+  storage_dir = tempdir(),
+  force_new = FALSE,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -30,18 +33,34 @@ should SNPs be included?}
 \item{downstream_kb}{How many kilobases (kb) downstream of the gene
 should SNPs be included?}
 
-\item{N}{What is the N number for this GWAS? That is cases+controls}
+\item{N}{What is the N number for this GWAS? That is cases + controls.}
 
 \item{genome_ref_path}{Path to the folder containing the
-1000 genomes .bed files (which can be downloaded from
- https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
+1000 genomes .bed files (which can be downloaded from 
+\href{https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip}{here}).}
+
+\item{population}{Which population subset of the genome reference
+to include.
+\itemize{
+\item{"eur" : }{European descent
+(Default simply because this is currently
+the most common GWAS subpopulation).}
+\item{"afr" : }{African descent.}
+\item{"amr" : }{Ad Mixed American descent.}
+\item{"eas" : }{East Asian descent.}
+\item{"sas" : }{South Asian descent.}
+}}
+
+\item{storage_dir}{Where to store genome ref.}
 
 \item{force_new}{Set to \code{TRUE} to
 rerun \code{MAGMA} even if the output files already exist.
- \emph{DEFAULT=}\code{FALSE}.}
+ (Default: \code{FALSE}).}
+
+\item{verbose}{Print messages.}
 }
 \value{
-Filepath for the genes.out file
+Path to the genes.out file.
 }
 \description{
 Make two external calls to MAGMA. First use it to annotate SNPs
@@ -49,7 +68,9 @@ Make two external calls to MAGMA. First use it to annotate SNPs
  the gene level trait association.
 }
 \examples{
-\dontrun{
-genesOutPath <- map_snps_to_genes(path_formatted)
-}
+path_formatted <- MAGMA.Celltyping::get_example_gwas()
+genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(
+    path_formatted = path_formatted,
+    genome_build = "hg19",
+    N = 5000)
 }

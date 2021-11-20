@@ -15,20 +15,23 @@
 #'  should SNPs be included?
 #' @param downstream_kb How many kilobases (kb) downstream of the gene
 #' should SNPs be included?
-#' @param N What is the N number for this GWAS? That is cases+controls
+#' @param N What is the N number for this GWAS? That is cases + controls.
 #' @param genome_ref_path Path to the folder containing the
-#' 1000 genomes .bed files (which can be downloaded from
-#'  https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)
+#' 1000 genomes .bed files (which can be downloaded from 
+#' \href{https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip}{here}).
 #' @param force_new Set to \code{TRUE} to
 #' rerun \code{MAGMA} even if the output files already exist.
-#'  \emph{DEFAULT=}\code{FALSE}.
+#'  (Default: \code{FALSE}).
+#' @inheritParams get_genome_ref
 #'
-#' @return Filepath for the genes.out file
+#' @return Path to the genes.out file.
 #'
 #' @examples
-#' \dontrun{
-#' genesOutPath <- map_snps_to_genes(path_formatted)
-#' }
+#' path_formatted <- MAGMA.Celltyping::get_example_gwas()
+#' genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(
+#'     path_formatted = path_formatted,
+#'     genome_build = "hg19",
+#'     N = 5000)
 #' @export
 map_snps_to_genes <- function(path_formatted,
                               genome_build = NULL,
@@ -36,13 +39,14 @@ map_snps_to_genes <- function(path_formatted,
                               downstream_kb = 10,
                               N = NULL,
                               genome_ref_path = NULL,
-                              force_new = FALSE) {
-    if (!exists("genome_ref_path") || is.null(genome_ref_path)) {
-        message("genome_ref_path not supplied. Downloading.")
-        genome_ref_path <- get_genome_ref(
-            storage_dir = tempdir()
-        )
-    }
+                              population = "eur",
+                              storage_dir = tempdir(),
+                              force_new = FALSE,
+                              verbose = TRUE) {
+    genome_ref_path <- get_genome_ref(genome_ref_path = genome_ref_path,
+                                      storage_dir = storage_dir,
+                                      population = population,
+                                      verbose = verbose)
     path_formatted <- path.expand(path_formatted)
     magmaPaths <- get_magma_paths(
         gwas_sumstats_path = path_formatted,
@@ -103,38 +107,43 @@ map_snps_to_genes <- function(path_formatted,
     }
 
     # Determine which genome build it uses & get path to gene loc file
-    gene_loc_dir <- sprintf(
-        "%s/data/",
-        system.file(package = "MAGMA.Celltyping")
-    )
+    gene_loc_dir <- system.file("data",package = "MAGMA.Celltyping")
     if (is.null(genome_build)) {
         genome_build <-
-            MungeSumstats::get_genome_builds(sumstats = path_formatted)
+            MungeSumstats::get_genome_builds(sumstats_list = path_formatted,
+                                             names_from_paths = TRUE)
     }
-    if (toupper(genome_build) == "GRCH37") {
+    if (toupper(genome_build) %in% c("GRCH37","HG37","HG19")) {
         genomeLocFile <- sprintf("%s/NCBI37.3.gene.loc", gene_loc_dir)
-    }
-    if (toupper(genome_build) == "GRCH38") {
+    } else if (toupper(genome_build) %in% c("GRCH38","HG38")) {
         genomeLocFile <- sprintf("%s/NCBI38.gene.loc", gene_loc_dir)
+    } else {
+        stop("Genome build must be: 'GRCH37', or 'GRCH38'")
     }
-    print(sprintf(
-        "GWAS Sumstats appear to come from genome build: %s",
-        genome_build
-    ))
-
-    # sumstatsPrefix = sprintf("%s.%sUP.%sDOWN",
-    #                          path_formatted,upstream_kb,downstream_kb)
-
     #### Create genes.annot ####
+    message_parallel("\n==== MAGMA Step 1: Generate genes.annot file ====\n")
     magma_cmd <- sprintf(
-        "magma --annotate window=%s,%s --snp-loc '%s' --gene-loc '%s' --out '%s'",
-        upstream_kb, downstream_kb, path_formatted, genomeLocFile, outPath
+        paste("magma",
+              "--annotate window=%s,%s",
+              "--snp-loc '%s'",
+              "--gene-loc '%s'",
+              "--out '%s'"),
+        upstream_kb, 
+        downstream_kb, 
+        path_formatted, 
+        genomeLocFile, 
+        outPath
     )
     system(magma_cmd)
 
     #### Create genes.out ####
+    message_parallel("\n==== MAGMA Step 2: Generate genes.out ====\n")
     magma_cmd <- sprintf(
-        "magma --bfile '%s' --pval '%s' %s --gene-annot '%s.genes.annot' --out '%s'",
+        paste("magma",
+              "--bfile '%s'",
+              "--pval '%s' %s",
+              "--gene-annot '%s.genes.annot'",
+              "--out '%s'"),
         path.expand(genome_ref_path), path_formatted,
         n_arg, magmaPaths$filePathPrefix, outPath
     )
@@ -142,4 +151,9 @@ map_snps_to_genes <- function(path_formatted,
     system(magma_cmd)
     # Return path to genes.out file
     return(genes_out)
+}
+
+map.snps.to.genes <- function(...){
+    .Deprecated("map_snps_to_genes")
+    map_snps_to_genes(...)
 }

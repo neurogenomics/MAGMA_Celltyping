@@ -39,7 +39,7 @@ piggyback::pb_upload(file = path_formatted,
 \usage{
 get_example_gwas(
   storage_dir = tempdir(),
-  trait = c("fluid_intelligence", "prospective_memory", "educational_attainment"),
+  trait = c("educational_attainment", "fluid_intelligence", "prospective_memory"),
   munged = TRUE
 )
 }
@@ -49,7 +49,7 @@ get_example_gwas(
 \item{trait}{Which trait to get GWAS summary stats for.}
 
 \item{munged}{Whether to download the raw or pre-munged
-version of each GWAS (\emph{DEFAULT:} \code{TRUE}).}
+version of each GWAS (\emph{Default:} \code{TRUE}).}
 }
 \value{
 Path to downloaded GWAS summary statistics.
@@ -62,4 +62,8 @@ To reduce file size, SNPs have been filtered to Minor Allele Frequency (MAF)
 > 5% and a nominal p-value < 0.05. However, in practice we
  recommend using full GWAS summary statistics
   (after applying \link[MungeSumstats]{format_sumstats}).
+}
+\examples{
+path_formatted <- MAGMA.Celltyping::get_example_gwas()
+
 }

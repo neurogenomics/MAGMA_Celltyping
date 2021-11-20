@@ -11,9 +11,9 @@
 #' @return The amended column headers (also the column headers will be written directly into the summary statistics file)
 #'
 #' @examples
-#' col_headers <- standardise.sumstats.column.headers.crossplatform("~/Downloads/202040.assoc.tsv")
+#' col_headers <- standardise_sumstats_column_headers_crossplatform("~/Downloads/202040.assoc.tsv")
 #' @export
-standardise.sumstats.column.headers.crossplatform <- function(first_line) {
+standardise_sumstats_column_headers_crossplatform <- function(first_line) {
     column_headers <- strsplit(first_line, "\t")[[1]]
     print("First line of summary statistics file: ")
     print(first_line)
@@ -32,4 +32,9 @@ standardise.sumstats.column.headers.crossplatform <- function(first_line) {
     }
     new_first_line <- paste(column_headers, collapse = "\t")
     return(new_first_line)
+}
+
+standardise_sumstats_column_headers.crossplatform <- function(...){
+    .Deprecated("standardise_sumstats_column_headers_crossplatform")
+    standardise_sumstats_column_headers_crossplatform(...)
 }

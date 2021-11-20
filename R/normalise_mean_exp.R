@@ -1,4 +1,5 @@
 normalise_mean_exp <- function(ctd_1lvl,
+                               
                                verbose = FALSE) {
     messager("Computing linear normalised mean expression.", v = verbose)
     ctd_1lvl$mean_exp <- as(ctd_1lvl$mean_exp, "matrix")

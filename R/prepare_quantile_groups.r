@@ -56,7 +56,11 @@ prepare_quantile_groups <- function(ctd,
     ctd <- lapply(ctd, use_distance_to_add_expression_level_info)
 
     messager("Computing specificity distance quantiles.", v = verbose)
-    ctd <- lapply(ctd, bin_specificityDistance_into_quantiles)
-
+    ctd <- lapply(ctd, bin_specificityDistance_into_quantiles) 
+    #### Check that the number of quantiles in each col == numberOfBins #### 
+    quantiles_counts <- check_quantiles(ctd = ctd, 
+                                        matrix_name = "specDist_quantiles", 
+                                        numberOfBins = numberOfBins,
+                                        metric = "n")
     return(ctd)
 }

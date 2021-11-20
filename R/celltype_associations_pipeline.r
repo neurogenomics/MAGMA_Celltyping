@@ -29,17 +29,17 @@
 #' celltype associations analysis.
 #'
 #' @examples
-#' \dontrun{
-#' local_files <- MAGMA.Celltyping::import_magma_files()
+#' local_files <- import_magma_files(ids = c("ieu-a-298",
+#'                                                             "ukb-b-6548"))
 #' magma_dirs <- unique(dirname(local_files))
 #' ctd <- ewceData::ctd()
 #'
 #' res <- MAGMA.Celltyping::celltype_associations_pipeline(
 #'     ctd = ctd,
 #'     ctd_name = "Zeisel2015",
+#'     sctSpecies = "mouse",
 #'     magma_dirs = magma_dirs
 #' )
-#' }
 #' @keywords main_function
 #' @export
 celltype_associations_pipeline <- function(ctd,
@@ -66,14 +66,17 @@ celltype_associations_pipeline <- function(ctd,
     ctAssocMerged <- NULL
     #### prepare quantile groups ####
     # MAGMA.Celltyping can only use human GWAS
-    output_species <- "human"
-    ctd <- prepare_quantile_groups(
-        ctd = ctd,
-        input_species = sctSpecies,
-        output_species = output_species,
-        verbose = verbose
-    )
-    sctSpecies <- output_species
+    {
+        messager("Standardising CellTypeDataset.",v=verbose)
+        output_species <- "human"
+        ctd <- prepare_quantile_groups(
+            ctd = ctd,
+            input_species = sctSpecies,
+            output_species = output_species,
+            verbose = FALSE
+        )
+        sctSpecies <- output_species
+    }
     #### Prepare genome_ref ####
     genome_ref_path <- get_genome_ref(
         genome_ref_path = genome_ref_path,
@@ -83,7 +86,7 @@ celltype_associations_pipeline <- function(ctd,
     MAGMA_results <- lapply(magma_dirs, function(magma_dir) {
         messager(basename(magma_dir), v = verbose)
         fake_gwas_ss <- file.path(
-            gsub("/MAGMA_Files", "", dirname(magma_dir)),
+            gsub("MAGMA_Files", "", dirname(magma_dir)),
             gsub(
                 paste0(".", upstream_kb, "UP.", downstream_kb, "DOWN"), "",
                 basename(magma_dir)
@@ -96,6 +99,7 @@ celltype_associations_pipeline <- function(ctd,
             )
             ctAssocsLinear <- tryCatch(expr = {
                 calculate_celltype_associations(
+                    EnrichmentMode = "Linear",
                     ctd = ctd,
                     prepare_ctd = FALSE, # Already prepared once above
                     gwas_sumstats_path = fake_gwas_ss,
@@ -120,11 +124,11 @@ celltype_associations_pipeline <- function(ctd,
             )
             ctAssocsTop <- tryCatch(expr = {
                 calculate_celltype_associations(
+                    EnrichmentMode = "Top 10%",
                     ctd = ctd,
                     prepare_ctd = FALSE, # Already prepared once above
                     gwas_sumstats_path = fake_gwas_ss,
-                    genome_ref_path = genome_ref_path,
-                    EnrichmentMode = "Top 10%",
+                    genome_ref_path = genome_ref_path, 
                     upstream_kb = upstream_kb,
                     downstream_kb = downstream_kb,
                     analysis_name = paste(ctd_name, suffix_top10, sep = "_"),
