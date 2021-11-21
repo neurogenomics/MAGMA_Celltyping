@@ -1,38 +1,78 @@
 #' Calculate conditional celltype associations using MAGMA
 #'
-#' Assumes that you have already run map_snps_to_genes()
+#' Assumes that you have already run \link[MAGMA.Celltyping]{map_snps_to_genes}.
 #'
 #' @param controlledAnnotLevel Which annotation level should be controlled for.
 #' @param controlTopNcells How many of the most significant cell types at
 #' that annotation level should be controlled for?
 #' @param controlledCTs Array of the celltype to be controlled for,
-#' e.g. \code{c('Interneuron type 16','Medium Spiny Neuron')}.
-#' @param EnrichmentMode [Optional] Either 'Linear' or 'Top 10\%'.
-#' (\emph{DEFAULT: "Linear"}).
+#' e.g. \code{c('Interneuron type 16','Medium Spiny Neuron')}. 
+#' @inheritParams celltype_associations_pipeline
 #' @inheritParams calculate_celltype_associations
 #'
 #' @returns File path for the genes.out file
 #'
 #' @examples
-#' ctAssocs <- calculate_celltype_associations(ctd, gwas_sumstats_path)
+#' #### Prepare cell-type data ####
+#' ctd <- ewceData::ctd()
+#' 
+#' #### Prepare GWAS MAGMA data ####
+#' magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
+#'     
+#' #### Run pipeline ####
+#' ctAssocs <- MAGMA.Celltyping::calculate_conditional_celltype_associations(
+#'     ctd = ctd,
+#'     ctd_levels = 1,
+#'     magma_dir = magma_dir,
+#'     ctd_species = "mouse") 
 #' @export
 #' @importFrom utils read.table
-calculate_conditional_celltype_associations <- function(ctd,
-                                                        gwas_sumstats_path,
-                                                        analysis_name = "MainRun",
-                                                        prepare_ctd = TRUE,
-                                                        upstream_kb = 35,
-                                                        downstream_kb = 10,
-                                                        genome_ref_path,
-                                                        controlledAnnotLevel = 1,
-                                                        sctSpecies = "mouse",
-                                                        controlTopNcells = NA,
-                                                        controlledCTs = NA,
-                                                        EnrichmentMode = "Linear",
-                                                        verbose = TRUE) {
+calculate_conditional_celltype_associations <- function(
+    ctd,
+    gwas_sumstats_path = NULL,
+    magma_dir = NULL,
+    analysis_name = "MainRun",
+    prepare_ctd = TRUE,
+    upstream_kb = 35,
+    downstream_kb = 10,
+    genome_ref_path,
+    controlledAnnotLevel = 1,
+    ctd_species = "mouse",
+    controlTopNcells = NA,
+    controlledCTs = NA,
+    EnrichmentMode = "Linear",
+    force_new = FALSE,
+    verbose = TRUE) {
 
-    #### Process args ####
+    #### Check args ####
     check_enrichment_mode(EnrichmentMode = EnrichmentMode)
+    #### Handle MAGMA Files ####
+    #### Trick downstream functions into working with only MAGMA files ####
+    magma_dir <- magma_dir[1]
+    if(!is.null(magma_dir)){ 
+        gwas_sumstats_path <- create_fake_gwas_path(
+            magma_dir = magma_dir,
+            upstream_kb = upstream_kb,
+            downstream_kb = downstream_kb)
+    }
+    #### prepare quantile groups ####
+    # MAGMA.Celltyping can only use human GWAS
+    if (prepare_ctd) {
+        output_species <- "human"
+        ctd <- prepare_quantile_groups(
+            ctd = ctd,
+            input_species = ctd_species,
+            output_species = output_species,
+            verbose = verbose
+        )
+        ctd_species <- output_species
+    }
+    #### Prepare genome_ref ####
+    genome_ref_path <- get_genome_ref(
+        genome_ref_path = genome_ref_path,
+        verbose = verbose
+    )
+    #### Setup paths ####
     gwas_sumstats_path <- path.expand(gwas_sumstats_path)
     magmaPaths <- get_magma_paths(
         gwas_sumstats_path = gwas_sumstats_path,
@@ -48,16 +88,15 @@ calculate_conditional_celltype_associations <- function(ctd,
         downstream_kb = downstream_kb,
         genome_ref_path = genome_ref_path
     )
-
-    # Either controlTopNcells or controlledCTs should be passed with arguments,
-    # not both
+    #### Either controlTopNcells or controlledCTs should be passed ####
+    # ...not both
     if (!is.na(controlTopNcells) && !is.na(controlledCTs)) {
         stopper(
             "Either controlTopNcells or controlledCTs",
             "should be passed with arguments, not both."
         )
     }
-    # If both are NA then also reject that
+    #### If both are NA then also reject that ####
     if (is.na(controlTopNcells) && is.na(controlledCTs)) {
         stopper(
             "Either controlTopNcells or controlledCTs",
@@ -68,11 +107,14 @@ calculate_conditional_celltype_associations <- function(ctd,
     ##### Calculate the baseline associations ####
     ctAssocs <- calculate_celltype_associations(
         ctd = ctd,
+        ### Only uses the level specified by controlledAnnotLevel
+        ### Running all levels is a wasteful computation here.
+        ctd_levels = controlledAnnotLevel,
         analysis_name = analysis_name,
         prepare_ctd = prepare_ctd,
         gwas_sumstats_path = gwas_sumstats_path,
         genome_ref_path = genome_ref_path,
-        sctSpecies = sctSpecies,
+        ctd_species = ctd_species,
         EnrichmentMode = EnrichmentMode,
         upstream_kb = upstream_kb,
         downstream_kb = downstream_kb,
@@ -117,7 +159,10 @@ calculate_conditional_celltype_associations <- function(ctd,
 
         # If there are no significant cells... then stop
         if (length(signifCells) == 0) {
-            stop("No celltypes reach significance with Q<0.05")
+            messager("Warning: No annotLevel",controlledAnnotLevel,
+                     "celltypes reach significance with Q<0.05:",
+                     "returning NULL.")
+            return(NULL)
         }
     }
 
@@ -126,7 +171,7 @@ calculate_conditional_celltype_associations <- function(ctd,
         genesOutFile = sprintf("%s.genes.out", magmaPaths$filePathPrefix),
         ctd = ctd,
         annotLevel = controlledAnnotLevel,
-        sctSpecies = sctSpecies
+        ctd_species = ctd_species
     )
     # Read in the controlled Covar File
     controlledCovarData <- utils::read.table(
@@ -177,7 +222,7 @@ calculate_conditional_celltype_associations <- function(ctd,
                 ),
                 ctd = ctd,
                 annotLevel = annotLevel,
-                sctSpecies = sctSpecies
+                ctd_species = ctd_species
             )
         } else {
             geneCovarFile <- create_top10percent_genesets_file(
@@ -186,7 +231,7 @@ calculate_conditional_celltype_associations <- function(ctd,
                 ),
                 ctd = ctd,
                 annotLevel = annotLevel,
-                sctSpecies = sctSpecies
+                ctd_species = ctd_species
             )
         }
 

@@ -6,22 +6,25 @@
 \usage{
 calculate_conditional_celltype_associations(
   ctd,
-  gwas_sumstats_path,
+  gwas_sumstats_path = NULL,
+  magma_dir = NULL,
   analysis_name = "MainRun",
   prepare_ctd = TRUE,
   upstream_kb = 35,
   downstream_kb = 10,
   genome_ref_path,
   controlledAnnotLevel = 1,
-  sctSpecies = "mouse",
+  ctd_species = "mouse",
   controlTopNcells = NA,
   controlledCTs = NA,
   EnrichmentMode = "Linear",
+  force_new = FALSE,
   verbose = TRUE
 )
 }
 \arguments{
-\item{ctd}{Cell type data structure containing $specificity_quantiles.}
+\item{ctd}{Cell type data structure containing
+\code{specificity_quantiles}.}
 
 \item{gwas_sumstats_path}{File path of the summary statistics file.}
 
@@ -41,7 +44,7 @@ genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
 
 \item{controlledAnnotLevel}{Which annotation level should be controlled for.}
 
-\item{sctSpecies}{Species name relevant to the cell type data.
+\item{ctd_species}{Species name relevant to the cell type data.
 See \link[EWCE]{list_species} for all available species.}
 
 \item{controlTopNcells}{How many of the most significant cell types at
@@ -50,8 +53,11 @@ that annotation level should be controlled for?}
 \item{controlledCTs}{Array of the celltype to be controlled for,
 e.g. \code{c('Interneuron type 16','Medium Spiny Neuron')}.}
 
-\item{EnrichmentMode}{[Optional] Either 'Linear' or 'Top 10\%'.
-(\emph{DEFAULT: "Linear"}).}
+\item{EnrichmentMode}{[Optional] Should either 'Linear' or 'Top 10\%' mode
+be used for testing enrichment?}
+
+\item{force_new}{[Optional] Force new MAGMA analyses even if the
+pre-existing results files are detected.}
 
 \item{verbose}{Print messages.}
 }
@@ -59,8 +65,19 @@ e.g. \code{c('Interneuron type 16','Medium Spiny Neuron')}.}
 File path for the genes.out file
 }
 \description{
-Assumes that you have already run map_snps_to_genes()
+Assumes that you have already run \link[MAGMA.Celltyping]{map_snps_to_genes}.
 }
 \examples{
-ctAssocs <- calculate_celltype_associations(ctd, gwas_sumstats_path)
+#### Prepare cell-type data ####
+ctd <- ewceData::ctd()
+
+#### Prepare GWAS MAGMA data ####
+magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
+    
+#### Run pipeline ####
+ctAssocs <- MAGMA.Celltyping::calculate_conditional_celltype_associations(
+    ctd = ctd,
+    ctd_levels = 1,
+    magma_dir = magma_dir,
+    ctd_species = "mouse") 
 }

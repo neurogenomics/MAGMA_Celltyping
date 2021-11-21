@@ -7,21 +7,31 @@
 calculate_conditional_geneset_enrichment(
   geneset,
   ctd,
+  ctd_species = "mouse",
+  prepare_ctd = TRUE,
   controlledAnnotLevel = 1,
   controlledCTs,
-  gwas_sumstats_path,
-  analysis_name,
+  gwas_sumstats_path = NULL,
+  magma_dir = NULL,
+  analysis_name = "MainRun",
   upstream_kb = 35,
   downstream_kb = 10,
-  genome_ref_path,
+  genome_ref_path = NULL,
   geneset_species = "mouse",
-  sctSpecies = "mouse"
+  verbose = TRUE
 )
 }
 \arguments{
 \item{geneset}{Genes which are to be tested (as HGNC / MGI symbols).}
 
-\item{ctd}{Cell type data structure containing $specificity_quantiles.}
+\item{ctd}{Cell type data structure containing
+\code{specificity_quantiles}.}
+
+\item{ctd_species}{Species name relevant to the cell type data.
+See \link[EWCE]{list_species} for all available species.}
+
+\item{prepare_ctd}{Whether to run
+\link[MAGMA.Celltyping]{prepare_quantile_groups} on the \code{ctd} first.}
 
 \item{controlledAnnotLevel}{Annotation level of the celltypes
 being controlled for.}
@@ -44,12 +54,28 @@ genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
 
 \item{geneset_species}{Species name relevant to the genes in the geneset.}
 
-\item{sctSpecies}{Species name relevant to the cell type data.
-See \link[EWCE]{list_species} for all available species.}
+\item{verbose}{Print messages.}
 }
 \value{
-File path for the genes.out file
+File path for the genes.out file.
 }
 \description{
 Assumes that you have already run \link[MAGMA.Celltyping]{map_snps_to_genes}.
+}
+\examples{
+#### Import data ####
+ctd <- MAGMA.Celltyping::get_ctd("ctd_allKI")
+magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
+geneset <- MAGMA.Celltyping::rbfox_binding
+
+res <- MAGMA.Celltyping::calculate_conditional_geneset_enrichment(
+    geneset = geneset,
+    ctd = ctd,
+    controlledAnnotLevel = 1,
+    controlledCTs = "pyramidal SS",
+    magma_dir = magma_dir,
+    analysis_name = "Rbfox_16_pyrSS",  
+    geneset_species = "mouse",
+    ctd_species = "mouse")
+
 }

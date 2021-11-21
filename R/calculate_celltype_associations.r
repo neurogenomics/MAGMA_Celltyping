@@ -3,60 +3,45 @@
 #' Assumes that you have already run
 #' \link[MAGMA.Celltyping]{map_snps_to_genes}.
 #'
-#' @param ctd Cell type data structure containing $specificity_quantiles.
 #' @param gwas_sumstats_path File path of the summary statistics file.
 #' @param analysis_name Used in file names which area created.
-#' @param ctd_levels Which levels of \code{ctd} to
-#' iterate the enrichment analysis over.
 #' @param prepare_ctd Whether to run
 #' \link[MAGMA.Celltyping]{prepare_quantile_groups} on the \code{ctd} first.
-#' @param upstream_kb How many kb upstream of the gene
-#'  should SNPs be included?
-#' @param downstream_kb How many kb downstream of the gene
-#' should SNPs be included?
-#' @param genome_ref_path Path to the folder containing the 1000
-#' genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).
-#' @param sctSpecies Species name relevant to the cell type data.
-#' See \link[EWCE]{list_species} for all available species.
 #' @param genesOutCOND [Optional] Path to a genes.out file to condition on.
 #' Used if you want to condition on a different GWAS.
 #' @param EnrichmentMode [Optional] Should either 'Linear' or 'Top 10\%' mode
 #'  be used for testing enrichment?
-#' @param force_new [Optional] Force new MAGMA analyses even if the
-#'  pre-existing results files are detected.
-#' @param verbose Print messages.
+#' @inheritParams celltype_associations_pipeline
 #'
 #' @returns File path for the genes.out file
 #'
 #' @examples
-#' #### Prepare data ####
+#' #### Prepare cell-type data ####
 #' ctd <- ewceData::ctd()
-#' path_formatted <- MAGMA.Celltyping::get_example_gwas(
-#'     trait = "fluid_intelligence")
-#'
-#' ##### Map SNPs to genes ####
-#' genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(
-#'     path_formatted = path_formatted,
-#'     genome_build = "GRCh37"
-#' )
-#'
+#' 
+#' #### Prepare GWAS MAGMA data ####
+#' magma_dir <- MAGMA.Celltyping::import_magma_files(
+#'     ids = "ieu-a-298",
+#'     return_dir = TRUE)
+#'     
 #' #### Run pipeline ####
-#' ctAssocs <- calculate_celltype_associations(
+#' ctAssocs <- MAGMA.Celltyping::calculate_celltype_associations(
 #'     ctd = ctd,
-#'     gwas_sumstats_path = path_formatted,
-#'     sctSpecies = "mouse"
-#' )
+#'     ctd_levels = 1,
+#'     magma_dir = magma_dir,
+#'     ctd_species = "mouse")
 #' @export
 #' @keywords main_function
 calculate_celltype_associations <- function(ctd,
-                                            gwas_sumstats_path,
-                                            analysis_name = "MainRun",
                                             ctd_levels = seq_len(length(ctd)),
+                                            ctd_species = "mouse",
+                                            gwas_sumstats_path = NULL,
+                                            magma_dir = NULL,
+                                            analysis_name = "MainRun", 
                                             prepare_ctd = TRUE,
                                             upstream_kb = 35,
                                             downstream_kb = 10,
-                                            genome_ref_path = NULL,
-                                            sctSpecies = "mouse",
+                                            genome_ref_path = NULL, 
                                             genesOutCOND = NA,
                                             EnrichmentMode = "Linear",
                                             force_new = FALSE,
@@ -64,17 +49,26 @@ calculate_celltype_associations <- function(ctd,
 
     #### Process args ####
     check_enrichment_mode(EnrichmentMode = EnrichmentMode)
+    #### Handle MAGMA Files ####
+    #### Trick downstream functions into working with only MAGMA files ####
+    magma_dir <- magma_dir[1]
+    if(!is.null(magma_dir)){ 
+        gwas_sumstats_path <- create_fake_gwas_path(
+            magma_dir = magma_dir,
+            upstream_kb = upstream_kb,
+            downstream_kb = downstream_kb)
+    }
     #### prepare quantile groups ####
     # MAGMA.Celltyping can only use human GWAS
     if (prepare_ctd) {
         output_species <- "human"
         ctd <- prepare_quantile_groups(
             ctd = ctd,
-            input_species = sctSpecies,
+            input_species = ctd_species,
             output_species = output_species,
             verbose = verbose
         )
-        sctSpecies <- output_species
+        ctd_species <- output_species
     }
     #### Prepare genome_ref ####
     genome_ref_path <- get_genome_ref(
@@ -122,7 +116,7 @@ calculate_celltype_associations <- function(ctd,
                     ),
                     ctd = ctd,
                     annotLevel = annotLevel,
-                    sctSpecies = sctSpecies,
+                    ctd_species = ctd_species,
                     genesOutCOND = genesOutCOND
                 )
 
@@ -171,7 +165,7 @@ calculate_celltype_associations <- function(ctd,
                     ),
                     ctd = ctd,
                     annotLevel = annotLevel,
-                    sctSpecies = sctSpecies
+                    ctd_species = ctd_species
                 )
 
                 if (is.na(genesOutCOND[1])) {
@@ -195,7 +189,7 @@ calculate_celltype_associations <- function(ctd,
                         ),
                         ctd = ctd,
                         annotLevel = annotLevel,
-                        sctSpecies = sctSpecies,
+                        ctd_species = ctd_species,
                         genesOutCOND = genesOutCOND
                     )
                     conditionOn <- paste(sprintf(

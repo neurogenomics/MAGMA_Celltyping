@@ -23,21 +23,21 @@
 #'     genesOutFile = myGenesOut,
 #'     ctd = ctd,
 #'     annotLevel = 1,
-#'     sctSpecies = "mouse"
+#'     ctd_species = "mouse"
 #' )
 #' @keywords internal
 #' @importFrom dplyr setdiff
 create_top10percent_genesets_file <- function(genesOutFile,
                                               ctd,
                                               annotLevel,
-                                              sctSpecies,
+                                              ctd_species,
                                               verbose = TRUE) {
     #### Map genes first so that the deciles computed
     # in the following step only include usable genes ####
     quantDat2 <- get_top10percent(
         ctd = ctd,
         annotLevel = annotLevel,
-        sctSpecies = sctSpecies
+        ctd_species = ctd_species
     )
     #### Check column names don't have spaces ####
     colnames(quantDat2) <- check_celltype_names(ct_names = colnames(quantDat2))

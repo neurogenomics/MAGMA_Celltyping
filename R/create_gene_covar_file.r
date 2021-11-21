@@ -10,7 +10,7 @@
 #' @param ctd Cell type data structure. Must contain quantiles.
 #' @param annotLevel Annot level for which the gene covar file
 #' should be constructed
-#' @param sctSpecies Species name relevant to the cell type data,
+#' @param ctd_species Species name relevant to the cell type data,
 #'  i.e. "mouse" or "human"
 #' @param genesOutCOND [Optional] Path to a genes.out file to condition on.
 #' Used if you want to condition on a different GWAS.
@@ -23,7 +23,7 @@
 #'     genesOutFile = genesOutFile,
 #'     ctd = ctd,
 #'     annotLevel = 1,
-#'     sctSpecies = "mouse")
+#'     ctd_species = "mouse")
 #' }
 #'
 #' @return Filepath for the gene covar file
@@ -33,18 +33,18 @@
 create_gene_covar_file <- function(genesOutFile,
                                    ctd,
                                    annotLevel,
-                                   sctSpecies,
+                                   ctd_species,
                                    genesOutCOND = NA) {
     quantDat2 <- map_specificity_to_entrez(
         ctd = ctd,
         annotLevel = annotLevel,
-        sctSpecies = sctSpecies
+        ctd_species = ctd_species
     ) 
     if (dim(quantDat2)[1] < 100) {
         stop_msg <- paste(
             "Less than one hundred genes detected after",
             "mapping genes between species.",
-            "Was sctSpecies defined correctly?"
+            "Was ctd_species defined correctly?"
         )
         stop(stop_msg)
     }

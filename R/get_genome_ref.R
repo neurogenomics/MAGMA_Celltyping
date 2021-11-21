@@ -60,7 +60,7 @@ get_genome_ref <- function(genome_ref_path = NULL,
         )
     } else {
         #### Download anew ####
-        messager("genome_ref not found in storage_dir.\n",
+        messager("genome_ref not found in storage_dir.",
             "Downloading from remote server instead ==>",
             genome_ref_dir,
             v = verbose

@@ -7,19 +7,23 @@
 map_specificity_to_entrez(
   ctd,
   annotLevel,
-  sctSpecies,
+  ctd_species,
   return_ctd = FALSE,
+  use_saved = TRUE,
   verbose = TRUE
 )
 }
 \arguments{
-\item{ctd}{Cell type data structure containing $specificity_quantiles.}
+\item{ctd}{Cell type data structure containing
+\code{specificity_quantiles}.}
 
-\item{sctSpecies}{Species name relevant to the cell type data.
+\item{ctd_species}{Species name relevant to the cell type data.
 See \link[EWCE]{list_species} for all available species.}
 
 \item{return_ctd}{Return the actual CellTypeDataset,
 rather than path to where it is saved.}
+
+\item{use_saved}{Use a saved version of the gene mapping table.}
 
 \item{verbose}{Print messages.}
 }

@@ -10,7 +10,7 @@ calculate_conditional_celltype_enrichment_probabilities_wtLimma(
   magma2,
   ctd,
   thresh = 1e-04,
-  sctSpecies = "mouse",
+  ctd_species = "mouse",
   annotLevel = 1
 )
 }
@@ -21,11 +21,12 @@ calculate_conditional_celltype_enrichment_probabilities_wtLimma(
 \item{magma2}{Output from \link[MAGMA.Celltyping]{adjust_zstat_in_genesOut}
 (e.g. trait 2).}
 
-\item{ctd}{Cell type data structure containing $specificity_quantiles.}
+\item{ctd}{Cell type data structure containing
+\code{specificity_quantiles}.}
 
 \item{thresh}{A threshold on low specificity values (used to drop genes)}
 
-\item{sctSpecies}{Species name relevant to the cell type data.
+\item{ctd_species}{Species name relevant to the cell type data.
 See \link[EWCE]{list_species} for all available species.}
 }
 \description{

@@ -14,7 +14,8 @@ check_inputs_to_magma_celltype_analysis(
 )
 }
 \arguments{
-\item{ctd}{Cell type data structure containing $specificity_quantiles.}
+\item{ctd}{Cell type data structure containing
+\code{specificity_quantiles}.}
 
 \item{gwas_sumstats_path}{File path of the summary statistics file.}
 

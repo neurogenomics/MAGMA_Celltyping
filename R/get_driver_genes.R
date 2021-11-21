@@ -2,8 +2,8 @@
 #' Get genes driving significant \pkg{MAGMA_celltyping} results
 #'
 #' @param ctd CellTypeData object
-#' @param sctSpecies Either 'human' or 'mouse'
-#' @param magma_res Merged results from \code{MAGMA.Celltyping::gather_results}.
+#' @param ctd_species Either 'human' or 'mouse'
+#' @param magma_res Merged results from \code{MAGMA.Celltyping::merge_results}.
 #' @param fdr_thresh FDR threshold for \code{magma_res}.
 #' @param GenesOut_dir Folder to search for \emph{.genes.out} files implicated in \code{magma_res}.
 #' @param n_genes Max number of drive genes to return per cell-type enrichment.
@@ -12,7 +12,7 @@
 #'
 #' @export
 get_driver_genes <- function(ctd,
-                             sctSpecies = "mouse",
+                             ctd_species = "mouse",
                              magma_res,
                              fdr_thresh = .05,
                              GenesOut_dir = "./",
@@ -31,12 +31,12 @@ get_driver_genes <- function(ctd,
     )
     #### iterate over sig GWAS
     GENESETS <- lapply(magma_GenesOut_files, function(genesout,
-                                                      .sctSpecies = sctSpecies) {
+                                                      .ctd_species = ctd_species) {
         message("+ Finding driver genes for: ", gwas_dict[[genesout]], " GWAS x CTD")
         magmaAdjZ <- adjust_zstat_in_genesOut(
             ctd = ctd,
             magma_GenesOut_file = genesout,
-            sctSpecies = .sctSpecies
+            ctd_species = .ctd_species
         )
         lapply(unique(sig_res$level), function(annotLevel) {
             message("+ Level ", annotLevel)
@@ -44,7 +44,7 @@ get_driver_genes <- function(ctd,
                 magmaAdjZ = magmaAdjZ,
                 ctd = ctd,
                 annotLevel = annotLevel,
-                sctSpecies = .sctSpecies,
+                ctd_species = .ctd_species,
                 celltypes = sig_res$Celltype_id,
                 return_all = T
             )

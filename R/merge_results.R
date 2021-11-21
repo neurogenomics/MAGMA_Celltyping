@@ -29,24 +29,18 @@
 #'
 #' @examples
 #' \dontrun{
-#' #### Prepare data ####
-#' local_files <- MAGMA.Celltyping::import_magma_files()
-#' magma_dirs <- unique(dirname(local_files))
-#' ctd <- ewceData::ctd()
+#' #### Use precomputed results: see ?enrichment_results for details  ####
+#' MAGMA_results <- MAGMA.Celltyping::enrichment_results
 #' 
-#' res <- MAGMA.Celltyping::celltype_associations_pipeline(
-#'     ctd = ctd,
-#'     ctd_name = "Zeisel2018",
-#'     magma_dirs = magma_dirs
-#' )
-#' merged_res <- MAGMA.Celltyping::gather_results(res)
+#' #### Merge results ####
+#' merged_res <- MAGMA.Celltyping::merge_results(MAGMA_results)
 #' }
 #' @export
 #' @importFrom data.table rbindlist fwrite
 #' @importFrom dplyr %>% mutate arrange
 #' @importFrom stats p.adjust
 #' @importFrom stringr str_split
-gather_results <- function(MAGMA_results,
+merge_results <- function(MAGMA_results,
                            level = 1,
                            dataset_name = NULL,
                            species = "mouse",

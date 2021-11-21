@@ -11,7 +11,7 @@ genesCovarFilePath <- MAGMA.Celltyping:::create_gene_covar_file(
     genesOutFile = genesOutFile,
     ctd = ctd,
     annotLevel = 1,
-    sctSpecies = "mouse")
+    ctd_species = "mouse")
 }
 }
 \usage{
@@ -19,7 +19,7 @@ create_gene_covar_file(
   genesOutFile,
   ctd,
   annotLevel,
-  sctSpecies,
+  ctd_species,
   genesOutCOND = NA
 )
 }
@@ -32,7 +32,7 @@ create_gene_covar_file(
 \item{annotLevel}{Annot level for which the gene covar file
 should be constructed}
 
-\item{sctSpecies}{Species name relevant to the cell type data,
+\item{ctd_species}{Species name relevant to the cell type data,
 i.e. "mouse" or "human"}
 
 \item{genesOutCOND}{[Optional] Path to a genes.out file to condition on.

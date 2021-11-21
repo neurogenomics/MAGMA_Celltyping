@@ -13,6 +13,7 @@ import_magma_files(
   ids = NULL,
   file_types = c(".genes.out", ".genes.raw"),
   overwrite = FALSE,
+  return_dir = TRUE,
   nThread = 1,
   verbose = TRUE
 )
@@ -31,14 +32,17 @@ cell-type enrichment functions}
 \item{overwrite}{If the files have already been downloaded in 
 the specified directory,
 these downloads will be skipped. Set \code{overwrite=TRUE} to force 
-them to be re-downloaded (Default: \code{FALSE})}
+them to be re-downloaded (Default: \code{FALSE}).}
+
+\item{return_dir}{Return a list of unique directory names instead of the 
+full file paths (Default: \code{TRUE}).}
 
 \item{nThread}{Number of threads to parallelise downloads across.}
 
 \item{verbose}{Print messages.}
 }
 \value{
-Named vector of paths to downloaded MAGMA files.
+Named vector of paths to downloaded MAGMA files (or directories).
 }
 \description{
 Import preprocessed MAGMA SNPs-to-genes mapping files for many GWAS. 
@@ -50,6 +54,6 @@ Metadata for each dataset (including trait descriptions) can be found here
 \href{https://github.com/neurogenomics/MAGMA_Files_Public/blob/master/metadata.csv}{here}.
 }
 \examples{
-local_files <- MAGMA.Celltyping::import_magma_files(ids = c("ieu-a-298",
-                                                            "ukb-b-6548"))
+magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = c("ieu-a-298",
+                                                           "ukb-b-6548"))
 }

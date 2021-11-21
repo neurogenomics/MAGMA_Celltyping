@@ -6,18 +6,20 @@
 \usage{
 celltype_associations_pipeline(
   ctd,
+  ctd_levels = seq_len(length(ctd)),
   ctd_name,
+  ctd_species = "mouse",
   magma_dirs,
   genome_ref_path = NULL,
-  sctSpecies = "mouse",
   run_linear = TRUE,
   run_top10 = TRUE,
-  run_condition = FALSE,
+  run_conditional = FALSE,
   upstream_kb = 35,
   downstream_kb = 10,
   suffix_linear = "linear",
   suffix_top10 = "top10",
   suffix_condition = "condition",
+  controlledAnnotLevel = 1,
   controlTopNcells = 1,
   force_new = FALSE,
   save_dir = tempdir(),
@@ -28,7 +30,13 @@ celltype_associations_pipeline(
 \item{ctd}{Cell type data structure containing
 \code{specificity_quantiles}.}
 
+\item{ctd_levels}{Which levels of \code{ctd} to
+iterate the enrichment analysis over.}
+
 \item{ctd_name}{Used in file names}
+
+\item{ctd_species}{Species name relevant to the cell type data.
+See \link[EWCE]{list_species} for all available species.}
 
 \item{magma_dirs}{Names of folders containing the
 pre-computed MAGMA GWAS files.
@@ -38,14 +46,11 @@ as the folders themselves.}
 \item{genome_ref_path}{Path to the folder containing the 1000
 genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
 
-\item{sctSpecies}{Species name relevant to the cell type data.
-See \link[EWCE]{list_species} for all available species.}
-
 \item{run_linear}{Run in linear mode.}
 
 \item{run_top10}{Run  in top 10\% mode.}
 
-\item{run_condition}{Run in conditional mode.}
+\item{run_conditional}{Run in conditional mode.}
 
 \item{upstream_kb}{How many kb upstream of the gene
 should SNPs be included?}
@@ -59,6 +64,8 @@ should SNPs be included?}
 
 \item{suffix_condition}{This will be added to the
 conditional results file name.}
+
+\item{controlledAnnotLevel}{Which annotation level should be controlled for.}
 
 \item{controlTopNcells}{How many of the most significant cell types at
 that annotation level should be controlled for?}
@@ -82,15 +89,15 @@ Precomputed MAGMA GWAS files can be downloaded via the
 \link[MAGMA.Celltyping]{import_magma_files} function.
 }
 \examples{
-local_files <- import_magma_files(ids = c("ieu-a-298",
+magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = c("ieu-a-298",
                                                             "ukb-b-6548"))
-magma_dirs <- unique(dirname(local_files))
 ctd <- ewceData::ctd()
 
 res <- MAGMA.Celltyping::celltype_associations_pipeline(
     ctd = ctd,
+    ctd_levels = 1,
     ctd_name = "Zeisel2015",
-    sctSpecies = "mouse",
+    ctd_species = "mouse",
     magma_dirs = magma_dirs
 )
 }

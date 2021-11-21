@@ -21,7 +21,7 @@ data("gwas_munged")
 }
 \description{
 Example GWAS summary statistics standardised with
- \link[MungeSumstats]{format_sumtats}.
+ \link[MungeSumstats]{format_sumstats}.
 Original GWAS performed on Educational Attainment.
 }
 \keyword{datasets}

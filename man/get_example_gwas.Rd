@@ -38,18 +38,18 @@ piggyback::pb_upload(file = path_formatted,
 }
 \usage{
 get_example_gwas(
-  storage_dir = tempdir(),
   trait = c("educational_attainment", "fluid_intelligence", "prospective_memory"),
-  munged = TRUE
+  munged = TRUE,
+  storage_dir = tempdir()
 )
 }
 \arguments{
-\item{storage_dir}{Folder in which to store the GWAS summary stats.}
-
 \item{trait}{Which trait to get GWAS summary stats for.}
 
 \item{munged}{Whether to download the raw or pre-munged
 version of each GWAS (\emph{Default:} \code{TRUE}).}
+
+\item{storage_dir}{Folder in which to store the GWAS summary stats.}
 }
 \value{
 Path to downloaded GWAS summary statistics.

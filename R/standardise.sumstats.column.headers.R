@@ -1,24 +1,29 @@
 #' Standardise the column headers in the Summary Statistics files
 #'
-#' Use a reference data table of common column header names (stored in sumstatsColHeaders.rda) convert them to a standard set, i.e. chromosome --> CHR
+#' Use a reference data table of common column header names
+#'  (stored as \link[MAGMA.Celltyping]{sumstatsColHeaders}) 
+#'  convert them to a standard set, i.e. chromosome --> CHR.
+#' This function does not check that all the required column headers
+#'  are present.
+#' The amended header is written directly back into the file.
 #'
-#' This function does not check that all the required column headers are present
+#' @param path File path for the summary statistics file.
 #'
-#' The amended header is written directly back into the file
-#'
-#' @param path Filepath for the summary statistics file
-#'
-#' @return The amended column headers (also the column headers will be written directly into the summary statistics file)
+#' @returns The amended column headers 
+#' (also the column headers will be written directly 
+#' into the summary statistics file)
 #'
 #' @examples
-#' col_headers <- standardise_sumstats_column_headers("~/Downloads/202040.assoc.tsv")
+#' path <- MAGMA.Celltyping::get_example_gwas()
+#' col_headers <- MAGMA.Celltyping::standardise.sumstats.column.headers(
+#'     path = path)
 #' @export
-standardise_sumstats_column_headers <- function(path) {
+standardise.sumstats.column.headers <- function(path) {
+    .Deprecated("MungeSumstats::format_sumstats")
     # Check the sumstats file exists
     if (!file.exists(path)) {
         stop("Path to GWAS sumstats is not valid")
     }
-
     # Read in the first line of the file only
     con <- file(path, "r")
     first_line <- readLines(con, n = 1)
@@ -52,7 +57,4 @@ standardise_sumstats_column_headers <- function(path) {
     return(column_headers)
 }
 
-standardise_sumstats_column_headers <- function(...){
-    .Deprecated("standardise_sumstats_column_headers")
-    standardise_sumstats_column_headers(...)
-}
+ 

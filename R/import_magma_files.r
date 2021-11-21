@@ -21,15 +21,17 @@
 #' @param overwrite If the files have already been downloaded in 
 #' the specified directory,
 #' these downloads will be skipped. Set \code{overwrite=TRUE} to force 
-#' them to be re-downloaded (Default: \code{FALSE})
+#' them to be re-downloaded (Default: \code{FALSE}).
+#' @param return_dir Return a list of unique directory names instead of the 
+#' full file paths (Default: \code{TRUE}).
 #' @param nThread Number of threads to parallelise downloads across.
 #' @param verbose Print messages.
 #'
-#' @returns Named vector of paths to downloaded MAGMA files.
+#' @returns Named vector of paths to downloaded MAGMA files (or directories).
 #'
 #' @examples
-#' local_files <- MAGMA.Celltyping::import_magma_files(ids = c("ieu-a-298",
-#'                                                             "ukb-b-6548"))
+#' magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = c("ieu-a-298",
+#'                                                            "ukb-b-6548"))
 #' @export
 #' @importFrom stringr str_split
 #' @importFrom parallel mclapply
@@ -37,6 +39,7 @@ import_magma_files <- function(save_dir = tempdir(),
                                ids = NULL, 
                                file_types = c(".genes.out",".genes.raw"),
                                overwrite = FALSE,
+                               return_dir = TRUE,
                                nThread = 1,
                                verbose = TRUE) {
     #### Check what files are available #### 
@@ -53,9 +56,11 @@ import_magma_files <- function(save_dir = tempdir(),
         ## NOTE: Assumes that the dataset ID itself does NOT contain "."
         all_ids <- stringr::str_split(basename(magma_files),
                                       "[.]",simplify = TRUE)[,1] 
-        magma_files <- magma_files[tolower(all_ids) %in% tolower(ids)]
-        messager("Filtering IDs to only",length(magma_files),
-                 "requested datasets.",
+        bool_filter <- tolower(all_ids) %in% tolower(ids)
+        all_ids <- all_ids[bool_filter]
+        magma_files <- magma_files[bool_filter]
+        messager("Filtering IDs to only",length(unique(all_ids)),
+                 "requested dataset(s).",
                  v=verbose)
     }
     #### Download files locally ####
@@ -66,9 +71,17 @@ import_magma_files <- function(save_dir = tempdir(),
         overwrite = overwrite,
         verbose = verbose
     ) 
-    #### Extract (OpenGWAS) dataset IDs: run again to ensure order matches ####
-    ## NOTE: Assumes that the dataset ID itself does NOT contain "."
-    names(local_files) <- stringr::str_split(basename(local_files),
-                                             "[.]",simplify = TRUE)[,1] 
-    return(local_files)
+    #### Return ####
+    if(return_dir){
+        messager("Returning MAGMA directories.",v=verbose)
+        magma_dirs <- unique(dirname(local_files))
+        names(magma_dirs) <- basename(magma_dirs) 
+        return(magma_dirs)
+    } else {
+        messager("Returning MAGMA gene.raw and gene.out file paths",v=verbose)
+        ### Must include OpenGWAS ID + upstream/downtream params + file type
+        ## bc we need all info in order to make list names unique.
+        names(local_files) <- basename(local_files) 
+        return(local_files)
+    }
 }

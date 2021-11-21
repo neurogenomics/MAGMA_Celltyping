@@ -36,6 +36,40 @@
 "hgnc2entrez"
 
 
+#' HGNC to Entrez symbol mapping
+#' 
+#' This method uses \link[orthogene]{all_genes} and contains >1,200 more genes
+#' than \code{hgnc2entrez} due to querying a more comprehensive
+#'  and frequently updated database.
+#'
+#' @source
+#' The code to prepare the .Rda file file from the marker file is:
+#' \code{
+#' library(MAGMA.Celltyping); library(orthogene); library(dplyr);
+#' gene_map <- orthogene::all_genes(species = "human",
+#'                                  method = "gprofiler",
+#'                                  target = "ENTREZGENE_ACC",
+#'                                  ensure_filter_nas = FALSE)
+#' hgnc2entrez_orthogene <- gene_map %>%
+#'     dplyr::select(hgnc_symbol = Gene.Symbol,
+#'                   entrez = target) %>%
+#'     unique()
+#' #### Compare to other dataset ####
+#' dt1 <- hgnc2entrez %>% dplyr::filter(!hgnc_symbol %in% c(NA,""),
+#'                                      !entrez %in% c(NA,"")) %>%
+#'     unique()
+#' dt2 <- hgnc2entrez_orthogene %>% dplyr::filter(!hgnc_symbol %in% c(NA,""),
+#'                                                !entrez %in% c(NA,"")) %>%
+#'     unique()
+#' message("hgnc2entrez_orthogene has ",
+#'         formatC(nrow(dt2) - nrow(dt1), big.mark = ","),
+#'         " more genes than original method.")
+#' usethis::use_data(hgnc2entrez_orthogene, overwrite = TRUE)
+#' }
+#' @usage data("hgnc2entrez_orthogene")
+"hgnc2entrez_orthogene"
+ 
+
 #' Example of genesOut file
 #'
 #' Obtained from \url{'/Users/natske/OneDrive - Imperial College London/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out'}
@@ -100,7 +134,7 @@
 #' Munged GWAS
 #'
 #' Example GWAS summary statistics standardised with
-#'  \link[MungeSumstats]{format_sumtats}.
+#'  \link[MungeSumstats]{format_sumstats}.
 #' Original GWAS performed on Educational Attainment.
 #'
 #' @source
@@ -113,3 +147,25 @@
 #'  }
 #' @usage data("gwas_munged")
 "gwas_munged"
+
+
+#' Example celltype enrichment results
+#' 
+#' Example results from \link[MAGMA.Celltyping]{celltype_associations_pipeline}.
+#' 
+#' @source 
+#' \code{ 
+#' #### Import data ####
+#' magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
+#' ctd <- ewceData::ctd()
+#' enrichment_results <- MAGMA.Celltyping::celltype_associations_pipeline(
+#'     magma_dirs = magma_dirs,
+#'     ctd = ctd, 
+#'     ctd_species = "mouse", 
+#'     ctd_name = "Zeisel2015", 
+#'     run_linear = TRUE, 
+#'     run_top10 = TRUE)
+#' usethis::use_data(enrichment_results, overwrite = TRUE)
+#' }
+#' @usage data("enrichment_results")
+"enrichment_results"

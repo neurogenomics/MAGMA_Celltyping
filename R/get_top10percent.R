@@ -1,10 +1,10 @@
 get_top10percent <- function(ctd,
                              annotLevel,
-                             sctSpecies) {
+                             ctd_species) {
     ctd2 <- map_specificity_to_entrez(
         ctd = ctd,
         annotLevel = annotLevel,
-        sctSpecies = sctSpecies,
+        ctd_species = ctd_species,
         return_ctd = TRUE
     )
     ctd3 <- prepare_quantile_groups(
@@ -12,7 +12,7 @@ get_top10percent <- function(ctd,
         ## must set standardise=FALSE
         ## or else new "quantDat2" matrix will be dropped.
         standardise = FALSE,
-        input_species = sctSpecies,
+        input_species = ctd_species,
         output_species = "human",
         numberOfBins = 10
     )
@@ -21,7 +21,7 @@ get_top10percent <- function(ctd,
         stopper(
             "Less than one hundred genes detected after",
             "mapping genes between species.",
-            "Was sctSpecies defined correctly?"
+            "Was ctd_species defined correctly?"
         )
     }
     return(quantDat2)

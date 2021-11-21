@@ -8,10 +8,10 @@
 #'  recommend using full GWAS summary statistics
 #'   (after applying \link[MungeSumstats]{format_sumstats}).
 #'
-#' @param storage_dir Folder in which to store the GWAS summary stats.
 #' @param trait Which trait to get GWAS summary stats for.
 #' @param munged Whether to download the raw or pre-munged
 #'  version of each GWAS (\emph{Default:} \code{TRUE}).
+#' @param storage_dir Folder in which to store the GWAS summary stats.
 #'
 #' @source
 #' \code{
@@ -53,13 +53,13 @@
 #' 
 #' @export
 #' @importFrom data.table fwrite
-get_example_gwas <- function(storage_dir = tempdir(),
-                             trait = c(
+get_example_gwas <- function(trait = c(
                                  "educational_attainment",
                                  "fluid_intelligence",
                                  "prospective_memory"
                              ),
-                             munged = TRUE) {
+                             munged = TRUE,
+                             storage_dir = tempdir()) {
     trait <- tolower(trait)[1]
     if (munged) {
         if (!trait %in% c(
@@ -78,7 +78,7 @@ get_example_gwas <- function(storage_dir = tempdir(),
             )
             ## gwas_munged is a built-in dataset
             data.table::fwrite(
-                x = gwas_munged,
+                x = MAGMA.Celltyping::gwas_munged,
                 file = unzipped_path,
                 sep = "\t"
             )

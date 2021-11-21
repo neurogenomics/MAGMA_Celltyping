@@ -12,7 +12,7 @@ test_that("create_top10percent_genesets_file works", {
         genesOutFile = genesOutFile,
         ctd = ctd,
         annotLevel = annotLevel,
-        sctSpecies = "mouse"
+        ctd_species = "mouse"
     )
     geneSets <- readLines(geneSetsFilePath)
     #### One line per cell-type ####

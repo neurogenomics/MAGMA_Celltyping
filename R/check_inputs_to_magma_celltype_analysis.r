@@ -30,7 +30,7 @@ check_inputs_to_magma_celltype_analysis <- function(ctd,
     )
     #### Error checks ####
     # - Does ctd have quantiles?
-    for (annotLevel in 1:length(ctd)) {
+    for (annotLevel in seq_len(length(ctd))) {
         if (!"specificity_quantiles" %in% names(ctd[[annotLevel]])) {
             stopper(
                 "CTD should have quantiles.",
@@ -40,7 +40,7 @@ check_inputs_to_magma_celltype_analysis <- function(ctd,
         }
     }
     # - Is annotLevel within length(ctd)
-    if (!annotLevel %in% 1:length(ctd)) {
+    if (!annotLevel %in% seq_len(length(ctd))) {
         stopper(
             "annotLevel does not correspond to",
             "a level available with ctd[[annotLevel]]"

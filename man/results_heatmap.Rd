@@ -2,7 +2,7 @@
 % Please edit documentation in R/results_heatmap.R
 \name{results_heatmap}
 \alias{results_heatmap}
-\title{Plot enrichment results from \code{celltype_associations_pipeline}}
+\title{Plot heatmap of GWAS x cell-type enrichment results}
 \usage{
 results_heatmap(
   merged_results,
@@ -15,24 +15,21 @@ results_heatmap(
   fill_var = "-log1p(FDR)",
   scales = "free_y",
   space = "fixed",
-  show_plot = T
+  show_plot = TRUE,
+  height = 5,
+  width = 7,
+  dpi = 300,
+  save_path = file.path(tempdir(), "MAGMA_Celltyping.heatmap.jpg")
 )
 }
 \description{
-Plot enrichment results from \code{celltype_associations_pipeline}
+Plot enrichment results from 
+\link[MAGMA.Celltyping]{celltype_associations_pipeline}.
 }
 \examples{
-\dontrun{
-library(MAGMA.Celltyping)
-local_files <- import_magma_files(download_dir = ".")
-#' magma_dirs <- unique(dirname(local_files))
-res <- celltype_associations_pipeline(
-    ctd = ewceData::ctd(),
-    ctd_name = "Zeisel2018",
-    magma_dirs = magma_dirs,
-    genome_ref_path = "~/Downloads/g1000_eur/g1000_eur"
-)
-merged_results <- gather_results(res)
-heat <- results_heatmap(merged_results)
-}
+MAGMA_results <- MAGMA.Celltyping::enrichment_results
+merged_results <- MAGMA.Celltyping::merge_results(res)
+heat <- MAGMA.Celltyping::results_heatmap(
+    merged_results = merged_results,
+    fdr_thresh = 1)  
 }

@@ -2,21 +2,31 @@
 % Please edit documentation in R/filter_by_orthologs.r
 \name{filter_by_orthologs}
 \alias{filter_by_orthologs}
-\title{Filter specificity and mean_exp from CTD list to only keep a subset of genes}
+\title{Filter CellTypeDataset}
+\source{
+\code{
+ctd <- ewceData::ctd()
+orths <- ewceData::mouse_to_human_homologs()
+ctd2 <- lapply(ctd, filter_by_orthologs, orths$MGI.symbol)
+}
+}
 \usage{
 filter_by_orthologs(ctd_oneLevel, one2one_ortholog_symbols)
 }
 \arguments{
-\item{ctd_oneLevel}{method to order colors (\code{"hsv"} or \code{"cluster"})}
+\item{ctd_oneLevel}{A single level of a CTD}
 
-\item{one2one_ortholog_symbols}{character expansion for the text}
+\item{one2one_ortholog_symbols}{character expansion for the text.}
 }
 \value{
-The ctd with both specificity and mean expression matrices filtered to only contain 1:1 ortholog genes
+The CTD with both specificity and mean
+ expression matrices filtered to only contain 1:1 ortholog genes.
 }
 \description{
-Created so that lapply can be used to do this
+Filter CellTypeDataset (CTD) 
+specificity and mean_exp from CTD list to only keep a subset of genes.
 }
-\examples{
-ctd2 <- lapply(ctd, filter.by.orthologs, one2one_ortholog_symbols = ortholog_data[, 2])
+\details{
+Created so that lapply can be used to do this.
 }
+\keyword{internal}

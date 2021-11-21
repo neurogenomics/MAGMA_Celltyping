@@ -8,7 +8,7 @@ create_top10percent_genesets_file(
   genesOutFile,
   ctd,
   annotLevel,
-  sctSpecies,
+  ctd_species,
   verbose = TRUE
 )
 }
@@ -16,9 +16,10 @@ create_top10percent_genesets_file(
 \item{genesOutFile}{The output of the second call to MAGMA
 (performed in the map_snps_to_genes function).}
 
-\item{ctd}{Cell type data structure containing $specificity_quantiles.}
+\item{ctd}{Cell type data structure containing
+\code{specificity_quantiles}.}
 
-\item{sctSpecies}{Species name relevant to the cell type data.
+\item{ctd_species}{Species name relevant to the cell type data.
 See \link[EWCE]{list_species} for all available species.}
 
 \item{verbose}{Print messages.}
@@ -44,7 +45,7 @@ geneSetsFilePath <- MAGMA.Celltyping::create_top10percent_genesets_file(
     genesOutFile = myGenesOut,
     ctd = ctd,
     annotLevel = 1,
-    sctSpecies = "mouse"
+    ctd_species = "mouse"
 )
 }
 \keyword{internal}

@@ -1,23 +1,27 @@
-#' Check that sumstats has correct columns and that they are in the correct order for MAGMA and LDSC
+#' Format GWAS summary statistics
+#' 
+#' Check that sumstats has correct columns and that they are
+#'  in the correct order for MAGMA and LDSC.
 #'
+#' @param path Filepath for the summary statistics file to be formatted.
+#' 
 #' @return col_headers The new column headers for the sumstats file
 #'
 #' @examples
-#' format_sumstats_for_magma(path)
-#' @param path Filepath for the summary statistics file to be formatted
-#' @importFrom data.table fread
-#' @importFrom data.table fwrite
-#' @importFrom data.table setcolorder
-#' @importFrom utils read.table
-#' @import stringr
+#' path <- MAGMA.Celltyping::get_example_gwas(trait = "educational_attainment")
+#' new_path <- MAGMA.Celltyping::format.sumstats.for.magma(path)
+#' 
 #' @export
-format_sumstats_for_magma <- function(path) {
+#' @importFrom data.table fread fwrite setcolorder 
+#' @importFrom utils read.table 
+format.sumstats.for.magma <- function(path) {
+    .Deprecated("MungeSumstats::format_sumstats")
     msg <- paste0(
         "FUNCTION DEPRECATED: Our lab have created a robust ",
         "bioconductor package for ",
         "formatting multiple types of summary\nstatistics files: ",
         "MungeSumstats. The function MungeSumstats::format_sumstats ",
-        "will perform better than\nformat_sumstats_for_magma as it can",
+        "will perform better than\nformat.sumstats.for.magma as it can",
         " handle more types of summary statistics files and issues and",
         " also offers\nmore flexibility to the user. We strongly adv",
         "ise using it instead!"
@@ -28,7 +32,10 @@ format_sumstats_for_magma <- function(path) {
         stop("Path to GWAS sumstats is not valid")
     }
 
-    # This almost surely modifies the file (since most sumstats from different studies are differently formatted), so it makes more sense to just make a temporary file <tmp>, and return the address of the temp
+    # This almost surely modifies the file (since most sumstats 
+    # from different studies are differently formatted), 
+    #so it makes more sense to just make a temporary file <tmp>, 
+    #and return the address of the temp
     sumstats_file <- readLines(path)
     tmp <- tempfile()
     writeLines(sumstats_file, con = tmp)
@@ -38,12 +45,18 @@ format_sumstats_for_magma <- function(path) {
     row_of_data <- strsplit(sumstats_file[2], "\t")[[1]]
     if (length(row_of_data) == 1) {
         if (grep(" ", row_of_data) == 1) {
-            print("WARNING: This GWAS sumstat file has space field separators instead of tabs (unusual, not proper input for MAGMA). Temp file with corrected FS created and used instead.")
-            sumstats_file <- gsub(pattern = " ", replacement = "\t", x = sumstats_file)
+            messager("WARNING: This GWAS sumstat file has space field",
+                     "separators instead of tabs",
+                     "(unusual, not proper input for MAGMA).",
+                     "Temp file with corrected FS created and used instead.")
+            sumstats_file <- gsub(pattern = " ", 
+                                  replacement = "\t", 
+                                  x = sumstats_file)
         }
     }
 
-    sumstats_file[1] <- standardise_sumstats_column_headers_crossplatform(sumstats_file[1])
+    sumstats_file[1] <- standardise.sumstats.column.headers_crossplatform(
+        sumstats_file[1])
     col_headers <- sumstats_file[1]
     col_headers <- strsplit(col_headers, "\t")[[1]]
 
@@ -95,7 +108,7 @@ format_sumstats_for_magma <- function(path) {
         }
 
         # Restandardise in case the joined column headers were unusual
-        sumstats_file[1] <- standardise_sumstats_column_headers_crossplatform(sumstats_file[1])
+        sumstats_file[1] <- standardise.sumstats.column.headers_crossplatform(sumstats_file[1])
         col_headers <- strsplit(sumstats_file[1], "\t")[[1]]
     }
 

@@ -20,7 +20,7 @@ calculate_conditional_celltype_enrichment_probabilities_wtLimma <- function(
     magma2,
     ctd,
     thresh = 0.0001,
-    sctSpecies = "mouse",
+    ctd_species = "mouse",
     annotLevel = 1) { 
     
     # Join the two MAGMA Z-score data frames
@@ -67,7 +67,7 @@ calculate_conditional_celltype_enrichment_probabilities_wtLimma <- function(
     for (ct1 in allCellTypes) {
         count <- count + 1
         print(ct1)
-        if (sctSpecies == "mouse") {
+        if (ctd_species == "mouse") {
             mgiS <- magmaAdjZ$mouse.symbol
         } else {
             mgiS <- magmaAdjZ$human.symbol
@@ -87,7 +87,7 @@ calculate_conditional_celltype_enrichment_probabilities_wtLimma <- function(
         perc[is.na(perc)] <- 0
 
         # Merge decile groups with MAGMA zscores
-        if (sctSpecies == "mouse") {
+        if (ctd_species == "mouse") {
             geneGroups <- data.frame(
                 mgi_symbol = mgiS,
                 proportion = props,
@@ -153,9 +153,9 @@ calculate_conditional_celltype_enrichment_probabilities_wtLimma <- function(
 
     # Get baseline results
     baseline1 <- calculate_celltype_enrichment_probabilities_wtLimma(
-        magmaAdjZ = magma1, ctd, thresh = thresh, sctSpecies = sctSpecies, annotLevel = annotLevel
+        magmaAdjZ = magma1, ctd, thresh = thresh, ctd_species = ctd_species, annotLevel = annotLevel
     )
-    baseline2 <- calculate_celltype_enrichment_probabilities_wtLimma(magmaAdjZ = magma2_NEW, ctd, thresh = thresh, sctSpecies = sctSpecies, annotLevel = annotLevel)
+    baseline2 <- calculate_celltype_enrichment_probabilities_wtLimma(magmaAdjZ = magma2_NEW, ctd, thresh = thresh, ctd_species = ctd_species, annotLevel = annotLevel)
     baselineRes <- data.frame(ct = names(baseline1), p1_baseline = baseline1, p2_baseline = baseline2)
 
     output <- list(ps = ps, coef = coef)

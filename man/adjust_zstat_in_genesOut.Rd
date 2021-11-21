@@ -4,29 +4,46 @@
 \alias{adjust_zstat_in_genesOut}
 \title{Adjust MAGMA Z-statistic from .genes.out files}
 \usage{
-adjust_zstat_in_genesOut(ctd, magma_GenesOut_file = NA, sctSpecies = "mouse")
+adjust_zstat_in_genesOut(
+  ctd,
+  magma_GenesOut_file = NA,
+  ctd_species = "mouse",
+  output_species = "human",
+  method = "bonferroni",
+  ...
+)
 }
 \arguments{
-\item{ctd}{Cell type data structure}
+\item{ctd}{Cell type data structure containing
+\code{specificity_quantiles}.}
 
-\item{magma_GenesOut_file}{A MAGMA .genes.out file}
+\item{magma_GenesOut_file}{A MAGMA .genes.out file.}
 
-\item{sctSpecies}{Either 'human' or 'mouse'}
+\item{ctd_species}{Species name relevant to the cell type data.
+See \link[EWCE]{list_species} for all available species.}
+
+\item{output_species}{Which species' genes names to convert \code{exp} to.
+See \link[EWCE]{list_species} for all available species.}
+
+\item{method}{correction method, a \code{\link{character}} string.
+    Can be abbreviated.}
+
+\item{...}{Additional arguments passed for \link[EWCE]{standardise_ctd}.}
 }
 \description{
 Used when you want to directly analyse the gene level
  z-scores corrected for gene length etc
 }
 \examples{
-myGenesOut <- tempfile()
-data.table::fwrite(
-    x = MAGMA.Celltyping::genesOut,
-    file = myGenesOut,
-    sep = "\t"
-)
+myGenesOut <- MAGMA.Celltyping::import_magma_files(
+    ids = c("ieu-a-298"),
+    file_types = ".genes.out",
+    return_dir = FALSE)
+ctd <- ewceData::ctd()
+
 magmaGenesOut <- MAGMA.Celltyping::adjust_zstat_in_genesOut(
-    ctd = ewceData::ctd(),
+    ctd = ctd,
     magma_GenesOut_file = myGenesOut,
-    sctSpecies = "mouse"
+    ctd_species = "mouse"
 )
 }

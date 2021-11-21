@@ -17,27 +17,35 @@ plot_celltype_associations(
 )
 }
 \arguments{
-\item{ctAssocs}{Output from either calculate_celltype_associations() or calculate_conditional_celltype_associations()}
+\item{ctAssocs}{Output from either 
+\link[MAGMA.Celltyping]{calculate_celltype_associations} or
+\link[MAGMA.Celltyping]{calculate_conditional_celltype_associations}.}
 
-\item{ctd}{Cell type data strucutre containing $specificity_quantiles (required to calculate dendrogram)}
-
-\item{useSignificanceLine}{TRUE or FALSE. Should their be a vertical line marking bonferroni signifiance?}
+\item{useSignificanceLine}{TRUE or FALSE. Should their be a vertical
+line marking bonferroni signifiance?}
 
 \item{savePDF}{TRUE or FALSE. Save figure to file or print to screen?}
 
-\item{fileTag}{String apprended to the names of the saved PDFs, i.e. the name of the celltype data file used}
+\item{fileTag}{String apprended to the names of the saved PDFs,
+i.e. the name of the celltype data file used}
 
-\item{plotDendro}{Should the dendrogram of celltypes be shown alongside the figure? TRUE or FALSE}
+\item{plotDendro}{Should the dendrogram of celltypes be
+shown alongside the figure? TRUE or FALSE.}
 
-\item{gwas_title}{Title to be displayed over the figure (string)}
+\item{gwas_title}{Title to be displayed over the figure (string).}
 
 \item{plotLegend}{Should the figure legend be displayed?}
 
-\item{figsDir}{Directory where figures should be created}
+\item{figsDir}{Directory where figures should be created.}
+}
+\value{
+A list of ggplot objects.
 }
 \description{
-Can take input from either calculate_celltype_associations() or calculate_conditional_celltype_associations()
+Can take input from either
+ \link[MAGMA.Celltyping]{calculate_celltype_associations} or
+ \link[MAGMA.Celltyping]{calculate_conditional_celltype_associations}.
 }
 \examples{
-ctAssocs <- calculate_celltype_associations(ctd, gwas_sumstats_path)
+# ctAssocs <- calculate_celltype_associations(ctd, gwas_sumstats_path)
 }

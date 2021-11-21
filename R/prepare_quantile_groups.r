@@ -17,7 +17,6 @@
 #' ctd <- prepare_quantile_groups(ctd = ctd_orig)
 #' }
 #'
-#' @import dplyr
 #' @importFrom EWCE standardise_ctd
 #' @importFrom methods as
 #' @importFrom Matrix t

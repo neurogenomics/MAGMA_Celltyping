@@ -32,7 +32,7 @@ storage_dir <- tempdir()
 
 # Prepare data
 
-## Import GWAS
+## GWAS
 
 - We need to have a summary statistics file to analyse as input.  
 - As an example, you can download UK Biobank summary statistics 
@@ -54,11 +54,10 @@ The minimum info needed *after* munging is:
 
 ```{r, eval=FALSE}
 path_formatted <- MAGMA.Celltyping::get_example_gwas(
-  trait = "prospective_memory",
-  munged = TRUE)
+  trait = "prospective_memory")
 ```
 
-## Map SNPs to Genes
+### Map SNPs to Genes
 
 Note you can input the genome build of your summary statistics for this step or
 it can be inferred if left `NULL`:
@@ -69,10 +68,18 @@ genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(
   genome_build = "GRCh37")
 ```
 
+### MAGMA_Files_Public
+
+Rather than preprocessing the GWAS yourself, you can instead use the [`MAGMA_Files_Public`](https://github.com/neurogenomics/MAGMA_Files_Public) database we have created. It contains pre-computed MAGMA SNP-to-genes mapping files for hundreds of GWAS.
+
+You can browse which GWAS traits are available by looking at the provided  [*metadata.csv*](https://github.com/neurogenomics/MAGMA_Files_Public/blob/master/metadata.csv) file.
+
+```{r, eval = TRUE}
+magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
+```
+
 
 ## CellTypeDataset
-
-### Import CTD 
 
 `ewceData` provides a number of CellTypeDatasets (CTD) to be used a cell-type
 transcriptomic signature reference files.
@@ -81,7 +88,7 @@ If you want to create your own single-cell transcriptomic reference, you'll need
 to first convert it to CTD using the instructions found in the `EWCE` package
 [documentation here](https://github.com/NathanSkene/EWCE/).
 
-```{r, eval=FALSE } 
+```{r} 
 ctd <- ewceData::ctd()
 ```
 
@@ -104,41 +111,68 @@ ctd <- get_ctd("ctd_BlueLake2018_VisualCortexOnly")
 ctd <- get_ctd("ctd_Saunders")
 ```
  
-### Run cell-type enrichment analyses
+# Run cell-type enrichment analyses
 
-```{r}
+```{r, eval = FALSE}
 MAGMA_results <- MAGMA.Celltyping::celltype_associations_pipeline(
-  magma_dirs = dirname(genesOutPath),
-  ctd = ctd, 
-  sctSpecies = "mouse", 
+  magma_dirs = magma_dirs,
+  ctd = ctd,
+  ctd_species = "mouse", 
   ctd_name = "Zeisel2015", 
   run_linear = TRUE, 
-  run_top10 = TRUE,
-  run_condition = FALSE)
+  run_top10 = TRUE)
+```
 
+We've also saved a pre-computed version of these results as a dataset:
+
+```{r}
+MAGMA_results <- MAGMA.Celltyping::enrichment_results
 ```
 
 # Plot results
 
-## Gather results 
+## Merge results 
 
 ```{r}
-merged_results <- MAGMA.Celltyping::gather_results(MAGMA_results = MAGMA_results)
+merged_results <- MAGMA.Celltyping::merge_results(
+  MAGMA_results = MAGMA_results)
+knitr::kable(merged_results)
 ```
 
 ## Heatmap  
 
 ```{r Heatmap}  
-heat <- MAGMA.Celltyping::results_heatmap(merged_results = merged_results, 
-                                          title=dataset_name,  
-                                          x_lab=paste0("Celltype (level",2,")"),
-                                          fdr_thresh = .05)
-
-ggsave(paste0("processed_data/MAGMA/",dataset_name,"/MAGMA_celltyping.",dataset_name,".heatmap.jpg"), 
-       plot = heat, 
-       dpi = 300, height = 5, width=7)
+heat <- MAGMA.Celltyping::results_heatmap(
+  merged_results = merged_results, 
+  title = "Alzheimer's Disease (ieu-a-298) vs. nervous system cell-types (Zeisel2015)",
+  fdr_thresh = 1)
 ```
 
+
+# Top results
+
+## Top phenotypes 
+
+Get the phenotypes with the greatest number of significant cell-type enrichment results. 
+
+```{r}
+top_phenos <- merged_results %>% 
+  dplyr::group_by(EnrichmentMode, GWAS) %>%
+  dplyr::summarise(Celltype=dplyr::n_distinct(Celltype)) %>%
+  dplyr::arrange(desc(Celltype))
+print(top_phenos)
+```
+
+## Top enrichments 
+
+Get the phenotypes-celltype enrichment results with the most significant p-values (per phenotype).
+
+```{r} 
+top_enrich <- merged_results %>% 
+  dplyr::group_by(EnrichmentMode, GWAS) %>%
+  dplyr::slice_min(FDR, n = 2)
+print(top_enrich) 
+```
 
 # Session Info
 

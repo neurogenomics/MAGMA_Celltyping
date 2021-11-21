@@ -6,7 +6,7 @@
 \usage{
 get_driver_genes(
   ctd,
-  sctSpecies = "mouse",
+  ctd_species = "mouse",
   magma_res,
   fdr_thresh = 0.05,
   GenesOut_dir = "./",
@@ -17,9 +17,9 @@ get_driver_genes(
 \arguments{
 \item{ctd}{CellTypeData object}
 
-\item{sctSpecies}{Either 'human' or 'mouse'}
+\item{ctd_species}{Either 'human' or 'mouse'}
 
-\item{magma_res}{Merged results from \code{MAGMA.Celltyping::gather_results}.}
+\item{magma_res}{Merged results from \code{MAGMA.Celltyping::merge_results}.}
 
 \item{fdr_thresh}{FDR threshold for \code{magma_res}.}
 

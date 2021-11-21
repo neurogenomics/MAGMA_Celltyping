@@ -17,8 +17,11 @@ get_genome_ref_magma <- function(genome_ref_dir,
         zipfile = zipfile,
         exdir = genome_ref_dir
     )
-    if(file.exists(zipfile)){
-        out <- file.remove(zipfile, 
-                           showWarnings = FALSE)
-    }
+   # try({
+   #     if(file.exists(zipfile)){
+   #         out <- file.remove(zipfile, 
+   #                            overwrite = TRUE,
+   #                            showWarnings = FALSE)
+   #     }
+   # })
 }

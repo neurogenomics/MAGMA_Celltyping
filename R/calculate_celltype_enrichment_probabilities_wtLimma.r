@@ -34,7 +34,7 @@
 calculate_celltype_enrichment_probabilities_wtLimma <- function(magmaAdjZ,
                                                                 ctd,
                                                                 thresh = 0.0001,
-                                                                sctSpecies = "mouse",
+                                                                ctd_species = "mouse",
                                                                 annotLevel = 1,
                                                                 celltypes = NULL,
                                                                 return_all = FALSE,
@@ -83,7 +83,7 @@ calculate_celltype_enrichment_probabilities_wtLimma <- function(magmaAdjZ,
     for (ct1 in allCellTypes) {
         count <- count + 1
         print(ct1)
-        if (sctSpecies == "mouse") {
+        if (ctd_species == "mouse") {
             mgiS <- magmaAdjZ$mouse.symbol
         } else {
             mgiS <- magmaAdjZ$human.symbol
@@ -104,7 +104,7 @@ calculate_celltype_enrichment_probabilities_wtLimma <- function(magmaAdjZ,
         perc[is.na(perc)] <- 0
 
         # Merge decile groups with MAGMA zscores
-        if (sctSpecies == "mouse") {
+        if (ctd_species == "mouse") {
             geneGroups <- data.frame(
                 mgi_symbol = mgiS,
                 proportion = props,

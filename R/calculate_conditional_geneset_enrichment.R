@@ -8,55 +8,105 @@
 #' being controlled for.
 #' @param controlledCTs Array of the celltype to be controlled for,
 #' e.g. c("Interneuron type 16","Medium Spiny Neuron).
+#' @inheritParams celltype_associations_pipeline
 #' @inheritParams calculate_celltype_associations
 #'
-#' @return File path for the genes.out file
+#' @return File path for the genes.out file.
+#' 
+#' @examples 
+#' #### Import data ####
+#' ctd <- MAGMA.Celltyping::get_ctd("ctd_allKI")
+#' magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
+#' geneset <- MAGMA.Celltyping::rbfox_binding
+#' 
+#' res <- MAGMA.Celltyping::calculate_conditional_geneset_enrichment(
+#'     geneset = geneset,
+#'     ctd = ctd,
+#'     controlledAnnotLevel = 1,
+#'     controlledCTs = "pyramidal SS",
+#'     magma_dir = magma_dir,
+#'     analysis_name = "Rbfox_16_pyrSS",  
+#'     geneset_species = "mouse",
+#'     ctd_species = "mouse")
 #'
 #' @export
 #' @importFrom data.table data.table
 #' @importFrom stats pnorm
 calculate_conditional_geneset_enrichment <- function(geneset,
                                                      ctd,
+                                                     ctd_species = "mouse",
+                                                     prepare_ctd = TRUE,
                                                      controlledAnnotLevel = 1,
                                                      controlledCTs,
-                                                     gwas_sumstats_path,
-                                                     analysis_name,
+                                                     gwas_sumstats_path = NULL,
+                                                     magma_dir = NULL,
+                                                     analysis_name = "MainRun",
                                                      upstream_kb = 35,
                                                      downstream_kb = 10,
-                                                     genome_ref_path,
+                                                     genome_ref_path = NULL,
                                                      geneset_species = "mouse",
-                                                     sctSpecies = "mouse") {
+                                                     verbose = TRUE
+                                                    ) {
+    #### Handle MAGMA Files ####
+    #### Trick downstream functions into working with only MAGMA files ####
+    magma_dir <- magma_dir[1]
+    if(!is.null(magma_dir)){ 
+        gwas_sumstats_path <- create_fake_gwas_path(
+            magma_dir = magma_dir,
+            upstream_kb = upstream_kb,
+            downstream_kb = downstream_kb)
+    }
+    #### prepare quantile groups ####
+    # MAGMA.Celltyping can only use human GWAS
+    if (prepare_ctd) {
+        output_species <- "human"
+        ctd <- prepare_quantile_groups(
+            ctd = ctd,
+            input_species = ctd_species,
+            output_species = output_species,
+            verbose = verbose
+        )
+        ctd_species <- output_species
+        #### Standardise cell-type names ####
+        controlledCTs <- EWCE::fix_celltype_names(celltypes = controlledCTs)
+    }
+    #### Prepare genome_ref ####
+    genome_ref_path <- get_genome_ref(
+        genome_ref_path = genome_ref_path,
+        verbose = verbose
+    )
+    #### Setup paths ####
     gwas_sumstats_path <- path.expand(gwas_sumstats_path)
     magmaPaths <- get_magma_paths(
         gwas_sumstats_path = gwas_sumstats_path,
         upstream_kb = upstream_kb,
         downstream_kb = downstream_kb
     )
-
-    # First, check that the genes are HGNC/MGI IDs
-    if (geneset_species == "human") {
-        if (sum(geneset %in% all_hgnc_wtEntrez$hgnc_symbol) < 0.5) {
-            stop("Less than 50% of the geneset are recognised HGNC symbols.
-                    Have you entered them in the wrong format?
-                    Or wrong species?")
-        }
-        ### all_hgnc_wtEntrez is a built-in dataset
-        geneset_entrez <- all_hgnc_wtEntrez[
-            all_hgnc_wtEntrez$hgnc_symbol %in% geneset,
-        ]$entrezgene
-    } else if (geneset_species == "mouse") {
-        if (sum(geneset %in% One2One::ortholog_data_Mouse_Human$orthologs_one2one$mouse.symbol) < 0.25) {
-            stop(
-                "Less than 25% of the geneset are recognised
-            MGI symbols with 1:1 orthologs.
-            Have you entered them in the wrong format? Or wrong species?"
-            )
-        }
-        geneset_m2h <- One2One::ortholog_data_Mouse_Human$orthologs_one2one[One2One::ortholog_data_Mouse_Human$orthologs_one2one$mouse.symbol %in% geneset, ]$human.symbol
-        geneset_entrez <- MAGMA.Celltyping::all_hgnc_wtEntrez[MAGMA.Celltyping::all_hgnc_wtEntrez$hgnc_symbol %in% geneset_m2h, ]$entrezgene
+    
+    if(geneset_species != "human"){
+        gene_map <- orthogene::convert_orthologs(gene_df = geneset,
+                                                 gene_output = "columns",
+                                                 input_species = geneset_species, 
+                                                 output_species = "human",
+                                                 method = "homologene",
+                                                 verbose = verbose)
+        geneset <- gene_map$ortholog_gene
+    } 
+    ##### First, check that the genes are HGNC/MGI IDs ####
+    n_valid <- sum(
+        geneset %in% hgnc2entrez_orthogene$hgnc_symbol)
+    if ((n_valid / length(geneset)) < 0.5) {
+        stopper(
+            "<50% of the geneset are recognised HGNC symbols",
+            "with corresponding Entrez IDs.",
+            "Check that ctd_species and geneset_species are set correctly."
+        )
     }
-
-    # Check for errors in arguments
+    ### all_hgnc_wtEntrez is a built-in dataset ####
+    geneset_entrez <- hgnc2entrez_orthogene[
+        hgnc2entrez_orthogene$hgnc_symbol %in% geneset,
+    ]$entrez
+    #### Check for errors in arguments ####
     check_inputs_to_magma_celltype_analysis(
         ctd = ctd,
         gwas_sumstats_path = gwas_sumstats_path,
@@ -65,27 +115,16 @@ calculate_conditional_geneset_enrichment <- function(geneset,
         downstream_kb = downstream_kb,
         genome_ref_path = genome_ref_path
     )
-
-    # Check the cell type 'controlledCT' exists at the relevant annotation level
-    for (i in seq_len(length(controlledCTs))) {
-        annotLvlCTs <- colnames(ctd[[
-        as.numeric(controlledAnnotLevel)]]$specificity)
-        reqCT <- controlledCTs[[i]]
-        if (!reqCT %in% annotLvlCTs) {
-            stop(sprintf(
-                "User requested the following cell type be controlled
-                         for but it cannot be found:
-                         %s from annotation level %s",
-                reqCT, controlledAnnotLevel
-            ))
-        }
-    }
-
-    # Write cell type specificity to disk (so it can be read by MAGMA)
+    #### Check controlled cell type names ####
+    check_controlledCTs(ctd = ctd,
+                        controlledCTs = controlledCTs,
+                        controlledAnnotLevel = controlledAnnotLevel)
+    #### Write cell type specificity to disk ####
+    ## (so it can be read by MAGMA)
     quantDat2 <- map_specificity_to_entrez(
         ctd = ctd,
         annotLevel = controlledAnnotLevel,
-        sctSpecies = sctSpecies
+        ctd_species = ctd_species
     )
     geneCovarFile <- tempfile()
     write.table(
@@ -96,12 +135,11 @@ calculate_conditional_geneset_enrichment <- function(geneset,
         sep = "\t"
     )
     ctrldCTs <- gsub(" ", ".", paste(controlledCTs, collapse = ","))
-
     #### Drop any genes from geneset which do not have matching entrez in ctd
     geneset_entrez2 <- geneset_entrez[geneset_entrez %in% quantDat2$entrez]
     ctRows <- paste(c(analysis_name, geneset_entrez2), collapse = " ")
-
-    ##### Write geneset file to disk (so it can be read by MAGMA) ####
+    ##### Write geneset file to disk ####
+    ## (so it can be read by MAGMA) 
     geneSetFile <- tempfile()
     write.table(
         x = ctRows,
@@ -111,36 +149,29 @@ calculate_conditional_geneset_enrichment <- function(geneset,
         sep = "\t",
         col.names = FALSE
     )
-
     #### Run conditional analysis ####
+    out_prefix <- paste(c(magmaPaths$filePathPrefix,
+                          analysis_name),collapse=".")
     magma_cmd_cond <- sprintf(
-        "magma",
-        "--gene-results '%s.genes.raw'",
-        "--set-annot '%s'",
-        "--gene-covar '%s'",
-        "--model direction=positive condition='%s'",
-        "--out '%s.%s'",
+       paste( "magma",
+              "--gene-results '%s.genes.raw'",
+              "--set-annot '%s'",
+              "--gene-covar '%s'",
+              "--model direction=positive condition='%s'",
+              "--out '%s'"),
         magmaPaths$filePathPrefix,
         geneSetFile,
         geneCovarFile,
         ctrldCTs,
-        magmaPaths$filePathPrefix,
-        analysis_name
+        out_prefix
     )
-    messager(magma_cmd_cond)
+    message_cmd(magma_cmd_cond)
     system(magma_cmd_cond)
-
-    path <- sprintf("%s.%s.sets.out", magmaPaths$filePathPrefix, analysis_name)
-    res <- read.table(path, stringsAsFactors = FALSE)
-    colnames(res) <- as.character(res[1, ])
-    res <- res[-1, ]
-
-    path <- sprintf("%s.%s.gsa.out", magmaPaths$filePathPrefix, analysis_name)
-    res_cond <- read.table(path, stringsAsFactors = FALSE)
-    colnames(res_cond) <- as.character(res_cond[1, ])
-    res_cond <- res_cond[-1, ]
-    res_cond <- res_cond[res_cond$VARIABLE == analysis_name, ]
-
+    
+    #### Import results #### 
+    res <- magma_read_sets_out(out_prefix = out_prefix)
+    res_cond <- magma_read_gsa_out(out_prefix = out_prefix, 
+                                   analysis_name = analysis_name)
     # Calculate significance of difference
     # between baseline and conditional analyses
     z <- (as.numeric(res$BETA) -
