@@ -1,13 +1,13 @@
 #' Install the MAGMA command line tool
 #'
-#'
+#' Checks whether MAGMA is currently installed, and if not, 
+#' tries to automatically install it.
+#' 
 #' @param dest_dir Folder in which to install MAGMA.
-#' @param version Which version of MAGMA to install.
 #' @param verbose Print messages.
 #' @source \href{https://ctg.cncr.nl/software/magma}{MAGMA website}
 #' @source \href{https://github.com/NathanSkene/MAGMA_Celltyping}{
 #' MAGMA.celltyping documentation}
-#'
 #'
 #' @export
 #' @importFrom utils unzip

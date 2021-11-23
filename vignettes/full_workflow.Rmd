@@ -352,7 +352,7 @@ magmaGenesOut <- MAGMA.Celltyping::adjust_zstat_in_genesOut(
                        "20016.assoc.tsv.10UP.1.5DOWN.genes.out"),
   ctd_species="mouse")
 
-output <- MAGMA.Celltyping::calculate_celltype_enrichment_probabilities_wtLimma(
+output <- MAGMA.Celltyping::calculate_celltype_enrichment_limma(
   magmaAdjZ = magmaGenesOut,
   ctd = ctd,
   thresh = 0.0001,

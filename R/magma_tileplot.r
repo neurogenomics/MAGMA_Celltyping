@@ -17,8 +17,7 @@
 #'
 #' @examples
 #'  # 
-#' @export
-#' @import ggplot2
+#' @export 
 #' @importFrom stats p.adjust 
 magma_tileplot <- function(ctd,
                            results, 
@@ -27,10 +26,11 @@ magma_tileplot <- function(ctd,
                            annotLevel = 1,
                            fileTag = "", 
                            output_path) {
+    requireNamespace("ggplot2")
+    requireNamespace("ggdendro")
     requireNamespace("grDevices")
     requireNamespace("gridExtra")
-    requireNamespace("ggdendro")
-    # First, error checking of arguments
+    #### First, error checking of arguments ####
     if (sum(!c("Celltype", "GCOV_FILE", "log10p", "level") %in%
             colnames(results)) > 0) {
         stopper("results dataframe must contain:",
@@ -61,33 +61,37 @@ magma_tileplot <- function(ctd,
     results$q <- stats::p.adjust(results$P, method = "bonferroni")
 
     # Prepare the tileplot
-    fig_Heatmap_WOdendro <- ggplot(results) +
-        geom_tile(aes_string(x = "GCOV_FILE", 
-                             y = "Celltype", fill = "log10p")) +
-        theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-        theme(legend.position = "none") +
-        xlab("") +
-        ylab("") +
-        scale_fill_gradient(low = "darkblue", high = "white") +
-        ggtitle("MAGMA") +
-        geom_point(
-            aes_string(x = "GCOV_FILE", y = "Celltype", 
+    fig_Heatmap_WOdendro <- ggplot2::ggplot(results) +
+        ggplot2::geom_tile(
+            ggplot2::aes_string(x = "GCOV_FILE", 
+                                y = "Celltype", fill = "log10p")) +
+        ggplot2::theme(axis.text.x = 
+                           ggplot2::element_text(angle = 90, hjust = 1)) +
+        ggplot2::theme(legend.position = "none") +
+        ggplot2::xlab("") +
+        ggplot2::ylab("") +
+        ggplot2::scale_fill_gradient(low = "darkblue", high = "white") +
+        ggplot2::ggtitle("MAGMA") +
+        ggplot2::geom_point(
+            ggplot2::aes_string(x = "GCOV_FILE", y = "Celltype", 
                       size = ifelse(q < 0.00001, "HUGEdot", 
                                     ifelse(q < 0.0001, "BIGdot", 
                                            ifelse(q < 0.001, "BiiGdot", 
                                                   ifelse(q < 0.05, "dot",
                                                          "no_dot"))))), 
             col = "black") +
-        scale_size_manual(values = c(HUGEdot = 4, BIGdot = 3, BiiGdot = 2, 
-                                     dot = 1, no_dot = NA), guide = "none")
+        ggplot2::scale_size_manual(
+            values = c(HUGEdot = 4, BIGdot = 3, BiiGdot = 2, 
+                       dot = 1, no_dot = NA), guide = "none")
 
-    # Prepare the dendrogram
-    Fig_Dendro <- ggplot(ggdendro::segment(ctdDendro$ddata)) +
-        geom_segment(aes_string(x = "x", y = "y",
+    #### Prepare the dendrogram ####
+    Fig_Dendro <- ggplot2::ggplot(ggdendro::segment(ctdDendro$ddata)) +
+        ggplot2::geom_segment(
+            ggplot2::aes_string(x = "x", y = "y",
                                 xend = "xend", yend = "yend")) +
-        coord_flip() +
-        theme_dendro()
-    Fig_Dendro <- Fig_Dendro + scale_x_continuous(expand = c(0, 1.3))
+        ggplot2::coord_flip() +
+        ggdendro::theme_dendro()
+    Fig_Dendro <- Fig_Dendro + ggplot2::scale_x_continuous(expand = c(0, 1.3))
 
     ##### Write the figures to PDF ####
     grDevices::pdf(

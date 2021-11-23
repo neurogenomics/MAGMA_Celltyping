@@ -2,12 +2,17 @@
 % Please edit documentation in R/create_gene_covar_file.r
 \name{create_gene_covar_file}
 \alias{create_gene_covar_file}
-\title{Create gene covar file}
+\title{Create gene covariance file}
 \source{
 \code{
 #### Example usage ####
 ctd <- ewceData::ctd()
-genesCovarFilePath <- MAGMA.Celltyping:::create_gene_covar_file(
+genesOutFile <- MAGMA.Celltyping::import_magma_files(
+    ids = "ieu-a-298",
+    file_types = ".genes.out$",
+    return_dir = FALSE)
+
+genesCovarFilePath <- create_gene_covar_file(
     genesOutFile = genesOutFile,
     ctd = ctd,
     annotLevel = 1,
@@ -35,14 +40,14 @@ should be constructed}
 \item{ctd_species}{Species name relevant to the cell type data,
 i.e. "mouse" or "human"}
 
-\item{genesOutCOND}{[Optional] Path to a genes.out file to condition on.
-Used if you want to condition on a different GWAS.}
+\item{genesOutCOND}{[Optional] Path to a \emph{genes.out}
+file to condition on. Used if you want to condition on a different GWAS.}
 }
 \value{
-Filepath for the gene covar file
+File path for the gene covar file.
 }
 \description{
-The gene covar file is the input to MAGMA for the
+The gene covariannce (covar) file is the input to MAGMA for the
 celltype association analysis.
 This code was functonalised because it is called by both
 baseline and conditional analysis.

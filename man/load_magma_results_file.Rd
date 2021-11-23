@@ -14,8 +14,13 @@ load_magma_results_file(
 )
 }
 \arguments{
-\item{path}{Path to a .gcov.out file (if EnrichmentMode=='Linear')
+\item{path}{Path to a .gcov.out file (if \code{EnrichmentMode=='Linear'}).
 or .sets.out (if EnrichmentMode=='Top 10\%').}
+
+\item{annotLevel}{Level within the \code{ctd} to use.}
+
+\item{ctd}{Cell type data structure containing
+\code{specificity_quantiles}.}
 
 \item{genesOutCOND}{[Optional] If the analysis controlled for another GWAS, 
 then this is included as a column. Otherwise the column is \code{NA}.}
@@ -33,13 +38,4 @@ Contents of the .gcov.out file.
 Convenience function which just does a little formatting to make 
 it easier to use.
 }
-\examples{
-\dontrun{
-ctd <- ewceData::ctd()
-res <- MAGMA.Celltyping::load_magma_results_file(
-    path = "Raw/adhd_formtcojo.txt.NEW.10UP.1DOWN.gcov.out",
-    annotLevel = 1,
-    ctd = ctd
-)
-} 
-}
+\keyword{internal}

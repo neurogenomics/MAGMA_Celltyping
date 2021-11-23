@@ -7,21 +7,19 @@
 #'
 #' @param ctd Cell type data structure containing
 #'  \code{specificity_quantiles}.
+#' @param ctd_species Species name relevant to the cell type data.
+#' See \link[EWCE]{list_species} for all available species.
 #' @param ctd_levels Which levels of \code{ctd} to
 #' iterate the enrichment analysis over.
 #' @param ctd_name Used in file names
-#' @param magma_dirs Names of folders containing the
-#' pre-computed MAGMA GWAS files.
+#' @param magma_dirs Path to folders containing the
+#' pre-computed MAGMA GWAS files (\emph{.gsa.raw}and \emph{.gsa.out}).
 #' \emph{NOTE}: Files within these folders must have the same naming scheme
 #' as the folders themselves.
 #' @param upstream_kb How many kb upstream of the gene
 #'  should SNPs be included?
 #' @param downstream_kb How many kb downstream of the gene
 #' should SNPs be included?
-#' @param genome_ref_path Path to the folder containing the 1000
-#' genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).
-#' @param ctd_species Species name relevant to the cell type data.
-#' See \link[EWCE]{list_species} for all available species.
 #' @param run_linear Run in linear mode.
 #' @param run_top10 Run  in top 10\% mode.
 #' @param run_conditional Run in conditional mode.
@@ -58,8 +56,7 @@ celltype_associations_pipeline <- function(ctd,
                                            ctd_levels = seq_len(length(ctd)),
                                            ctd_name,
                                            ctd_species = "mouse",
-                                           magma_dirs,
-                                           genome_ref_path = NULL,
+                                           magma_dirs, 
                                            run_linear = TRUE,
                                            run_top10 = TRUE,
                                            run_conditional = FALSE,
@@ -90,12 +87,7 @@ celltype_associations_pipeline <- function(ctd,
             verbose = FALSE
         )
         ctd_species <- output_species
-    }
-    #### Prepare genome_ref ####
-    genome_ref_path <- get_genome_ref(
-        genome_ref_path = genome_ref_path,
-        verbose = verbose
-    )
+    } 
     #### Iterate over GWAS datasets ####
     MAGMA_results <- lapply(magma_dirs, function(magma_dir) {
         messager(basename(magma_dir), v = verbose)
@@ -116,8 +108,7 @@ celltype_associations_pipeline <- function(ctd,
                     ctd = ctd,
                     ctd_levels = ctd_levels,
                     prepare_ctd = FALSE, # Already prepared once above
-                    gwas_sumstats_path = fake_gwas_ss,
-                    genome_ref_path = genome_ref_path,
+                    gwas_sumstats_path = fake_gwas_ss, 
                     upstream_kb = upstream_kb,
                     downstream_kb = downstream_kb,
                     analysis_name = paste(ctd_name, suffix_linear, sep = "_"),
@@ -142,8 +133,7 @@ celltype_associations_pipeline <- function(ctd,
                     ctd = ctd,
                     ctd_levels = ctd_levels,
                     prepare_ctd = FALSE, # Already prepared once above
-                    gwas_sumstats_path = fake_gwas_ss,
-                    genome_ref_path = genome_ref_path, 
+                    gwas_sumstats_path = fake_gwas_ss, 
                     upstream_kb = upstream_kb,
                     downstream_kb = downstream_kb,
                     analysis_name = paste(ctd_name, suffix_top10, sep = "_"),
@@ -180,8 +170,7 @@ celltype_associations_pipeline <- function(ctd,
                         EnrichmentMode = "Linear",
                         controlledAnnotLevel = controlledAnnotLevel,
                         prepare_ctd = FALSE, # Already prepared once above
-                        gwas_sumstats_path = fake_gwas_ss,
-                        genome_ref_path = genome_ref_path,
+                        gwas_sumstats_path = fake_gwas_ss, 
                         analysis_name = paste(ctd_name,
                             suffix_condition,
                             sep = "."

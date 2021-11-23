@@ -6,19 +6,12 @@
 #' @inheritParams calculate_celltype_associations
 #' @returns Nothing returned but sends error if there is a fault
 #' with the arguments.
-#'
-#' @examples
-#' check_inputs_to_magma_celltype_analysis(
-#'     ctd, gwas_sumstats_path, analysis_name, upstream_kb,
-#'     downstream_kb, genome_ref_path
-#' )
+#' 
 #' @keywords internal
 check_inputs_to_magma_celltype_analysis <- function(ctd,
-                                                    gwas_sumstats_path,
-                                                    analysis_name,
+                                                    gwas_sumstats_path, 
                                                     upstream_kb,
-                                                    downstream_kb,
-                                                    genome_ref_path) {
+                                                    downstream_kb) {
     sumstatsPrefix <- sprintf(
         "%s.%sUP.%sDOWN",
         gwas_sumstats_path, upstream_kb, downstream_kb
@@ -47,9 +40,9 @@ check_inputs_to_magma_celltype_analysis <- function(ctd,
         )
     }
     # - Does genome_ref_path.bed exist?
-    if (!file.exists(sprintf("%s.bed", genome_ref_path))) {
-        stop(sprintf("%s.bed does not exist", genome_ref_path))
-    }
+    # if (!file.exists(sprintf("%s.bed", genome_ref_path))) {
+    #     stop(sprintf("%s.bed does not exist", genome_ref_path))
+    # }
     # - Check the genes.raw file exists
     if (!file.exists(sprintf("%s.genes.out", magmaPaths$filePathPrefix))) {
         stopper(

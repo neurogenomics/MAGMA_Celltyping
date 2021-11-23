@@ -14,7 +14,6 @@ calculate_celltype_associations(
   prepare_ctd = TRUE,
   upstream_kb = 35,
   downstream_kb = 10,
-  genome_ref_path = NULL,
   genesOutCOND = NA,
   EnrichmentMode = "Linear",
   force_new = FALSE,
@@ -33,6 +32,9 @@ See \link[EWCE]{list_species} for all available species.}
 
 \item{gwas_sumstats_path}{File path of the summary statistics file.}
 
+\item{magma_dir}{Path to folder containing the
+pre-computed MAGMA GWAS files (\emph{.gsa.raw}and \emph{.gsa.out}).}
+
 \item{analysis_name}{Used in file names which area created.}
 
 \item{prepare_ctd}{Whether to run
@@ -43,9 +45,6 @@ should SNPs be included?}
 
 \item{downstream_kb}{How many kb downstream of the gene
 should SNPs be included?}
-
-\item{genome_ref_path}{Path to the folder containing the 1000
-genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
 
 \item{genesOutCOND}{[Optional] Path to a genes.out file to condition on.
 Used if you want to condition on a different GWAS.}
@@ -70,9 +69,7 @@ Assumes that you have already run
 ctd <- ewceData::ctd()
 
 #### Prepare GWAS MAGMA data ####
-magma_dir <- MAGMA.Celltyping::import_magma_files(
-    ids = "ieu-a-298",
-    return_dir = TRUE)
+magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
     
 #### Run pipeline ####
 ctAssocs <- MAGMA.Celltyping::calculate_celltype_associations(

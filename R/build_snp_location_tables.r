@@ -4,28 +4,33 @@
 #' for all Hapmap3 SNPs in GRCh37 and GRCh38.
 #'
 #' @return Save SNP_LOC_DATA to package data
-#'
-#' @examples
-#' # build_snp_location_tables()
-#' @importFrom data.table fread
-#' @importFrom utils download.file
-#' @importFrom utils unzip
-#' @importFrom BSgenome snpsById
-#' @importFrom S4Vectors mcols
-#' @importFrom GenomeInfoDb seqnames
-#' @importFrom BiocGenerics pos
-#' @importFrom usethis use_data
+#' 
+#' @keywords internal
 build_snp_location_tables <- function() {
+    .Deprecated("MungeSumstats::get_genome_builds")
+    requireNamespace("SNPlocs.Hsapiens.dbSNP144.GRCh37")
+    requireNamespace("SNPlocs.Hsapiens.dbSNP144.GRCh38")
+    requireNamespace("GenomeInfoDb")
+    requireNamespace("BiocGenerics")
+    requireNamespace("BSgenome")
+    requireNamespace("utils")
+    requireNamespace("S4Vectors")
+    requireNamespace("data.table")
+    
     tmpF1 <- tempfile()
     tmpF2 <- tempfile()
-    utils::download.file("https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip", tmpF1)
+    utils::download.file(
+        "https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip",
+        tmpF1)
     utils::unzip(tmpF1, exdir = dirname(tmpF1))
     snpsALL <- data.table::fread(sprintf("%s/g1000_eur.bim", dirname(tmpF1)))
     g1000_snps <- as.character(snpsALL$V2)
 
     # tmpF1 = tempfile()
     # tmpF2 = tempfile()
-    # download.file("https://data.broadinstitute.org/alkesgroup/LDSCORE/w_hm3.snplist.bz2",tmpF1)
+    # download.file(
+    #     "https://data.broadinstitute.org/alkesgroup/LDSCORE/w_hm3.snplist.bz2",
+    #     tmpF1)
      
     # gunzip(tmpF1,tmpF2)
     # whm3 = read.table(tmpF2,stringsAsFactors = FALSE)

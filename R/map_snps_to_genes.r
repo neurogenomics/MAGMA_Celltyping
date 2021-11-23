@@ -16,9 +16,8 @@
 #' @param downstream_kb How many kilobases (kb) downstream of the gene
 #' should SNPs be included?
 #' @param N What is the N number for this GWAS? That is cases + controls.
-#' @param genome_ref_path Path to the folder containing the
-#' 1000 genomes .bed files (which can be downloaded from 
-#' \href{https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip}{here}).
+#' @param genome_ref_path Path to the folder containing the 1000
+#' genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).
 #' @param force_new Set to \code{TRUE} to
 #' rerun \code{MAGMA} even if the output files already exist.
 #'  (Default: \code{FALSE}).
@@ -106,17 +105,19 @@ map_snps_to_genes <- function(path_formatted,
         n_arg <- sprintf("N=%s", N)
     }
 
-    # Determine which genome build it uses & get path to gene loc file
-    gene_loc_dir <- system.file("data",package = "MAGMA.Celltyping")
+    #### Determine which genome build it uses & get path to gene loc file ####
+    # gene_loc_dir <- system.file("data",package = "MAGMA.Celltyping")
     if (is.null(genome_build)) {
         genome_build <-
             MungeSumstats::get_genome_builds(sumstats_list = path_formatted,
                                              names_from_paths = TRUE)
     }
     if (toupper(genome_build) %in% c("GRCH37","HG37","HG19")) {
-        genomeLocFile <- sprintf("%s/NCBI37.3.gene.loc", gene_loc_dir)
+        # genomeLocFile <- sprintf("%s/NCBI37.3.gene.loc", gene_loc_dir)
+        genomeLocFile <- get_genomeLocFile(build = "GRCH37")
     } else if (toupper(genome_build) %in% c("GRCH38","HG38")) {
-        genomeLocFile <- sprintf("%s/NCBI38.gene.loc", gene_loc_dir)
+        # genomeLocFile <- sprintf("%s/NCBI38.gene.loc", gene_loc_dir)
+        genomeLocFile <- get_genomeLocFile(build = "GRCH38")
     } else {
         stop("Genome build must be: 'GRCH37', or 'GRCH38'")
     }

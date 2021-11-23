@@ -1,7 +1,15 @@
+#' List files  
+#' 
 #' List files on a remote server or website
+#'
+#' @param URL Web URL.
+#' @param pattern Search pattern passed to \link[XML]{xpathSApply}.
 #'
 #' @source \href{https://stackoverflow.com/questions/15954463/read-list-of-file-names-from-web-into-r}{
 #' stackoverflow}
+#' 
+#' @return List of remote files.
+#' @keywords internal
 #' @importFrom XML htmlParse xpathSApply free
 list_remote_files <- function(URL,
                               pattern = "*.zip") {

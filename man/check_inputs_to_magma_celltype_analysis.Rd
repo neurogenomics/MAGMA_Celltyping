@@ -7,10 +7,8 @@
 check_inputs_to_magma_celltype_analysis(
   ctd,
   gwas_sumstats_path,
-  analysis_name,
   upstream_kb,
-  downstream_kb,
-  genome_ref_path
+  downstream_kb
 )
 }
 \arguments{
@@ -19,16 +17,11 @@ check_inputs_to_magma_celltype_analysis(
 
 \item{gwas_sumstats_path}{File path of the summary statistics file.}
 
-\item{analysis_name}{Used in file names which area created.}
-
 \item{upstream_kb}{How many kb upstream of the gene
 should SNPs be included?}
 
 \item{downstream_kb}{How many kb downstream of the gene
 should SNPs be included?}
-
-\item{genome_ref_path}{Path to the folder containing the 1000
-genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
 }
 \value{
 Nothing returned but sends error if there is a fault
@@ -37,11 +30,5 @@ with the arguments.
 \description{
 This code was functonalised because it is called by both baseline
 and conditional analysis.
-}
-\examples{
-check_inputs_to_magma_celltype_analysis(
-    ctd, gwas_sumstats_path, analysis_name, upstream_kb,
-    downstream_kb, genome_ref_path
-)
 }
 \keyword{internal}

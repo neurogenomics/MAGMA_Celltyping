@@ -21,6 +21,9 @@ plot_celltype_associations(
 \link[MAGMA.Celltyping]{calculate_celltype_associations} or
 \link[MAGMA.Celltyping]{calculate_conditional_celltype_associations}.}
 
+\item{ctd}{Cell type data structure containing
+\code{specificity_quantiles}.}
+
 \item{useSignificanceLine}{TRUE or FALSE. Should their be a vertical
 line marking bonferroni signifiance?}
 

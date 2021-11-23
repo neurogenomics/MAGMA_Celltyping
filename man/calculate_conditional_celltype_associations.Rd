@@ -6,15 +6,14 @@
 \usage{
 calculate_conditional_celltype_associations(
   ctd,
+  ctd_species = "mouse",
   gwas_sumstats_path = NULL,
   magma_dir = NULL,
   analysis_name = "MainRun",
   prepare_ctd = TRUE,
   upstream_kb = 35,
   downstream_kb = 10,
-  genome_ref_path,
   controlledAnnotLevel = 1,
-  ctd_species = "mouse",
   controlTopNcells = NA,
   controlledCTs = NA,
   EnrichmentMode = "Linear",
@@ -26,7 +25,13 @@ calculate_conditional_celltype_associations(
 \item{ctd}{Cell type data structure containing
 \code{specificity_quantiles}.}
 
+\item{ctd_species}{Species name relevant to the cell type data.
+See \link[EWCE]{list_species} for all available species.}
+
 \item{gwas_sumstats_path}{File path of the summary statistics file.}
+
+\item{magma_dir}{Path to folder containing the
+pre-computed MAGMA GWAS files (\emph{.gsa.raw}and \emph{.gsa.out}).}
 
 \item{analysis_name}{Used in file names which area created.}
 
@@ -39,13 +44,7 @@ should SNPs be included?}
 \item{downstream_kb}{How many kb downstream of the gene
 should SNPs be included?}
 
-\item{genome_ref_path}{Path to the folder containing the 1000
-genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
-
 \item{controlledAnnotLevel}{Which annotation level should be controlled for.}
-
-\item{ctd_species}{Species name relevant to the cell type data.
-See \link[EWCE]{list_species} for all available species.}
 
 \item{controlTopNcells}{How many of the most significant cell types at
 that annotation level should be controlled for?}
@@ -62,7 +61,8 @@ pre-existing results files are detected.}
 \item{verbose}{Print messages.}
 }
 \value{
-File path for the genes.out file
+Conditional enrichment results,
+ or \code{NULL} is no results were significant.
 }
 \description{
 Assumes that you have already run \link[MAGMA.Celltyping]{map_snps_to_genes}.
@@ -77,7 +77,8 @@ magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
 #### Run pipeline ####
 ctAssocs <- MAGMA.Celltyping::calculate_conditional_celltype_associations(
     ctd = ctd,
-    ctd_levels = 1,
+    controlledAnnotLevel = 1,
+    controlTopNcells = 1,
     magma_dir = magma_dir,
     ctd_species = "mouse") 
 }

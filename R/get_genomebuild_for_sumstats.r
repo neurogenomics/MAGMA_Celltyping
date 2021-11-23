@@ -10,10 +10,14 @@
 #' @return Either 'GRCh37' or 'GRCh38'
 #'
 #' @examples
-#' genome_build <- get_genomebuild_for_sumstats(gwas_sumstats_path)
+#' \dontrun{
+#' path <- MAGMA.Celltyping::get_example_gwas()
+#' genome_build <- MAGMA.Celltyping::get_genomebuild_for_sumstats(path = path)
+#' }
 #' @export
 #' @importFrom utils read.table
 get_genomebuild_for_sumstats <- function(path) {
+    .Deprecated("MungeSumstats::format_sumstats")
     msg <- paste0(
         "FUNCTION DEPRECATED: Our lab have created a robust ",
         "bioconductor package for ",
@@ -23,6 +27,7 @@ get_genomebuild_for_sumstats <- function(path) {
         "advise using MungeSumstats instead!"
     )
     message(msg)
+
     # Get first 20 lines of sumstats
     topLines <- utils::read.table(path,
         nrows = 30000,

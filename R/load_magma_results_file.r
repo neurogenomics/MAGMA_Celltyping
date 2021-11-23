@@ -3,7 +3,7 @@
 #' Convenience function which just does a little formatting to make 
 #' it easier to use.
 #'
-#' @param path Path to a .gcov.out file (if EnrichmentMode=='Linear')
+#' @param path Path to a .gcov.out file (if \code{EnrichmentMode=='Linear'}).
 #'  or .sets.out (if EnrichmentMode=='Top 10\%').
 #' @param genesOutCOND [Optional] If the analysis controlled for another GWAS, 
 #' then this is included as a column. Otherwise the column is \code{NA}.
@@ -11,37 +11,27 @@
 #' (Default: \code{'Linear'}).
 #' @param ControlForCT [Optional] May be an internal argument. 
 #' We suggest ignoring or take a look at the code to figure it out.
-#'
+#' @inheritParams calculate_celltype_associations
+#' @inheritParams calculate_celltype_enrichment_limma
 #' @return Contents of the .gcov.out file.
-#'
-#' @examples
-#' \dontrun{
-#' ctd <- ewceData::ctd()
-#' res <- MAGMA.Celltyping::load_magma_results_file(
-#'     path = "Raw/adhd_formtcojo.txt.NEW.10UP.1DOWN.gcov.out",
-#'     annotLevel = 1,
-#'     ctd = ctd
-#' )
-#' } 
-#' @export
-#' @importFrom dplyr rename setdiff
-#' @importFrom utils read.csv read.table write.csv
-#' @importFrom rlang .data
-#' @importFrom purrr modify_at
+#' 
+#' @keywords internal 
 load_magma_results_file <- function(path,
                                     annotLevel,
                                     ctd,
                                     genesOutCOND = NA,
                                     EnrichmentMode = "Linear",
                                     ControlForCT = "BASELINE") {
-    # Check EnrichmentMode has correct values
+    requireNamespace("utils")
+    requireNamespace("dplyr")
+    #### Avoid confusing checks ####
+    VARIABLE <- NGENES <- NULL;
+    #### Check EnrichmentMode has correct values ####
     check_enrichment_mode(EnrichmentMode = EnrichmentMode)
-
-    # Check the file has appropriate ending given EnrichmentMode
+    #### Check the file has appropriate ending given EnrichmentMode ####
     if (EnrichmentMode == "Linear" && length(grep(".gsa.out$", path)) == 0) {
         stop("If EnrichmentMode=='Linear' then path must end in '.gsa.out'")
     }
-
     res <- utils::read.table(path, stringsAsFactors = FALSE)
     colnames(res) <- as.character(res[1, ])
     res$level <- annotLevel
@@ -142,13 +132,12 @@ load_magma_results_file <- function(path,
     res$CONTROL_label <- paste(ControlForCT, collapse = ",")
     res$log10p <- log(res$P, 10)
     res$genesOutCOND <- paste(genesOutCOND, collapse = " | ")
-    res$EnrichmentMode <- EnrichmentMode
-    # res = res %>% dplyr::rename(Celltype=COVAR)
-    res <- res %>% dplyr::rename(Celltype = .data$VARIABLE)
-
+    res$EnrichmentMode <- EnrichmentMode 
     res <- res %>%
-        dplyr::rename(OBS_GENES = .data$NGENES) %>%
-        purrr::modify_at(c("SET"), ~NULL)
+        dplyr::rename(Celltype = VARIABLE,
+                      OBS_GENES = NGENES) #%>%
+        # purrr::modify_at(c("SET"), ~NULL)
+    res$SET <- NULL
     res <- res[, c(
         "Celltype", "OBS_GENES", "BETA", "BETA_STD",
         "SE", "P", "level", "Method", "GCOV_FILE",

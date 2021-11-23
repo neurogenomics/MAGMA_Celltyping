@@ -7,14 +7,16 @@
 #' 
 #' @return col_headers The new column headers for the sumstats file
 #'
-#' @examples
-#' path <- MAGMA.Celltyping::get_example_gwas(trait = "educational_attainment")
-#' new_path <- MAGMA.Celltyping::format.sumstats.for.magma(path)
+#' @source 
+#' \code{
+#' path <- MAGMA.Celltyping::get_example_gwas()
+#' new_path <- MAGMA.Celltyping:::format.sumstats.for.magma(path)
+#' }
 #' 
 #' @export
 #' @importFrom data.table fread fwrite setcolorder 
 #' @importFrom utils read.table 
-format.sumstats.for.magma <- function(path) {
+format_sumstats_for_magma <- function(path) {
     .Deprecated("MungeSumstats::format_sumstats")
     msg <- paste0(
         "FUNCTION DEPRECATED: Our lab have created a robust ",
@@ -27,11 +29,10 @@ format.sumstats.for.magma <- function(path) {
         "ise using it instead!"
     )
     message(msg)
-    # Checking if the file exists should happen first
+    #### Checking if the file exists should happen first ####
     if (!file.exists(path)) {
         stop("Path to GWAS sumstats is not valid")
     }
-
     # This almost surely modifies the file (since most sumstats 
     # from different studies are differently formatted), 
     #so it makes more sense to just make a temporary file <tmp>, 
@@ -41,7 +42,7 @@ format.sumstats.for.magma <- function(path) {
     writeLines(sumstats_file, con = tmp)
     path <- tmp
 
-    # Ensure that tabs separate rows
+    #### Ensure that tabs separate rows ####
     row_of_data <- strsplit(sumstats_file[2], "\t")[[1]]
     if (length(row_of_data) == 1) {
         if (grep(" ", row_of_data) == 1) {
@@ -55,7 +56,7 @@ format.sumstats.for.magma <- function(path) {
         }
     }
 
-    sumstats_file[1] <- standardise.sumstats.column.headers_crossplatform(
+    sumstats_file[1] <- standardise.sumstats.column.headers.crossplatform(
         sumstats_file[1])
     col_headers <- sumstats_file[1]
     col_headers <- strsplit(col_headers, "\t")[[1]]
@@ -108,7 +109,7 @@ format.sumstats.for.magma <- function(path) {
         }
 
         # Restandardise in case the joined column headers were unusual
-        sumstats_file[1] <- standardise.sumstats.column.headers_crossplatform(sumstats_file[1])
+        sumstats_file[1] <- standardise.sumstats.column.headers.crossplatform(sumstats_file[1])
         col_headers <- strsplit(sumstats_file[1], "\t")[[1]]
     }
 

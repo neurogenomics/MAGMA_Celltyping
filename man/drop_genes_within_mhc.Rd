@@ -14,13 +14,13 @@ MAGMA website (e.g. NCBI37.3.gene.loc).}
 loc file with MHC removed.}
 }
 \value{
-NULL (the output is written to the filepath provided as an argument)
+Null (the output is written to the filepath provided as an argument).
 }
 \description{
 Drop genes within MHC
 }
 \examples{
-drop_genes_within_mhc("data/NCBI37.3.gene.loc", "data/NCBI37.3.gene.loc")
-drop_genes_within_mhc("data/NCBI38.gene.loc", "data/NCBI38.gene.loc")
-drop_genes_within_mhc("data/NCBI36.3.gene.loc", "data/NCBI36.3.gene.loc")
+gene_loc <- get_gene_loc(build = "GRCH37")
+MAGMA.Celltyping::drop_genes_within_mhc(geneLocFilePath = gene_loc,
+                                        geneLocFilePathOut = gene_loc)
 }

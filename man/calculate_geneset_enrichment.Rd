@@ -6,18 +6,24 @@
 \usage{
 calculate_geneset_enrichment(
   geneset,
-  gwas_sumstats_path,
+  gwas_sumstats_path = NULL,
+  magma_dir = NULL,
   analysis_name,
   upstream_kb = 35,
   downstream_kb = 10,
-  genome_ref_path,
-  geneset_species = "mouse"
+  geneset_species = "mouse",
+  verbose = TRUE
 )
 }
 \arguments{
-\item{geneset}{Genes which are to be tested (as HGNC / MGI symbols).}
+\item{geneset}{Genes which are to be tested. 
+Can be gene symbols (or other gene IDs) from any species listed in 
+\link[EWCE]{list_species}.}
 
 \item{gwas_sumstats_path}{File path of the summary statistics file.}
+
+\item{magma_dir}{Path to folder containing the
+pre-computed MAGMA GWAS files (\emph{.gsa.raw}and \emph{.gsa.out}).}
 
 \item{analysis_name}{Used in file names which area created.}
 
@@ -27,14 +33,15 @@ should SNPs be included?}
 \item{downstream_kb}{How many kb downstream of the gene
 should SNPs be included?}
 
-\item{genome_ref_path}{Path to the folder containing the 1000
-genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
+\item{geneset_species}{Species that the \code{geneset} came from.
+Can be any species listed in \link[EWCE]{list_species}.
+If \code{geneset_species!="human"}, the \code{geneset} will be converted
+ to 1:1 human orthologs using \link[orthogene]{convert_orthologs}.}
 
-\item{geneset_species}{Species name relevant to the genes in the
-geneset, i.e. "mouse" or "human"}
+\item{verbose}{Print messages.}
 }
 \value{
-Filepath for the genes.out file
+Filepath for the genes.out file.
 }
 \description{
 Assumes that you have already run

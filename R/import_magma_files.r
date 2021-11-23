@@ -44,7 +44,7 @@ import_magma_files <- function(save_dir = tempdir(),
                                verbose = TRUE) {
     #### Check what files are available #### 
     magma_files <- github_list_files(
-        creator = "neurogenomics",
+        user = "neurogenomics",
         repo = "MAGMA_Files_Public",
         branch = "master",
         query = paste(file_types, collapse = "|"),

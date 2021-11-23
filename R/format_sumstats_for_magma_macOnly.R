@@ -7,7 +7,7 @@
 #' 
 #' @importFrom data.table fread fwrite
 #' @keywords internal
-format.sumstats.for.magma.macOnly <- function(path) {
+format_sumstats_for_magma_macOnly <- function(path) {
     # stopper("This function is now depreciated. I stopped maintaining it in 
     # favour of the crossplatform version.")
     .Deprecated("MungeSumstats::format_sumstats") 
@@ -48,7 +48,7 @@ format.sumstats.for.magma.macOnly <- function(path) {
     if (OS == "Mac") {
         col_headers <- standardise.sumstats.column.headers(path)
     } else {
-        col_headers <- standardise.sumstats.column.headers_crossplatform(path)
+        col_headers <- standardise.sumstats.column.headers.crossplatform(path)
     }
     # Check if there are CHR and BP columns
     if (!sum(c("SNP", "BP") %in% col_headers) == 2) {

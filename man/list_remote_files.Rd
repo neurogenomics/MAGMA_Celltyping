@@ -2,7 +2,7 @@
 % Please edit documentation in R/list_remote_files.R
 \name{list_remote_files}
 \alias{list_remote_files}
-\title{List files on a remote server or website}
+\title{List files}
 \source{
 \href{https://stackoverflow.com/questions/15954463/read-list-of-file-names-from-web-into-r}{
 stackoverflow}
@@ -10,6 +10,15 @@ stackoverflow}
 \usage{
 list_remote_files(URL, pattern = "*.zip")
 }
+\arguments{
+\item{URL}{Web URL.}
+
+\item{pattern}{Search pattern passed to \link[XML]{xpathSApply}.}
+}
+\value{
+List of remote files.
+}
 \description{
 List files on a remote server or website
 }
+\keyword{internal}

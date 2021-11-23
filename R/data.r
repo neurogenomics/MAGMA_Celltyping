@@ -16,10 +16,15 @@
 
 
 #' HGNC to Entrez symbol mapping
+#' 
+#' This method uses \link[orthogene]{all_genes} and contains >1,200 more genes
+#' than \code{hgnc2entrez} due to querying a more comprehensive
+#'  and frequently updated database.
 #'
 #' @source
 #' The code to prepare the .Rda file file from the marker file is:
 #' \code{
+#' #### OLD METHOD: biomaRt ####
 #' library("biomaRt")
 #' human <- useMart(host="www.ensembl.org",
 #'                  "ENSEMBL_MART_ENSEMBL",
@@ -31,20 +36,8 @@
 #' hgnc_symbols = hgnc_symbols[!is.na(hgnc_symbols$entrez),]
 #' hgnc2entrez = hgnc_symbols
 #' usethis::use_data(hgnc2entrez,overwrite = TRUE)
-#' }
-#' @usage data("hgnc2entrez")
-"hgnc2entrez"
-
-
-#' HGNC to Entrez symbol mapping
 #' 
-#' This method uses \link[orthogene]{all_genes} and contains >1,200 more genes
-#' than \code{hgnc2entrez} due to querying a more comprehensive
-#'  and frequently updated database.
-#'
-#' @source
-#' The code to prepare the .Rda file file from the marker file is:
-#' \code{
+#' #### NEW METHOD: orthogene ####
 #' library(MAGMA.Celltyping); library(orthogene); library(dplyr);
 #' gene_map <- orthogene::all_genes(species = "human",
 #'                                  method = "gprofiler",
@@ -70,47 +63,34 @@
 "hgnc2entrez_orthogene"
  
 
-#' Example of genesOut file
-#'
-#' Obtained from \url{'/Users/natske/OneDrive - Imperial College London/GWAS_Summary_Statistics/MAGMA_Files/20016.assoc.tsv.10UP.1.5DOWN/20016.assoc.tsv.10UP.1.5DOWN.genes.out'}
-#'
-#' @source
-#' \code{
-#' genesOut = data.table::fread(
-#'     "/home/nskene/tmp_files/20016.assoc.tsv.10UP.1.5DOWN.genes.out")
-#' usethis::use_data(genesOut,overwrite = TRUE)
-#' }
-#' @usage data("genesOut")
-"genesOut"
-
-
-#' All HGNC gene symbols with ENTREZ gene IDs
-#'
-#' A dataset containing all HGNC symbols in first column,
-#' then entrez in second column.
-#'
-#' @source
-#' The code to prepare the .Rda file file from the marker file is:
-#' \code{
-#' #library("biomaRt")
-#' #listMarts(host="www.ensembl.org")
-#' #human <- useMart(host="www.ensembl.org",
-#' #"ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl")
-#' #all_hgnc_wtEntrez = getBM(attributes=c("hgnc_symbol","entrezgene"),
-#' #mart=human)
-#' download.file("ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz")
-#' # Note, 9606 is the identifier for human, use 10090 for mouse
-#' system(paste("gzip -cd gene_info.gz | awk \'BEGIN {FS=\"\t\"} $1==9606",
-#'              "{print $2 \"\t\" $3 \"\t\" $10}\' > geneInfo.txt)"))
-#'
-#' allHGNC=read.table(file="/Users/natske/geneInfo.txt",fill  = TRUE)
-#' all_hgnc_wtEntrez = allHGNC[,seq(2,1)]
-#' colnames(all_hgnc_wtEntrez) = c("hgnc_symbol","entrezgene")
-#' all_hgnc_wtEntrez = unique(all_hgnc_wtEntrez)
-#' usethis::use_data(all_hgnc_wtEntrez,overwrite = TRUE)
-#' }
-#' @usage data("all_hgnc_wtEntrez")
-"all_hgnc_wtEntrez"
+#### DEPRECATED  (replaced by hgnc2entrez_orthogene) ####
+# All HGNC gene symbols with ENTREZ gene IDs
+#
+# A dataset containing all HGNC symbols in first column,
+# then entrez in second column.
+#
+# @source
+# The code to prepare the .Rda file file from the marker file is:
+# \code{
+# #library("biomaRt")
+# #listMarts(host="www.ensembl.org")
+# #human <- useMart(host="www.ensembl.org",
+# #"ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl")
+# #all_hgnc_wtEntrez = getBM(attributes=c("hgnc_symbol","entrezgene"),
+# #mart=human)
+# download.file("ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz")
+# # Note, 9606 is the identifier for human, use 10090 for mouse
+# system(paste("gzip -cd gene_info.gz | awk \'BEGIN {FS=\"\t\"} $1==9606",
+#              "{print $2 \"\t\" $3 \"\t\" $10}\' > geneInfo.txt)"))
+#
+# allHGNC=read.table(file="/Users/natske/geneInfo.txt",fill  = TRUE)
+# all_hgnc_wtEntrez = allHGNC[,seq(2,1)]
+# colnames(all_hgnc_wtEntrez) = c("hgnc_symbol","entrezgene")
+# all_hgnc_wtEntrez = unique(all_hgnc_wtEntrez)
+# usethis::use_data(all_hgnc_wtEntrez,overwrite = TRUE)
+# }
+# @usage data("all_hgnc_wtEntrez")
+# "all_hgnc_wtEntrez"
 
 
 #' Rbfox binding genes in MGI format

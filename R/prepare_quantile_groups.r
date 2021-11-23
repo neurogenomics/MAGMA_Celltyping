@@ -6,6 +6,7 @@
 #'
 #' @param standardise Whether to run \link[EWCE]{standardise_ctd} first.
 #' Provides gene ortholog conversion.
+#' @param ... Additional arguments passed to \link[EWCE]{standardise_ctd}. 
 #' @inheritParams EWCE::standardise_ctd
 #'
 #' @return The ctd converted to \code{output_species} gene symbols

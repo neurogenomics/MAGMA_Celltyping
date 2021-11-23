@@ -19,9 +19,9 @@
 #' ctAssocs <- MAGMA.Celltyping::merge_magma_results(ctAssoc1, ctAssoc2)
 #' }
 #' @export
-merge_magma_results <- function(ctAssoc1, ctAssoc2) {
+merge_magma_results <- function(ctAssoc1,
+                                ctAssoc2) {
     ctAssoc <- list()
-
     for (annLev in seq(1,sum(names(ctAssoc1) == ""))) {
         ctAssoc[[annLev]] <- list()
         ctAssoc[[annLev]]$results <- rbind(ctAssoc1[[annLev]]$results,
@@ -41,10 +41,6 @@ merge_magma_results <- function(ctAssoc1, ctAssoc2) {
     }
     if (ctAssoc1$downstream_kb == ctAssoc2$downstream_kb) {
         ctAssoc$downstream_kb <- ctAssoc2$downstream_kb
-    }
-    if (ctAssoc1$genome_ref_path == ctAssoc2$genome_ref_path) {
-        ctAssoc$genome_ref_path <- ctAssoc2$genome_ref_path
-    }
-
+    } 
     return(ctAssoc)
 }

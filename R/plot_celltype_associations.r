@@ -17,14 +17,15 @@
 #' @param gwas_title Title to be displayed over the figure (string).
 #' @param plotLegend Should the figure legend be displayed?
 #' @param figsDir Directory where figures should be created.
+#' @inheritParams calculate_celltype_associations
 #'
 #' @return A list of ggplot objects.
 #'
 #' @examples
 #' # ctAssocs <- calculate_celltype_associations(ctd, gwas_sumstats_path)
 #' @export
-#' @import ggplot2
 #' @importFrom grDevices dev.off pdf 
+#' @importFrom gridExtra grid.arrange
 plot_celltype_associations <- function(ctAssocs,
                                        ctd, 
                                        useSignificanceLine = TRUE,
@@ -81,7 +82,7 @@ plot_celltype_associations <- function(ctAssocs,
     # Generate the plots (for each annotation level seperately)
     theme_set(ggplot2::theme_bw())
     figures <- list()
-    for (annotLevel in 1:sum(names(ctAssocs) == "")) {
+    for (annotLevel in seq_len(sum(names(ctAssocs) == "") )) {
         # SET: NEW COLUMN COMBINING METHODS or ENRICHMENT TYPES
         ctAssocs[[annotLevel]]$results$FullMethod <- 
             sprintf("%s %s", 
@@ -97,38 +98,39 @@ plot_celltype_associations <- function(ctAssocs,
                                      ctdDendro$ordered_cells))
         }
 
-        a2 <- ggplot(ctAssocs[[annotLevel]]$results, 
-                     aes_string(x = "factor(Celltype)", 
+        a2 <- ggplot2::ggplot(ctAssocs[[annotLevel]]$results, 
+                     ggplot2::aes_string(x = "factor(Celltype)", 
                                 y = "log10p",
                                 fill = "FullMethod")) +
-            scale_y_reverse() +
-            geom_bar(stat = "identity", position = "dodge") +
-            coord_flip() +
-            ylab(expression("-log"[10] * "(pvalue)")) +
-            xlab("")
+            ggplot2::scale_y_reverse() +
+            ggplot2::geom_bar(stat = "identity", position = "dodge") +
+            ggplot2::coord_flip() +
+            ggplot2::ylab(expression("-log"[10] * "(pvalue)")) +
+            ggplot2::xlab("")
         a2 <- a2 +
-            theme(legend.position = c(0.5, 0.8)) + 
-            ggtitle(gwas_title) + 
-            theme(legend.title = element_blank())
+            ggplot2::theme(legend.position = c(0.5, 0.8)) + 
+            ggplot2::ggtitle(gwas_title) + 
+            ggplot2::theme(legend.title = ggplot2::element_blank())
         if (plotLegend == FALSE) {
-            a2 <- a2 + theme(legend.position = "none")
+            a2 <- a2 + ggplot2::theme(legend.position = "none")
         }
         if (useSignificanceLine) {
             a2 <- a2 + 
-                geom_hline(
+                ggplot2::geom_hline(
                     yintercept = log(
                         as.numeric(0.05 / 
                                        ctAssocs$total_baseline_tests_performed),
                         10), colour = "black")
         }
-        theFig <- a2 + theme_bw()
+        theFig <- a2 + ggplot2::theme_bw()
 
         # If the results come from a BASELINE analysis...
         if (length(unique(ctAssocs[[1]]$results$CONTROL)) == 1) {
             if (plotDendro == TRUE) {
-                theFig <- grid.arrange(a2, ctdDendro$dendroPlot,
-                                       ncol = 2, 
-                                       widths = c(0.8, 0.2))
+                theFig <- gridExtra::grid.arrange(
+                    a2, ctdDendro$dendroPlot,
+                   ncol = 2, 
+                   widths = c(0.8, 0.2))
             }
 
             if (savePDF) {
@@ -146,16 +148,17 @@ plot_celltype_associations <- function(ctAssocs,
                 grDevices::pdf(file = fName, 
                                width = 10, 
                                height = height)
-                print(grid.arrange(a2 + theme_bw(), 
-                                   ctdDendro$dendroPlot, 
-                                   ncol = 2, widths = c(0.8, 0.2)))
+                print(gridExtra::grid.arrange(
+                    a2 + ggplot2::theme_bw(), 
+                    ctdDendro$dendroPlot, 
+                    ncol = 2, widths = c(0.8, 0.2)))
                 grDevices::dev.off()
             } else {
                 print(theFig)
             }
             # IF THE RESULTS COME FROM A CONDITIONAL ANALYSIS
         } else {
-            theFig <- theFig + facet_wrap(~CONTROL_label)
+            theFig <- theFig + ggplot2::facet_wrap(~CONTROL_label)
 
             if (savePDF) {
                 fName <- sprintf(
@@ -171,7 +174,7 @@ plot_celltype_associations <- function(ctAssocs,
                 grDevices::pdf(file = fName, 
                                width = 25,
                                height = height)
-                print(theFig + theme_bw())
+                print(theFig + ggplot2::theme_bw())
                 grDevices::dev.off()
             } else {
                 print(theFig)

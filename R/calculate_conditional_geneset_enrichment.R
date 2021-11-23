@@ -2,14 +2,13 @@
 #'
 #' Assumes that you have already run \link[MAGMA.Celltyping]{map_snps_to_genes}.
 #'
-#' @param geneset Genes which are to be tested (as HGNC / MGI symbols).
-#' @param geneset_species Species name relevant to the genes in the geneset.
 #' @param controlledAnnotLevel Annotation level of the celltypes
 #' being controlled for.
 #' @param controlledCTs Array of the celltype to be controlled for,
 #' e.g. c("Interneuron type 16","Medium Spiny Neuron).
 #' @inheritParams celltype_associations_pipeline
 #' @inheritParams calculate_celltype_associations
+#' @inheritParams calculate_geneset_enrichment
 #'
 #' @return File path for the genes.out file.
 #' 
@@ -32,18 +31,18 @@
 #' @export
 #' @importFrom data.table data.table
 #' @importFrom stats pnorm
+#' @importFrom orthogene convert_orthologs
 calculate_conditional_geneset_enrichment <- function(geneset,
                                                      ctd,
                                                      ctd_species = "mouse",
-                                                     prepare_ctd = TRUE,
                                                      controlledAnnotLevel = 1,
                                                      controlledCTs,
+                                                     prepare_ctd = TRUE,
                                                      gwas_sumstats_path = NULL,
                                                      magma_dir = NULL,
                                                      analysis_name = "MainRun",
                                                      upstream_kb = 35,
-                                                     downstream_kb = 10,
-                                                     genome_ref_path = NULL,
+                                                     downstream_kb = 10, 
                                                      geneset_species = "mouse",
                                                      verbose = TRUE
                                                     ) {
@@ -69,12 +68,7 @@ calculate_conditional_geneset_enrichment <- function(geneset,
         ctd_species <- output_species
         #### Standardise cell-type names ####
         controlledCTs <- EWCE::fix_celltype_names(celltypes = controlledCTs)
-    }
-    #### Prepare genome_ref ####
-    genome_ref_path <- get_genome_ref(
-        genome_ref_path = genome_ref_path,
-        verbose = verbose
-    )
+    } 
     #### Setup paths ####
     gwas_sumstats_path <- path.expand(gwas_sumstats_path)
     magmaPaths <- get_magma_paths(
@@ -82,7 +76,7 @@ calculate_conditional_geneset_enrichment <- function(geneset,
         upstream_kb = upstream_kb,
         downstream_kb = downstream_kb
     )
-    
+    #### Convert geneset orthologs ####
     if(geneset_species != "human"){
         gene_map <- orthogene::convert_orthologs(gene_df = geneset,
                                                  gene_output = "columns",
@@ -93,27 +87,17 @@ calculate_conditional_geneset_enrichment <- function(geneset,
         geneset <- gene_map$ortholog_gene
     } 
     ##### First, check that the genes are HGNC/MGI IDs ####
-    n_valid <- sum(
-        geneset %in% hgnc2entrez_orthogene$hgnc_symbol)
-    if ((n_valid / length(geneset)) < 0.5) {
-        stopper(
-            "<50% of the geneset are recognised HGNC symbols",
-            "with corresponding Entrez IDs.",
-            "Check that ctd_species and geneset_species are set correctly."
-        )
-    }
-    ### all_hgnc_wtEntrez is a built-in dataset ####
-    geneset_entrez <- hgnc2entrez_orthogene[
-        hgnc2entrez_orthogene$hgnc_symbol %in% geneset,
+    check_entrez_genes(geneset = geneset)
+    ### hgnc2entrez_orthogene is a built-in dataset ####
+    geneset_entrez <- {{hgnc2entrez_orthogene}}[
+        {{hgnc2entrez_orthogene}}$hgnc_symbol %in% geneset,
     ]$entrez
     #### Check for errors in arguments ####
     check_inputs_to_magma_celltype_analysis(
         ctd = ctd,
         gwas_sumstats_path = gwas_sumstats_path,
-        analysis_name = analysis_name,
         upstream_kb = upstream_kb,
-        downstream_kb = downstream_kb,
-        genome_ref_path = genome_ref_path
+        downstream_kb = downstream_kb
     )
     #### Check controlled cell type names ####
     check_controlledCTs(ctd = ctd,

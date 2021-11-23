@@ -6,7 +6,21 @@
 \usage{
 check_controlledCTs(ctd, controlledCTs, controlledAnnotLevel)
 }
+\arguments{
+\item{ctd}{Cell type data structure containing
+\code{specificity_quantiles}.}
+
+\item{controlledCTs}{Array of the celltype to be controlled for,
+e.g. c("Interneuron type 16","Medium Spiny Neuron).}
+
+\item{controlledAnnotLevel}{Annotation level of the celltypes
+being controlled for.}
+}
+\value{
+Null output.
+}
 \description{
 Check the cell types in 'controlledCT' exist
 at the relevant annotation level.
 }
+\keyword{internal}

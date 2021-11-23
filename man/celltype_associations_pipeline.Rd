@@ -10,7 +10,6 @@ celltype_associations_pipeline(
   ctd_name,
   ctd_species = "mouse",
   magma_dirs,
-  genome_ref_path = NULL,
   run_linear = TRUE,
   run_top10 = TRUE,
   run_conditional = FALSE,
@@ -38,13 +37,10 @@ iterate the enrichment analysis over.}
 \item{ctd_species}{Species name relevant to the cell type data.
 See \link[EWCE]{list_species} for all available species.}
 
-\item{magma_dirs}{Names of folders containing the
-pre-computed MAGMA GWAS files.
+\item{magma_dirs}{Path to folders containing the
+pre-computed MAGMA GWAS files (\emph{.gsa.raw}and \emph{.gsa.out}).
 \emph{NOTE}: Files within these folders must have the same naming scheme
 as the folders themselves.}
-
-\item{genome_ref_path}{Path to the folder containing the 1000
-genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
 
 \item{run_linear}{Run in linear mode.}
 

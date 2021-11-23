@@ -4,6 +4,8 @@
 #' \link[MAGMA.Celltyping]{map_snps_to_genes}.
 #'
 #' @param gwas_sumstats_path File path of the summary statistics file.
+#' @param magma_dir Path to folder containing the
+#' pre-computed MAGMA GWAS files (\emph{.gsa.raw}and \emph{.gsa.out}).
 #' @param analysis_name Used in file names which area created.
 #' @param prepare_ctd Whether to run
 #' \link[MAGMA.Celltyping]{prepare_quantile_groups} on the \code{ctd} first.
@@ -20,9 +22,7 @@
 #' ctd <- ewceData::ctd()
 #' 
 #' #### Prepare GWAS MAGMA data ####
-#' magma_dir <- MAGMA.Celltyping::import_magma_files(
-#'     ids = "ieu-a-298",
-#'     return_dir = TRUE)
+#' magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
 #'     
 #' #### Run pipeline ####
 #' ctAssocs <- MAGMA.Celltyping::calculate_celltype_associations(
@@ -41,7 +41,6 @@ calculate_celltype_associations <- function(ctd,
                                             prepare_ctd = TRUE,
                                             upstream_kb = 35,
                                             downstream_kb = 10,
-                                            genome_ref_path = NULL, 
                                             genesOutCOND = NA,
                                             EnrichmentMode = "Linear",
                                             force_new = FALSE,
@@ -69,12 +68,7 @@ calculate_celltype_associations <- function(ctd,
             verbose = verbose
         )
         ctd_species <- output_species
-    }
-    #### Prepare genome_ref ####
-    genome_ref_path <- get_genome_ref(
-        genome_ref_path = genome_ref_path,
-        verbose = verbose
-    )
+    } 
     #### Setup paths ####
     gwas_sumstats_path <- path.expand(gwas_sumstats_path)
     magmaPaths <- get_magma_paths(
@@ -85,13 +79,11 @@ calculate_celltype_associations <- function(ctd,
     #### Check for errors in arguments ####
     check_inputs_to_magma_celltype_analysis(
         ctd = ctd,
-        gwas_sumstats_path = gwas_sumstats_path,
-        analysis_name = analysis_name,
+        gwas_sumstats_path = gwas_sumstats_path, 
         upstream_kb = upstream_kb,
-        downstream_kb = downstream_kb,
-        genome_ref_path = genome_ref_path
+        downstream_kb = downstream_kb
     )
-
+    #### Iterate over each CTD level ####
     output <- list()
     for (annotLevel in ctd_levels) {
         #### Prepare output list ####
@@ -104,7 +96,7 @@ calculate_celltype_associations <- function(ctd,
         geneCovarFile <- NULL
         messager(path,v=verbose)
 
-        if ((!file.exists(path)) | force_new) {
+        if ((!file.exists(path)) || force_new) {
             messager("Running MAGMA:",EnrichmentMode,"mode", v = verbose) 
             if (EnrichmentMode == "Linear") {
                 # First match quantiles to the genes in the genes.out file...
@@ -243,6 +235,5 @@ calculate_celltype_associations <- function(ctd,
     output$analysis_name <- analysis_name
     output$upstream_kb <- upstream_kb
     output$downstream_kb <- downstream_kb
-    output$genome_ref_path <- genome_ref_path
     return(output)
 }

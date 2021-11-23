@@ -1,6 +1,6 @@
-#' Create gene covar file
+#' Create gene covariance file
 #'
-#' The gene covar file is the input to MAGMA for the
+#' The gene covariannce (covar) file is the input to MAGMA for the
 #' celltype association analysis.
 #' This code was functonalised because it is called by both
 #' baseline and conditional analysis.
@@ -12,24 +12,30 @@
 #' should be constructed
 #' @param ctd_species Species name relevant to the cell type data,
 #'  i.e. "mouse" or "human"
-#' @param genesOutCOND [Optional] Path to a genes.out file to condition on.
-#' Used if you want to condition on a different GWAS.
+#' @param genesOutCOND [Optional] Path to a \emph{genes.out}
+#'  file to condition on. Used if you want to condition on a different GWAS.
 #'
 #' @source
 #' \code{
 #' #### Example usage ####
 #' ctd <- ewceData::ctd()
-#' genesCovarFilePath <- MAGMA.Celltyping:::create_gene_covar_file(
+#' genesOutFile <- MAGMA.Celltyping::import_magma_files(
+#'     ids = "ieu-a-298",
+#'     file_types = ".genes.out$",
+#'     return_dir = FALSE)
+#'
+#' genesCovarFilePath <- create_gene_covar_file(
 #'     genesOutFile = genesOutFile,
 #'     ctd = ctd,
 #'     annotLevel = 1,
 #'     ctd_species = "mouse")
 #' }
 #'
-#' @return Filepath for the gene covar file
+#' @return File path for the gene covar file.
 #'
 #' @keywords internal
 #' @importFrom utils read.table
+#' @importFrom dplyr %>% rename
 create_gene_covar_file <- function(genesOutFile,
                                    ctd,
                                    annotLevel,
@@ -54,7 +60,7 @@ create_gene_covar_file <- function(genesOutFile,
 
     # If the analysis is being run conditionally on another GWAS
     if (!is.na(genesOutCOND[1])) {
-        for (i in 1:length(genesOutCOND)) {
+        for (i in seq_len(length(genesOutCOND))) {
             genesOutCOND_data <- read.table(
                 file = genesOutCOND[i],
                 stringsAsFactors = FALSE
@@ -64,11 +70,11 @@ create_gene_covar_file <- function(genesOutFile,
             colnames(genesOutCOND_data)[1] <- "entrezgene"
 
             ## Expand the entrez definitions to include other entrez symbols
-            ## matching the relevant gene symbols.
-            data(all_hgnc_wtEntrez)
-            colnames(all_hgnc_wtEntrez)[1] <- "human.symbol"
+            ## matching the relevant gene symbols.  
             genesOutCOND_data2 <- merge(
-                x = all_hgnc_wtEntrez,
+                x = {{hgnc2entrez_orthogene}} %>% 
+                    dplyr::rename(hgnc_symbol = human.symbol,
+                                  entrezgene = entrez),
                 y = genesOutCOND_data,
                 by = "entrezgene"
             )[, c(1, 3)]

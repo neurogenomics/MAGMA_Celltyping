@@ -2,6 +2,12 @@
 #' 
 #' Check the cell types in 'controlledCT' exist
 #' at the relevant annotation level.
+#' 
+#' @inheritParams calculate_conditional_geneset_enrichment
+#' 
+#' @return Null output.
+#' 
+#' @keywords internal
 check_controlledCTs <- function(ctd,
                                 controlledCTs,
                                 controlledAnnotLevel){

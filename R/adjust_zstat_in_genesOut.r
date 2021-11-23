@@ -39,9 +39,13 @@ adjust_zstat_in_genesOut <- function(ctd,
                                      output_species = output_species,
                                      ...)
     } 
+    ## Doesn't matter which CTD level we use since we're only using 
+    ## it to get the names of all genes 
+    ## (which should be identicaly across levels)
     allGenes <- unname(rownames(ctd[[1]]$specificity))
     #### Load the MAGMA data ####
-    magma <- utils::read.table(magma_GenesOut_file,
+    magma <- utils::read.table(
+        magma_GenesOut_file,
         stringsAsFactors = FALSE,
         header = TRUE,
         check.names = FALSE

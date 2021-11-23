@@ -13,6 +13,4 @@ Save SNP_LOC_DATA to package data
 Build data table with RSID / CHR / BP / GenomeBuild
 for all Hapmap3 SNPs in GRCh37 and GRCh38.
 }
-\examples{
-# build_snp_location_tables()
-}
+\keyword{internal}

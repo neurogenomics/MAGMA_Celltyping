@@ -49,6 +49,9 @@ merge_results <- function(MAGMA_results,
                            method = "fdr",
                            save_dir = tempdir(),
                            verbose = TRUE) {
+    #### Avoid confusing checks ####
+    Celltype <- P <- FDR <- NULL;
+    #### Iterate ####
     merged_results <- lapply(names(MAGMA_results), function(nm) {
         cbind(
             GWAS = stringr::str_split(nm, ".annotated")[[1]][1],

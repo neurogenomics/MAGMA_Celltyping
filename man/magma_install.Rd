@@ -16,9 +16,8 @@ magma_install(dest_dir = NULL, upgrade = FALSE, verbose = TRUE)
 \item{dest_dir}{Folder in which to install MAGMA.}
 
 \item{verbose}{Print messages.}
-
-\item{version}{Which version of MAGMA to install.}
 }
 \description{
-Install the MAGMA command line tool
+Checks whether MAGMA is currently installed, and if not, 
+tries to automatically install it.
 }

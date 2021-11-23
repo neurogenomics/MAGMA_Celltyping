@@ -35,9 +35,8 @@ should SNPs be included?}
 
 \item{N}{What is the N number for this GWAS? That is cases + controls.}
 
-\item{genome_ref_path}{Path to the folder containing the
-1000 genomes .bed files (which can be downloaded from 
-\href{https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip}{here}).}
+\item{genome_ref_path}{Path to the folder containing the 1000
+genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}
 
 \item{population}{Which population subset of the genome reference
 to include.

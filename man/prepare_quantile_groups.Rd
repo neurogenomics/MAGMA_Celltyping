@@ -61,6 +61,8 @@ See \link[EWCE]{list_species} for all available species.}
 \item{verbose}{Print messages.
 Set \code{verbose=2} if you want to print all messages
  from internal functions as well.}
+
+\item{...}{Additional arguments passed to \link[EWCE]{standardise_ctd}.}
 }
 \value{
 The ctd converted to \code{output_species} gene symbols

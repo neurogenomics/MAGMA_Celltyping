@@ -3,6 +3,9 @@ test_that("celltype_associations_pipeline works", {
     ## MAGMA.Celltyping, so this contributes a lot to test coverage
     
     #### Import precomputed MAGMA files ####
+    ## MAGMA files were precomputed using the following steps:
+    ## 1. MungeSumstats::import_sumstats()
+    ## 2. MAGMA.Celltyping::map_snps_to_genes()
     ids <- c("ieu-a-298",
              "ukb-b-6548")
     magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = ids) 
@@ -37,8 +40,9 @@ test_that("celltype_associations_pipeline works", {
                 all(nms %in% names(res[[d]])))
             #### Check that both elements are present: ctAssocsLinear####
             lvl_res <- res[[d]]$ctAssocsLinear[[lvl]] 
-            testthat::expect_true(
-                all(names(lvl_res) == c("geneCovarFile","results")))
+            testthat::expect_true(!is.null(lvl_res))
+            testthat::expect_true(names(lvl_res)[1] == "geneCovarFile" &
+                                  names(lvl_res)[2] == "results")
             ##### Check result shave all the same celltype names ####
             ## (after standardization)
             fixed_celltypes <- EWCE::fix_celltype_names(

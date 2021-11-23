@@ -12,12 +12,15 @@
 #'
 #' @keywords internal
 #' @importFrom dplyr %>% rename
+#' @importFrom orthogene convert_orthologs map_genes
 map_specificity_to_entrez <- function(ctd,
                                       annotLevel,
                                       ctd_species,
                                       return_ctd = FALSE,
                                       use_saved = TRUE,
                                       verbose = TRUE) {
+    #### Avoid confusing checks ####
+    genes <- input <- target <- NULL;
     # Because sumstats use entrez genes & ctd uses
     # gene symbols, match entrez-->symbols
     messager("Mapping gene symbols in specificity quantiles matrix",

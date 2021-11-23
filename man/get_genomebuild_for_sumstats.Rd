@@ -19,5 +19,8 @@ Evaluate which genome build matches the SNP locations from
 the sum stats file.
 }
 \examples{
-genome_build <- get_genomebuild_for_sumstats(gwas_sumstats_path)
+\dontrun{
+path <- MAGMA.Celltyping::get_example_gwas()
+genome_build <- MAGMA.Celltyping::get_genomebuild_for_sumstats(path = path)
+}
 }

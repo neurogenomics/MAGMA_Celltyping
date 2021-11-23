@@ -1,18 +1,19 @@
 test_that("create_top10percent_genesets_file works", {
-    genesOutFile <- tempfile(fileext = ".genes.out")
+    
     ctd <- ewceData::ctd()
     annotLevel <- 1
-    data.table::fwrite(
-        x = MAGMA.Celltyping::genesOut,
-        file = genesOutFile,
-        sep = "\t"
-    )
+    #### Prepare GWAS MAGMA data ####
+    magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298",
+                                                      file_types = ".genes.out",
+                                                      return_dir = FALSE)
 
-    geneSetsFilePath <- MAGMA.Celltyping:::create_top10percent_genesets_file(
-        genesOutFile = genesOutFile,
+    ctd <- MAGMA.Celltyping::prepare_quantile_groups(ctd = ctd)
+    geneSetsFilePath <- MAGMA.Celltyping::create_top10percent_genesets_file(
+        genesOutFile = myGenesOut,
         ctd = ctd,
         annotLevel = annotLevel,
-        ctd_species = "mouse"
+        ## Mapped to human orths by prepare_quantile_groups
+        ctd_species = "human"
     )
     geneSets <- readLines(geneSetsFilePath)
     #### One line per cell-type ####
@@ -20,16 +21,11 @@ test_that("create_top10percent_genesets_file works", {
         length(geneSets),
         ncol(ctd[[annotLevel]]$mean_exp)
     )
-    #### That cell-type names are recoverable ####
-    # NOTE! celltype names with spaces are problematic since spaces are used
-    # as separators between genes in this file type.
+    #### That cell-type names are recoverable #### 
     celltypes <- unlist(lapply(geneSets, function(x) {
         strsplit(x, " ")[[1]][1]
     }))
-    testthat::expect_false(
-        all(celltypes %in% colnames(ctd[[annotLevel]]$mean_exp))
-    )
     testthat::expect_true(
-        all(celltypes %in% gsub(" ", "_", colnames(ctd[[annotLevel]]$mean_exp)))
-    )
+        all(celltypes %in% colnames(ctd[[annotLevel]]$mean_exp))
+    ) 
 })

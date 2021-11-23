@@ -1,13 +1,14 @@
-
 #' Get genes driving significant \pkg{MAGMA_celltyping} results
 #'
 #' @param ctd CellTypeData object
 #' @param ctd_species Either 'human' or 'mouse'
 #' @param magma_res Merged results from \code{MAGMA.Celltyping::merge_results}.
 #' @param fdr_thresh FDR threshold for \code{magma_res}.
-#' @param GenesOut_dir Folder to search for \emph{.genes.out} files implicated in \code{magma_res}.
+#' @param GenesOut_dir Folder to search for \emph{.genes.out} 
+#' files implicated in \code{magma_res}.
 #' @param n_genes Max number of drive genes to return per cell-type enrichment.
-#' @param spec_deciles Which \emph{specificity_proportion} deciles to include when calculating driver genes.
+#' @param spec_deciles Which \emph{specificity_proportion} deciles to 
+#' include when calculating driver genes.
 #' (10 = most specific).
 #'
 #' @export
@@ -18,7 +19,9 @@ get_driver_genes <- function(ctd,
                              GenesOut_dir = "./",
                              n_genes = 100,
                              spec_deciles = 10) {
-    ### Find .genes.out files for sig GWAS
+    #### Avoid confusing checks ####
+    FDR <- NULL;
+    #### Find .genes.out files for sig GWAS ####
     message("Filtering @ FDR<", fdr_thresh)
     sig_res <- subset(magma_res, FDR < fdr_thresh)
     magma_GenesOut_files <- find_GenesOut_files(
@@ -29,7 +32,7 @@ get_driver_genes <- function(ctd,
         stringr::str_split(basename(magma_GenesOut_files), "[.]")[[1]][1],
         magma_GenesOut_files
     )
-    #### iterate over sig GWAS
+    #### iterate over sig GWAS ####
     GENESETS <- lapply(magma_GenesOut_files, function(genesout,
                                                       .ctd_species = ctd_species) {
         message("+ Finding driver genes for: ", gwas_dict[[genesout]], " GWAS x CTD")
@@ -40,7 +43,7 @@ get_driver_genes <- function(ctd,
         )
         lapply(unique(sig_res$level), function(annotLevel) {
             message("+ Level ", annotLevel)
-            res <- calculate_celltype_enrichment_probabilities_wtLimma(
+            res <- calculate_celltype_enrichment_limma(
                 magmaAdjZ = magmaAdjZ,
                 ctd = ctd,
                 annotLevel = annotLevel,
