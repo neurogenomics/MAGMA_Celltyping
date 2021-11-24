@@ -203,7 +203,7 @@ jobs:
           ### hrbrthemes necessary to avoid ggplot2 errors on MacOS: https://stackoverflow.com/a/66423481/13214824
           
           message(paste('****', Sys.time(), 'installing rcmdcheck and BiocCheck ****'))
-          install.packages(c("rcmdcheck", "BiocCheck", "rmarkdown", repos = gha_repos)
+          install.packages(c("rcmdcheck", "BiocCheck", "rmarkdown"), repos = gha_repos)
 
           ## 1st pass at installing dependencies
           ## This pass uses AnVIL-powered fast binaries
