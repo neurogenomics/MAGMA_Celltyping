@@ -30,7 +30,7 @@ Depends: R(>= 4.0.0)
 VignetteBuilder: knitr
 BiocViews:
 Imports:
-    EWCE (>= 1.3.2),
+    EWCE (>= 1.3.1),
     ewceData, 
     MungeSumstats,
     orthogene,
@@ -68,6 +68,8 @@ Suggests:
     piggyback,
     DT,
     biomaRt
+Remotes:
+    github::NathanSkene/EWCE@bschilder_dev
 SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
 biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
         Genetics, scRNASeq, Single Cell RNAseq,
