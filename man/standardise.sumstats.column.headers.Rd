@@ -23,7 +23,9 @@ This function does not check that all the required column headers
 The amended header is written directly back into the file.
 }
 \examples{
+\dontrun{ 
 path <- MAGMA.Celltyping::get_example_gwas()
 col_headers <- MAGMA.Celltyping::standardise.sumstats.column.headers(
     path = path)
+}
 }

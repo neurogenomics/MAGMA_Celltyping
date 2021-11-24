@@ -89,8 +89,8 @@ calculate_conditional_geneset_enrichment <- function(geneset,
     ##### First, check that the genes are HGNC/MGI IDs ####
     check_entrez_genes(geneset = geneset)
     ### hgnc2entrez_orthogene is a built-in dataset ####
-    geneset_entrez <- {{hgnc2entrez_orthogene}}[
-        {{hgnc2entrez_orthogene}}$hgnc_symbol %in% geneset,
+    geneset_entrez <- MAGMA.Celltyping::hgnc2entrez_orthogene[
+        MAGMA.Celltyping::hgnc2entrez_orthogene$hgnc_symbol %in% geneset,
     ]$entrez
     #### Check for errors in arguments ####
     check_inputs_to_magma_celltype_analysis(

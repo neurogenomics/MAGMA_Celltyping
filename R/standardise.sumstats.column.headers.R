@@ -14,9 +14,11 @@
 #' into the summary statistics file)
 #'
 #' @examples
+#' \dontrun{ 
 #' path <- MAGMA.Celltyping::get_example_gwas()
 #' col_headers <- MAGMA.Celltyping::standardise.sumstats.column.headers(
 #'     path = path)
+#' }
 #' @export
 standardise.sumstats.column.headers <- function(path) {
     .Deprecated("MungeSumstats::format_sumstats")

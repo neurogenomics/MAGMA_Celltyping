@@ -38,7 +38,8 @@ get_genomebuild_for_sumstats <- function(path) {
     topLOCs <- sprintf("%s-%s-%s", topLines$SNP, topLines$CHR, topLines$BP)
     # SNP_LOC_DATA = load_snp_loc_data()
     # sub_SNP_LOC_DATA = SNP_LOC_DATA[sample(1:dim(SNP_LOC_DATA)[1],100000),]
-    sub_SNP_LOC_DATA <- MAGMA.Celltyping::sub_SNP_LOC_DATA
+    # sub_SNP_LOC_DATA <- MAGMA.Celltyping::sub_SNP_LOC_DATA
+    sub_SNP_LOC_DATA <- get_sub_SNP_LOC_DATA()
     topSNP_locs <- sub_SNP_LOC_DATA[sub_SNP_LOC_DATA$SNP %in% topLines$SNP, ]
     topSNP_locs$locs <- sprintf(
         "%s-%s-%s",

@@ -48,7 +48,7 @@ results_heatmap <- function(merged_results,
                                 "MAGMA_Celltyping.heatmap.jpg")
                             ) { 
     #### Avoid confusing checks ####
-    FFDR <- NULL;
+    FDR <- NULL;
     #### Check args #####
     if (!"GWAS" %in% colnames(merged_results)) {
         merged_results$GWAS <- merged_results$dataset

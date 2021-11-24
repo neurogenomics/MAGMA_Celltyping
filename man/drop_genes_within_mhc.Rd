@@ -20,7 +20,7 @@ Null (the output is written to the filepath provided as an argument).
 Drop genes within MHC
 }
 \examples{
-gene_loc <- get_gene_loc(build = "GRCH37")
+gene_loc <- MAGMA.Celltyping:::get_genomeLocFile(build = "GRCH37")
 MAGMA.Celltyping::drop_genes_within_mhc(geneLocFilePath = gene_loc,
                                         geneLocFilePathOut = gene_loc)
 }

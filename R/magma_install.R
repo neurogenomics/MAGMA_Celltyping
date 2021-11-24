@@ -4,10 +4,14 @@
 #' tries to automatically install it.
 #' 
 #' @param dest_dir Folder in which to install MAGMA.
+#' @param upgrade If MAGMA is already installed and is not the latest version, 
+#' should it be upgraded to the latest version? (Default: \code{FALSE}). 
 #' @param verbose Print messages.
 #' @source \href{https://ctg.cncr.nl/software/magma}{MAGMA website}
 #' @source \href{https://github.com/NathanSkene/MAGMA_Celltyping}{
 #' MAGMA.celltyping documentation}
+#' 
+#' @return Path to MAGMA executable.
 #'
 #' @export
 #' @importFrom utils unzip

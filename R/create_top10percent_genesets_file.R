@@ -10,23 +10,24 @@
 #'
 #' @return Filepath for the gene covar file
 #'
-#' @examples
+#' @source 
+#' \code{
 #' #### Prepare cell-type data ####
 #' ctd <- ewceData::ctd()
 #' 
 #' #### Prepare GWAS MAGMA data ####
-#' magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298",
+#' myGenesOut <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298",
 #'                                                   file_types = ".genes.out",
 #'                                                   return_dir = FALSE)
-#'  
 #' ctd <- MAGMA.Celltyping::prepare_quantile_groups(ctd = ctd)
-#' geneSetsFilePath <- MAGMA.Celltyping::create_top10percent_genesets_file(
+#' geneSetsFilePath <- MAGMA.Celltyping:::create_top10percent_genesets_file(
 #'     genesOutFile = myGenesOut,
 #'     ctd = ctd,
 #'     annotLevel = 1,
-#'     ## Mapped to human orths by prepare_quantile_groups
-#'     ctd_species = "human" 
+#'     ## Mapped to human orths by prepare_quantile_groups previously
+#'     ctd_species = "human"
 #' )
+#' } 
 #' @keywords internal
 #' @importFrom dplyr setdiff
 create_top10percent_genesets_file <- function(genesOutFile,

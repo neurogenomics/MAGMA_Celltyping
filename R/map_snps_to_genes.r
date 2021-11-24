@@ -26,12 +26,15 @@
 #' @return Path to the genes.out file.
 #'
 #' @examples
+#' \dontrun{
 #' path_formatted <- MAGMA.Celltyping::get_example_gwas()
 #' genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(
 #'     path_formatted = path_formatted,
 #'     genome_build = "hg19",
 #'     N = 5000)
+#' } 
 #' @export
+#' @importFrom MungeSumstats get_genome_builds
 map_snps_to_genes <- function(path_formatted,
                               genome_build = NULL,
                               upstream_kb = 35,
@@ -106,20 +109,19 @@ map_snps_to_genes <- function(path_formatted,
     }
 
     #### Determine which genome build it uses & get path to gene loc file ####
-    # gene_loc_dir <- system.file("data",package = "MAGMA.Celltyping")
     if (is.null(genome_build)) {
         genome_build <-
             MungeSumstats::get_genome_builds(sumstats_list = path_formatted,
                                              names_from_paths = TRUE)
     }
-    if (toupper(genome_build) %in% c("GRCH37","HG37","HG19")) {
-        # genomeLocFile <- sprintf("%s/NCBI37.3.gene.loc", gene_loc_dir)
+    if (toupper(genome_build) %in% c("GRCH36")) {
+        genomeLocFile <- get_genomeLocFile(build = "GRCH36")
+    } else if (toupper(genome_build) %in% c("GRCH37","HG37","HG19")) { 
         genomeLocFile <- get_genomeLocFile(build = "GRCH37")
-    } else if (toupper(genome_build) %in% c("GRCH38","HG38")) {
-        # genomeLocFile <- sprintf("%s/NCBI38.gene.loc", gene_loc_dir)
+    } else if (toupper(genome_build) %in% c("GRCH38","HG38")) { 
         genomeLocFile <- get_genomeLocFile(build = "GRCH38")
     } else {
-        stop("Genome build must be: 'GRCH37', or 'GRCH38'")
+        stop("Genome build must be: 'GRCH36', `GRCH37', or 'GRCH38'")
     }
     #### Create genes.annot ####
     message_parallel("\n==== MAGMA Step 1: Generate genes.annot file ====\n")

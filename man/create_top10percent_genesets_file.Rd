@@ -3,6 +3,25 @@
 \name{create_top10percent_genesets_file}
 \alias{create_top10percent_genesets_file}
 \title{Create gene covar file}
+\source{
+\code{
+#### Prepare cell-type data ####
+ctd <- ewceData::ctd()
+
+#### Prepare GWAS MAGMA data ####
+myGenesOut <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298",
+                                                  file_types = ".genes.out",
+                                                  return_dir = FALSE)
+ctd <- MAGMA.Celltyping::prepare_quantile_groups(ctd = ctd)
+geneSetsFilePath <- MAGMA.Celltyping:::create_top10percent_genesets_file(
+    genesOutFile = myGenesOut,
+    ctd = ctd,
+    annotLevel = 1,
+    ## Mapped to human orths by prepare_quantile_groups previously
+    ctd_species = "human"
+)
+}
+}
 \usage{
 create_top10percent_genesets_file(
   genesOutFile,
@@ -31,23 +50,5 @@ Filepath for the gene covar file
 The gene covar file is the input to MAGMA for the celltype
 association analysis. This code was functonalised
 because it is called by both baseline and conditional analysis.
-}
-\examples{
-#### Prepare cell-type data ####
-ctd <- ewceData::ctd()
-
-#### Prepare GWAS MAGMA data ####
-magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298",
-                                                  file_types = ".genes.out",
-                                                  return_dir = FALSE)
- 
-ctd <- MAGMA.Celltyping::prepare_quantile_groups(ctd = ctd)
-geneSetsFilePath <- MAGMA.Celltyping::create_top10percent_genesets_file(
-    genesOutFile = myGenesOut,
-    ctd = ctd,
-    annotLevel = 1,
-    ## Mapped to human orths by prepare_quantile_groups
-    ctd_species = "human" 
-)
 }
 \keyword{internal}

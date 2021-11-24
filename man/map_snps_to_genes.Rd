@@ -67,9 +67,11 @@ Make two external calls to MAGMA. First use it to annotate SNPs
  the gene level trait association.
 }
 \examples{
+\dontrun{
 path_formatted <- MAGMA.Celltyping::get_example_gwas()
 genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(
     path_formatted = path_formatted,
     genome_build = "hg19",
     N = 5000)
+} 
 }

@@ -41,6 +41,7 @@ create_gene_covar_file <- function(genesOutFile,
                                    annotLevel,
                                    ctd_species,
                                    genesOutCOND = NA) {
+    human.symbol <- entrez <- NULL;
     quantDat2 <- map_specificity_to_entrez(
         ctd = ctd,
         annotLevel = annotLevel,
@@ -72,7 +73,7 @@ create_gene_covar_file <- function(genesOutFile,
             ## Expand the entrez definitions to include other entrez symbols
             ## matching the relevant gene symbols.  
             genesOutCOND_data2 <- merge(
-                x = {{hgnc2entrez_orthogene}} %>% 
+                x = MAGMA.Celltyping::hgnc2entrez_orthogene %>% 
                     dplyr::rename(hgnc_symbol = human.symbol,
                                   entrezgene = entrez),
                 y = genesOutCOND_data,

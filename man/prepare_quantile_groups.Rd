@@ -74,9 +74,6 @@ in the returned CTD. This function also removes any genes
 from the CTD data which are not 1:1 orthologs with the GWAS species.
 }
 \examples{
-\dontrun{
 ctd_orig <- ewceData::ctd()
 ctd <- prepare_quantile_groups(ctd = ctd_orig)
-}
-
 }

@@ -13,11 +13,8 @@
 #' with additional quantiles matrix.
 #'
 #' @examples
-#' \dontrun{
 #' ctd_orig <- ewceData::ctd()
 #' ctd <- prepare_quantile_groups(ctd = ctd_orig)
-#' }
-#'
 #' @importFrom EWCE standardise_ctd
 #' @importFrom methods as
 #' @importFrom Matrix t
@@ -49,8 +46,11 @@ prepare_quantile_groups <- function(ctd,
     ctd <- lapply(ctd, normalise_mean_exp)
 
     #### Never actually used by MAGMA.Celltyping? #####
-    messager("Computing specificity bins.", v = verbose)
-    ctd <- lapply(ctd, bin_specificity, numberOfBins)
+    messager("Computing specificity quantiles", v = verbose)
+    ctd <- lapply(ctd, EWCE::bin_specificity_into_quantiles,
+                  numberOfBins = numberOfBins)
+    
+    # ctd = lapply(ctd, bin_expression_into_quantiles)
 
     messager("Computing specificity distance.", v = verbose)
     ctd <- lapply(ctd, use_distance_to_add_expression_level_info)

@@ -7,8 +7,9 @@
 get_genome_ref(
   genome_ref_path = NULL,
   storage_dir = tempdir(),
-  method = c("bioc", "magma"),
+  method = c("magma", "piggback"),
   population = c("eur", "afr", "amr", "eas", "sas"),
+  timeout = 60 * 5,
   verbose = TRUE
 )
 }
@@ -19,8 +20,7 @@ this file path will be returned.}
 \item{storage_dir}{Where to store genome ref.}
 
 \item{method}{Get reference genome data from the
-\href{https://ctg.cncr.nl/software/MAGMA/ref_data}{MAGMA server} (slow) or
- the Bioconductor package XXXXX.}
+\href{https://ctg.cncr.nl/software/MAGMA/ref_data}{MAGMA server} (slow).}
 
 \item{population}{Which population subset of the genome reference
 to include.
@@ -33,6 +33,9 @@ the most common GWAS subpopulation).}
 \item{"eas" : }{East Asian descent.}
 \item{"sas" : }{South Asian descent.}
 }}
+
+\item{timeout}{Number seconds to wait before ending the download
+(Default: 5 minutes).}
 
 \item{verbose}{Print messages.}
 }
