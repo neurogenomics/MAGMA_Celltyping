@@ -84,7 +84,7 @@ res <- MAGMA.Celltyping::calculate_conditional_geneset_enrichment(
     controlledCTs = "pyramidal SS",
     magma_dir = magma_dir,
     analysis_name = "Rbfox_16_pyrSS",  
-    geneset_species = "mouse",
+    geneset_species = "mouse", 
     ctd_species = "mouse")
 }
 }

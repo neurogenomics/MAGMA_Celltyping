@@ -17,7 +17,9 @@ magma_download_binary <- function(magma_url,
         exdir = gsub(".zip", "", destfile),
         overwrite = TRUE
     )
-    # if(file.exists(destfile))try({file.remove(destfile,
-    #                                           showWarnings = FALSE)})
+    # if(file.exists(destfile)){
+    #     try({file.remove(destfile,
+    #                      showWarnings = FALSE)})
+    # }
     return(destpath)
 }

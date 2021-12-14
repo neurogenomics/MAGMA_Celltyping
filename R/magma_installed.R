@@ -1,7 +1,8 @@
 magma_installed <- function(magma_x = magma_executable(),
                             verbose = TRUE) {
     #### Method 1 ###
-    installed <- system(sprintf(magma_x), ignore.stdout = TRUE) == 1
+    installed <- system(as.character(magma_x[1]),
+                        ignore.stdout = TRUE) == 1
     # #### Method 2 ####
     # try({
     #     check_magma <- system("magma", intern = TRUE)

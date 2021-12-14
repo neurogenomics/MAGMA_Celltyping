@@ -149,3 +149,19 @@
 #' }
 #' @usage data("enrichment_results")
 "enrichment_results"
+
+
+#' Stored links to MAGMA executables
+#' 
+#' Stored links to MAGMA executables in the 
+#' \href{https://ctg.cncr.nl/software/MAGMA/prog/archive/}{MAGMA archives}.
+#' 
+#' @source \href{https://ctg.cncr.nl/software/magma}{MAGMA}
+#' @source 
+#' \code{  
+#' magma_links_stored <- magma_links_query(latest_only = FALSE)
+#' usethis::use_data(magma_links_stored, overwrite = TRUE)
+#' }
+#' @usage data("magma_links_stored")
+"magma_links_stored"
+

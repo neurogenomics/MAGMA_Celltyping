@@ -31,6 +31,7 @@
 #'  to not save any results).
 #' @param force_new [Optional] Force new MAGMA analyses even if the
 #'  pre-existing results files are detected.
+#' @param nThread Number of threads to parallelise analyses across.
 #' @param version MAGMA version to use.
 #' @param verbose Print messages.
 #' @inheritParams calculate_celltype_associations
@@ -70,6 +71,7 @@ celltype_associations_pipeline <- function(ctd,
                                            controlTopNcells = 1,
                                            force_new = FALSE,
                                            save_dir = tempdir(),
+                                           nThread = 1,
                                            version = NULL,
                                            verbose = TRUE) {
     #### Check MAGMA installation ####
@@ -94,8 +96,10 @@ celltype_associations_pipeline <- function(ctd,
         ctd_species <- output_species
     } 
     #### Iterate over GWAS datasets ####
-    MAGMA_results <- lapply(magma_dirs, function(magma_dir) {
-        messager(basename(magma_dir), v = verbose)
+    MAGMA_results <- parallel::mclapply(magma_dirs, function(magma_dir) {
+        messager(basename(magma_dir),
+                 v = verbose,
+                 parallel = nThread>1)
         #### Trick downstream functions into working with only MAGMA files ####
         fake_gwas_ss <- create_fake_gwas_path(magma_dir = magma_dir,
                                               upstream_kb = upstream_kb,
@@ -201,7 +205,7 @@ celltype_associations_pipeline <- function(ctd,
             ctAssocMerged = ctAssocMerged,
             ctCondAssocs = ctCondAssocs
         ))
-    }) %>% `names<-`(basename(magma_dirs))
+    }, mc.cores = nThread) %>% `names<-`(basename(magma_dirs))
 
 
     if (!is.null(save_dir)) {

@@ -20,15 +20,10 @@
 #' @examples 
 #' ## MAGMA.Celltyping::magma_install()
 magma_install <- function(dest_dir = NULL,
-                          desired_version = "1.08b",
+                          desired_version = "latest",
                           upgrade = FALSE,
                           verbose = TRUE) {
-    
-    magma_x = magma_executable(version = desired_version,
-                               verbose = TRUE)
-    current_version <- magma_installed_version(magma_x = magma_x,
-                                               verbose = verbose)
-    is_installed <- !is.null(current_version)
+
     #### Get info on latest version ####
     latest_url <- magma_links(latest_only = TRUE,
                               verbose = FALSE)
@@ -46,6 +41,12 @@ magma_install <- function(dest_dir = NULL,
                                                 verbose = verbose)
     } 
     #### Check whether the desired version is already installed #### 
+    magma_x = magma_executable(version = desired_version,
+                               verbose = TRUE)
+    current_version <- magma_installed_version(magma_x = magma_x,
+                                               verbose = verbose)
+    is_installed <- !is.null(current_version)
+    #### If so, give a report #### 
     if (is_installed) {
         if ((current_version != desired_version) & upgrade) {
             messager("A different version of MAGMA is available.",
@@ -70,7 +71,7 @@ magma_install <- function(dest_dir = NULL,
             return(path)
         }
     }
-    
+    #### Otherwise, proceed to install the desired version ####
     if ((!is_installed) | upgrade) {
         if(is.null(dest_dir)) dest_dir <- find_install_dir(verbose = verbose) 
             messager("Installing MAGMA:", desired_version, v = verbose) 

@@ -1,7 +1,6 @@
 #' Import gene location files 
 #'
-#' Imports a file gene coordinate from its respective genome build:
-
+#' Imports a file gene coordinate from its respective genome build.
 #' 
 #' @param build Genome build. Must be one of:
 #' \itemize{

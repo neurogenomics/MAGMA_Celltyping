@@ -26,8 +26,8 @@ magma_executable <- function(exec_dir = find_install_dir(verbose=FALSE),
     if(length(magma_x)>1){
         magma_x <- magma_x[1]
         messager("Multiple MAGMA versions found.",
-                 "Using",paste0("'",basename(dirname(magma_x)),"'"),
-                 "by default.",v=verbose)
+                 paste0("'",basename(dirname(magma_x)),"'"),
+                 "is currently set as the default.",v=verbose)
     } 
     if(check_exists && !file.exists(magma_x)) {
         stop_msg <- paste("Cannot find MAGMA executable.")

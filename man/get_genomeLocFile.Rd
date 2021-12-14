@@ -49,6 +49,6 @@ default \code{TRUE}.}
 File path.
 }
 \description{
-Imports a file gene coordinate from its respective genome build:
+Imports a file gene coordinate from its respective genome build.
 }
 \keyword{internal}

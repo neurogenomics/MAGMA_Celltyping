@@ -12,7 +12,7 @@ MAGMA.celltyping documentation}
 \usage{
 magma_install(
   dest_dir = NULL,
-  desired_version = "1.08b",
+  desired_version = "latest",
   upgrade = FALSE,
   verbose = TRUE
 )
