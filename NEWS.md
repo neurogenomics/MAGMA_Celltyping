@@ -57,7 +57,8 @@ instead of having the user run them:
 increases the number of genes that can be converted. 
 * Allow all functions to accept datasets/gene lists from any species. 
 Now automatically converted to `output_species` (default: "human") using [`orthogene`](https://github.com/neurogenomics/orthogene). 
-* Create MAGMA files repository:
+* Create MAGMA files repository using various OpenGWAS datasets 
+that have been munged with `MungeSumstats`: [https://github.com/neurogenomics/MAGMA_Files_Public](MAGMA_Files_Public)
 * Added API to search and acesss MAGMA files repository: `import_magma_files`.
 * Allow all relevant functions to take only MAGMA files as input 
 (instead of requiring the GWAS summary stats); e.g. `calculate_celltype_associations(magma_dir="<folder_containing_magma_files>")`
@@ -88,6 +89,7 @@ which lets users specify which test they want to run with arguments, including:
     - `calculate_celltype_associations` (Top10% mode)
     - `calculate_conditional_celltype_associations`
 * Parallelise `celltype_associations_pipeline` across multiple cores. 
+
 
 ## Bug fixes 
 
