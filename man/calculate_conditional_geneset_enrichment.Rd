@@ -17,6 +17,7 @@ calculate_conditional_geneset_enrichment(
   upstream_kb = 35,
   downstream_kb = 10,
   geneset_species = "mouse",
+  version = NULL,
   verbose = TRUE
 )
 }
@@ -58,6 +59,8 @@ Can be any species listed in \link[EWCE]{list_species}.
 If \code{geneset_species!="human"}, the \code{geneset} will be converted
  to 1:1 human orthologs using \link[orthogene]{convert_orthologs}.}
 
+\item{version}{MAGMA version to use.}
+
 \item{verbose}{Print messages.}
 }
 \value{
@@ -67,6 +70,8 @@ File path for the genes.out file.
 Assumes that you have already run \link[MAGMA.Celltyping]{map_snps_to_genes}.
 }
 \examples{
+### UNDER CONSTRUCTION
+\dontrun{
 #### Import data ####
 ctd <- MAGMA.Celltyping::get_ctd("ctd_allKI")
 magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
@@ -81,5 +86,5 @@ res <- MAGMA.Celltyping::calculate_conditional_geneset_enrichment(
     analysis_name = "Rbfox_16_pyrSS",  
     geneset_species = "mouse",
     ctd_species = "mouse")
-
+}
 }

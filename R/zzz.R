@@ -7,21 +7,8 @@
     ))
 }
 
-.onLoad <- function(libname, pkgname) {
-    if (is.null(magma_installed_version())) {
-        dest_magma <- magma_install()
-    }
-
-    # HAD TO COMMENT OUT BELOW CODE EVEN THOUGH IT IS USEFUL
-    # BECAUSE IT CAUSES MAGMA TO THROW AN ERROR...
-    # WHICH MAKES devtools::check() FAIL
-    # else{
-    #     ret <- system2("magma","--v", stdout=TRUE, stderr=TRUE)
-    #     if(length(grep("v1.07b",ret[1]))==1){
-    #         packageStartupMessage("MAGMA succesfully loaded")
-    #     }else{
-    #         stop("MAGMA_celltyping assumes you have magma v1.07b",
-    #              "installed on the path")
-    #     }
-    # }
-}
+# .onLoad <- function(libname, pkgname) {
+#     if (is.null(magma_installed_version())) {
+#         dest_magma <- magma_install()
+#     }
+# }

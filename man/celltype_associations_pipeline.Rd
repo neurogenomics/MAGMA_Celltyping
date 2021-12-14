@@ -22,6 +22,7 @@ celltype_associations_pipeline(
   controlTopNcells = 1,
   force_new = FALSE,
   save_dir = tempdir(),
+  version = NULL,
   verbose = TRUE
 )
 }
@@ -71,6 +72,8 @@ pre-existing results files are detected.}
 
 \item{save_dir}{Folder to save results in (\code{save_dir=NULL}
 to not save any results).}
+
+\item{version}{MAGMA version to use.}
 
 \item{verbose}{Print messages.}
 }

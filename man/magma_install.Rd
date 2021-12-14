@@ -10,10 +10,17 @@
 MAGMA.celltyping documentation}
 }
 \usage{
-magma_install(dest_dir = NULL, upgrade = FALSE, verbose = TRUE)
+magma_install(
+  dest_dir = NULL,
+  desired_version = "1.08b",
+  upgrade = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{dest_dir}{Folder in which to install MAGMA.}
+
+\item{desired_version}{Desired version of MAGMA.}
 
 \item{upgrade}{If MAGMA is already installed and is not the latest version, 
 should it be upgraded to the latest version? (Default: \code{FALSE}).}
@@ -26,4 +33,7 @@ Path to MAGMA executable.
 \description{
 Checks whether MAGMA is currently installed, and if not, 
 tries to automatically install it.
+}
+\examples{
+## MAGMA.Celltyping::magma_install()
 }

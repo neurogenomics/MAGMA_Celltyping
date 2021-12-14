@@ -28,13 +28,13 @@ get_genome_ref_magma <- function(genome_ref_dir,
     messager("Unzipping file.", v = verbose) 
     utils::unzip(
         zipfile = zipfile,
-        exdir = genome_ref_dir
+        exdir = genome_ref_dir,
+        overwrite = TRUE
     )
-   # try({
-   #     if(file.exists(zipfile)){
-   #         out <- file.remove(zipfile, 
-   #                            overwrite = TRUE,
-   #                            showWarnings = FALSE)
-   #     }
-   # })
+   try({
+       if(file.exists(zipfile)){
+           out <- file.remove(zipfile,
+                              showWarnings = FALSE)
+       }
+   })
 }

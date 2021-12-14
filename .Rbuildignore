@@ -12,3 +12,4 @@
 magma.log
 Dockerfile
 ^LICENSE\.md$
+inst/hex/

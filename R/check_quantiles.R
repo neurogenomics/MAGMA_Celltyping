@@ -24,9 +24,9 @@ check_quantiles <- function(ctd,
                 " of quantile bins ",paste0("(",numberOfBins,").\n"),
                 "This may be due to an excessive sparsity or",
                 " insufficient variation in your CellTypeDataset.\n",
-                "Problematic columns:\n",
-                paste0("   - ",names(bad_cols)," = ",unname(bad_cols)," bins",
-                       collapse = "\n"),
+                # "Problematic columns:\n",
+                # paste0("   - ",names(bad_cols)," = ",unname(bad_cols)," bins",
+                #        collapse = "\n"),
                 v = TRUE,
                 parallel = TRUE)
         }

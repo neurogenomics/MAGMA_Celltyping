@@ -44,8 +44,11 @@ calculate_celltype_associations <- function(ctd,
                                             genesOutCOND = NA,
                                             EnrichmentMode = "Linear",
                                             force_new = FALSE,
+                                            version = NULL,
                                             verbose = TRUE) {
-
+    #### Check MAGMA installation ####
+    magma_check(version = version,
+                verbose = verbose)
     #### Process args ####
     check_enrichment_mode(EnrichmentMode = EnrichmentMode)
     #### Handle MAGMA Files ####
@@ -208,8 +211,9 @@ calculate_celltype_associations <- function(ctd,
                 }
             }
             #### Run MAGMA command ####
-            message_cmd(magma_cmd)
-            system(magma_cmd)
+            magma_run(cmd = magma_cmd, 
+                      version = version,
+                      verbose = verbose)
         } else {
             messager("Importing precomputed MAGMA results.", v = verbose)
         }

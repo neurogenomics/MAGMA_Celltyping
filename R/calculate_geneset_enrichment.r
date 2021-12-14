@@ -12,6 +12,7 @@
 #'  to 1:1 human orthologs using \link[orthogene]{convert_orthologs}.
 #' 
 #' @inheritParams calculate_celltype_associations
+#' @inheritParams celltype_associations_pipeline
 #'
 #' @returns Filepath for the genes.out file.
 #'
@@ -25,7 +26,11 @@ calculate_geneset_enrichment <- function(geneset,
                                          upstream_kb = 35,
                                          downstream_kb = 10,
                                          geneset_species = "mouse",
+                                         version = NULL,
                                          verbose = TRUE) {
+    #### Check MAGMA installation ####
+    magma_check(version = version,
+                verbose = verbose)
     #### Handle MAGMA Files ####
     #### Trick downstream functions into working with only MAGMA files ####
     magma_dir <- magma_dir[1]
@@ -77,8 +82,9 @@ calculate_geneset_enrichment <- function(geneset,
         magmaPaths$filePathPrefix, 
         analysis_name
     )
-    message_cmd(magma_cmd)
-    system(magma_cmd)
+    magma_run(cmd = magma_cmd, 
+              version = version,
+              verbose = verbose)
 
     path <- sprintf("%s.%s.gsa.out", magmaPaths$filePathPrefix, analysis_name)
     res <- utils::read.table(file = path, 

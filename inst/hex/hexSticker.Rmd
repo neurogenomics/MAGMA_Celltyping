@@ -3,8 +3,6 @@ title: "hexSticker"
 author: "<h5>Author: <i>Brian M. Schilder</i></h5>" 
 date: "<h5>`r format( Sys.Date(), '%b-%d-%Y')`</h4>"
 output: rmarkdown::html_vignette
-editor_options: 
-  chunk_output_type: inline
 vignette: >
   %\VignetteIndexEntry{hexSticker}
   %\VignetteEngine{knitr::rmarkdown}
@@ -22,81 +20,91 @@ You can make awesome hex stickers for your R packages using:
 - [ggimage](https://github.com/GuangchuangYu/ggimage) 
 lets you render images as data points.  
 - [ggpattern](https://coolbutuseless.github.io/package/ggpattern/)
-lets you fill objects with patterns or images.  
+lets you fill objects with patterns or images.
+- [magick](https://cran.r-project.org/web/packages/magick/vignettes/intro.html) 
+modify PNGs.
 
 
 
 # `MAGMA.Celltyping`
  
-
-
-```{r, eval=FALSE}
+```{r setup}
+# If you're using R<4.1.1, need this version of rvcheck
+# devtools::install_version('rvcheck',version='0.1.8') 
 library(hexSticker)
 library(dplyr)
 library(ggplot2)
 library(ggimage)
 library(ggpattern)# remotes::install_github("coolbutuseless/ggpattern")
-library(ggplot2)
+ 
+```
 
-pBase <- "http://phylopic.org/assets/images/submissions"
-image_info <- data.frame(
-                image = file.path(pBase, 
-                          c("c089caae-43ef-4e4e-bf26-973dd4cb65c5.512.png",# Human  
-                            "eedde61f-3402-4f7c-9350-49b74f5e1dba.512.png", # Macaque
-                            "c8f71c27-71db-4b34-ac2d-e97fea8762cf.original.png", # Mouse
-                            "6f4c653a-1da1-4e02-85ef-6344b2d8e02a.512.png", # Zebrafish
-                            "ea8fa530-d856-4423-a81d-a74342cd1875.512.png", # Fly
-                            "d6af4346-e56c-4f3d-84c7-fba921a293f1.512.png" # Worm
-                          )
-                          ),
-                species = c("Human", "Macaque", "Mouse",
-                            "Zebrafish", "Fly","Worm"
-                            ),
-                size=c(.5,1,1.1, 
-                       1.1,1.1,1)/5,
-                alpha=c(.8,.8,1,
-                        .8,.8,1)
-                ) 
-image_info <- rbind(image_info, image_info[1,] %>% dplyr::mutate(size=0))
+## Volcano ggplot
 
-### From ggimage code
-polygon_df <- dplyr::tibble(
-  angle = seq(0, 2*pi, length.out = 7) + pi/6,
-  x     = cos(angle),
-  y     = sin(angle)
-)
-polygon_df2 <- dplyr::tibble(
-  angle = seq(0, 2*pi, length.out = 7) + pi/6,
-  x     = cos(angle)*1.25,
-  y     = sin(angle)*1.25
-)
+Data from [here](https://zenodo.org/record/2529117#.YZ2rYr3MKhk).
+
+```{r}
+{
+  tmp <- file.path("/Desktop/volcano_dat")
+  if(!file.exists(tmp)){
+    URL <- "https://zenodo.org/record/2529117/files/limma-voom_luminalpregnant-luminallactate?download=1"   
+  download.file(URL, tmp)
+  } 
+  vdat <- data.table::fread(tmp)
+}
+
+### Scatter plot data
+vdat <- subset(vdat, P.Value < .05 & P.Value >  0.00001 & abs(logFC)< 5 ) 
+
+{
+  gg_volcano <- ggplot(vdat, 
+         aes(x = logFC * log10(abs(logFC))^3, 
+             y = -adj.P.Val,
+             color= -adj.P.Val)) +
+  geom_point(alpha = .5, show.legend = FALSE,
+             aes(size = AveExpr/10)) + 
+  geom_point(alpha = 1, shape = 20, show.legend = FALSE, 
+             aes(size = AveExpr/100)) + 
+  scale_color_gradientn(colours=pals::plasma(100), guide = "colourbar") +
+  #### Trapezoid ####
+  # geom_polygon(data = trap_dat, aes(x=x, y=y, fill = fill, group = id), inherit.aes = FALSE) 
+  theme_void()
+print(gg_volcano)
+}
+ 
+```
 
 
-d <- cbind(polygon_df, image_info)
+## ggimage subplot
 
-hex_species <- ggplot(d, aes(x, y)) + 
-   ggpattern::geom_polygon_pattern(data = polygon_df2,
-                                   pattern= 'image',
-                                   aes(x=I(x/1), y=I(y/1)),
-                                   pattern_type = 'expand',
-    pattern_filename = here::here("inst/images/purple_blue.jpeg"), 
-    inherit.aes = FALSE) +  
-   geom_path(color="white", size = .8, alpha=.1) +
-   geom_path(color="white", size=.5, alpha=.5) +
-   geom_path(color="white", size=.1, alpha=1) +  
-   # geom_image(aes(image=image), size=.12, color="white", alpha=.1) + 
-   # geom_image(aes(image=image), size=.11, color="white", alpha=.2) + 
-   geom_image(aes(image=image, x=I(x/1), y=I(y/1), size=I(size), alpha=I(alpha)), color="white") + 
-   theme_void()
+[ggimage](https://yulab-smu.top/pkgdocs/ggimage.html)
 
-s_width <- 1.6
-s <- sticker(hex_species,
-          package="orthogene", p_size=20, p_y = 1,
-          s_x=1, s_y=1, s_width=s_width, s_height=s_width*1.11111, 
-          h_color = "black", h_fill = "#330862",white_around_sticker = TRUE,
-          filename=here::here("inst/hex/orthogene.png"), dpi = 400)
+```{r, eval=FALSE}
+img <- png::readPNG(here::here("inst/hex/volcano_black.png"),
+                    native = TRUE)
+height <- .4
+g <- grid::rasterGrob(img, interpolate=F,
+                      width = height/1.25, height = height)
+gp <-  gg_volcano + 
+  annotation_custom(g, ymax = .1, ymin = bottom*1.35) 
+print(gp)
+```
 
-print(s)
+
+## hexSticker 
+
+[hexSticker](https://github.com/GuangchuangYu/hexSticker)
+
+```{r, eval=FALSE}    
+s_size = 1.4
+stick <- hexSticker::sticker(subplot = gp, 
+                             package="MAGMA.Celltyping", 
+                             p_size=14, p_y = 1.45,
+                             s_x=1, s_y=.7, s_width = s_size*1.2, s_height = s_size*.9,
+        h_fill = "black", h_color = "#C0C0C0",
+        spotlight = TRUE, l_alpha = .3,
+        filename=here::here("inst/hex/MAGMA.Celltyping.png"), dpi = 300)
+print(stick)
 ```
 
 

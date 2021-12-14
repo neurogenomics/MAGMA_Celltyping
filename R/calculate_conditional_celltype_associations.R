@@ -43,8 +43,12 @@ calculate_conditional_celltype_associations <- function(
     controlledCTs = NA,
     EnrichmentMode = "Linear",
     force_new = FALSE,
+    version = NULL,
     verbose = TRUE) {
-
+    
+    #### Check MAGMA installation ####
+    magma_check(version = version,
+                verbose = verbose)
     #### Check args ####
     check_enrichment_mode(EnrichmentMode = EnrichmentMode)
     #### Handle MAGMA Files ####
@@ -388,8 +392,10 @@ calculate_conditional_celltype_associations <- function(
                 pastedControlCovars, 
                 sumstatsPrefix2)
         }
-        message_cmd(magma_cmd)
-        system(magma_cmd)
+        magma_run(cmd = magma_cmd, 
+                  version = version,
+                  verbose = verbose)
+        
         cond_res <- load_magma_results_file(path = sprintf("%s.gsa.out",
                                                            sumstatsPrefix2),
                                             annotLevel =  annotLevel,

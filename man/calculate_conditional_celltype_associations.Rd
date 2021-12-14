@@ -18,6 +18,7 @@ calculate_conditional_celltype_associations(
   controlledCTs = NA,
   EnrichmentMode = "Linear",
   force_new = FALSE,
+  version = NULL,
   verbose = TRUE
 )
 }
@@ -57,6 +58,8 @@ be used for testing enrichment?}
 
 \item{force_new}{[Optional] Force new MAGMA analyses even if the
 pre-existing results files are detected.}
+
+\item{version}{MAGMA version to use.}
 
 \item{verbose}{Print messages.}
 }

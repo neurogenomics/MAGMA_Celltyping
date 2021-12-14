@@ -23,16 +23,18 @@ magma_links <- function(latest_only = TRUE,
         files <- c(files, archive_files)
     }
     #### Get the latest version number #####
-    version <- magma_links_versions(links = files)
+    version <- magma_links_versions(links = files,
+                                    version = version,
+                                    return_all = TRUE)
     #### Filter by OS ####
     if (is.null(os_suffix)) { 
-        messager("Filtering magma files by OS.",v=verbose)
+        # messager("Filtering magma files by OS.",v=verbose)
         suffix <- paste0(version,magma_os_suffix(),".zip")
         files <- files[endsWith(files,suffix)]
     }
     #### Filter by MAGMA version ####
     if (!is.null(version) && (!latest_only)) {
-        messager("Filtering magma files by version.",v=verbose)
+        # messager("Filtering magma files by version.",v=verbose)
         files <- files[grepl(paste0(version, "_"), names(files))]
     }
     #### Remove duplicates ####

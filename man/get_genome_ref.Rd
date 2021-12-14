@@ -6,7 +6,7 @@
 \usage{
 get_genome_ref(
   genome_ref_path = NULL,
-  storage_dir = tempdir(),
+  storage_dir = tools::R_user_dir("MAGMA.Celltyping", which = "cache"),
   method = c("magma", "piggback"),
   population = c("eur", "afr", "amr", "eas", "sas"),
   timeout = 60 * 5,

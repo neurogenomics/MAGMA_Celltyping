@@ -12,7 +12,9 @@
 #'
 #' @return File path for the genes.out file.
 #' 
-#' @examples 
+#' @examples
+#' ### UNDER CONSTRUCTION
+#' \dontrun{
 #' #### Import data ####
 #' ctd <- MAGMA.Celltyping::get_ctd("ctd_allKI")
 #' magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
@@ -27,7 +29,7 @@
 #'     analysis_name = "Rbfox_16_pyrSS",  
 #'     geneset_species = "mouse",
 #'     ctd_species = "mouse")
-#'
+#' }
 #' @export
 #' @importFrom data.table data.table
 #' @importFrom stats pnorm
@@ -44,8 +46,12 @@ calculate_conditional_geneset_enrichment <- function(geneset,
                                                      upstream_kb = 35,
                                                      downstream_kb = 10, 
                                                      geneset_species = "mouse",
+                                                     version = NULL,
                                                      verbose = TRUE
                                                     ) {
+    #### Check MAGMA installation ####
+    magma_check(version = version, 
+                verbose = verbose)
     #### Handle MAGMA Files ####
     #### Trick downstream functions into working with only MAGMA files ####
     magma_dir <- magma_dir[1]
@@ -78,12 +84,13 @@ calculate_conditional_geneset_enrichment <- function(geneset,
     )
     #### Convert geneset orthologs ####
     if(geneset_species != "human"){
-        gene_map <- orthogene::convert_orthologs(gene_df = geneset,
-                                                 gene_output = "columns",
-                                                 input_species = geneset_species, 
-                                                 output_species = "human",
-                                                 method = "homologene",
-                                                 verbose = verbose)
+        gene_map <- orthogene::convert_orthologs(
+            gene_df = geneset,
+            gene_output = "columns",
+            input_species = geneset_species, 
+            output_species = "human",
+            method = "homologene",
+            verbose = verbose)
         geneset <- gene_map$ortholog_gene
     } 
     ##### First, check that the genes are HGNC/MGI IDs ####
@@ -135,7 +142,7 @@ calculate_conditional_geneset_enrichment <- function(geneset,
     )
     #### Run conditional analysis ####
     out_prefix <- paste(c(magmaPaths$filePathPrefix,
-                          analysis_name),collapse=".")
+                          analysis_name),collapse=".") 
     magma_cmd_cond <- sprintf(
        paste( "magma",
               "--gene-results '%s.genes.raw'",
@@ -149,8 +156,9 @@ calculate_conditional_geneset_enrichment <- function(geneset,
         ctrldCTs,
         out_prefix
     )
-    message_cmd(magma_cmd_cond)
-    system(magma_cmd_cond)
+    magma_run(cmd = magma_cmd_cond, 
+              version = version,
+              verbose = verbose)
     
     #### Import results #### 
     res <- magma_read_sets_out(out_prefix = out_prefix)

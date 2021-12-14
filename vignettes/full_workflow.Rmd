@@ -22,18 +22,12 @@ please see the *Get Started* vignette.
 
 # Setup 
 
-Specify where you want the large files to be downloaded to.  
-
-```{r, eval=FALSE}
-storage_dir <- tempdir()
-```
-
 ## Get genome reference
 
 Set path the 1000 genomes reference data.
 
 ```{r, eval=FALSE}
-genome_ref_path <- MAGMA.Celltyping::get_genome_ref(storage_dir = storage_dir)
+genome_ref_path <- MAGMA.Celltyping::get_genome_ref()
 ```
 
 # Prepare data
@@ -44,9 +38,10 @@ genome_ref_path <- MAGMA.Celltyping::get_genome_ref(storage_dir = storage_dir)
 - As an example, you can download UK Biobank summary statistics 
 for 'fluid_intelligence' using `get_example_gwas()`.
 
-```{r, eval=FALSE }
-gwas_sumstats_path <- MAGMA.Celltyping:: get_example_gwas(trait = "fluid_intelligence",
-                                                         munged = FALSE)
+```R
+gwas_sumstats_path <- MAGMA.Celltyping::get_example_gwas(
+  trait = "fluid_intelligence",
+  munged = FALSE)
 ```
 
 ## Munge GWAS 
@@ -65,7 +60,7 @@ Genome builds:
 - However, if you don't know which genome build you GWAS sum stats are in, 
 `MungeSumstats` will infer this information by default.
 
-```{r, eval=FALSE}
+```R
 path_formatted <- MungeSumstats::format_sumstats(path=gwas_sumstats_path,
                                                  save_path = tempfile(fileext = ".formatted.tsv.gz"),
                                                  ref_genome ="GRCh37")
@@ -76,7 +71,7 @@ pre-munged version of the above file.
 If you use this, you can skip the previous two steps.
 
 ```{r, eval=FALSE}
-path_formatted <- MAGMA.Celltyping:: get_example_gwas(trait = "fluid_intelligence",
+path_formatted <- MAGMA.Celltyping::get_example_gwas(trait = "fluid_intelligence",
                                                      munged = TRUE)
 ```
 
@@ -87,7 +82,7 @@ Note you can input the genome build of your summary statistics for this step or
 it can be inferred if left null:
 
 ```{r, eval=FALSE}
-genesOutPath <- MAGMA.Celltyping:: map_snps_to_genes(path_formatted = path_formatted,
+genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(path_formatted = path_formatted,
                                                      genome_build = "GRCh37",
                                                      genome_ref_path = genome_ref_path)
 ```
@@ -125,18 +120,19 @@ ctd <- get_ctd("ctd_Zeisel2018")
 
 ### Prepare quantiles
 
-First we need to calculate the quantile groups for each celltype within the single-cell dataset. This is done using the `prepare_quantile_groups` function. If your single-cell dataset is not from mouse, then change the `ctd_species` argument.
+Preparing quantiles in the CTD is now something that is automatically handled by  by `MAGMA.Celltyping` so the user doesn't need to do this themselves as a pre-step anymore.
 
-```{r, eval=FALSE }
+However, we still export the function `prepare_quantile_groups` in case users want to have more control.
+
+`prepare_quantile_groups` calculates the quantile groups for each celltype within the single-cell dataset. If your single-cell dataset is not from mouse, then change the `ctd_species` argument.
+
+```R
 ctd <- MAGMA.Celltyping::prepare_quantile_groups(ctd = ctd,
                                                  ctd_species="mouse")
 # Examine how the quantile groups look
 print(ctd[[1]]$specificity_quantiles[c("Gfap","Dlg4","Aif1"),])
 print(table(ctd[[1]]$specificity_quantiles[,1]))
 ```
-
-
-
 
 # Run the main cell type association analysis
 
@@ -391,8 +387,6 @@ We can then test whether the geneset is still enriched after controlling for cel
 ```{r, eval=FALSE}
 ctd <- MAGMA.Celltyping::get_ctd("ctd_allKI")
 
-ctd <- MAGMA.Celltyping::prepare_quantile_groups(ctd = ctd,
-                                                 ctd_species = "mouse")
 analysis_name <- "Rbfox_16_pyrSS"
 controlledCTs <- c("pyramidal SS")
 

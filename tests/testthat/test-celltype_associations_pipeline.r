@@ -16,7 +16,7 @@ test_that("celltype_associations_pipeline works", {
         ctd <- ewceData::ctd()
         #### Run enrichment analyses ####
         res <- MAGMA.Celltyping::celltype_associations_pipeline(
-            ctd = ctd,
+            ctd = ctd, 
             ctd_name = "Zeisel2015",
             ctd_species = "mouse",
             run_linear = TRUE,

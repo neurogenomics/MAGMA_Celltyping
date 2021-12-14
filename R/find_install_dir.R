@@ -9,16 +9,22 @@
 #' 
 #' @return Path to viable installation directory.
 #' @keywords internal
-find_install_dir <- function(dest_dir_opts = c("/usr/local/bin",
-                                               dirname(dirname(R.home("bin"))),
-                                               Sys.getenv("HOME"),
-                                               getwd()),
+find_install_dir <- function(dest_dir_opts = c(
+    tools::R_user_dir("MAGMA.Celltyping", which="cache"),
+    system.file("tools",package = "MAGMA.Celltyping"),
+    "/usr/local/bin",
+    Sys.getenv("HOME"),
+    getwd(),
+    tempdir()),
                              verbose = TRUE){ 
+    dir.create(tools::R_user_dir("MAGMA.Celltyping", which="cache"),
+               showWarnings = FALSE)
     messager("Searching for viable installation directory.",v=verbose)
     have_access <- check_access(dest_dir = dest_dir_opts)
     use_dir <- names(have_access[have_access][1])
     if(length(use_dir)>0){
-        messager("Found viable installation directory:",use_dir)    
+        messager("Found viable installation directory:",use_dir,
+                 v=verbose)    
     } else {
         stop("No viable installation directory identified.")
     }

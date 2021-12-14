@@ -45,6 +45,9 @@ map_snps_to_genes <- function(path_formatted,
                               storage_dir = tempdir(),
                               force_new = FALSE,
                               verbose = TRUE) {
+    #### Check MAGMA installation ####
+    magma_check()
+    #### Download  1000 Genomes reference panel ####
     genome_ref_path <- get_genome_ref(genome_ref_path = genome_ref_path,
                                       storage_dir = storage_dir,
                                       population = population,

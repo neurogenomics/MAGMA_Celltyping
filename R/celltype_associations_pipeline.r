@@ -31,6 +31,7 @@
 #'  to not save any results).
 #' @param force_new [Optional] Force new MAGMA analyses even if the
 #'  pre-existing results files are detected.
+#' @param version MAGMA version to use.
 #' @param verbose Print messages.
 #' @inheritParams calculate_celltype_associations
 #' @inheritParams calculate_conditional_celltype_associations
@@ -69,8 +70,12 @@ celltype_associations_pipeline <- function(ctd,
                                            controlTopNcells = 1,
                                            force_new = FALSE,
                                            save_dir = tempdir(),
+                                           version = NULL,
                                            verbose = TRUE) {
-    ## Establish vars in case some are not computed.
+    #### Check MAGMA installation ####
+    magma_check(version = version, 
+                verbose = verbose)
+    #### Establish vars in case some are not computed ####
     ctAssocsLinear <- NULL
     ctAssocsTop <- NULL
     ctCondAssocs <- NULL
@@ -114,6 +119,7 @@ celltype_associations_pipeline <- function(ctd,
                     analysis_name = paste(ctd_name, suffix_linear, sep = "_"),
                     ctd_species = ctd_species,
                     force_new = force_new,
+                    version = version,
                     verbose = verbose
                 )
             }, error = function(e) {NULL}
@@ -139,6 +145,7 @@ celltype_associations_pipeline <- function(ctd,
                     analysis_name = paste(ctd_name, suffix_top10, sep = "_"),
                     ctd_species = ctd_species,
                     force_new = force_new,
+                    version = version,
                     verbose = verbose
                 )
             }, error = function(e) {NULL}
@@ -180,6 +187,7 @@ celltype_associations_pipeline <- function(ctd,
                         controlTopNcells = controlTopNcells,
                         ctd_species = ctd_species,
                         force_new = force_new,
+                        version = version,
                         verbose = verbose
                     )
                 }, error = function(e) {NULL}

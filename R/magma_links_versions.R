@@ -16,6 +16,7 @@ magma_links_versions <- function(links,
     latest_version <- rev(versions)[1]
     #### Check whether user-requested version exists ####
     if(!is.null(version)){
+        version <- paste0("v",gsub("^v","",version))
         if(version %in% versions){
             versions <- version
         } else {
@@ -25,5 +26,6 @@ magma_links_versions <- function(links,
             return(latest_version)
         }
     }
+    versions <- versions[startsWith(versions,"v")]
     if(return_all) versions else latest_version 
 }

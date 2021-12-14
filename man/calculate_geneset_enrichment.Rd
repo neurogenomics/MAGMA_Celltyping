@@ -12,6 +12,7 @@ calculate_geneset_enrichment(
   upstream_kb = 35,
   downstream_kb = 10,
   geneset_species = "mouse",
+  version = NULL,
   verbose = TRUE
 )
 }
@@ -37,6 +38,8 @@ should SNPs be included?}
 Can be any species listed in \link[EWCE]{list_species}.
 If \code{geneset_species!="human"}, the \code{geneset} will be converted
  to 1:1 human orthologs using \link[orthogene]{convert_orthologs}.}
+
+\item{version}{MAGMA version to use.}
 
 \item{verbose}{Print messages.}
 }
