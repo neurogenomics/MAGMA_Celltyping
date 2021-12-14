@@ -28,5 +28,6 @@ find_install_dir <- function(dest_dir_opts = c(
     } else {
         stop("No viable installation directory identified.")
     }
-    return(normalizePath(use_dir))
+    if(get_os()=="Windows") use_dir <- normalizePath(use_dir)
+    return(use_dir)
 }
