@@ -13,3 +13,4 @@ magma.log
 Dockerfile
 ^LICENSE\.md$
 inst/hex/
+MAGMA.Celltyping/inst/hex

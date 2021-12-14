@@ -21,7 +21,7 @@
 #' ## MAGMA.Celltyping::magma_install()
 magma_install <- function(dest_dir = NULL,
                           desired_version = "latest",
-                          upgrade = FALSE,
+                          upgrade = TRUE,
                           verbose = TRUE) {
 
     #### Get info on latest version ####

@@ -98,3 +98,4 @@ which lets users specify which test they want to run with arguments, including:
 * Avoid accidentally renaming columns with `data.frame` 
 * Remove all `suppressWarnings` calls and resolve the underlying issues instead. 
 * Add `utils` as Suggest.
+* Normalize paths to magma executables (to avoid path issues on WindowsOS).

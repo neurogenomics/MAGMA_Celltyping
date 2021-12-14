@@ -27,5 +27,5 @@ magma_run <- function(version = NULL,
         message_cmd(msg)
     }
     #### Run the command ####
-    out <- system(cmd2)
+    out <- system(as.character(cmd2))
 }

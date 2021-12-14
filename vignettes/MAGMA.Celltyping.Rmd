@@ -141,7 +141,7 @@ knitr::kable(merged_results)
 
 ## Heatmap  
 
-```{r Heatmap}  
+```{r Heatmap, error=TRUE}  
 heat <- MAGMA.Celltyping::results_heatmap(
   merged_results = merged_results, 
   title = "Alzheimer's Disease (ieu-a-298) vs. nervous system cell-types (Zeisel2015)",

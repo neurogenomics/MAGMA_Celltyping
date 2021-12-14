@@ -13,7 +13,7 @@ MAGMA.celltyping documentation}
 magma_install(
   dest_dir = NULL,
   desired_version = "latest",
-  upgrade = FALSE,
+  upgrade = TRUE,
   verbose = TRUE
 )
 }

@@ -1,4 +1,5 @@
 magma_check <- function(version = NULL,
+                        upgrade = TRUE,
                         verbose = TRUE){
     #### Get the path to any existing MAGMA installations ####
     magma_x <- magma_executable(version = version)
@@ -6,7 +7,9 @@ magma_check <- function(version = NULL,
     ## If not, proceed to install MAGMA
     if(!magma_installed(magma_x = magma_x,
                         verbose = FALSE)) {
-        magma_install(verbose = verbose) 
+        magma_install(desired_version = version,
+                      upgrade = upgrade,
+                      verbose = verbose) 
         magma_x <- magma_executable(version = version)
     }
     #### After installing, check that MAGMA works ####
