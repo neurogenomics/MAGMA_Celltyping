@@ -6,6 +6,7 @@ magma_links <- function(latest_only = TRUE,
     ## If this fails, use a stored backup of the URLs
     files <- tryCatch(expr = {
         links <- magma_links_query(latest_only = latest_only)
+        links <- links[!is.na(links)]
         if(length(links)>0) links else MAGMA.Celltyping::magma_links_stored
     }, error = function(e) MAGMA.Celltyping::magma_links_stored)
     

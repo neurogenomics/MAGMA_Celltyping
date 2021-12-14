@@ -1,5 +1,7 @@
 test_that("map_snps_to_genes works", {
     
+    ## UNDER CONSTRUCTION 
+    
     # if(!is_32bit()){
     #     #### Gather data ####
     #     ctd <- ewceData::ctd() 

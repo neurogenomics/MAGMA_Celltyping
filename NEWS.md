@@ -97,3 +97,4 @@ which lets users specify which test they want to run with arguments, including:
 * Removed all `library` calls from code.
 * Avoid accidentally renaming columns with `data.frame` 
 * Remove all `suppressWarnings` calls and resolve the underlying issues instead. 
+* Add `utils` as Suggest.

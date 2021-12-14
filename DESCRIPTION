@@ -36,6 +36,7 @@ Imports:
     XML,
     httr,
     R.utils,
+    utils,
     ggdendro,
     dplyr,
     data.table,

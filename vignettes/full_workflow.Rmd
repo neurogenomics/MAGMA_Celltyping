@@ -197,7 +197,7 @@ MAGMA.Celltyping::plot_celltype_associations(ctAssocs = ctCondAssocs,
 
 Let's try as an alternative to control for expression of both the level 1 pyramidal neuron types at the same time
 
-```{r , eval=FALSE}
+```{r, eval=FALSE}
 ctCondAssocs <- MAGMA.Celltyping::calculate_conditional_celltype_associations(
   ctd = ctd,
   gwas_sumstats_path = path_formatted,

@@ -55,15 +55,16 @@ magma_install <- function(dest_dir = NULL,
             )
         } else {
             if (current_version != desired_version) {
-                messager("A different version of MAGMA",
-                    paste0("(", current_version, ")"),"is installed.",
-                    "Latest MAGMA:",latest_version,
+                messager(
+                    "A different version of MAGMA",
+                    "than desired_version is already installed.", 
+                    "Set upgrade=TRUE to install desired_version as well:",
+                    desired_version,
                     v = verbose
                 )
-            } else if(current_version == latest_version){
-                messager("The latest version of MAGMA",
-                    paste0("(", latest_version, ")"),"is installed.",
-                    v = verbose
+            } else if(current_version == desired_version){
+                messager("The desired_version of MAGMA is installed:",
+                         desired_version, v = verbose
                 )
             }
             upgrade <- FALSE 
