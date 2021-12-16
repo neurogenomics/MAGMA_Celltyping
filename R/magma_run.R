@@ -15,7 +15,7 @@ magma_run <- function(version = NULL,
                       verbose = TRUE){
     magma_x = magma_executable(version = version)
     #### Collapse vector/list into one string ####
-    if(is.vector(cmd) | is.list(cmd )){
+    if(length(cmd)>1){
         cmd <- paste(cmd, collapse = " ")
     }
     cmd2 <- paste(magma_x,

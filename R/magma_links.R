@@ -1,15 +1,19 @@
 magma_links <- function(latest_only = TRUE,
                         os_suffix = NULL,
                         version = NULL,
+                        use_local = TRUE,
                         verbose = TRUE) {
     #### Try to search archives ####
     ## If this fails, use a stored backup of the URLs
-    files <- tryCatch(expr = {
-        links <- magma_links_query(latest_only = latest_only)
-        links <- links[!is.na(links)]
-        if(length(links)>0) links else MAGMA.Celltyping::magma_links_stored
-    }, error = function(e) MAGMA.Celltyping::magma_links_stored)
-    
+    if(use_local){
+        files <- MAGMA.Celltyping::magma_links_stored
+    } else {
+        files <- tryCatch(expr = {
+            links <- magma_links_query(latest_only = latest_only)
+            links <- links[!is.na(links)]
+            if(length(links)>0) links else MAGMA.Celltyping::magma_links_stored
+        }, error = function(e) MAGMA.Celltyping::magma_links_stored)
+    } 
     #### Get the latest version number #####
     version <- magma_links_versions(links = files,
                                     version = version,

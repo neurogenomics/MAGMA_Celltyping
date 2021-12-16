@@ -41,8 +41,7 @@
 #' celltype associations analysis.
 #'
 #' @examples
-#' magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = c("ieu-a-298",
-#'                                                             "ukb-b-6548"))
+#' magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = c("ieu-a-298"))
 #' ctd <- ewceData::ctd()
 #'
 #' res <- MAGMA.Celltyping::celltype_associations_pipeline(
@@ -73,10 +72,7 @@ celltype_associations_pipeline <- function(ctd,
                                            save_dir = tempdir(),
                                            nThread = 1,
                                            version = NULL,
-                                           verbose = TRUE) {
-    #### Check MAGMA installation ####
-    magma_check(version = version, 
-                verbose = verbose)
+                                           verbose = TRUE) { 
     #### Establish vars in case some are not computed ####
     ctAssocsLinear <- NULL
     ctAssocsTop <- NULL

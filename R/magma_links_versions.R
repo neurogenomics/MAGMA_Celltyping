@@ -10,6 +10,7 @@ magma_links_versions <- function(links,
                                  version = NULL,
                                  return_all = FALSE,
                                  verbose = TRUE){
+    if(!is.character(links)) return(NULL)
     versions <- stringr::str_split(links, "_", simplify = TRUE)[,2]
     versions <- unique(gsub(".zip","",versions))
     #### Newest versions will be listed at the bottom of the page ####

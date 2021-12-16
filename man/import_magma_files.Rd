@@ -54,6 +54,5 @@ Metadata for each dataset (including trait descriptions) can be found here
 \href{https://github.com/neurogenomics/MAGMA_Files_Public/blob/master/metadata.csv}{here}.
 }
 \examples{
-magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = c("ieu-a-298",
-                                                           "ukb-b-6548"))
+magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = c("ieu-a-298"))
 }

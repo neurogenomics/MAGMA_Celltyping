@@ -9,8 +9,7 @@ test_that("celltype_associations_pipeline works", {
     ## 2. MAGMA.Celltyping::map_snps_to_genes()
     
     if(!is_32bit()){
-        ids <- c("ieu-a-298",
-                 "ukb-b-6548")
+        ids <- c("ieu-a-298")
         magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = ids) 
         #### Import CellTypeDataset ####
         ctd <- ewceData::ctd()

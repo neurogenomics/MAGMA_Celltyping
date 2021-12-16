@@ -30,8 +30,7 @@
 #' @returns Named vector of paths to downloaded MAGMA files (or directories).
 #'
 #' @examples
-#' magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = c("ieu-a-298",
-#'                                                            "ukb-b-6548"))
+#' magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = c("ieu-a-298"))
 #' @export
 #' @importFrom stringr str_split
 #' @importFrom parallel mclapply
@@ -42,6 +41,15 @@ import_magma_files <- function(save_dir = tempdir(),
                                return_dir = TRUE,
                                nThread = 1,
                                verbose = TRUE) {
+    #### Use built-in data (for when there's no internet) ####
+    if(all(ids=="ieu-a-298")){
+        messager("Using built-in example files: ieu-a-298.tsv.gz.35UP.10DOWN",
+                 v=verbose)
+        return(
+            system.file("extdata/ieu-a-298.tsv.gz.35UP.10DOWN", 
+                        package = "MAGMA.Celltyping")
+        ) 
+    }
     #### Check what files are available #### 
     magma_files <- github_list_files(
         user = "neurogenomics",
