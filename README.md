@@ -66,12 +66,13 @@ a number of major updates.
 
 ## Bugs/fixes
 
-Notice a bug? Search the
-[Issues](https://neurogenomics.github.io/MAGMA_Celltyping//issues) or
+Having trouble? Search the
+[Issues](https://neurogenomics.github.io/MAGMA_Celltyping/issues) or
 submit a new one.
 
-Want to contribute new features/fixes? Make a [Pull
-Request](https://neurogenomics.github.io/MAGMA_Celltyping/pulls)!
+Want to contribute new features/fixes? [Pull
+Requests](https://neurogenomics.github.io/MAGMA_Celltyping/pulls) are
+welcomed!
 
 Both are most welcome, we want the package to be easy to use for
 everyone!

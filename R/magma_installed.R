@@ -4,7 +4,7 @@ magma_installed <- function(magma_x = magma_executable(),
     if(length(magma_x)==0){
         installed <- FALSE
     } else {
-        installed <- system(as.character(magma_x[1]),
+        installed <- system(as.character(magma_x),
                             ignore.stdout = TRUE) == 1
     }
     if (installed) {

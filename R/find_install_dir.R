@@ -19,7 +19,7 @@ find_install_dir <- function(dest_dir_opts = c(
                              verbose = TRUE){ 
     dir.create(tools::R_user_dir("MAGMA.Celltyping", which="cache"),
                showWarnings = FALSE)
-    messager("Searching for viable installation directory.",v=verbose)
+    # messager("Searching for viable installation directory.",v=verbose)
     have_access <- check_access(dest_dir = dest_dir_opts)
     use_dir <- names(have_access[have_access][1])
     if(length(use_dir)>0){

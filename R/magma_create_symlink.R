@@ -10,6 +10,7 @@ magma_create_symlink <- function(dest_magma,
     ## If the exec isn't in bin, need to set up symlink  
     if(basename(dest_dir)!="bin" | 
        (!magma_installed(verbose = FALSE))){
+        requireNamespace("R.utils")
         symlink <- R.utils::createLink(
             link = "magma",
             target = dest_magma,

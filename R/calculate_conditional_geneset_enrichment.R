@@ -157,9 +157,7 @@ calculate_conditional_geneset_enrichment <- function(geneset,
         out_prefix
     )
     magma_run(cmd = magma_cmd_cond, 
-              version = version,
-              verbose = verbose)
-    
+              version = version)
     #### Import results #### 
     res <- magma_read_sets_out(out_prefix = out_prefix)
     res_cond <- magma_read_gsa_out(out_prefix = out_prefix, 

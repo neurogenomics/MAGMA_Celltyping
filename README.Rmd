@@ -61,9 +61,10 @@ With the release of `MAGMA_Celltyping` 2.0 in Sept 2021, there have been a numbe
 
 ## Bugs/fixes
 
-Notice a bug? Search the [Issues](https://neurogenomics.github.io/MAGMA_Celltyping//issues) or submit a new one.
+Having trouble? Search the [Issues](https://neurogenomics.github.io/MAGMA_Celltyping/issues) 
+or submit a new one.
 
-Want to contribute new features/fixes? Make a [Pull Request](https://neurogenomics.github.io/MAGMA_Celltyping/pulls)!
+Want to contribute new features/fixes? [Pull Requests](https://neurogenomics.github.io/MAGMA_Celltyping/pulls) are welcomed!
 
 Both are most welcome, we want the package to be easy to use for everyone!
 

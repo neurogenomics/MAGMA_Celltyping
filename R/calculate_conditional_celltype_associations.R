@@ -393,8 +393,7 @@ calculate_conditional_celltype_associations <- function(
                 sumstatsPrefix2)
         }
         magma_run(cmd = magma_cmd, 
-                  version = version,
-                  verbose = verbose)
+                  version = version)
         
         cond_res <- load_magma_results_file(path = sprintf("%s.gsa.out",
                                                            sumstatsPrefix2),

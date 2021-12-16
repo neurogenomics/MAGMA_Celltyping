@@ -16,13 +16,15 @@
 #'
 #' @export
 #' @importFrom utils unzip
-#' @importFrom R.utils createLink
 #' @examples 
 #' magma <- MAGMA.Celltyping::magma_install()
 magma_install <- function(dest_dir = find_install_dir(),
                           desired_version = "latest",
                           upgrade = FALSE,
-                          verbose = TRUE) {
+                          verbose = TRUE) { 
+    #### Standardise desired_version ####
+    if(is.null(desired_version)) desired_version <- "latest"
+    desired_version <- tolower(desired_version)[1]
     #### Get info on latest version ####
     latest_url <- magma_links(latest_only = TRUE,
                               verbose = FALSE)
@@ -40,23 +42,22 @@ magma_install <- function(dest_dir = find_install_dir(),
                                                 verbose = verbose)
     } 
     #### Check whether ANY version of MAGMA is installed #### 
-    magma_x = magma_executable(return_all = TRUE,
-                               verbose = FALSE)
-    current_version <- magma_installed_version(magma_x = magma_x,
-                                               verbose = verbose)
-    is_installed <- !is.null(current_version)
+    magma_x_list <- magma_executable(return_all = TRUE,
+                                     verbose = FALSE)
+    current_versions <- magma_installed_version(magma_x = magma_x_list,
+                                                verbose = verbose)
+    is_installed <- any(!is.null(current_versions))
 
     #### If not, proceed to install the desired version ####
     if ((!is_installed) | upgrade) { 
         ## Upgrade message
-        if (any(current_version != desired_version) & upgrade) {
+        if ((!desired_version %in% current_versions) & upgrade) {
             messager("A different version of MAGMA is available.",
-                     "Upgrading from", 
-                     current_version, "==>", desired_version,
+                     "Installing MAGMA:", desired_version,
                      v = verbose
             )
         } else {
-            ### Regular message
+            ### Regular message 
             messager("Installing MAGMA:", desired_version, v = verbose) 
         } 
         destpath <- magma_download_binary(
@@ -67,36 +68,13 @@ magma_install <- function(dest_dir = find_install_dir(),
         dest_magma <- file.path(destpath, "magma")
         #### Change magma file permissions ####
         try({system(paste0("chmod u=rx,go=rx ", dest_magma))})
-        try({Sys.chmod(dest_magma, "777", use_umask = FALSE)}) 
-        ##### Check that installation was successful ####
-        success <- magma_installation_successful(
-            desired_version = desired_version)
-        #### If successful, return path to MAGMA executable ####
-        if(success){
-            messager("MAGMA path:", dest_magma, v = verbose)
-        }else {
-            ### If not, return null
-            dest_magma <- NULL
-        }
-        return(dest_magma)
-    } else {
-        #### If MAGMA is installed, check which version #### 
-        if (any(current_version != desired_version)) {
-            messager(
-                "A different version of MAGMA",
-                "than desired_version is already installed.", 
-                "Set upgrade=TRUE to install desired_version as well:",
-                desired_version,
-                v = verbose
-            ) 
-        } else if(any(current_version == desired_version)){
-            messager("The desired_version of MAGMA is already installed:",
-                     desired_version, v = verbose
-            ) 
-        }  
-        dest_magma <- magma_executable_select(magma_x = magma_x, 
-                                              return_all = FALSE, 
-                                              verbose = verbose)
-        return(dest_magma)
-    }  
+        try({Sys.chmod(dest_magma, "777", use_umask = FALSE)})  
+    } else{
+        messager("Skipping MAGMA installation.",v=verbose)
+    }
+    dest_magma <- magma_check_version_match(
+        desired_version = desired_version,
+        verbose = verbose
+    )
+    return(dest_magma)
 }

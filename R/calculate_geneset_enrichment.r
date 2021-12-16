@@ -83,8 +83,7 @@ calculate_geneset_enrichment <- function(geneset,
         analysis_name
     )
     magma_run(cmd = magma_cmd, 
-              version = version,
-              verbose = verbose)
+              version = version)
 
     path <- sprintf("%s.%s.gsa.out", magmaPaths$filePathPrefix, analysis_name)
     res <- utils::read.table(file = path, 

@@ -13,11 +13,7 @@ magma_links <- function(latest_only = TRUE,
             links <- links[!is.na(links)]
             if(length(links)>0) links else MAGMA.Celltyping::magma_links_stored
         }, error = function(e) MAGMA.Celltyping::magma_links_stored)
-    } 
-    #### Get the latest version number #####
-    version <- magma_links_versions(links = files,
-                                    version = version,
-                                    return_all = TRUE)
+    }  
     #### Filter by OS ####
     if (is.null(os_suffix)) { 
         # messager("Filtering magma files by OS.",v=verbose)
@@ -31,5 +27,6 @@ magma_links <- function(latest_only = TRUE,
     }
     #### Remove duplicates ####
     files <- files[!duplicated(names(files))]
+    if(latest_only) files <- files[1]
     return(files)
 }

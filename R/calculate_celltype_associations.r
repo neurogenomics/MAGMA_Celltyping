@@ -97,7 +97,7 @@ calculate_celltype_associations <- function(ctd,
         )
         path <- sprintf("%s.%s.gsa.out", sumstatsPrefix2, analysis_name)
         geneCovarFile <- NULL
-        messager(path,v=verbose)
+        # messager(path,v=verbose)
 
         if ((!file.exists(path)) || force_new) {
             messager("Running MAGMA:",EnrichmentMode,"mode", v = verbose) 
@@ -212,8 +212,7 @@ calculate_celltype_associations <- function(ctd,
             }
             #### Run MAGMA command ####
             magma_run(cmd = magma_cmd, 
-                      version = version,
-                      verbose = verbose)
+                      version = version)
         } else {
             messager("Importing precomputed MAGMA results.", v = verbose)
         }
