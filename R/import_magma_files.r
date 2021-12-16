@@ -41,32 +41,34 @@ import_magma_files <- function(save_dir = tempdir(),
                                return_dir = TRUE,
                                nThread = 1,
                                verbose = TRUE) {
+    id <- NULL;
+    file_types <- tolower(file_types)
     #### Use built-in data (for when there's no internet) ####
     if(all(ids=="ieu-a-298")){
         local_files <- get_example_magma_files(file_types = file_types,
                                                verbose = verbose)
     } else {
         #### Check what files are available #### 
-        magma_files <- github_list_files(
-            user = "neurogenomics",
-            repo = "MAGMA_Files_Public",
-            branch = "master",
-            query = paste(file_types, collapse = "|"),
-            return_download_api = TRUE,
-            verbose = verbose
-        ) 
+        meta <- import_magma_files_metadata(file_types = file_types, 
+                                            use_local = TRUE,
+                                            verbose = verbose)
         ##### Filter by dataset IDs ####
         if(!is.null(ids)){
-            ## NOTE: Assumes that the dataset ID itself does NOT contain "."
-            all_ids <- stringr::str_split(basename(magma_files),
-                                          "[.]",simplify = TRUE)[,1] 
-            bool_filter <- tolower(all_ids) %in% tolower(ids)
-            all_ids <- all_ids[bool_filter]
-            magma_files <- magma_files[bool_filter]
-            messager("Filtering IDs to only",length(unique(all_ids)),
+            meta <- subset(meta, tolower(id) %in% tolower(ids))
+            messager("Filtering IDs to only",
+                     formatC(length(unique(meta$id)), big.mark = ","),
                      "requested dataset(s).",
                      v=verbose)
         }
+        #### Get link to files #### 
+        magma_files <- c()
+        if(".genes.out" %in% file_types) {
+            magma_files <- c(magma_files, meta$genes_out_url)
+        }
+        if(".genes.raw" %in% file_types) {
+            magma_files <- c(magma_files, meta$genes_raw_url)
+        }
+        magma_files <- sort(magma_files)
         #### Download files locally ####
         local_files <- github_download_files(
             filelist = magma_files,

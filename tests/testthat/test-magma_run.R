@@ -1,6 +1,8 @@
 test_that("magma_run works", {
   
-    MAGMA.Celltyping::magma_install()
-    MAGMA.Celltyping::magma_run(cmd = "--version")
+    if(!is_32bit()){
+        MAGMA.Celltyping::magma_install()
+        MAGMA.Celltyping::magma_run(cmd = "--version") 
+    } 
     testthat::expect_null(NULL)
 })

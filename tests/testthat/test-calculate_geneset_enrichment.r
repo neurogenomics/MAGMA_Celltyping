@@ -12,5 +12,7 @@ test_that("calculate_geneset_enrichment works", {
         testthat::expect_true(methods::is(res,"data.frame"))
         cols <- c("VARIABLE","TYPE","NGENES","BETA","BETA_STD","SE","P")
         testthat::expect_true(all(cols %in% colnames(res)))
-    } 
+    } else {
+        testthat::expect_null(NULL)
+    }
 })

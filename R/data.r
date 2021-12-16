@@ -165,3 +165,24 @@
 #' @usage data("magma_links_stored")
 "magma_links_stored"
 
+
+#' MAGMA_Files_Public: metadata
+#' 
+#' Metadata for all pre-computed metadata files stored in the 
+#' \href{https://github.com/neurogenomics/MAGMA_Files_Public}{
+#' MAGMA_Files_Public} GitHub repository.
+#' 
+#' @source 
+#' \code{
+#' #### Check what files are available ####
+#' magma_files_metadata <- data.table::fread(
+#'     file.path("https://github.com/neurogenomics/MAGMA_Files_Public",
+#'               "raw/master/metadata.csv"), drop = "V1"
+#' )
+#' usethis::use_data(magma_files_metadata, overwrite = TRUE)
+#' }
+#' @usage data("magma_files_metadata")
+"magma_files_metadata"
+
+
+

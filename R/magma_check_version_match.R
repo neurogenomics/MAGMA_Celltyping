@@ -3,8 +3,14 @@ magma_check_version_match <- function(desired_version,
     
     magma_x_list <- magma_executable(return_all = TRUE,
                                      verbose = FALSE)
+    if(all(is.null(magma_x_list))) {
+        messager("No versions of MAGMA are available.",
+                 "Returning NULL.",
+                 v=verbose)
+        return(NULL)
+    }
     current_versions <- magma_installed_version(magma_x = magma_x_list,
-                                                verbose = FALSE)
+                                                verbose = FALSE) 
     #### If MAGMA is installed, check which version #### 
     if (!desired_version %in% current_versions) {
         messager(
@@ -21,6 +27,7 @@ magma_check_version_match <- function(desired_version,
         ) 
         dest_magma <- invert_dict(current_versions)[[desired_version]] 
     }   
-    messager("Using:",basename(dirname(dest_magma)))
+    messager("Using:",basename(dirname(dest_magma)),
+             verbose = verbose)
     return(dest_magma)
 }

@@ -58,6 +58,8 @@ test_that("celltype_associations_pipeline works", {
                 testthat::expect_true(all(cnames %in% colnames(lvl_res$results)))
             }
         } 
+    } else {
+        testthat::expect_null(NULL)
     }
     
 })

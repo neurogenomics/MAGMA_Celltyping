@@ -49,5 +49,7 @@ test_that("calculate_conditional_celltype_enrichment_limma works", {
         celltypes <- EWCE::fix_celltype_names(
             celltypes = colnames(ctd[[annotLevel]]$specificity))
         testthat::expect_equal(sort(cond_res$Celltype), sort(celltypes))
-    } 
+    } else {
+        testthat::expect_null(NULL)
+    }
 })

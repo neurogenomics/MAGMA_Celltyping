@@ -38,5 +38,5 @@ test_that("map_snps_to_genes works", {
     #     celltypes <- EWCE::fix_celltype_names(
     #         celltypes =  colnames(ctd[[1]]$specificity))
     #     testthat::expect_true(all(celltypes %in% ctAssocs[[1]]$results$Celltype))
-    # }
+    # } else {testthat::expect_null(NULL)}
 })

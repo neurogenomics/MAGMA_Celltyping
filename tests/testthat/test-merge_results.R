@@ -9,5 +9,7 @@ test_that("merge_results works", {
         testthat::expect_true(methods::is(merged_res,"data.frame"))
         key_cols <- c("GWAS","Celltype","OBS_GENES","BETA","BETA_STD","SE")
         testthat::expect_true(all(key_cols %in% colnames(merged_res)))
-    } 
+    } else {
+        testthat::expect_null(NULL)
+    }
 })

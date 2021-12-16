@@ -7,5 +7,7 @@ test_that("results_heatmap works", {
             merged_results = merged_results,
             fdr_thresh = 1)
         testthat::expect_true(methods::is(heat,"gg"))
-    } 
+    } else {
+        testthat::expect_null(NULL)
+    }
 })

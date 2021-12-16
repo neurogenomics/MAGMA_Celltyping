@@ -9,5 +9,7 @@ test_that("drop_genes_within_mhc works", {
     dat1 <- data.table::fread(gene_loc)
     dat2 <- data.table::fread(gene_loc2)
     testthat::expect_lte(nrow(dat2), nrow(dat1))
-  } 
+  } else {
+    testthat::expect_null(NULL)
+  }
 })

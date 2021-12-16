@@ -29,5 +29,7 @@ test_that("create_top10percent_genesets_file works", {
         testthat::expect_true(
             all(celltypes %in% EWCE::fix_celltype_names(colnames(ctd[[annotLevel]]$mean_exp)))
         ) 
-    } 
+    } else {
+        testthat::expect_null(NULL)
+    }
 })
