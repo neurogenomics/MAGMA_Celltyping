@@ -43,42 +43,39 @@ import_magma_files <- function(save_dir = tempdir(),
                                verbose = TRUE) {
     #### Use built-in data (for when there's no internet) ####
     if(all(ids=="ieu-a-298")){
-        messager("Using built-in example files: ieu-a-298.tsv.gz.35UP.10DOWN",
-                 v=verbose)
-        return(
-            system.file("extdata/ieu-a-298.tsv.gz.35UP.10DOWN", 
-                        package = "MAGMA.Celltyping")
+        local_files <- get_example_magma_files(file_types = file_types,
+                                               verbose = verbose)
+    } else {
+        #### Check what files are available #### 
+        magma_files <- github_list_files(
+            user = "neurogenomics",
+            repo = "MAGMA_Files_Public",
+            branch = "master",
+            query = paste(file_types, collapse = "|"),
+            return_download_api = TRUE,
+            verbose = verbose
         ) 
-    }
-    #### Check what files are available #### 
-    magma_files <- github_list_files(
-        user = "neurogenomics",
-        repo = "MAGMA_Files_Public",
-        branch = "master",
-        query = paste(file_types, collapse = "|"),
-        return_download_api = TRUE,
-        verbose = verbose
-    ) 
-    ##### Filter by dataset IDs ####
-    if(!is.null(ids)){
-        ## NOTE: Assumes that the dataset ID itself does NOT contain "."
-        all_ids <- stringr::str_split(basename(magma_files),
-                                      "[.]",simplify = TRUE)[,1] 
-        bool_filter <- tolower(all_ids) %in% tolower(ids)
-        all_ids <- all_ids[bool_filter]
-        magma_files <- magma_files[bool_filter]
-        messager("Filtering IDs to only",length(unique(all_ids)),
-                 "requested dataset(s).",
-                 v=verbose)
-    }
-    #### Download files locally ####
-    local_files <- github_download_files(
-        filelist = magma_files,
-        save_dir = save_dir,
-        nThread = nThread,
-        overwrite = overwrite,
-        verbose = verbose
-    ) 
+        ##### Filter by dataset IDs ####
+        if(!is.null(ids)){
+            ## NOTE: Assumes that the dataset ID itself does NOT contain "."
+            all_ids <- stringr::str_split(basename(magma_files),
+                                          "[.]",simplify = TRUE)[,1] 
+            bool_filter <- tolower(all_ids) %in% tolower(ids)
+            all_ids <- all_ids[bool_filter]
+            magma_files <- magma_files[bool_filter]
+            messager("Filtering IDs to only",length(unique(all_ids)),
+                     "requested dataset(s).",
+                     v=verbose)
+        }
+        #### Download files locally ####
+        local_files <- github_download_files(
+            filelist = magma_files,
+            save_dir = save_dir,
+            nThread = nThread,
+            overwrite = overwrite,
+            verbose = verbose
+        ) 
+    } 
     #### Return ####
     if(return_dir){
         messager("Returning MAGMA directories.",v=verbose)

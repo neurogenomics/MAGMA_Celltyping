@@ -1,24 +1,18 @@
-`MAGMA_Celltyping`: Find causal cell-types underlying complex trait
-genomics
-================
+<img src='https://github.com/neurogenomics/MAGMA.Celltyping/raw/bschilder_dev/inst/hex/hex.png' height='300'><br><br>
+[![](https://img.shields.io/badge/devel%20version-2.0.1-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
+[![R build
+status](https://github.com/neurogenomics/MAGMA_Celltyping/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/actions)
+[![](https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/commits/master)
+[![](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping/branch/master/graph/badge.svg)](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping)
+[![License:
+GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)
 <h4>
-Brian M. Schilder, Alan Murphy, Nathan Skene, & Julien Bryois
+Authors: <i>Brian M. Schilder, Alan Murphy, Nathan Skene, & Julien
+Bryois</i>
 </h4>
 <h4>
-Updated: <i>Sep-29-2021</i>
+README updated: <i>Dec-16-2021</i>
 </h4>
-
-<!-- badges: start -->
-<!-- badger::badge_codecov() -->
-<!-- badger::badge_last_commit()  -->
-<!-- badger::badge_license() -->
-
-[![](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping/branch/main/graph/badge.svg)](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping)
-[![R-CMD-check](https://github.com/neurogenomics/MAGMA_Celltyping/workflows/R-full/badge.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/actions)
-[![](https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/commits/main)
-[![License: GPL (&gt;=
-3)](https://img.shields.io/badge/license-GPL%20(%3E=%203)-blue.svg)](https://cran.r-project.org/web/licenses/GPL%20(%3E=%203))
-<!-- badges: end -->
 
 ## Introduction
 
@@ -36,41 +30,30 @@ enrichment between the GWAS trait and the cell-types.
 
 ### MAGMA
 
-Before installing this package it is necessary please install the MAGMA
-software package, downloaded from
-[here](https://ctg.cncr.nl/software/magma). Please do note, the MAGMA
-software which forms the backend of this package was developed by
-Christian de Leeuw from Daniella Posthuma’s lab. If you use this package
-to generate publishable results then you must cite their publication
-(listed below).
+`MAGMA.Celltyping` now installs the command line software MAGMA
+automatically when you first use a function that relies on MAGMA
+(e.g. `celltype_associations_pipeline`). If you prefer, you can later
+install other versions of MAGMA with:
 
-The MAGMA executable should be copied to a directory that is on the
-`$PATH` (e.g. `/usr/local/bin`) so that R can find it. Alternatively you
-can download it to wherever you want to and add the folder containing it
-to your
-[PATH](https://www.howtogeek.com/658904/how-to-add-a-directory-to-your-path-in-linux/).
-That is, if you’ve placed the file in `~/Packages/` and you use bash
-(instead of e.g. `zsh`) then add to `~/.bash_profile` this line
-`export PATH=~/Packages/magma:\$PATH`.
+``` r
+MAGMA.Celltyping::install_magma(desired_version="<version>",
+                                update = TRUE)
+```
 
 ### R
 
-Then install `MAGMA_Celltyping` as follows:
+Then install `MAGMA.Celltyping` as follows:
 
 ``` r
-if(!"remotes" %in% row.names(installed.packages())){
-  install.packages("remotes")
-}
+if(!require("remotes")) install.packages("remotes")
 
-if(!"MAGMA_Celltyping" %in% row.names(installed.packages())){
-  remotes::install_github("NathanSkene/MAGMA_Celltyping")
-}
-library(MAGMA_Celltyping) 
+remotes::install_github("neurogenomics/MAGMA.Celltyping")
+library(MAGMA.Celltyping)
 ```
 
-## [Documentation website](https://nathanskene.github.io/MAGMA_Celltyping)
+## [Documentation website](https://neurogenomics.github.io/MAGMA_Celltyping)
 
-## [Vignette](https://nathanskene.github.io/MAGMA_Celltyping/articles/MAGMA_Celltyping)
+## [Vignette](https://neurogenomics.github.io/MAGMA_Celltyping/articles/MAGMA_Celltyping)
 
 ## Using older versions
 
@@ -80,10 +63,6 @@ a number of major updates.
 -   Only R&gt;4.0.0 is supported. To use this package with older
     versions of R, install
     with:`remotes::install_github("neurogenomics/MAGMA_Celltyping@01a9e53")`
-
--   Importantly, the R package name was changed from `MAGMA.Celltyping`
-    to `MAGMA_Celltyping`, to make it compatible with coding standards
-    and harmonised with the GitHub repo name.
 
 ## Bugs/fixes
 

@@ -1,24 +1,21 @@
 ---
-title: "`MAGMA_Celltyping`: Find causal cell-types underlying complex trait genomics"
-author: "<h4> Brian M. Schilder, Alan Murphy, Nathan Skene, & Julien Bryois</h4>"
-date: "<h4>Updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
+title: ""  
+author: "<img src='https://github.com/neurogenomics/`r read.dcf('DESCRIPTION', fields = 'Package')[1]`/raw/`r gsub('[*] ','',system('git branch', intern = TRUE)[1])`/inst/hex/hex.png' height='300'><br><br>
+        `r badger::badge_github_version(color = 'black')` 
+        `r badger::badge_github_actions(action = 'R-CMD-check-bioc')`
+        `r badger::badge_last_commit(branch='master')`
+        `r badger::badge_codecov(branch='master')` 
+        `r badger::badge_license()` 
+        <h4>Authors: <i>Brian M. Schilder, Alan Murphy, Nathan Skene, & Julien Bryois</i></h4>" 
+date: "<h4>README updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
 output:
-  github_document 
-editor_options: 
-  chunk_output_type: inline
+  github_document
 ---
 
-<!-- badges: start -->
-<!-- badger::badge_codecov() --> 
-<!-- badger::badge_last_commit()  -->
-<!-- badger::badge_license() -->
-[![](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping/branch/main/graph/badge.svg)](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping)
-[![R-CMD-check](https://github.com/neurogenomics/MAGMA_Celltyping/workflows/R-full/badge.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/actions)
-[![](https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/commits/main)
-[![License: GPL (>= 3)](https://img.shields.io/badge/license-GPL (>= 3)-blue.svg)](https://cran.r-project.org/web/licenses/GPL (>= 3))
-<!-- badges: end --> 
-
-
+```{r, echo=FALSE, include=FALSE}
+pkg <- read.dcf("DESCRIPTION", fields = "Package")[1]
+description <- read.dcf("DESCRIPTION", fields = "Description")[1]
+```
 
 ## Introduction
 
@@ -30,29 +27,29 @@ This package takes GWAS summary statistics + single-cell transcriptome specifici
 
 ### MAGMA 
 
-Before installing this package it is necessary please install the MAGMA software package, downloaded from [here](https://ctg.cncr.nl/software/magma). Please do note, the MAGMA software which forms the backend of this package was developed by Christian de Leeuw from Daniella Posthuma's lab. If you use this package to generate publishable results then you must cite their publication (listed below).
+`MAGMA.Celltyping` now installs the command line software MAGMA automatically
+when you first use a function that relies on MAGMA (e.g. `celltype_associations_pipeline`). 
+If you prefer, you can later install other versions of MAGMA with:
 
-The MAGMA executable should be copied to a directory that is on the `$PATH` (e.g. `/usr/local/bin`) so that R can find it. Alternatively you can download it to wherever you want to and add the folder containing it to your [PATH](https://www.howtogeek.com/658904/how-to-add-a-directory-to-your-path-in-linux/). That is, if you've placed the file in `~/Packages/` and you use bash (instead of e.g. `zsh`) then add to `~/.bash_profile` this line `export PATH=~/Packages/magma:\$PATH`. 
+```R
+MAGMA.Celltyping::install_magma(desired_version="<version>",
+                                update = TRUE)
+```
 
 ### R
 
 Then install `MAGMA.Celltyping` as follows:
 
-```{r, eval=FALSE}
-if(!"remotes" %in% row.names(installed.packages())){
-  install.packages("remotes")
-}
+```R
+if(!require("remotes")) install.packages("remotes")
 
-if(!"MAGMA_Celltyping" %in% row.names(installed.packages())){
-  remotes::install_github("NathanSkene/MAGMA_Celltyping")
-}
-# Note the . instead of _
-library(MAGMA.Celltyping) 
+remotes::install_github("neurogenomics/`r pkg`")
+library(`r pkg`)
 ```
 
-## [Documentation website](https://nathanskene.github.io/MAGMA_Celltyping)
+## [Documentation website](https://neurogenomics.github.io/MAGMA_Celltyping)
 
-## [Vignette](https://nathanskene.github.io/MAGMA_Celltyping/articles/MAGMA_Celltyping)
+## [Vignette](https://neurogenomics.github.io/MAGMA_Celltyping/articles/MAGMA_Celltyping)
 
 
 

@@ -24,7 +24,9 @@ Authors@R:
            email = "nathan.skene@gmail.com",
            comment = c(ORCID = "0000-0002-6807-3180")))   
 Description: This R package contains code used for testing which cell types can explain the heritability signal from GWAS summary statistics.
-License: GPL (>= 3)
+URL: https://github.com/neurogenomics/MAGMA_Celltyping
+BugReports: https://github.com/neurogenomics/MAGMA_Celltyping/issues
+License: GPL-3
 LazyData: true
 Depends: R(>= 4.0.0)
 VignetteBuilder: knitr

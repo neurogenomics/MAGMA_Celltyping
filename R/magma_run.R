@@ -12,8 +12,9 @@
 #' MAGMA.Celltyping::magma_run(cmd = "--version")
 magma_run <- function(version = NULL,
                       cmd = NULL,
-                      verbose = TRUE){
-    magma_x = magma_executable(version = version)
+                      verbose = FALSE){
+    magma_x = magma_executable(version = version,
+                               verbose = verbose)
     #### Collapse vector/list into one string ####
     if(length(cmd)>1){
         cmd <- paste(cmd, collapse = " ")
@@ -27,5 +28,5 @@ magma_run <- function(version = NULL,
         message_cmd(msg)
     }
     #### Run the command ####
-    out <- system(as.character(cmd2))
+    out <- system(cmd2)
 }

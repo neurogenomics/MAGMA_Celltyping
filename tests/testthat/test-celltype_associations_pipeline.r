@@ -24,9 +24,8 @@ test_that("celltype_associations_pipeline works", {
             magma_dirs = magma_dirs,
             force_new = TRUE
         )
-        testthat::expect_length(unique(names(res)),2)
-        testthat::expect_true(startsWith(names(res)[1],ids[1]))
-        testthat::expect_true(startsWith(names(res)[2],ids[2])) 
+        testthat::expect_length(unique(names(res)),length(ids))
+        testthat::expect_true(startsWith(names(res)[1],ids[1])) 
         
         #### Iterate through results within each CTD level ####
         for(d in names(res)){

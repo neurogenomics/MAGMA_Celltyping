@@ -103,7 +103,7 @@ stick <- hexSticker::sticker(subplot = gp,
                              s_x=1, s_y=.7, s_width = s_size*1.2, s_height = s_size*.9,
         h_fill = "black", h_color = "#C0C0C0",
         spotlight = TRUE, l_alpha = .3,
-        filename=here::here("inst/hex/MAGMA.Celltyping.png"), dpi = 300)
+        filename=here::here("inst/hex/hex.png"), dpi = 300)
 print(stick)
 ```
 
