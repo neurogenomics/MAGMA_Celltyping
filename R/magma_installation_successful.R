@@ -9,17 +9,11 @@ magma_installation_successful <- function(desired_version) {
         magma_installation_info()
         success <- FALSE
     } else {
+        success <- TRUE
         current_version <- magma_installed_version(magma_x = magma_x,
                                                    verbose = TRUE)
-        success <- current_version != desired_version
-        if (success) {
-            messager(
-                "WARNING: Old version of MAGMA",
-                "(", current_version, ") still detected.",
-                "Installation or symlink creation",
-                "may not have been completely successful."
-            )
-        }
+        success <- (!is.null(current_version)) && 
+                   (current_version == desired_version) 
     }
     return(success)
 }

@@ -7,9 +7,8 @@ automatically install MAGMA, and take any species are input.
 
 * Added a `NEWS.md` file to track changes to the package.
 * Automatically install MAGMA with new `magma_install` function; 
-stores binaries in `MAGMA.Celltyping`-specific cache dir. 
-Added various support functions to make this possible and ensure 
-correct version is being used.
+stores binaries in `MAGMA.Celltyping`-specific cache dir. Added various support functions to make this possible and ensure correct version is being used.
+* Added `magma_uninstall` function to remove one or all MAGMA binaries. 
 * Allow `MAGMA.Celltyping` to install even if MAGMA is not installed. Instead,
 check at the beginning of functions that require MAGMA using `magma_check`.
 * Call MAGMA commands with `magma_run` which finds the requested version of 
@@ -47,7 +46,7 @@ test file names being too long:
 instead of having the user run them:  
     - `get_genome_ref`
     - `prepare_quantile_groups`
-* Remove unncessary dependencies:
+* Remove unnecessary dependencies:
     - `reshape`
     - `cowplot`
     - `SNPlocs.Hsapiens.dbSNP144.GRCh37`

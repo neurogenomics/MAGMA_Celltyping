@@ -10,6 +10,7 @@
 magma_executable <- function(exec_dir = find_install_dir(verbose=FALSE),
                              check_exists = FALSE,
                              version = NULL,
+                             return_all = FALSE,
                              verbose = FALSE){
     #### Find the executable file once it's been downloaded ####
     magma_x <- list.files(exec_dir,"^magma$", 
@@ -26,12 +27,9 @@ magma_executable <- function(exec_dir = find_install_dir(verbose=FALSE),
                      "are currently installed.", v=verbose)
         }
     } 
-    if(length(magma_x)>1){
-        magma_x <- magma_x[1]
-        messager("Multiple MAGMA versions found.",
-                 paste0("'",basename(dirname(magma_x)),"'"),
-                 "is currently set as the default.",v=verbose)
-    } 
+    magma_x <- magma_executable_select(magma_x = magma_x, 
+                                       return_all = return_all, 
+                                       verbose = verbose)
     if(check_exists && !file.exists(magma_x)) {
         stop_msg <- paste("Cannot find MAGMA executable.")
         stop(stop_msg)

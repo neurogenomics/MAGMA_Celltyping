@@ -30,13 +30,15 @@ github_list_files <- function(user = "neurogenomics",
     httr::stop_for_status(req)
     filelist <- unlist(lapply(httr::content(req)$tree, "[", "path"), 
                        use.names = FALSE)
-    messager(paste(length(filelist), "files found in GitHub repo:",
-                   file.path(user, repo)), v = verbose)
+    messager(formatC(length(filelist),big.mark = ","),
+             "files found in GitHub repo:",
+             file.path(user, repo), v = verbose)
     if (!is.null(query)) {
         # query_string <- "*Nalls23andMe_2019.*UKB.multi_finemap.csv.gz"
         bool <- grepl(query, filelist)
         filelist <- filelist[bool]
-        messager(paste(length(filelist), "files found matching query."),
+        messager(formatC(length(filelist),big.mark = ","),
+                 "files found matching query.",
                  v = verbose)
     }
     if (return_download_api) {

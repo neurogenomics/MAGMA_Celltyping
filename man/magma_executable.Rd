@@ -12,6 +12,7 @@ magma_executable(
   exec_dir = find_install_dir(verbose = FALSE),
   check_exists = FALSE,
   version = NULL,
+  return_all = FALSE,
   verbose = FALSE
 )
 }

@@ -11,9 +11,9 @@ MAGMA.celltyping documentation}
 }
 \usage{
 magma_install(
-  dest_dir = NULL,
+  dest_dir = find_install_dir(),
   desired_version = "latest",
-  upgrade = TRUE,
+  upgrade = FALSE,
   verbose = TRUE
 )
 }
@@ -35,5 +35,5 @@ Checks whether MAGMA is currently installed, and if not,
 tries to automatically install it.
 }
 \examples{
-## MAGMA.Celltyping::magma_install()
+magma <- MAGMA.Celltyping::magma_install()
 }
