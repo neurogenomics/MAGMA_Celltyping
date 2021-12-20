@@ -11,7 +11,7 @@ magma_installed_version <- function(magma_x = magma_executable(),
         if (magma_installed(magma_x = x,
                             verbose = FALSE)) {
             
-            # if(get_os()=="Windows") x <- normalizePath(x)
+            x <- path.expand(x)
             check_magma <- system(as.character(paste(x,"--version")),
                                   intern = TRUE)
             version <- strsplit(check_magma, " ")[[1]][3]

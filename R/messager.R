@@ -1,8 +1,8 @@
 messager <- function(..., v = TRUE, parallel = FALSE) {
     if(parallel){
-        if(v) message_parallel(...) 
+        if(v) try({message_parallel(...)})
     } else {
         msg <- paste(...)
-        if (v) message(msg)
+        if (v) try({message(msg)})
     }
 }

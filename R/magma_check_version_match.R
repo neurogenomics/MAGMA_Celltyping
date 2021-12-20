@@ -3,7 +3,7 @@ magma_check_version_match <- function(desired_version,
     
     magma_x_list <- magma_executable(return_all = TRUE,
                                      verbose = FALSE)
-    if(all(is.null(magma_x_list))) {
+    if(all(length(magma_x_list)==0)) {
         messager("No versions of MAGMA are available.",
                  "Returning NULL.",
                  v=verbose)
@@ -15,7 +15,8 @@ magma_check_version_match <- function(desired_version,
     if (!desired_version %in% current_versions) {
         messager(
             "A different version of MAGMA",
-            "than desired_version is currently installed.", 
+            "than desired_version is currently installed:",
+            paste(current_versions, collapse = ", "),
             "Set upgrade=TRUE to install desired_version as well:",
             desired_version,
             v = verbose

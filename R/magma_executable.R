@@ -33,7 +33,7 @@ magma_executable <- function(exec_dir = find_install_dir(verbose=FALSE),
     if(check_exists && !file.exists(magma_x)) {
         stop_msg <- paste("Cannot find MAGMA executable.")
         stop(stop_msg)
-    }
-    if(get_os()=="Windows") magma_x <- normalizePath(magma_x)
+    } 
+    magma_x <- path.expand(magma_x) 
     return(magma_x)
 }
