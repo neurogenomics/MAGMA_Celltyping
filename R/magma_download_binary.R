@@ -9,8 +9,12 @@ magma_download_binary <- function(magma_url,
     destpath <- gsub("\\.zip$", "", destfile)
     options(timeout = 5 * 60)
     download.file(magma_url,
-        destfile = destfile
+                  destfile = destfile
     )
+    #### Adjust permissions to allow for folder manipulation ####
+    try({system(paste0("chmod u=rx,go=rx ", destfile))})
+    try({Sys.chmod(destfile, "777", use_umask = FALSE)})  
+    #### Uzip folder ####
     try({
         utils::unzip(
             zipfile = destfile,
