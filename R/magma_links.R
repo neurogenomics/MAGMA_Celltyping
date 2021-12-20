@@ -1,32 +1,47 @@
 magma_links <- function(latest_only = TRUE,
-                        os_suffix = NULL,
+                        os = get_os(),
                         version = NULL,
                         use_local = TRUE,
+                        return_table = FALSE,
                         verbose = TRUE) {
+    latest <- NULL;
+    #### Avoid issues with subset when colnames same as variable names ####
+    OS <- os;
+    VERSION <- paste0("v",gsub("^v","",version));
     #### Try to search archives ####
     ## If this fails, use a stored backup of the URLs
     if(use_local){
-        files <- MAGMA.Celltyping::magma_links_stored
+        meta <- MAGMA.Celltyping::magma_links_stored
     } else {
-        files <- tryCatch(expr = {
-            links <- magma_links_query(latest_only = latest_only)
-            links <- links[!is.na(links)]
-            if(length(links)>0) links else MAGMA.Celltyping::magma_links_stored
+        meta <- tryCatch(expr = {
+            magma_links_gather()
         }, error = function(e) MAGMA.Celltyping::magma_links_stored)
     }  
     #### Filter by OS ####
-    if (is.null(os_suffix)) { 
-        # messager("Filtering magma files by OS.",v=verbose)
-        suffix <- paste0(version,magma_os_suffix(),".zip")
-        files <- files[endsWith(files,suffix)]
+    if (!is.null(OS)) {  
+        meta <- subset(meta, os==OS)
     }
     #### Filter by MAGMA version ####
-    if (!is.null(version) && (!latest_only)) {
-        # messager("Filtering magma files by version.",v=verbose)
-        files <- files[grepl(paste0(version, "_"), names(files))]
+    if (!is.null(VERSION) && (!latest_only)) {
+        meta2 <- subset(meta, version==as.character(VERSION))
+        #### Check that any versions left #####
+        if(nrow(meta2)==0){
+            messager("No versions found matching criterion.")
+        } else {
+            meta <- meta2
+        }
+    } 
+    if(latest_only) {
+        meta <- subset(meta, latest==TRUE)
     }
     #### Remove duplicates ####
-    files <- files[!duplicated(names(files))]
-    if(latest_only) files <- files[1]
-    return(files)
+    meta <- meta[!duplicated(meta$name),] 
+    #### Return table or dictionary ####
+    if(return_table){
+        return(meta)
+    }else {
+        dict <- stats::setNames(meta$link, 
+                                meta$name)
+        return(dict)
+    }  
 }

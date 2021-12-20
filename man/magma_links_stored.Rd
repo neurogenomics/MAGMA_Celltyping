@@ -5,13 +5,13 @@
 \alias{magma_links_stored}
 \title{Stored links to MAGMA executables}
 \format{
-An object of class \code{character} of length 116.
+An object of class \code{data.table} (inherits from \code{data.frame}) with 116 rows and 5 columns.
 }
 \source{
 \href{https://ctg.cncr.nl/software/magma}{MAGMA}
 
-\code{  
-magma_links_stored <- magma_links_query(latest_only = FALSE)
+\code{
+magma_links_stored <- magma_links_gather()
 usethis::use_data(magma_links_stored, overwrite = TRUE)
 }
 }

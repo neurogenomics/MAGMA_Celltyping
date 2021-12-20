@@ -7,7 +7,14 @@
 \href{https://ctg.cncr.nl/software/magma}{MAGMA website}
 }
 \usage{
-magma_links_versions(links, version = NULL, return_all = FALSE, verbose = TRUE)
+magma_links_versions(
+  links,
+  version = NULL,
+  return_all = FALSE,
+  unique_only = TRUE,
+  filter_v = TRUE,
+  verbose = TRUE
+)
 }
 \value{
 Character vector of versions.

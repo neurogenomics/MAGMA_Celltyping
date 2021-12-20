@@ -1,5 +1,5 @@
-magma_os_suffix <- function() {
-    os_suffix <- switch(get_os(),
+magma_os_suffix <- function(os=get_os()) { 
+    os_suffix <- switch(EXPR = os,
         Mac = "_mac",
         Windows = "_win",
         Linux = "",

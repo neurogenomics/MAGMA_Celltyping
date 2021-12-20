@@ -16,7 +16,7 @@ find_install_dir <- function(dest_dir_opts = c(
     Sys.getenv("HOME"),
     getwd(),
     tempdir()),
-                             verbose = TRUE){ 
+                             verbose = FALSE){ 
     dir.create(tools::R_user_dir("MAGMA.Celltyping", which="cache"),
                showWarnings = FALSE)
     # messager("Searching for viable installation directory.",v=verbose)

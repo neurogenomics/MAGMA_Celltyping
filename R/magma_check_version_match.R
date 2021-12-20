@@ -28,6 +28,6 @@ magma_check_version_match <- function(desired_version,
         dest_magma <- invert_dict(current_versions)[[desired_version]] 
     }   
     messager("Using:",basename(dirname(dest_magma)),
-             verbose = verbose)
+             v = verbose)
     return(dest_magma)
 }

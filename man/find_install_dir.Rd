@@ -8,7 +8,7 @@ find_install_dir(
   dest_dir_opts = c(tools::R_user_dir("MAGMA.Celltyping", which = "cache"),
     system.file("tools", package = "MAGMA.Celltyping"), "/usr/local/bin",
     Sys.getenv("HOME"), getwd(), tempdir()),
-  verbose = TRUE
+  verbose = FALSE
 )
 }
 \arguments{

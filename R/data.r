@@ -158,8 +158,8 @@
 #' 
 #' @source \href{https://ctg.cncr.nl/software/magma}{MAGMA}
 #' @source 
-#' \code{  
-#' magma_links_stored <- magma_links_query(latest_only = FALSE)
+#' \code{
+#' magma_links_stored <- magma_links_gather()
 #' usethis::use_data(magma_links_stored, overwrite = TRUE)
 #' }
 #' @usage data("magma_links_stored")
@@ -183,6 +183,4 @@
 #' }
 #' @usage data("magma_files_metadata")
 "magma_files_metadata"
-
-
 
