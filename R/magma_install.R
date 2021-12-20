@@ -72,6 +72,8 @@ magma_install <- function(dest_dir = find_install_dir(),
     } else{
         messager("Skipping MAGMA installation.",v=verbose)
     }
+    #### If MAGMA is installed, returns path to executable ####
+    ## If not, returns NULL 
     dest_magma <- magma_check_version_match(
         desired_version = desired_version,
         verbose = verbose

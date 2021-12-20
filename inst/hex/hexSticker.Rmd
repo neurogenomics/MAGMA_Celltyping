@@ -83,7 +83,7 @@ print(gg_volcano)
 img <- png::readPNG(here::here("inst/hex/volcano_black.png"),
                     native = TRUE)
 height <- .4
-g <- grid::rasterGrob(img, interpolate=F,
+g <- grid::rasterGrob(img, interpolate=FALSE,
                       width = height/1.25, height = height)
 gp <-  gg_volcano + 
   annotation_custom(g, ymax = .1, ymin = bottom*1.35) 

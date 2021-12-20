@@ -22,6 +22,8 @@ magma_uninstall <- function(version = NULL,
                        recursive = TRUE, 
                        force = TRUE)
         out2 <- file.remove(paste0(dirname(magma_x),".zip"))
+        logs <- list.files("magma*",dirname(dirname(magma_x)))
+        if(length(logs)>0) try({out3 <- file.remove(logs)})
     } else {
         messager("There are no MAGMA installations to remove.",
                  v=verbose)
