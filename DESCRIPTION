@@ -68,7 +68,8 @@ Suggests:
     piggyback,
     DT,
     biomaRt,
-    ewceData
+    ewceData,
+    badger
 Remotes:
     github::NathanSkene/EWCE@bschilder_dev
 SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
