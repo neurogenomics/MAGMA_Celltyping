@@ -11,6 +11,8 @@ stores binaries in `MAGMA.Celltyping`-specific cache dir. Added various support 
 * Added `magma_uninstall` function to remove one or all MAGMA binaries. 
 * Allow `MAGMA.Celltyping` to install even if MAGMA is not installed. Instead,
 check at the beginning of functions that require MAGMA using `magma_check`.
+    - `magma_links_stored`: Include built-in metadata with links to all MAGMA 
+    versions with parsed version numbers, OS, and which is the latest version. 
 * Call MAGMA commands with `magma_run` which finds the requested version of 
 MAGMA and uses it. 
 * Print readable, user-friendly MAGMA commands when being run through
@@ -58,7 +60,9 @@ increases the number of genes that can be converted.
 Now automatically converted to `output_species` (default: "human") using [`orthogene`](https://github.com/neurogenomics/orthogene). 
 * Create MAGMA files repository using various OpenGWAS datasets 
 that have been munged with `MungeSumstats`: [https://github.com/neurogenomics/MAGMA_Files_Public](MAGMA_Files_Public)
-* Added API to search and acesss MAGMA files repository: `import_magma_files`.
+    - `magma_files_metadata`: Built-in table of all pre-processed MAGMA files
+    currently in the database.  
+* Added API to search and access MAGMA files repository: `import_magma_files`.
 * Allow all relevant functions to take only MAGMA files as input 
 (instead of requiring the GWAS summary stats); e.g. `calculate_celltype_associations(magma_dir="<folder_containing_magma_files>")`
 This function is also used for downloading MAGMA files in examples/unit tests.

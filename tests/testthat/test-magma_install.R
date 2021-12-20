@@ -24,8 +24,8 @@ test_that("magma_install/uninstall works", {
       installed1 <- magma_install(desired_version = "latest") 
       installed2 <- magma_install(desired_version = "1.08b", 
                                   upgrade = TRUE) 
-      testthat::expect_equal(basename(dirname(installed1)),"magma_v1.09b_mac")
-      testthat::expect_equal(basename(dirname(installed2)),"magma_v1.08b_mac")
+      testthat::expect_true(startsWith(basename(dirname(installed1)),"magma"))
+      testthat::expect_true(startsWith(basename(dirname(installed2)),"magma")) 
       ## Uninstall
       uninstalled <- magma_uninstall()
       testthat::expect_true(is.character(uninstalled))
