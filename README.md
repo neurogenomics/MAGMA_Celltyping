@@ -1,4 +1,3 @@
-<img src='https://github.com/neurogenomics/MAGMA.Celltyping/raw/bschilder_dev/inst/hex/hex.png' height='300'><br><br>
 [![](https://img.shields.io/badge/devel%20version-2.0.1-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
 [![R build
 status](https://github.com/neurogenomics/MAGMA_Celltyping/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/actions)
@@ -11,7 +10,7 @@ Authors: <i>Brian M. Schilder, Alan Murphy, Nathan Skene, & Julien
 Bryois</i>
 </h4>
 <h4>
-README updated: <i>Dec-16-2021</i>
+README updated: <i>Jan-04-2022</i>
 </h4>
 
 ## Introduction
@@ -60,8 +59,8 @@ library(MAGMA.Celltyping)
 With the release of `MAGMA_Celltyping` 2.0 in Sept 2021, there have been
 a number of major updates.
 
--   Only R&gt;4.0.0 is supported. To use this package with older
-    versions of R, install
+-   Only R>4.0.0 is supported. To use this package with older versions
+    of R, install
     with:`remotes::install_github("neurogenomics/MAGMA_Celltyping@01a9e53")`
 
 ## Bugs/fixes

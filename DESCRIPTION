@@ -70,8 +70,6 @@ Suggests:
     biomaRt,
     ewceData,
     badger
-Remotes:
-    github::NathanSkene/EWCE@bschilder_dev
 SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
 biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
         Genetics, scRNASeq, Single Cell RNAseq,
