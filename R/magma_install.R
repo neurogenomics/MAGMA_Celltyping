@@ -67,10 +67,10 @@ magma_install <- function(dest_dir = find_install_dir(),
             dest_dir = dest_dir,
             verbose = verbose
         ) 
-        dest_magma <- file.path(destpath, "magma")
-        #### Change magma file permissions ####
-        try({system(paste0("chmod u=rx,go=rx ", dest_magma))})
-        try({Sys.chmod(dest_magma, "777", use_umask = FALSE)})  
+        dest_magma <- magma_find_executable(destpath = destpath)
+        #### Change magma file permissions #### 
+        set_permissions(path = dest_magma,
+                        verbose = verbose)
     } else{
         messager("Skipping MAGMA installation.",v=verbose)
     }

@@ -11,10 +11,10 @@ magma_download_binary <- function(magma_url,
     download.file(magma_url,
                   destfile = destfile
     )
-    #### Adjust permissions to allow for folder manipulation ####
-    try({system(paste0("chmod u=rx,go=rx ", destfile))})
-    try({Sys.chmod(destfile, "777", use_umask = FALSE)})  
-    #### Uzip folder ####
+    #### Adjust permissions to allow for file manipulation #### 
+    set_permissions(path = destfile,
+                    verbose = verbose)
+    #### Uzip file into folder ####
     try({
         utils::unzip(
             zipfile = destfile,
