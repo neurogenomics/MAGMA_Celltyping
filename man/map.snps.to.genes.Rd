@@ -15,11 +15,11 @@ map.snps.to.genes(
 )
 }
 \arguments{
-\item{path_formatted}{Filepath of the summary statistics file 
-(which is expected to already be in the required format). 
+\item{path_formatted}{Filepath of the summary statistics file
+(which is expected to already be in the required format).
 Can be uncompressed or compressed (".gz" or ".bgz").}
 
-\item{genome_build}{The build of the reference genome (\code{"GRCh37"} or \code{"GRCh38"}). 
+\item{genome_build}{The build of the reference genome (\code{"GRCh37"} or \code{"GRCh38"}).
 If \code{NULL}, it will be inferred with \link[MungeSumstats]{get_genome_build}.}
 
 \item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}

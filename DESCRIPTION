@@ -1,7 +1,7 @@
 Package: MAGMA.Celltyping
 Type: Package
 Title: MAGMA.Celltyping
-Version: 1.0.1
+Version: 1.0.2
 Authors@R:
     c(person(given = "Alan",
            family = "Murphy",
@@ -59,5 +59,5 @@ SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software
 biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
         Genetics, scRNASeq, Single Cell RNAseq,
         BiomedicalInformatics, FunctionalGenomics
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Encoding: UTF-8
