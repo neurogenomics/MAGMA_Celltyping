@@ -12,7 +12,7 @@ test_that("calculate_celltype_associations works", {
             magma_dir <- MAGMA.Celltyping::import_magma_files(
                 ids = "ieu-a-298")
             #### Run pipeline ####
-            ctAssocs <- MAGMA.Celltyping:: calculate_celltype_associations(
+            ctAssocs <- MAGMA.Celltyping::calculate_celltype_associations(
                 ctd = ctd, 
                 magma_dir = magma_dir,
                 ctd_species = "mouse"

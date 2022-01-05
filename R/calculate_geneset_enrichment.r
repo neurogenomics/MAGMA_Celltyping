@@ -72,7 +72,6 @@ calculate_geneset_enrichment <- function(geneset,
     #### Run MAGMA ###
     out_file <- paste0(magmaPaths$filePathPrefix,'.',
                        analysis_name)
-    dir.create(out_file, showWarnings = FALSE, recursive = TRUE)
     magma_cmd <- sprintf(
         paste("magma",
               "--gene-results '%s.genes.raw'",
@@ -86,10 +85,11 @@ calculate_geneset_enrichment <- function(geneset,
     #### Run MAGMA command ####
     magma_run(cmd = magma_cmd, 
               version = version)
-
+    
     path <- sprintf("%s.%s.gsa.out",
-                     magmaPaths$filePathPrefix,
-                     analysis_name)
+                    magmaPaths$filePathPrefix,
+                    analysis_name)
+    path <- get_actual_path(path)
     res <- utils::read.table(file = path, 
                              header = TRUE,
                              stringsAsFactors = FALSE, 

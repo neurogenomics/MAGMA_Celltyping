@@ -26,10 +26,12 @@ load_magma_results_file <- function(path,
     requireNamespace("dplyr")
     #### Avoid confusing checks ####
     VARIABLE <- NGENES <- NULL;
+    path <- get_actual_path(path)
     #### Check EnrichmentMode has correct values ####
     check_enrichment_mode(EnrichmentMode = EnrichmentMode)
     #### Check the file has appropriate ending given EnrichmentMode ####
-    if (EnrichmentMode == "Linear" && length(grep(".gsa.out$", path)) == 0) {
+    if (EnrichmentMode == "Linear" &&
+        length(grep(".gsa.out$|.gsa.out.txt$", path)) == 0) {
         stop("If EnrichmentMode=='Linear' then path must end in '.gsa.out'")
     }
     res <- utils::read.table(path, stringsAsFactors = FALSE)

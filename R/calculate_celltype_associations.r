@@ -98,6 +98,7 @@ calculate_celltype_associations <- function(ctd,
         path <- sprintf("%s.%s.gsa.out",
                         sumstatsPrefix2,
                         analysis_name)
+        path <- get_actual_path(path)
         geneCovarFile <- NULL
         # messager(path,v=verbose)
 
