@@ -8,7 +8,7 @@
 MAGMA archive}
 }
 \usage{
-magma_run(version = NULL, cmd = NULL, verbose = TRUE)
+magma_run(version = NULL, cmd = NULL, verbose = FALSE)
 }
 \arguments{
 \item{version}{MAGMA version to use.}
