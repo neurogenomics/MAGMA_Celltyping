@@ -13,10 +13,9 @@ magma_executable <- function(exec_dir = find_install_dir(verbose=FALSE),
                              return_all = FALSE,
                              verbose = FALSE){
     #### Find the executable file once it's been downloaded ####
-    magma_x <- list.files(exec_dir,"^magma$", 
-                          recursive = TRUE, full.names = TRUE) 
+    magma_x <- magma_find_executable(destpath = exec_dir) 
     magma_x <- magma_x[!is.na(magma_x)]
-    
+    magma_x <- fix_path(magma_x) 
     if(!is.null(version)){
         v_search <- grep(version,magma_x, value = TRUE, ignore.case = TRUE)
         v_search <- v_search[!is.na(v_search)]
@@ -34,6 +33,5 @@ magma_executable <- function(exec_dir = find_install_dir(verbose=FALSE),
         stop_msg <- paste("Cannot find MAGMA executable.")
         stop(stop_msg)
     } 
-    magma_x <- path.expand(magma_x) 
     return(magma_x)
 }

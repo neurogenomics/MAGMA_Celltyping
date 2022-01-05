@@ -72,7 +72,7 @@ import_magma_files <- function(save_dir = tempdir(),
         #### Download files locally ####
         local_files <- github_download_files(
             filelist = magma_files,
-            save_dir = save_dir,
+            save_dir = fix_path(save_dir),
             nThread = nThread,
             overwrite = overwrite,
             verbose = verbose
@@ -83,12 +83,14 @@ import_magma_files <- function(save_dir = tempdir(),
         messager("Returning MAGMA directories.",v=verbose)
         magma_dirs <- unique(dirname(local_files))
         names(magma_dirs) <- basename(magma_dirs) 
+        magma_dirs <- fix_path(magma_dirs)
         return(magma_dirs)
     } else {
         messager("Returning MAGMA gene.raw and gene.out file paths",v=verbose)
         ### Must include OpenGWAS ID + upstream/downtream params + file type
         ## bc we need all info in order to make list names unique.
         names(local_files) <- basename(local_files) 
+        local_files <- fix_path(local_files)
         return(local_files)
     }
 }

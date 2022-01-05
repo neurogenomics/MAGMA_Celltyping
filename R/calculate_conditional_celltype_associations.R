@@ -73,7 +73,6 @@ calculate_conditional_celltype_associations <- function(
         ctd_species <- output_species
     } 
     #### Setup paths ####
-    gwas_sumstats_path <- path.expand(gwas_sumstats_path)
     magmaPaths <- get_magma_paths(
         gwas_sumstats_path = gwas_sumstats_path,
         upstream_kb = upstream_kb,
@@ -213,7 +212,7 @@ calculate_conditional_celltype_associations <- function(
             genesCovarFile <- create_gene_covar_file(
                 genesOutFile = sprintf(
                     "%s.genes.out", magmaPaths$filePathPrefix
-                ),
+                  ),
                 ctd = ctd,
                 annotLevel = annotLevel,
                 ctd_species = ctd_species
@@ -268,7 +267,8 @@ calculate_conditional_celltype_associations <- function(
                         "--gene-covar '%s'",
                         "--model direction=pos condition='%s'",
                         "--out '%s'"
-                    ), magmaPaths$filePathPrefix,
+                    ),
+                    magmaPaths$filePathPrefix,
                     genesCovarFile,
                     controlFor,
                     sumstatsPrefix2
@@ -307,11 +307,13 @@ calculate_conditional_celltype_associations <- function(
                     magmaPaths$filePathPrefix,
                     geneCovarFile,
                     controlCovarFile,
-                    sprintf("%s.covar", controlFor), sumstatsPrefix2
+                    sprintf("%s.covar", controlFor),
+                    sumstatsPrefix2
                 )
             }
-            message(magma_cmd)
-            system(magma_cmd)
+          #### Run MAGMA command ####
+          magma_run(cmd = magma_cmd, 
+                    version = version)
 
             cond_res <- load_magma_results_file(
                 path = sprintf("%s.gsa.out", sumstatsPrefix2), 
@@ -332,9 +334,10 @@ calculate_conditional_celltype_associations <- function(
         pastedControls <- paste(signifCells2, collapse = ",")
         if (EnrichmentMode == "Linear") {
             if (annotLevel != controlledAnnotLevel) {
-                genesCovarData <- utils::read.table(file = genesCovarFile, 
-                                                    stringsAsFactors = FALSE, 
-                                                    header = TRUE)
+                genesCovarData <- utils::read.table(
+                  file = genesCovarFile, 
+                  stringsAsFactors = FALSE, 
+                  header = TRUE)
                 genesCovarData2 <- merge(
                     x = genesCovarData,
                     y = controlledCovarCols[, c("entrez", signifCells2)])

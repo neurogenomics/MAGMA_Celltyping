@@ -33,7 +33,7 @@ magma_install <- function(dest_dir = find_install_dir(),
     latest_version <- magma_links_versions(links = latest_url,
                                            verbose = FALSE)
     #### Standardize the desired version ####
-    if(tolower(desired_version)[1]=="latest"){
+    if(desired_version=="latest"){
         magma_url <- latest_url
         desired_version <- latest_version
     } else {

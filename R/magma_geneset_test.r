@@ -5,7 +5,7 @@
 # entrezSet = all_hgnc_wtEntrez[all_hgnc_wtEntrez$hgnc_symbol %in% geneSet,]$entrezgene
 # fileEntry = paste(c(geneSetName,entrezSet),collapse=" ")
 # geneCovarFile=tempfile()
-# gwas_sumstats_path = path.expand(gwas_sumstats_path)
+# gwas_sumstats_path = fix_path(gwas_sumstats_path)
 # write.table(fileEntry,file=geneCovarFile,quote=FALSE,row.names=FALSE,sep="\t",col.names=FALSE)
 #
 # upstream_kb = 10

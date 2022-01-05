@@ -6,16 +6,16 @@ set_permissions <- function(path,
              v=verbose)
     #### OS-specific commands ####
     if(get_os()=="Windows"){
-        # https://docs.microsoft.com/en-us/previous-versions/windows/
-        #   it-pro/windows-xp/bb490872(v=technet.10)?redirectedfrom=MSDN
-        try({system(paste("cacls",
+        try({system(paste("icacls",
                           path,
-                          if(is_folder) "\\t" else NULL,
-                          "\\g rx"))})
+                          if(is_folder) "/t" else NULL,
+                          if(verbose) NULL else "/q",
+                          "/grant:r Everyone:(OI)(CI)RX"))})
     } else {
         try({system(paste("chmod",
                           if(is_folder) "-R" else NULL,
-                          "u=rx,go=rx", path))})
+                          "u=rx,go=rx",
+                          path))})
     }
     #### Should work on all OS (maybe?) ####
     try({Sys.chmod(paths = path, 

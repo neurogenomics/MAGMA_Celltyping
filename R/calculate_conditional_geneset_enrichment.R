@@ -76,7 +76,6 @@ calculate_conditional_geneset_enrichment <- function(geneset,
         controlledCTs <- EWCE::fix_celltype_names(celltypes = controlledCTs)
     } 
     #### Setup paths ####
-    gwas_sumstats_path <- path.expand(gwas_sumstats_path)
     magmaPaths <- get_magma_paths(
         gwas_sumstats_path = gwas_sumstats_path,
         upstream_kb = upstream_kb,

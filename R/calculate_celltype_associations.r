@@ -60,6 +60,7 @@ calculate_celltype_associations <- function(ctd,
             upstream_kb = upstream_kb,
             downstream_kb = downstream_kb)
     }
+    gwas_sumstats_path <- fix_path(gwas_sumstats_path)
     #### prepare quantile groups ####
     # MAGMA.Celltyping can only use human GWAS
     if (prepare_ctd) {
@@ -73,7 +74,6 @@ calculate_celltype_associations <- function(ctd,
         ctd_species <- output_species
     } 
     #### Setup paths ####
-    gwas_sumstats_path <- path.expand(gwas_sumstats_path)
     magmaPaths <- get_magma_paths(
         gwas_sumstats_path = gwas_sumstats_path,
         upstream_kb = upstream_kb,
@@ -95,7 +95,9 @@ calculate_celltype_associations <- function(ctd,
             "%s.level%s",
             magmaPaths$filePathPrefix, annotLevel
         )
-        path <- sprintf("%s.%s.gsa.out", sumstatsPrefix2, analysis_name)
+        path <- sprintf("%s.%s.gsa.out",
+                        sumstatsPrefix2,
+                        analysis_name)
         geneCovarFile <- NULL
         # messager(path,v=verbose)
 
@@ -116,17 +118,18 @@ calculate_celltype_associations <- function(ctd,
                 )
 
                 if (is.na(genesOutCOND[1])) {
+                  out_file <- paste0(sumstatsPrefix2,'.',
+                                     analysis_name)
                     magma_cmd <- sprintf(
                         paste(
                             "magma",
                             "--gene-results '%s.genes.raw'",
                             "--gene-covar '%s'",
-                            "--model direction=pos --out '%s.%s'"
+                            "--model direction=pos --out '%s'"
                         ),
                         magmaPaths$filePathPrefix,
                         geneCovarFile,
-                        sumstatsPrefix2,
-                        analysis_name
+                        out_file
                     )
                 } else {
                     conditionOn <- paste(sprintf(
@@ -135,19 +138,20 @@ calculate_celltype_associations <- function(ctd,
                     ),
                     collapse = ","
                     )
+                    out_file <- paste0(sumstatsPrefix2,'.',
+                                       analysis_name)
                     magma_cmd <- sprintf(
                         paste(
                             "magma",
                             "--gene-results '%s.genes.raw'",
                             "--gene-covar '%s'",
                             "--model direction=pos  condition-residualize='%s'",
-                            "--out '%s.%s'"
+                            "--out '%s'"
                         ),
                         magmaPaths$filePathPrefix,
                         geneCovarFile,
                         conditionOn,
-                        sumstatsPrefix2,
-                        analysis_name
+                        out_file
                     )
                 }
             } else if (EnrichmentMode == "Top 10%") {
@@ -155,8 +159,8 @@ calculate_celltype_associations <- function(ctd,
                 # then write as the genesCovar file (the input to MAGMA)
                 geneCovarFile <- create_top10percent_genesets_file(
                     genesOutFile = sprintf(
-                        "%s.genes.out",
-                        magmaPaths$filePathPrefix
+                      "%s.genes.out",
+                      magmaPaths$filePathPrefix
                     ),
                     ctd = ctd,
                     annotLevel = annotLevel,
@@ -164,17 +168,18 @@ calculate_celltype_associations <- function(ctd,
                 )
 
                 if (is.na(genesOutCOND[1])) {
+                  out_file <- paste0(sumstatsPrefix2,'.',
+                                     analysis_name)
                     magma_cmd <- sprintf(
                         paste(
                             "magma",
                             "--gene-results '%s.genes.raw'",
                             "--set-annot '%s'",
-                            "--out '%s.%s'"
+                            "--out '%s'"
                         ),
                         magmaPaths$filePathPrefix,
                         geneCovarFile,
-                        sumstatsPrefix2,
-                        analysis_name
+                        out_file
                     )
                 } else {
                     geneCovarFile2 <- create_gene_covar_file(
@@ -189,24 +194,25 @@ calculate_celltype_associations <- function(ctd,
                     )
                     conditionOn <- paste(sprintf(
                         "ZSTAT%s",
-                        1:length(genesOutCOND)
+                        seq_len(length(genesOutCOND))
                     ),
                     collapse = ","
                     )
+                    out_file <- paste0(sumstatsPrefix2,'.',
+                                       analysis_name)
                     magma_cmd <- sprintf(
                         paste(
                             "magma",
                             "--gene-results '%s.genes.raw'",
                             "--set-annot '%s' twosided",
                             "--gene-covar '%s' condition-only='%s'",
-                            "--out '%s.%s'"
+                            "--out '%s'"
                         ),
                         magmaPaths$filePathPrefix,
                         geneCovarFile,
                         geneCovarFile2,
                         conditionOn,
-                        sumstatsPrefix2,
-                        analysis_name
+                        out_file
                     )
                 }
             }
@@ -214,7 +220,8 @@ calculate_celltype_associations <- function(ctd,
             magma_run(cmd = magma_cmd, 
                       version = version)
         } else {
-            messager("Importing precomputed MAGMA results.", v = verbose)
+            messager("Importing precomputed MAGMA results.",
+                     v = verbose)
         }
         tmp$geneCovarFile <- geneCovarFile
         tmp$results <- load_magma_results_file(

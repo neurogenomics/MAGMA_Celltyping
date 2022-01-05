@@ -42,16 +42,17 @@ get_magma_paths <- function(gwas_sumstats_path = NA,
             "and downstream_kb must also be specified"
         ))
     }
-
     # If output_path is not specified, 
     # then use the folder containing gwas_sumstats
     if (is.na(output_path)) {
         output_path <- dirname(gwas_sumstats_path)
     }
+    output_path <- fix_path(output_path)
+    dir.create(output_path, showWarnings = FALSE, recursive = TRUE) 
 
     if (!is.na(gwas_sumstats_path)) {
+        gwas_sumstats_path <- fix_path(gwas_sumstats_path)
         gwasFileName <- basename(gwas_sumstats_path)
-
         # Set the paths
         pathMagmaFiles <- sprintf(
             "%s/MAGMA_Files/%s.%sUP.%sDOWN",
@@ -65,7 +66,10 @@ get_magma_paths <- function(gwas_sumstats_path = NA,
             "%s/MAGMA_Figures/Tileplots",
             output_path
         )
-
+        # Normalize paths  
+        pathMagmaFiles <- fix_path(pathMagmaFiles)
+        pathTiles <- fix_path(pathTiles)
+        pathFigs <- fix_path(pathFigs)  
         # Create the folders (in case they don't exist yet)
         dir.create(sprintf("%s/MAGMA_Files", output_path),
                    showWarnings = FALSE, recursive = TRUE)
@@ -81,6 +85,7 @@ get_magma_paths <- function(gwas_sumstats_path = NA,
         filePathPrefix <- sprintf("%s/%s.%sUP.%sDOWN",
                                   pathMagmaFiles, gwasFileName,
                                   upstream_kb, downstream_kb)
+        filePathPrefix <- fix_path(filePathPrefix)
 
         # Return the paths
         magmaPaths <- list(tiles = pathTiles,

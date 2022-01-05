@@ -14,6 +14,7 @@ map_snps_to_genes(
   population = "eur",
   storage_dir = tempdir(),
   force_new = FALSE,
+  version = NULL,
   verbose = TRUE
 )
 }
@@ -55,6 +56,8 @@ the most common GWAS subpopulation).}
 \item{force_new}{Set to \code{TRUE} to
 rerun \code{MAGMA} even if the output files already exist.
  (Default: \code{FALSE}).}
+
+\item{version}{MAGMA version to use.}
 
 \item{verbose}{Print messages.}
 }

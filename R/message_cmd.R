@@ -1,3 +1,3 @@
 message_cmd <- function(cmd){
-    cat(gsub("--","\n  --",cmd))
+    message(gsub("--","\n  --",cmd))
 }

@@ -40,7 +40,6 @@ calculate_geneset_enrichment <- function(geneset,
             upstream_kb = upstream_kb,
             downstream_kb = downstream_kb)
     }
-    gwas_sumstats_path <- path.expand(gwas_sumstats_path)
     magmaPaths <- get_magma_paths(gwas_sumstats_path = gwas_sumstats_path, 
                                   upstream_kb = upstream_kb, 
                                   downstream_kb = downstream_kb)
@@ -61,7 +60,6 @@ calculate_geneset_enrichment <- function(geneset,
     geneset_entrez <- MAGMA.Celltyping::hgnc2entrez_orthogene[
         MAGMA.Celltyping::hgnc2entrez_orthogene$hgnc_symbol %in% geneset,
     ]$entrez
-
     ctRows <- paste(c(analysis_name, geneset_entrez), collapse = " ")
     #### Write genes covar file to disk ####
     geneCovarFile <- tempfile() 
@@ -72,20 +70,26 @@ calculate_geneset_enrichment <- function(geneset,
                        sep = "\t",
                        col.names = FALSE)
     #### Run MAGMA ###
+    out_file <- paste0(magmaPaths$filePathPrefix,'.',
+                       analysis_name)
+    dir.create(out_file, showWarnings = FALSE, recursive = TRUE)
     magma_cmd <- sprintf(
         paste("magma",
               "--gene-results '%s.genes.raw'",
               "--set-annot '%s'",
-              "--out '%s.%s'" 
-        ), magmaPaths$filePathPrefix, 
-        geneCovarFile, 
+              "--out '%s'" 
+        ),
         magmaPaths$filePathPrefix, 
-        analysis_name
+        geneCovarFile, 
+        out_file
     )
+    #### Run MAGMA command ####
     magma_run(cmd = magma_cmd, 
               version = version)
 
-    path <- sprintf("%s.%s.gsa.out", magmaPaths$filePathPrefix, analysis_name)
+    path <- sprintf("%s.%s.gsa.out",
+                     magmaPaths$filePathPrefix,
+                     analysis_name)
     res <- utils::read.table(file = path, 
                              header = TRUE,
                              stringsAsFactors = FALSE, 

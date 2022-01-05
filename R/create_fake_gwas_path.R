@@ -18,5 +18,6 @@ create_fake_gwas_path <- function(magma_dir,
             basename(magma_dir)
         )
     )
+    fake_gwas_ss <- fix_path(fake_gwas_ss)
     return(fake_gwas_ss)
 }

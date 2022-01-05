@@ -22,6 +22,7 @@
 #' rerun \code{MAGMA} even if the output files already exist.
 #'  (Default: \code{FALSE}).
 #' @inheritParams get_genome_ref
+#' @inheritParams celltype_associations_pipeline
 #'
 #' @return Path to the genes.out file.
 #'
@@ -44,15 +45,17 @@ map_snps_to_genes <- function(path_formatted,
                               population = "eur",
                               storage_dir = tempdir(),
                               force_new = FALSE,
+                              version = NULL,
                               verbose = TRUE) {
     #### Check MAGMA installation ####
-    magma_check()
+    magma_check(version = version, 
+                verbose = verbose)
     #### Download  1000 Genomes reference panel ####
     genome_ref_path <- get_genome_ref(genome_ref_path = genome_ref_path,
                                       storage_dir = storage_dir,
                                       population = population,
                                       verbose = verbose)
-    path_formatted <- path.expand(path_formatted)
+    path_formatted <- fix_path(path_formatted)
     magmaPaths <- get_magma_paths(
         gwas_sumstats_path = path_formatted,
         upstream_kb = upstream_kb,
@@ -140,7 +143,9 @@ map_snps_to_genes <- function(path_formatted,
         genomeLocFile, 
         outPath
     )
-    system(magma_cmd)
+    #### Run MAGMA command ####
+    magma_run(cmd = magma_cmd, 
+              version = version)
 
     #### Create genes.out ####
     message_parallel("\n==== MAGMA Step 2: Generate genes.out ====\n")
@@ -150,11 +155,14 @@ map_snps_to_genes <- function(path_formatted,
               "--pval '%s' %s",
               "--gene-annot '%s.genes.annot'",
               "--out '%s'"),
-        path.expand(genome_ref_path), path_formatted,
-        n_arg, magmaPaths$filePathPrefix, outPath
+        genome_ref_path, 
+        path_formatted,n_arg,
+        magmaPaths$filePathPrefix,
+        outPath
     )
-    # magma_cmd
-    system(magma_cmd)
+    #### Run MAGMA command ####
+    magma_run(cmd = magma_cmd, 
+              version = version)
     # Return path to genes.out file
     return(genes_out)
 }

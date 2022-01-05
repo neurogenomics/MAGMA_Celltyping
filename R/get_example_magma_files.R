@@ -11,11 +11,13 @@ get_example_magma_files <- function(file_types,
     ## Copy to tempdir and rename to include up/down info 
     ## which MAGMA.Celltyping requires 
     tmpdir <- file.path(tempdir(),"MAGMA_Files",
-                        "ieu-a-298.tsv.gz.35UP.10DOWN")
+                        "ieu-a-298.tsv.gz.35UP.10DOWN") 
+    tmpdir <- fix_path(tmpdir)
     dir.create(tmpdir, recursive = TRUE, showWarnings = FALSE)
     temp_paths <-  file.path(tmpdir, gsub("ieu-a-298",
                                           "ieu-a-298.tsv.gz.35UP.10DOWN",
                                           basename(local_files)))
+    temp_paths <- fix_path(temp_paths)
     out <- file.copy(local_files, temp_paths) 
     return(temp_paths)
 }

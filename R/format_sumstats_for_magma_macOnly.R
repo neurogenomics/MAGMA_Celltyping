@@ -225,7 +225,7 @@ format_sumstats_for_magma_macOnly <- function(path) {
     col_headers <- strsplit(rows_of_data[1], "\t")[[1]]
     shCmd <- sprintf(
         "gawk -i inplace '{ i=%s; if($i > 1) { $i=0; }  print }' %s",
-        which(col_headers == "P"), path.expand(path))
+        which(col_headers == "P"), fix_path(path))
     system2("/bin/bash", args = c("-c", shQuote(shCmd)))
 
     # The above command converts tabs in the header to spaces... 
@@ -236,13 +236,13 @@ format_sumstats_for_magma_macOnly <- function(path) {
     if (length(grep("\t", rows_of_data)) != 2) {
         tmpName <- tempfile()
         shCmd <- sprintf("tr ' ' '\t' < %s <> %s > %s", 
-                         path.expand(path), path.expand(path), tmpName)
+                         fix_path(path), fix_path(path), tmpName)
         system2("/bin/bash", args = c("-c", shQuote(shCmd)))
-        shCmd <- sprintf("mv %s %s", tmpName, path.expand(path))
+        shCmd <- sprintf("mv %s %s", tmpName, fix_path(path))
         system2("/bin/bash", args = c("-c", shQuote(shCmd)))
     }
     # The above command converts 'P' to '0'... so revert that
-    shCmd <- sprintf("sed -i '' '1s/0/P/' '%s'", path.expand(path))
+    shCmd <- sprintf("sed -i '' '1s/0/P/' '%s'", fix_path(path))
     system2("/bin/bash", args = c("-c", shQuote(shCmd)))
 
 
@@ -258,21 +258,21 @@ format_sumstats_for_magma_macOnly <- function(path) {
         pt3 <- "=sprintf(\"%3.0f\",$"
         pt4 <- whichN
         pt5 <- ")}1' "
-        pt6 <- path.expand(path)
+        pt6 <- fix_path(path)
         shCmd <- paste(c(pt1, pt2, pt3, pt4, pt5, pt6), collapse = "")
         system2("/bin/bash", args = c("-c", shQuote(shCmd)))
     }
 
     # All rows should start with either SNP or rs... if they don't drop them
     shCmd <- sprintf("grep -e '^rs' -e '^SNP' '%s' > '%s_tmp'", 
-                     path.expand(path), path.expand(path))
+                     fix_path(path), fix_path(path))
     system2("/bin/bash", args = c("-c", shQuote(shCmd)))
-    shCmd <- sprintf("mv %s_tmp %s", path.expand(path), path.expand(path))
+    shCmd <- sprintf("mv %s_tmp %s", fix_path(path), fix_path(path))
     system2("/bin/bash", args = c("-c", shQuote(shCmd)))
 
     # Keep only rows which have the number of columns expected
     shCmd <- sprintf("gawk -i inplace -F'\t' 'NF == %s {print}' '%s'", 
-                     length(col_headers), path.expand(path))
+                     length(col_headers), fix_path(path))
     system2("/bin/bash", args = c("-c", shQuote(shCmd)))
 
     # Show how the data now looks
@@ -285,7 +285,7 @@ format_sumstats_for_magma_macOnly <- function(path) {
     col_headers <- strsplit(rows_of_data[1], "\t")[[1]]
 
     # Drop any rows with duplicated RSIDs
-    shCmd <- sprintf("gawk -i inplace '!seen[$1]++' '%s'", path.expand(path))
+    shCmd <- sprintf("gawk -i inplace '!seen[$1]++' '%s'", fix_path(path))
     system2("/bin/bash", args = c("-c", shQuote(shCmd)))
 
     return(col_headers)

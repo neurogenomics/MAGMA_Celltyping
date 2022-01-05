@@ -28,5 +28,9 @@ magma_run <- function(version = NULL,
         message_cmd(msg)
     }
     #### Run the command ####
-    out <- system(cmd2)
+    if(get_os()=='Windows'){
+      out <- shell(gsub("'","",cmd2)) 
+    } else {
+      out <- system(cmd2) 
+    }
 }
