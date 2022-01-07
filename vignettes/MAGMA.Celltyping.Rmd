@@ -1,6 +1,6 @@
 ---
 title: "MAGMA_Celltyping: Getting started"
-author: "Brian M. Schilder"
+author: "<h4>Authors: <i>Brian M. Schilder, Alan Murphy, Julien Bryois & Nathan Skene</i></h4>"
 date: "<h4>Updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
 output:
   BiocStyle::html_document:
@@ -17,6 +17,9 @@ library(ggplot2)
 library(dplyr)
 ```
 
+# Intro 
+
+`MAGMA.Celltyping` is a software package that facilitates conducting cell-type-specific enrichment tests on GWAS summary statistics. 
 
 # Setup 
 
@@ -111,7 +114,17 @@ ctd <- get_ctd("ctd_BlueLake2018_VisualCortexOnly")
 ctd <- get_ctd("ctd_Saunders")
 ```
  
-# Run cell-type enrichment analyses
+# Run cell-type enrichment analyses  
+
+`MAGMA.Celltyping` offers a suite of functions for conducting various types of cell-type-specific enrichment tests on GWAS summary statistics. 
+
+The `celltype_associations_pipeline` wraps several functions that in previous versions of `MAGMA.Celltyping` had to be set up and run separately. These include: 
+
+- **Linear enrichment**: `calculate_celltype_associations(EnrichmentMode = "linear")` internally. Activated when `run_linear=TRUE`. 
+- **Top 10% enrichment**: Uses `calculate_celltype_associations(EnrichmentMode = "Top 10%")` internally. Activated when `run_top10=TRUE`. 
+- **Conditional enrichment**: Uses `calculate_conditional_celltype_associations` internally. Activated when `run_conditional=TRUE`.  
+
+Thus, `celltype_associations_pipeline` is designed to make these analyses easier to run. 
 
 ```{r, eval = FALSE}
 MAGMA_results <- MAGMA.Celltyping::celltype_associations_pipeline(
@@ -131,7 +144,9 @@ MAGMA_results <- MAGMA.Celltyping::enrichment_results
 
 # Plot results
 
-## Merge results 
+## Merge results  
+
+`merge_results` imports each of the MAGMA enrichment results files and merges them into one so that they can easily be plotted and further analysed. 
 
 ```{r}
 merged_results <- MAGMA.Celltyping::merge_results(
@@ -139,7 +154,9 @@ merged_results <- MAGMA.Celltyping::merge_results(
 knitr::kable(merged_results)
 ```
 
-## Heatmap  
+## Heatmap   
+
+Now we'll construct a heatmap visualizing the enrichment results, such that each GWAS is shown on the y-axis and each cell-type is shown on the x-axis. Results can be further facetted by what kind of test was run (linear, top10%, and/or conditional). 
 
 ```{r Heatmap, error=TRUE}  
 heat <- MAGMA.Celltyping::results_heatmap(

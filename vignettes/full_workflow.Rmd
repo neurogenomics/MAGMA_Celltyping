@@ -1,6 +1,6 @@
 ---
 title: "MAGMA_Celltyping: full_workflow"
-author: "Brian M. Schilder"
+author: "<h4>Authors: <i>Brian M. Schilder, Alan Murphy, Julien Bryois & Nathan Skene</i></h4>"
 date: "<h4>Updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
 output:
   BiocStyle::html_document:
@@ -16,25 +16,18 @@ library(ggplot2)
 library(dplyr)
 ```
 
+# Intro 
+
+`MAGMA.Celltyping` is a software package that facilitates conducting cell-type-specific enrichment tests on GWAS summary statistics. 
 
 The following vignette shows the step-by-step version of the `MAGMA.Celltyping` pipeline. For the newer streamlined version of the pipeline (that wraps many of these functions),
-please see the *Get Started* vignette.
-
-# Setup 
-
-## Get genome reference
-
-Set path the 1000 genomes reference data.
-
-```{r, eval=FALSE}
-genome_ref_path <- MAGMA.Celltyping::get_genome_ref()
-```
+please see the *Getting Started* vignette.
 
 # Prepare data
 
 ## Import GWAS
 
-- We need to have a summary statistics file to analyse as input.  
+- We need to have a GWAS summary statistics file to analyse as input.  
 - As an example, you can download UK Biobank summary statistics 
 for 'fluid_intelligence' using `get_example_gwas()`.
 
@@ -47,18 +40,21 @@ gwas_sumstats_path <- MAGMA.Celltyping::get_example_gwas(
 ## Munge GWAS 
 
 Our lab have created a robust Bioconductor package for formatting multiple types
-of summary statistics files: [`MungeSumstats`](https://www.biorxiv.org/content/10.1101/2021.06.21.449239v1)
-(please cite the associated publication if you use this package). 
+of summary statistics files: [`MungeSumstats`](https://github.com/neurogenomics/MungeSumstats)
+(please cite the associated publication if you use this package):  
 
-- We will use `Mungesumstats` here to reformat the summary statistics for Fluid Intelligence. 
+> [Murphy, Schilder, & Skene, MungeSumstats: a Bioconductor package for the standardization and quality control of many GWAS summary statistics, Bioinformatics, Volume 37, Issue 23, 1 December 2021, Pages 4593–4596, https://doi.org/10.1093/bioinformatics/btab665](https://doi.org/10.1093/bioinformatics/btab665)   
+
+- We will use `MungeSumstats` here to reformat the summary statistics for Fluid Intelligence. 
 The minimum info needed *after* munging is:  
 - SNP, CHR, BP as first three columns.
 - It has at least one of these columns: ("Z","OR","BETA","LOG_ODDS","SIGNED_SUMSTAT")
 
-Genome builds:  
+Genome builds:   
+
 - The UK Biobank data from Ben Neale uses "GRCh37" so we will specify this.  
 - However, if you don't know which genome build you GWAS sum stats are in, 
-`MungeSumstats` will infer this information by default.
+`MungeSumstats` will infer this information by default (simply set `ref_genome=NULL`).
 
 ```R
 path_formatted <- MungeSumstats::format_sumstats(path=gwas_sumstats_path,
@@ -78,8 +74,10 @@ path_formatted <- MAGMA.Celltyping::get_example_gwas(trait = "fluid_intelligence
 
 ## Map SNPs to Genes
 
+Next, we must convert the GWAS summary statistics file to a gene-level signature so that we can compare it to a gene-level transcriptomic cell-type reference. 
+
 Note you can input the genome build of your summary statistics for this step or
-it can be inferred if left null:
+it can be inferred if left `NULL`:
 
 ```{r, eval=FALSE}
 genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(path_formatted = path_formatted,
@@ -88,11 +86,15 @@ genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(path_formatted = path_format
 ```
 
 
-## CellTypeDataset
+## CellTypeDataset 
 
 ### Import CTD 
 
-The EWCE package comes with a celltype specificity dataset which we use as an example. If you want to import your own single cell RNA-seq dataset, then this needs converting into CTD format; please see the [EWCE tutorial](https://github.com/NathanSkene/EWCE/) for explanation of how to do this.
+The second step in `MAGMA.Celltyping` is to prepare your Cell Type Dataset (CTD) reference, from which we will get gene signatures for each cell-type in the reference. 
+
+The [`ewceData`](https://bioconductor.org/packages/release/data/experiment/html/ewceData.html) package comes with a CTD which we use as an example. 
+
+If you want to import your own single cell RNA-seq dataset, then this needs converting into CTD format; please see the [`EWCE` vingette](https://nathanskene.github.io/EWCE/articles/extended.html#create-a-celltypedataset) for explanation of how to do this.
 
 ```{r, eval=FALSE } 
 ctd <- ewceData::ctd()
@@ -100,11 +102,11 @@ ctd <- ewceData::ctd()
 
 Note that the cell type dataset loaded in the code above is the Karolinksa cortex/hippocampus data only. For the full Karolinska dataset with hypothalamus and midbrain instead use the following:
 
-```
+```R
 ctd <- MAGMA.Celltyping::get_ctd("ctd_allKI")
 ```
 
-Or for the DRONC seq or AIBS datasets use:
+You can find a list of other datasets provided by this package using `?MAGMA.Celltyping::get_ctd`: 
 
 ```
 ctd <- get_ctd("ctd_Tasic")
@@ -136,7 +138,10 @@ print(table(ctd[[1]]$specificity_quantiles[,1]))
 
 # Run the main cell type association analysis
 
-The analyses can be run in either linear or top10% enrichment modes.
+The analyses can be run in either linear or top10% enrichment modes. Each have their own advantages/disadvantages. 
+
+- **Linear mode**: Performs a linear regression analysis using continuous gene-association scores from the GWAS MAGMA results and continuous specificity scores from each cell-type in the CTD reference. This mode takes advantage of gene-level weights in order to get more accurate association estimates. However, this mode also tends to give more significant results in general, as it may be capturing signatures from multiple cell-types at once.  
+- **Top 10% mode**: Performs gene-set enrichment analysis (GSEA) using only the top 10% most cell-type-specific genes for each cell-type (i.e. genes in the top specificity decile). Unlike linear mode, top 10% mode discards any gene-level weight data during testing and instead treats genes as categorical data (in the gene list or not in the gene list). While you do lose the nuance of the gene-level weights, you potential capture less cell-type signatures in a given test (due to only using a handful of top genes), which can make interpretation easier. 
 
 Let's start with linear:
 
@@ -166,7 +171,7 @@ FigsTopDecile <- MAGMA.Celltyping::plot_celltype_associations(
   ctd = ctd)
 ```
 
-Then plot linear together with the top decile mode.
+Then plot linear together with the top 10% mode.
 
 ```{r, eval=FALSE }
 ctAssocMerged <- MAGMA.Celltyping::merge_magma_results(
@@ -179,6 +184,8 @@ FigsMerged <- MAGMA.Celltyping::plot_celltype_associations(
 ```
 
 ### Conditional analysis (linear mode)
+
+Sometimes a single cell-type can dominate the signature in a given GWAS (e.g. pyramidal cells in Schizophrenia). This makes it difficult to disentangle whether other cell-types are truly associated with the GWAS trait, or whether the are simply enriched because they have an overlapping signature with the top cell-type. Conditional mode allows you to control for one (or several) cell-type(s) and see whether other cell-types still remain significantly enriched.  
 
 By default, it is assumed that you want to run the linear enrichment analysis. There are two modes for conditional analyses, you can either control for the top N cell types from the baseline analysis (in which case, set `controlTopNcells`) or control for specific specified cell types (in which case, set `controlledCTs`).
 
@@ -227,9 +234,9 @@ Using this approach we can see that the increased enrichment is microglia in the
 
 ## Conditional analyses (top 10% mode)
 
-Conditional analyses can also be performed with top 10% mode (although the conditioning is done in linear mode)
+Conditional analyses can also be performed with top 10% mode (although the conditioning is done in linear mode). 
 
-```{r , eval=FALSE}
+```{r, eval=FALSE}
 ctCondAssocsTopTen = MAGMA.Celltyping::calculate_conditional_celltype_associations(
   ctd = ctd,
   gwas_sumstats_path = path_formatted,
@@ -257,7 +264,6 @@ So let's subtract genes associated with prospective memory from those involved i
 ### Download and prepare the 'Prospective memory' GWAS summary statistics
 
 ```{r, eval=FALSE }
-
 gwas_sumstats_path = MAGMA.Celltyping::get_example_gwas(storage_dir = storage_dir, 
                                                         trait = "prospective_memory")
 # Format sumstats - infer genome build from the data
@@ -366,7 +372,7 @@ The results should closely resemble those obtained using MAGMA
 
 ## Gene set enrichments
 
-To test whether a gene set (in HGNC or MGI format) is enriched 
+To test whether a gene set is enriched 
 using MAGMA the following commands can be used:
 
 ```{r, eval=FALSE}
@@ -382,7 +388,7 @@ geneset_res = MAGMA.Celltyping::calculate_geneset_enrichment(
 print(geneset_res)
 ```
 
-We can then test whether the geneset is still enriched after controlling for celltype enrichment:
+We can then test whether the gene set is still enriched after controlling for celltype enrichment:
 
 ```{r, eval=FALSE}
 ctd <- MAGMA.Celltyping::get_ctd("ctd_allKI")

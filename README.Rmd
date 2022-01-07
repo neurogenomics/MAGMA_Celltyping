@@ -6,7 +6,7 @@ author: "<img src='https://github.com/neurogenomics/`r read.dcf('DESCRIPTION', f
         `r badger::badge_last_commit(branch='master')`
         `r badger::badge_codecov(branch='master')` 
         `r badger::badge_license()` 
-        <h4>Authors: <i>Brian M. Schilder, Alan Murphy, Nathan Skene, & Julien Bryois</i></h4>" 
+        <h4>Authors: <i>Brian M. Schilder, Alan Murphy, Julien Bryois & Nathan Skene</i></h4>" 
 date: "<h4>README updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
 output:
   github_document
@@ -84,7 +84,7 @@ If you use the EWCE package as well then please cite:
 
 If you use `MungeSumstats` to format your summary statistics then please cite:
 
-> [Murphy and Skene, MungeSumstats: A Bioconductor package for the standardisation and quality control of many GWAS summary statistics. 2021.](https://www.biorxiv.org/content/10.1101/2021.06.21.449239v1)
+> [Murphy, Schilder, & Skene, MungeSumstats: a Bioconductor package for the standardization and quality control of many GWAS summary statistics, Bioinformatics, Volume 37, Issue 23, 1 December 2021, Pages 4593–4596, https://doi.org/10.1093/bioinformatics/btab665](https://doi.org/10.1093/bioinformatics/btab665)  
 
 If you use the cortex/hippocampus single cell data associated with this package then please cite the following papers:
 

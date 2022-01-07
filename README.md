@@ -1,4 +1,5 @@
-[![](https://img.shields.io/badge/devel%20version-2.0.1-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
+<img src='https://github.com/neurogenomics/MAGMA.Celltyping/raw/bschilder_dev/inst/hex/hex.png' height='300'><br><br>
+[![](https://img.shields.io/badge/devel%20version-2.0.0-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
 [![R build
 status](https://github.com/neurogenomics/MAGMA_Celltyping/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/actions)
 [![](https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/commits/master)
@@ -6,11 +7,11 @@ status](https://github.com/neurogenomics/MAGMA_Celltyping/workflows/R-CMD-check-
 [![License:
 GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)
 <h4>
-Authors: <i>Brian M. Schilder, Alan Murphy, Nathan Skene, & Julien
-Bryois</i>
+Authors: <i>Brian M. Schilder, Alan Murphy, Julien Bryois & Nathan
+Skene</i>
 </h4>
 <h4>
-README updated: <i>Jan-04-2022</i>
+README updated: <i>Jan-07-2022</i>
 </h4>
 
 ## Introduction
@@ -59,8 +60,8 @@ library(MAGMA.Celltyping)
 With the release of `MAGMA_Celltyping` 2.0 in Sept 2021, there have been
 a number of major updates.
 
--   Only R>4.0.0 is supported. To use this package with older versions
-    of R, install
+-   Only R&gt;4.0.0 is supported. To use this package with older
+    versions of R, install
     with:`remotes::install_github("neurogenomics/MAGMA_Celltyping@01a9e53")`
 
 ## Bugs/fixes
@@ -101,9 +102,11 @@ If you use the EWCE package as well then please cite:
 If you use `MungeSumstats` to format your summary statistics then please
 cite:
 
-> [Murphy and Skene, MungeSumstats: A Bioconductor package for the
-> standardisation and quality control of many GWAS summary statistics.
-> 2021.](https://www.biorxiv.org/content/10.1101/2021.06.21.449239v1)
+> [Murphy, Schilder, & Skene, MungeSumstats: a Bioconductor package for
+> the standardization and quality control of many GWAS summary
+> statistics, Bioinformatics, Volume 37, Issue 23, 1 December 2021,
+> Pages 4593–4596,
+> https://doi.org/10.1093/bioinformatics/btab665](https://doi.org/10.1093/bioinformatics/btab665)
 
 If you use the cortex/hippocampus single cell data associated with this
 package then please cite the following papers:

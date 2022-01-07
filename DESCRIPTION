@@ -1,16 +1,16 @@
 Package: MAGMA.Celltyping
 Type: Package
 Title: Find causal cell-types underlying complex trait genetics
-Version: 2.0.1
+Version: 2.0.0
 Authors@R:
     c(person(given = "Alan",
            family = "Murphy",
-           role = c("aut"),
+           role = c("ctb"),
            email = "alanmurph94@hotmail.com",
            comment = c(ORCID = "0000-0002-2487-8753")),
      person(given = "Brian",
            family = "Schilder",
-           role = c("aut"),
+           role = c("cre","aut"),
            email = "brian_schilder@alumni.brown.edu",
            comment = c(ORCID = "0000-0001-5949-2191")),
      person(given = "Julien",
@@ -20,7 +20,7 @@ Authors@R:
            comment = c(ORCID = "0000-0002-4747-2166")),
      person(given = "Nathan",
            family = "Skene",
-           role = c("aut","cre"),
+           role = c("aut"),
            email = "nathan.skene@gmail.com",
            comment = c(ORCID = "0000-0002-6807-3180")))   
 Description: This R package contains code used for testing which cell types can explain the heritability signal from GWAS summary statistics.
