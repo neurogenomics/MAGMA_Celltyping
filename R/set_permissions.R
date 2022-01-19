@@ -1,3 +1,13 @@
+#' Set permissions
+#' 
+#' Robust methods for setting file/folder permissions across multiple OS.
+#' 
+#' @param path Path to file/folder.
+#' @param is_folder Whether \code{path} is a folder. 
+#' If so, permissions will be set recursively for all files/subfolders. 
+#' @param verbose Print messages. 
+#' 
+#' @keywords internal
 set_permissions <- function(path,
                             is_folder = FALSE,
                             verbose = TRUE){ 

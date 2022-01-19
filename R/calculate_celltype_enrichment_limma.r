@@ -157,8 +157,8 @@ calculate_celltype_enrichment_limma <- function(
         input_all_df <- data.table::rbindlist(input_all,
             idcol = "Celltype_id") %>%
             dplyr::rename(
-                specificity_proportion = proportion,
-                specificity_decile = percentile) %>%
+                specificity_proportion = dplyr::all_of(proportion),
+                specificity_decile = dplyr::all_of(percentile)) %>%
             dplyr::mutate(Celltype = celltype_dict[Celltype_id],
                           ctd_level = annotLevel,
                           .after = 1) 

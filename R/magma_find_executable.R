@@ -1,5 +1,13 @@
+#' Find MAGMA executable
+#' 
+#' Find any existing MAGMA executables in a given directory. 
+#' 
+#' @param destpath Directory to search for MAGMA executables in. 
+#' @param return_all Whether to return paths to all MAGMA executables.
+#' 
+#' @keywords internal 
 magma_find_executable <- function(destpath, 
-                                  return_all=TRUE){
+                                  return_all = TRUE){
     files <- list.files(path = destpath,
                         pattern = "^magma$|^magma.exe$",
                         recursive = TRUE,

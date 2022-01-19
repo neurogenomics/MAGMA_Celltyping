@@ -10,24 +10,40 @@
 #' @param spec_deciles Which \emph{specificity_proportion} deciles to 
 #' include when calculating driver genes.
 #' (10 = most specific).
+#' @param verbose Print messages. 
 #'
+#' @examples
+#' ctd <- ewceData::ctd()
+#' magma_dir <- MAGMA.Celltyping::import_magma_files()
+#' magma_res <- MAGMA.Celltyping::merge_results(
+#'     MAGMA.Celltyping::enrichment_results)
+#' genesets <- MAGMA.Celltyping::get_driver_genes(ctd = ctd, 
+#'                                                magma_res = magma_res, 
+#'                                                GenesOut_dir = magma_dir, 
+#'                                                fdr_thresh = 1)
 #' @export
+#' @importFrom stringr str_split
+#' @importFrom stats p.adjust
+#' @importFrom dplyr %>%
 get_driver_genes <- function(ctd,
                              ctd_species = "mouse",
                              magma_res,
+                             GenesOut_dir,
                              fdr_thresh = .05,
-                             GenesOut_dir = "./",
                              n_genes = 100,
-                             spec_deciles = 10) {
+                             spec_deciles = 10,
+                             verbose = TRUE) {
     #### Avoid confusing checks ####
     FDR <- NULL;
     #### Find .genes.out files for sig GWAS ####
-    message("Filtering @ FDR<", fdr_thresh)
+    messager("Filtering @ FDR<", fdr_thresh, v=verbose)
+    if(!"FDR" %in% colnames(magma_res)) {
+        magma_res$FDR <- stats::p.adjust(magma_res$P, method="fdr")
+    }
     sig_res <- subset(magma_res, FDR < fdr_thresh)
-    magma_GenesOut_files <- find_GenesOut_files(
-        sig_res = sig_res,
-        root_dir = GenesOut_dir
-    )
+    if(nrow(sig_res)==0) stop("No significant results detected.")
+    magma_GenesOut_files <- find_GenesOut_files(GenesOut_dir = GenesOut_dir,
+                                                verbose = verbose) 
     gwas_dict <- setNames(
         stringr::str_split(basename(magma_GenesOut_files), "[.]")[[1]][1],
         magma_GenesOut_files
@@ -48,8 +64,8 @@ get_driver_genes <- function(ctd,
                 ctd = ctd,
                 annotLevel = annotLevel,
                 ctd_species = .ctd_species,
-                celltypes = sig_res$Celltype_id,
-                return_all = T
+                celltypes = sig_res$Celltype,
+                return_all = TRUE
             )
             genesets <- create_genesets(
                 res_input = res$input,

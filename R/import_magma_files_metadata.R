@@ -1,3 +1,19 @@
+#' Import MAGMA files metadata
+#' 
+#' Import metadata from the SNP-to-gene mapping files available in 
+#' \href{https://github.com/neurogenomics/MAGMA_Files_Public}{
+#' MAMGA_Files_Public}.  
+#' 
+#' @param use_local Whether to use a local copy of the metadata.  
+#' \itemize{
+#' \item{\code{TRUE}}{Use the metadata included with \pkg{MAGMA.Celltyping}
+#'  (less frequently updated).}  
+#' \item{\code{FALSE}}{Import metadata from the GitHub repository 
+#' (more frequently updated).}  
+#' }  
+#' @inheritParams import_magma_files
+#' 
+#' @keywords internal
 import_magma_files_metadata <- function(file_types,
                                         use_local = TRUE,
                                         verbose = TRUE){

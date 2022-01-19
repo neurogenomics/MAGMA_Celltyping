@@ -12,7 +12,7 @@ genesOutFile <- MAGMA.Celltyping::import_magma_files(
     file_types = ".genes.out$",
     return_dir = FALSE)
 
-genesCovarFilePath <- create_gene_covar_file(
+genesCovarFilePath <- MAGMA.Celltyping:::create_gene_covar_file(
     genesOutFile = genesOutFile,
     ctd = ctd,
     annotLevel = 1,

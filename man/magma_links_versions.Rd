@@ -2,7 +2,7 @@
 % Please edit documentation in R/magma_links_versions.R
 \name{magma_links_versions}
 \alias{magma_links_versions}
-\title{Get the available versions of MAGMA}
+\title{Get MAGMA versions}
 \source{
 \href{https://ctg.cncr.nl/software/magma}{MAGMA website}
 }
@@ -20,6 +20,6 @@ magma_links_versions(
 Character vector of versions.
 }
 \description{
-Get the available versions of MAGMA
+Get the version numbers from each MAGM executable download link.
 }
 \keyword{internal}

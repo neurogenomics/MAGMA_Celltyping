@@ -24,7 +24,7 @@
 #'     file_types = ".genes.out$",
 #'     return_dir = FALSE)
 #'
-#' genesCovarFilePath <- create_gene_covar_file(
+#' genesCovarFilePath <- MAGMA.Celltyping:::create_gene_covar_file(
 #'     genesOutFile = genesOutFile,
 #'     ctd = ctd,
 #'     annotLevel = 1,
@@ -45,7 +45,8 @@ create_gene_covar_file <- function(genesOutFile,
     quantDat2 <- map_specificity_to_entrez(
         ctd = ctd,
         annotLevel = annotLevel,
-        ctd_species = ctd_species
+        ctd_species = ctd_species, 
+        use_matrix = "specificity_quantiles"
     ) 
     if (dim(quantDat2)[1] < 100) {
         stop_msg <- paste(

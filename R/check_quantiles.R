@@ -1,3 +1,9 @@
+#' Check quantiles
+#' 
+#' Check whether every column in every matrix in every level of the 
+#' CellTypeDataset (\code{ctd}) has the expected number of quantile bins. 
+#' 
+#' @keywords internal
 check_quantiles <- function(ctd,
                             matrix_name,
                             numberOfBins, 

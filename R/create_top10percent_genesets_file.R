@@ -30,6 +30,7 @@
 #' } 
 #' @keywords internal
 #' @importFrom dplyr setdiff
+#' @importFrom EWCE fix_celltype_names
 create_top10percent_genesets_file <- function(genesOutFile,
                                               ctd,
                                               annotLevel,
@@ -37,13 +38,15 @@ create_top10percent_genesets_file <- function(genesOutFile,
                                               verbose = TRUE) {
     #### Map genes first so that the deciles computed
     # in the following step only include usable genes ####
-    quantDat2 <- get_top10percent(
+    quantDat2 <- get_deciles_matrix(
         ctd = ctd,
         annotLevel = annotLevel,
         ctd_species = ctd_species
     )
-    #### Check column names don't have spaces ####
-    colnames(quantDat2) <- check_celltype_names(ct_names = colnames(quantDat2))
+    ## Check column names don't have spaces and other 
+    ## problematic characters.
+    colnames(quantDat2) <- EWCE::fix_celltype_names(
+        celltypes = colnames(quantDat2))
     #### Construct top10% specificity gene markers for each cell type ####
     messager("Constructing top10% gene marker sets for",
         ncol(quantDat2), "cell-types.",

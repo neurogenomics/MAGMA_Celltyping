@@ -2,7 +2,7 @@
 % Please edit documentation in R/message_parallel.r
 \name{message_parallel}
 \alias{message_parallel}
-\title{Send messages to console even from within parallel processes}
+\title{Message parallel}
 \usage{
 message_parallel(...)
 }

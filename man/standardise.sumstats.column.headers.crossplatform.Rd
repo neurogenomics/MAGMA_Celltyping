@@ -5,12 +5,6 @@
 \alias{standardise.sumstats.column.headers.crossplatform}
 \title{Standardise the column headers in the Summary Statistics files
  (CROSSPLATFORM)}
-\source{
-\code{
- col_headers <- standardise.sumstats.column.headers.crossplatform(
-     "~/Downloads/202040.assoc.tsv")
-}
-}
 \usage{
 standardise.sumstats.column.headers.crossplatform(first_line)
 }
@@ -31,5 +25,13 @@ Use a reference data table of common column header names
 This function does not check that all the required column headers are present
 
 The amended header is written directly back into the file
+}
+\examples{
+\dontrun{
+path <- MAGMA.Celltyping::get_example_gwas()
+first_line <- readLines(path)[1]
+col_headers <- MAGMA.Celltyping:::standardise.sumstats.column.headers.crossplatform(
+     first_line = first_line)
+}
 }
 \keyword{internal}

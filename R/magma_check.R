@@ -1,3 +1,11 @@
+#' MAGMA check
+#' 
+#' Check that MAGMA is installed at the beginning of functions where MAGMA is 
+#' required. 
+#' @param version MAGMA version.
+#' @inheritParams magma_install 
+#' 
+#' @keywords internal
 magma_check <- function(version = NULL,
                         upgrade = FALSE,
                         verbose = TRUE){ 

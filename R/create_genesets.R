@@ -1,8 +1,20 @@
-
+#' Create gene sets 
+#' 
+#' Support function for \link[MAGMA.Celltyping]{get_driver_genes}.
+#' 
+#' @param res_input Enrichment results output from 
+#' \link[MAGMA.Celltyping]{calculate_celltype_enrichment_limma}. 
+#' @param n_genes Max number of genes to return. 
+#' @param spec_deciles Which specificity deciles to use
+#'  from the CellTypeDataset.
+#' @param human.symbol Whether to use human gene symbols. 
+#' 
+#' @keywords internal
 create_genesets <- function(res_input,
                             n_genes = 100,
                             spec_deciles = 10,
                             human.symbol = TRUE) {
+    
     specificity_decile <- Celltype_id <-ADJ_ZSTAT <-  NULL;
     symbol_species <- if (human.symbol) "human.symbol" else "mouse.symbol"
     message("+ Returning ", symbol_species)

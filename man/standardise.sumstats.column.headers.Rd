@@ -16,7 +16,7 @@ into the summary statistics file)
 }
 \description{
 Use a reference data table of common column header names
- (stored as \link[MAGMA.Celltyping]{sumstatsColHeaders}) 
+ (stored as \code{MAGMA.Celltyping::sumstatsColHeaders}) 
  convert them to a standard set, i.e. chromosome --> CHR.
 This function does not check that all the required column headers
  are present.

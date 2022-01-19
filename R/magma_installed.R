@@ -1,3 +1,11 @@
+#' MAGMA installed
+#' 
+#' Test whether any version of MAGMA is installed.
+#' 
+#' @param magma_x MAGMA executable. 
+#' @param verbose Print messages. 
+#' 
+#' @keywords internal
 magma_installed <- function(magma_x = magma_executable(),
                             verbose = TRUE) {
     #### Method 1 ###

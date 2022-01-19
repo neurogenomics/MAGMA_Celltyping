@@ -8,6 +8,7 @@ map_specificity_to_entrez(
   ctd,
   annotLevel,
   ctd_species,
+  use_matrix = "specificity_quantiles",
   return_ctd = FALSE,
   use_saved = TRUE,
   verbose = TRUE
@@ -19,6 +20,8 @@ map_specificity_to_entrez(
 
 \item{ctd_species}{Species name relevant to the cell type data.
 See \link[EWCE]{list_species} for all available species.}
+
+\item{use_matrix}{Which CTD matrix to use as input.}
 
 \item{return_ctd}{Return the actual CellTypeDataset,
 rather than path to where it is saved.}

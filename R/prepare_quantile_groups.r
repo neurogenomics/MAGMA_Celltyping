@@ -14,7 +14,7 @@
 #'
 #' @examples
 #' ctd_orig <- ewceData::ctd()
-#' ctd <- prepare_quantile_groups(ctd = ctd_orig)
+#' ctd <- MAGMA.Celltyping::prepare_quantile_groups(ctd = ctd_orig)
 #' @importFrom EWCE standardise_ctd
 #' @importFrom methods as
 #' @importFrom Matrix t
@@ -41,26 +41,18 @@ prepare_quantile_groups <- function(ctd,
             ...
         )
     }
-
-    messager("Computing linear normalised mean expression.", v = verbose)
-    ctd <- lapply(ctd, normalise_mean_exp)
-
-    #### Never actually used by MAGMA.Celltyping? #####
-    messager("Computing specificity quantiles", v = verbose)
+    #### Compute specificity deciles ####
     ctd <- lapply(ctd, EWCE::bin_specificity_into_quantiles,
-                  numberOfBins = numberOfBins)
-    
-    # ctd = lapply(ctd, bin_expression_into_quantiles)
-
-    messager("Computing specificity distance.", v = verbose)
-    ctd <- lapply(ctd, use_distance_to_add_expression_level_info)
-
-    messager("Computing specificity distance quantiles.", v = verbose)
-    ctd <- lapply(ctd, bin_specificityDistance_into_quantiles) 
-    #### Check that the number of quantiles in each col == numberOfBins #### 
+                  numberOfBins = 10, 
+                  matrix_name = "specificity_deciles") 
+    ### Check that the number of quantiles in each col == numberOfBins ####
     quantiles_counts <- check_quantiles(ctd = ctd, 
-                                        matrix_name = "specDist_quantiles", 
+                                        matrix_name = "specificity_quantiles", 
                                         numberOfBins = numberOfBins,
                                         metric = "n")
+    deciles_counts <- check_quantiles(ctd = ctd, 
+                                      matrix_name = "specificity_deciles", 
+                                      numberOfBins = 10,
+                                      metric = "n")
     return(ctd)
 }

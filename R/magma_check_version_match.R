@@ -1,3 +1,9 @@
+#' MAGMA check version match 
+#' 
+#' Check that the desired version of MAGMA is installed. 
+#' @inheritParams magma_install
+#' 
+#' @keywords internal
 magma_check_version_match <- function(desired_version,  
                                       verbose = TRUE){
     

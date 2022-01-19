@@ -21,7 +21,7 @@ test_that("magma_links works", {
         meta <- MAGMA.Celltyping:::magma_links(latest_only = FALSE,
                                                os = "Mac",
                                                return_table = TRUE)
-        testthat::expect_equal(nrow(meta),18)
+        testthat::expect_gte(nrow(meta),19)
     } else {
         testthat::expect_null(NULL)
     } 

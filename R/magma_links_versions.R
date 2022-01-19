@@ -1,4 +1,6 @@
-#' Get the available versions of MAGMA
+#' Get MAGMA versions
+#' 
+#' Get the version numbers from each MAGM executable download link. 
 #'
 #' @source \href{https://ctg.cncr.nl/software/magma}{MAGMA website}
 #' 

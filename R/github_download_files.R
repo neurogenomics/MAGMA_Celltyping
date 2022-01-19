@@ -1,3 +1,14 @@
+#' Download files from GitHub
+#' 
+#' Download files stored in a public GitHub repository.
+#' 
+#' @param filelist List of URLs to files. 
+#' @param save_dir Local directory to save files in. 
+#' @param overwrite Overwrite existing local files. 
+#' @param nThread Number of threads to parallelise downloads over. 
+#' @param verbose Print messages. 
+#' 
+#' @keywords internal
 github_download_files <- function(filelist,
                                   save_dir = tempdir(),
                                   overwrite = FALSE,

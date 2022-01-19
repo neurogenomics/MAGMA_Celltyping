@@ -1,3 +1,9 @@
+#' Check ENTREZ genes
+#' 
+#' Check percentage of gene genes in \code{geneset} that have 
+#' corresponding ENTREZ IDs. 
+#' 
+#' @keywords internal
 check_entrez_genes <- function(geneset){
     n_valid <- sum(
         geneset %in% MAGMA.Celltyping::hgnc2entrez_orthogene$hgnc_symbol)

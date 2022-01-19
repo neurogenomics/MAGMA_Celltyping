@@ -1,3 +1,11 @@
+#' MAGMA installed version
+#' 
+#' List which version(s) of MAGMA is currently installed. 
+#' 
+#' @param magma_x MAGMA executable. 
+#' @param verbose Print messages. 
+#' 
+#' @keywords internal
 magma_installed_version <- function(magma_x = magma_executable(),
                                     verbose = TRUE) {
     if(length(magma_x)==0) {

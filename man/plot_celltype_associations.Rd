@@ -13,7 +13,8 @@ plot_celltype_associations(
   plotDendro = TRUE,
   gwas_title = "",
   plotLegend = TRUE,
-  figsDir = NA
+  figsDir = NA,
+  show_plot = TRUE
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ shown alongside the figure? TRUE or FALSE.}
 \item{plotLegend}{Should the figure legend be displayed?}
 
 \item{figsDir}{Directory where figures should be created.}
+
+\item{show_plot}{Print to the plot(s).}
 }
 \value{
 A list of ggplot objects.
@@ -50,5 +53,10 @@ Can take input from either
  \link[MAGMA.Celltyping]{calculate_conditional_celltype_associations}.
 }
 \examples{
-# ctAssocs <- calculate_celltype_associations(ctd, gwas_sumstats_path)
+res <- MAGMA.Celltyping::enrichment_results
+ctAssocs <- res$`finn-a-AD.tsv.gz.35UP.10DOWN`$ctAssocsLinear
+ctd <- ewceData::ctd()
+figs <- MAGMA.Celltyping::plot_celltype_associations(
+    ctAssocs = ctAssocs,
+    ctd = ctd)
 }

@@ -1,3 +1,12 @@
+#' Download a MAGMA binary 
+#' 
+#' Download a MAGMA binary executable file. 
+#' 
+#' @param magma_url URL path to MAGMA executable.
+#' @param dest_dir Local directory to store the MAGMA executable in.
+#' @param verbose Print messages. 
+#' 
+#' @keywords internal 
 magma_download_binary <- function(magma_url,
                                   dest_dir = find_install_dir(),
                                   verbose = TRUE) {

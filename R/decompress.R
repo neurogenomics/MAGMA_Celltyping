@@ -1,3 +1,11 @@
+#' Decompress a file
+#' 
+#' Decompress a gzipped (.gz) or bgzipped (.bgz) file. 
+#' 
+#' @param path_formatted Path to compressd file. 
+#' @inheritParams R.utils::gunzip
+#' 
+#' @keywords internal
 decompress <- function(path_formatted,
                        remove = FALSE,
                        overwrite = FALSE) {

@@ -8,10 +8,11 @@ get_driver_genes(
   ctd,
   ctd_species = "mouse",
   magma_res,
+  GenesOut_dir,
   fdr_thresh = 0.05,
-  GenesOut_dir = "./",
   n_genes = 100,
-  spec_deciles = 10
+  spec_deciles = 10,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -21,17 +22,29 @@ get_driver_genes(
 
 \item{magma_res}{Merged results from \code{MAGMA.Celltyping::merge_results}.}
 
-\item{fdr_thresh}{FDR threshold for \code{magma_res}.}
-
 \item{GenesOut_dir}{Folder to search for \emph{.genes.out} 
 files implicated in \code{magma_res}.}
+
+\item{fdr_thresh}{FDR threshold for \code{magma_res}.}
 
 \item{n_genes}{Max number of drive genes to return per cell-type enrichment.}
 
 \item{spec_deciles}{Which \emph{specificity_proportion} deciles to 
 include when calculating driver genes.
 (10 = most specific).}
+
+\item{verbose}{Print messages.}
 }
 \description{
 Get genes driving significant \pkg{MAGMA_celltyping} results
+}
+\examples{
+ctd <- ewceData::ctd()
+magma_dir <- MAGMA.Celltyping::import_magma_files()
+magma_res <- MAGMA.Celltyping::merge_results(
+    MAGMA.Celltyping::enrichment_results)
+genesets <- MAGMA.Celltyping::get_driver_genes(ctd = ctd, 
+                                               magma_res = magma_res, 
+                                               GenesOut_dir = magma_dir, 
+                                               fdr_thresh = 1)
 }

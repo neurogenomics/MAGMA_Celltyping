@@ -1,3 +1,13 @@
+#' Select a MAGMA executable 
+#' 
+#' When more than one MAGMA executable is installed, 
+#' selects one of them to use. 
+#' 
+#' @param magma_x MAGMA executable. 
+#' @param return_all Whether to return paths to all MAGMA executables.
+#' @param verbose Print messages. 
+#' 
+#' @keywords internal
 magma_executable_select <- function(magma_x,
                                     return_all = FALSE,
                                     verbose = TRUE){ 

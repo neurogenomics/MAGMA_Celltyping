@@ -1,3 +1,16 @@
+#' Get MAGMA links
+#' 
+#' Get links to MAGMA executables in the official MAGMA archives. 
+#' 
+#' @param latest_only Only return the latest version of MAGMA.
+#' @param os Operating System.
+#' @param version Desired MAGMA version. 
+#' @param use_local Use a copy of the MAGMA file links, which may be out of date
+#' but will always be available. 
+#' @param return_table Return the results in table format. 
+#' @param verbose Print messages.
+#' 
+#' @keywords internal
 magma_links <- function(latest_only = TRUE,
                         os = get_os(),
                         version = NULL,

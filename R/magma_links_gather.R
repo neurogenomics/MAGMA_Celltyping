@@ -1,3 +1,9 @@
+#' Gather MAGMA links
+#' 
+#' Gather links to MAGMA executables stored in the official MAGMA archives, 
+#' and format them as a table. 
+#' 
+#' @keywords internal  
 magma_links_gather <- function(){
     
     link <- NULL;
@@ -10,9 +16,8 @@ magma_links_gather <- function(){
     meta <- data.table::data.table(link=links,
                                    version=versions) %>%
         dplyr::arrange(dplyr::desc(version))
-    #### Add column indicating which rows are the latest version ####
-    meta$latest <- meta$version==meta$version[1]
-    
+    #### Add column indicating which rows are the latest version #### 
+    meta$latest <- meta$version==rev(versions)[1]
     #### Get OS ####
     suff_dict <- stats::setNames(
         c(paste0(magma_os_suffix(os = "Mac"),".zip"),
@@ -30,7 +35,8 @@ magma_links_gather <- function(){
                           ifelse(
                               grepl(suff_dict["Windows"], link), "Windows",
                                  ifelse(
-                                     grepl(suff_dict["Linux"], link), "Linux")
+                                     grepl(suff_dict["Linux"], link),
+                                     "Linux",NA)
                               )
                        )
                 ) 

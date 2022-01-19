@@ -5,6 +5,7 @@
 #' @param return_ctd Return the actual CellTypeDataset,
 #'  rather than path to where it is saved.
 #' @param use_saved Use a saved version of the gene mapping table.
+#' @param use_matrix Which CTD matrix to use as input. 
 #' @inheritParams calculate_celltype_associations
 #'
 #' @returns Matrix in which the first column is 'entrez'
@@ -16,17 +17,23 @@
 map_specificity_to_entrez <- function(ctd,
                                       annotLevel,
                                       ctd_species,
+                                      use_matrix = "specificity_quantiles",
                                       return_ctd = FALSE,
                                       use_saved = TRUE,
                                       verbose = TRUE) {
     #### Avoid confusing checks ####
     genes <- input <- target <- NULL;
+    #### Check if matrix exists ####
+    if(!use_matrix %in% names(ctd[[annotLevel]])){
+        stopper(use_matrix,"is not a matrix in the provided ctd.",
+                "Try running ctd through prepare_quantile_groups() first.")
+    }
     # Because sumstats use entrez genes & ctd uses
     # gene symbols, match entrez-->symbols
-    messager("Mapping gene symbols in specificity quantiles matrix",
+    messager("Mapping gene symbols in",use_matrix,"matrix",
              "to entrez IDs.",v=verbose)
     #### Extract gene list ####
-    mat <- ctd[[annotLevel]]$specificity_quantiles 
+    mat <- ctd[[annotLevel]][[use_matrix]] 
     #### Find 1:1 orthologs ####
     # Skip this step if the genes are already human
     if (ctd_species != "human") {

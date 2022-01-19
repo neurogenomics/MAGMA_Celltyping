@@ -3,12 +3,6 @@
 \name{format_sumstats_for_magma}
 \alias{format_sumstats_for_magma}
 \title{Format GWAS summary statistics}
-\source{
-\code{
-path <- MAGMA.Celltyping::get_example_gwas()
-new_path <- MAGMA.Celltyping:::format.sumstats.for.magma(path)
-}
-}
 \usage{
 format_sumstats_for_magma(path)
 }
@@ -21,4 +15,11 @@ col_headers The new column headers for the sumstats file
 \description{
 Check that sumstats has correct columns and that they are
  in the correct order for MAGMA and LDSC.
+}
+\examples{
+\dontrun{
+path <- MAGMA.Celltyping::get_example_gwas()
+new_path <- MAGMA.Celltyping:::format.sumstats.for.magma(path)
+}
+
 }

@@ -1,20 +1,3 @@
-#' Summary Statistics Column Headers
-#'
-#' List of uncorrected column headers often found in GWAS
-#' Summary Statistics column headers.
-#'
-#' @source \href{https://github.com/neurogenomics/MungeSumstats}{MungeSumstats}
-#' @source
-#' \code{
-#' # Most the data in the below table comes from the LDSC github wiki
-#' sumstatsColHeaders = read.csv("inst/extdata/Magma_Column_headers.csv",
-#'                               stringsAsFactors = FALSE)
-#' usethis::use_data(sumstatsColHeaders,overwrite = TRUE)
-#' }
-#' @usage data("sumstatsColHeaders")
-"sumstatsColHeaders"
-
-
 #' HGNC to Entrez symbol mapping
 #' 
 #' This method uses \link[orthogene]{all_genes} and contains >1,200 more genes
@@ -159,7 +142,7 @@
 #' @source \href{https://ctg.cncr.nl/software/magma}{MAGMA}
 #' @source 
 #' \code{
-#' magma_links_stored <- magma_links_gather()
+#' magma_links_stored <- MAGMA.Celltyping:::magma_links_gather()
 #' usethis::use_data(magma_links_stored, overwrite = TRUE)
 #' }
 #' @usage data("magma_links_stored")

@@ -1,3 +1,5 @@
+#' Message parallel
+#' 
 #' Send messages to console even from within parallel processes
 #' @return A message
 #' @keywords internal

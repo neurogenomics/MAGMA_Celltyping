@@ -20,13 +20,15 @@ MAGMA and uses it.
 * Added unit tests.
 * Create hex sticker
 * New function: `get_sub_SNP_LOC_DATA`
-* Formally deprecated functions using `.Deprecated` function:
+* Formally deprecated functions using `.Deprecated` function and removing all other internal code:
     - `get_genomebuild_for_sumstats`
     - `build_snp_location_tables`
     - `format.sumstats.for.magma`
     - `format_sumstats_for_magma_macOnly`
     - `standardise.sumstats.column.headers`
     - `standardise.sumstats.column.headers.crossplatform`
+* Removed `sumstatsColHeaders` from data, as it was only used in now-deprecated 
+functions.  
 * Renamed all functions with "." to "_" to meet coding standards.
 * Renamed functions to be more concise and avoid issues with 
 test file names being too long:
@@ -92,6 +94,16 @@ which lets users specify which test they want to run with arguments, including:
     - `calculate_celltype_associations` (Top10% mode)
     - `calculate_conditional_celltype_associations`
 * Parallelise `celltype_associations_pipeline` across multiple cores. 
+* Removed old functions whose output were not being used: 
+    - `normalise_mean_exp`
+    - `bin_specificityDistance_into_quantiles`
+    - `bin_expression_into_quantiles` 
+* Add new function (plus tests):  
+    - `get_driver_genes`  
+* Added unit tests for: 
+    - `calculate_celltype_enrichment_limma` 
+    - `adjust_zstat_in_genesOut` 
+    - Deprecated functions 
 
 
 ## Bug fixes 
@@ -102,3 +114,5 @@ which lets users specify which test they want to run with arguments, including:
 * Remove all `suppressWarnings` calls and resolve the underlying issues instead. 
 * Add `utils` as Suggest.
 * Normalize paths to magma executables (to avoid path issues on WindowsOS).
+* Fixed axes in `plot_celltype_associations`, first reported [here](https://github.com/neurogenomics/MAGMA_Celltyping/issues/12).  
+* Fix `prepare_quantile_groups` so that it's consistent with how `EWCE` compute specificity quantiles.  

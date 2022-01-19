@@ -25,8 +25,15 @@ See \link[EWCE]{list_species} for all available species.}
 \item{output_species}{Which species' genes names to convert \code{exp} to.
 See \link[EWCE]{list_species} for all available species.}
 
-\item{method}{correction method, a \code{\link{character}} string.
-    Can be abbreviated.}
+\item{method}{R package to to use for gene mapping:
+\itemize{
+\item{\code{"gprofiler"} : Slower but more species and genes.}
+\item{\code{"homologene"} : Faster but fewer species and genes.}
+\item{\code{"babelgene"} : Faster but fewer species and genes.
+Also gives }
+}
+ (slower but more species and genes) or
+\code{"homologene"} (faster but fewer species and genes).}
 
 \item{...}{Additional arguments passed for \link[EWCE]{standardise_ctd}.}
 }

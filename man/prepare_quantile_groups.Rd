@@ -75,5 +75,5 @@ from the CTD data which are not 1:1 orthologs with the GWAS species.
 }
 \examples{
 ctd_orig <- ewceData::ctd()
-ctd <- prepare_quantile_groups(ctd = ctd_orig)
+ctd <- MAGMA.Celltyping::prepare_quantile_groups(ctd = ctd_orig)
 }

@@ -38,6 +38,3 @@ List of two ggplot objects.
 \description{
 Used after merging results from multiple GWAS studies.
 }
-\examples{
- # 
-}

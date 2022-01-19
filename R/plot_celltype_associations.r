@@ -17,12 +17,18 @@
 #' @param gwas_title Title to be displayed over the figure (string).
 #' @param plotLegend Should the figure legend be displayed?
 #' @param figsDir Directory where figures should be created.
+#' @param show_plot Print to the plot(s). 
 #' @inheritParams calculate_celltype_associations
 #'
 #' @return A list of ggplot objects.
 #'
 #' @examples
-#' # ctAssocs <- calculate_celltype_associations(ctd, gwas_sumstats_path)
+#' res <- MAGMA.Celltyping::enrichment_results
+#' ctAssocs <- res$`finn-a-AD.tsv.gz.35UP.10DOWN`$ctAssocsLinear
+#' ctd <- ewceData::ctd()
+#' figs <- MAGMA.Celltyping::plot_celltype_associations(
+#'     ctAssocs = ctAssocs,
+#'     ctd = ctd)
 #' @export
 #' @importFrom grDevices dev.off pdf 
 #' @importFrom gridExtra grid.arrange
@@ -34,7 +40,8 @@ plot_celltype_associations <- function(ctAssocs,
                                        plotDendro = TRUE, 
                                        gwas_title = "", 
                                        plotLegend = TRUE, 
-                                       figsDir = NA) {
+                                       figsDir = NA,
+                                       show_plot = TRUE) {
 
     #### CHECK: THAT RESULTS FOR ONLY ONE GWAS WERE PROVIDED  ####
     # (for more than one use magma_tileplot.r)
@@ -67,8 +74,8 @@ plot_celltype_associations <- function(ctAssocs,
                          "EnrichmentMode", "CONTROL", "CONTROL_label")
 
     # Is the analysis top10%, linear or merged?
-    print(ctAssocs[[1]]$results)
-    print(unique(ctAssocs[[1]]$results$EnrichmentMode))
+    # print(ctAssocs[[1]]$results)
+    # print(unique(ctAssocs[[1]]$results$EnrichmentMode))
     if (length(unique(ctAssocs[[1]]$results$EnrichmentMode)) == 1) {
         if (unique(ctAssocs[[1]]$results$EnrichmentMode) == "Linear") {
             analysisType <- "Linear"
@@ -100,9 +107,9 @@ plot_celltype_associations <- function(ctAssocs,
 
         a2 <- ggplot2::ggplot(ctAssocs[[annotLevel]]$results, 
                      ggplot2::aes_string(x = "factor(Celltype)", 
-                                y = "log10p",
+                                y = "-log10p",
                                 fill = "FullMethod")) +
-            ggplot2::scale_y_reverse() +
+            # ggplot2::scale_y_reverse() +
             ggplot2::geom_bar(stat = "identity", position = "dodge") +
             ggplot2::coord_flip() +
             ggplot2::ylab(expression("-log"[10] * "(pvalue)")) +
@@ -117,7 +124,7 @@ plot_celltype_associations <- function(ctAssocs,
         if (useSignificanceLine) {
             a2 <- a2 + 
                 ggplot2::geom_hline(
-                    yintercept = log(
+                    yintercept = -log(
                         as.numeric(0.05 / 
                                        ctAssocs$total_baseline_tests_performed),
                         10), colour = "black")
@@ -154,7 +161,7 @@ plot_celltype_associations <- function(ctAssocs,
                     ncol = 2, widths = c(0.8, 0.2)))
                 grDevices::dev.off()
             } else {
-                print(theFig)
+                if(show_plot) print(theFig)
             }
             # IF THE RESULTS COME FROM A CONDITIONAL ANALYSIS
         } else {
@@ -177,7 +184,7 @@ plot_celltype_associations <- function(ctAssocs,
                 print(theFig + ggplot2::theme_bw())
                 grDevices::dev.off()
             } else {
-                print(theFig)
+                if(show_plot) print(theFig)
             }
         }
         figures[[length(figures) + 1]] <- theFig

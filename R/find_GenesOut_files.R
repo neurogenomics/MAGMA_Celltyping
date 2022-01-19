@@ -1,12 +1,19 @@
-find_GenesOut_files <- function(sig_res,
-                                root_dir = "raw_data/MAGMA/MAGMA_Files") {
-    matches <- apply(stringr::str_split(sig_res$GCOV_FILE, "[.]", n = 5, simplify = T)[, 1:4], 1,
-        paste,
-        collapse = "."
-    ) %>% unique()
-    magma_GenesOut_file <- list.files(root_dir, paste0(matches, ".genes.out"),
-        recursive = T, full.names = T
+#' Find genes.out files
+#' 
+#' Search for MAGMA output files (genes.out) in a given directory.
+#' Support function for \link[MAGMA.Celltyping]{get_driver_genes}. 
+#' 
+#' @param GenesOut_dir Directory to search in. 
+#' @param verbose Print messages. 
+#' 
+#' @keywords internal 
+find_GenesOut_files <- function(GenesOut_dir,
+                                verbose = TRUE) { 
+    magma_GenesOut_file <- list.files(GenesOut_dir, 
+                                      ".genes.out",
+                                      recursive = TRUE, full.names = TRUE
     )
-    message(length(magma_GenesOut_file), " .genes.out file(s) found.")
+    messager(length(magma_GenesOut_file), " genes.out file(s) found.", 
+             v=verbose)
     return(magma_GenesOut_file)
 }

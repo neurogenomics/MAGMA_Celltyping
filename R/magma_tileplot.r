@@ -14,9 +14,7 @@
 #' @param output_path Location where the results should be plotted.
 #' 
 #' @return List of two ggplot objects.
-#'
-#' @examples
-#'  # 
+#' 
 #' @export 
 #' @importFrom stats p.adjust 
 magma_tileplot <- function(ctd,
