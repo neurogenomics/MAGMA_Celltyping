@@ -7,7 +7,7 @@
 #' @keywords internal 
 magma_read_covar_out <- function(out_prefix){
     path <- sprintf("%s.gsa.out", out_prefix)
-    res <- read.table(file = path, 
+    res <- read.table(file = fix_path(path), 
                       header = TRUE,
                       stringsAsFactors = FALSE)  
     res <- res[res$TYPE == "COVAR" & res$MODEL==1, ]

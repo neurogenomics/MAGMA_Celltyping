@@ -12,7 +12,7 @@ magma_read_sets_out <- function(out_prefix,
     if(file.exists(sets.out)){
         messager("Reading sets out info from .set.out file.",
                  v=verbose) 
-        res <- utils::read.table(file = sets.out,
+        res <- utils::read.table(file = fix_path(sets.out),
                                   header = TRUE,
                                   stringsAsFactors = FALSE) 
     } else {
@@ -20,7 +20,7 @@ magma_read_sets_out <- function(out_prefix,
                  v=verbose)
         #### Not totally sure if this is right
         path <- sprintf("%s.gsa.out", out_prefix)
-        res <- utils::read.table(file = path,
+        res <- utils::read.table(file = fix_path(path),
                                   header = TRUE,
                                   stringsAsFactors = FALSE)
         res <- res[(res$TYPE == "SET") & (res$MODEL == 1), ]

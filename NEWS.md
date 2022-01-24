@@ -1,4 +1,4 @@
-# MAGMA.Celltyping 2.0.1
+# MAGMA.Celltyping 2.0.0 
 
 * MAJOR UPGRADE: `MAGMA.Celltyping` was revamped to meet CRAN standards,
 automatically install MAGMA, and take any species are input.
