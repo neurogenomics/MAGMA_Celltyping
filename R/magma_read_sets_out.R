@@ -9,6 +9,7 @@
 magma_read_sets_out <- function(out_prefix,
                                 verbose = TRUE){  
     sets.out <- sprintf("%s.sets.out",out_prefix)
+    sets.out <- get_actual_path(sets.out)
     if(file.exists(sets.out)){
         messager("Reading sets out info from .set.out file.",
                  v=verbose) 
@@ -20,6 +21,7 @@ magma_read_sets_out <- function(out_prefix,
                  v=verbose)
         #### Not totally sure if this is right
         path <- sprintf("%s.gsa.out", out_prefix)
+        path <- get_actual_path(path)
         res <- utils::read.table(file = fix_path(path),
                                   header = TRUE,
                                   stringsAsFactors = FALSE)
