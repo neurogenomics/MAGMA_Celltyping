@@ -21,8 +21,11 @@
 #' @export
 merge_magma_results <- function(ctAssoc1,
                                 ctAssoc2) {
+    levels_count <- sum(
+        names(ctAssoc1) == "" | startsWith(names(ctAssoc1),"level") 
+        )
     ctAssoc <- list()
-    for (annLev in seq(1,sum(names(ctAssoc1) == ""))) {
+    for (annLev in seq_len(levels_count)) {
         ctAssoc[[annLev]] <- list()
         ctAssoc[[annLev]]$results <- rbind(ctAssoc1[[annLev]]$results,
                                            ctAssoc2[[annLev]]$results)

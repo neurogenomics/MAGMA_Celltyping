@@ -20,7 +20,11 @@ magma_links <- function(latest_only = TRUE,
     latest <- NULL;
     #### Avoid issues with subset when colnames same as variable names ####
     OS <- os;
-    VERSION <- paste0("v",gsub("^v","",version));
+    VERSION <- if(is.null(version)) {
+        version 
+    } else {
+        paste0("v",gsub("^v","",version))
+    }
     #### Try to search archives ####
     ## If this fails, use a stored backup of the URLs
     if(use_local){

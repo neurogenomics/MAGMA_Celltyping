@@ -104,7 +104,8 @@ which lets users specify which test they want to run with arguments, including:
     - `calculate_celltype_enrichment_limma` 
     - `adjust_zstat_in_genesOut` 
     - Deprecated functions 
-
+* Added R script to produce vignette results *inst/extdata/MAGMA_Celltyping_1.0_vignette.R*, and uploaded zipped folder via piggyback: *MAGMA_Celltyping_1.0_results.zip*  
+* Added unit tests comparing old (1.0.0) vs new (>=2.0) MAGMA.Celltyping versions produce the same results; *test-MAGMA_Celltyping_1.0_vs_2.0.R*. Full report [here](https://github.com/neurogenomics/MAGMA_Celltyping/issues/96).  
 
 ## Bug fixes 
 
@@ -115,4 +116,7 @@ which lets users specify which test they want to run with arguments, including:
 * Add `utils` as Suggest.
 * Normalize paths to magma executables (to avoid path issues on WindowsOS).
 * Fixed axes in `plot_celltype_associations`, first reported [here](https://github.com/neurogenomics/MAGMA_Celltyping/issues/12).  
-* Fix `prepare_quantile_groups` so that it's consistent with how `EWCE` compute specificity quantiles.  
+* Fixed `prepare_quantile_groups` so that it's consistent with how `EWCE` 
+compute specificity quantiles. Ensures that all celltypes (columns) 
+have exactly the same number of quantiles, which was not the case before. 
+* Fixed bug in ``

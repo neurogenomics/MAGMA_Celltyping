@@ -87,8 +87,7 @@ calculate_celltype_associations <- function(ctd,
         downstream_kb = downstream_kb
     )
     #### Iterate over each CTD level ####
-    output <- list()
-    for (annotLevel in ctd_levels) {
+    output <- lapply(ctd_levels, function(annotLevel){
         #### Prepare output list ####
         tmp <- list()
         sumstatsPrefix2 <- sprintf(
@@ -232,9 +231,9 @@ calculate_celltype_associations <- function(ctd,
             genesOutCOND = genesOutCOND,
             EnrichmentMode = EnrichmentMode,
             ControlForCT = "BASELINE"
-        )
-        output[[length(output) + 1]] <- tmp
-    } # //End for loop
+        ) 
+        return(tmp)
+    }) %>% `names<-`(paste0("level",ctd_levels)) # //End lapply loop
 
     #### Calculate total number of tests performed ####
     totalTests <- 0

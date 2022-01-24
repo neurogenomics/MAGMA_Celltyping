@@ -142,7 +142,7 @@
 #' @source \href{https://ctg.cncr.nl/software/magma}{MAGMA}
 #' @source 
 #' \code{
-#' magma_links_stored <- MAGMA.Celltyping:::magma_links_gather()
+#' magma_links_stored <-  MAGMA.Celltyping:::magma_links_gather()
 #' usethis::use_data(magma_links_stored, overwrite = TRUE)
 #' }
 #' @usage data("magma_links_stored")

@@ -11,7 +11,7 @@ An object of class \code{data.table} (inherits from \code{data.frame}) with 121 
 \href{https://ctg.cncr.nl/software/magma}{MAGMA}
 
 \code{
-magma_links_stored <- MAGMA.Celltyping:::magma_links_gather()
+magma_links_stored <-  MAGMA.Celltyping:::magma_links_gather()
 usethis::use_data(magma_links_stored, overwrite = TRUE)
 }
 }

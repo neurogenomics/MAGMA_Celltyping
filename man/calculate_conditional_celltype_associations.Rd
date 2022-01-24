@@ -64,11 +64,35 @@ pre-existing results files are detected.}
 \item{verbose}{Print messages.}
 }
 \value{
-Conditional enrichment results,
- or \code{NULL} is no results were significant.
+A concatenated results table containing:
+\itemize{
+ \item{Baseline enrichment results}. 
+ \item{Conditional results: conditioning on each 
+ specified cell-type individually}.
+ \item{Conditional results: conditioning all specified cell-types at once}.
+}
 }
 \description{
-Assumes that you have already run \link[MAGMA.Celltyping]{map_snps_to_genes}.
+Run cell-type enrichment analysis on a GWAS previously mapped to genes 
+(using \link[MAGMA.Celltyping]{map_snps_to_genes}) while controlling for 
+certain cell-types. This allows one to conduct cell-type enrichment
+ analyses while controlling for the strongest cell-type-specific signatures.   
+Which cell-types are controlled for can be specified by
+ either of the following arguments: 
+\itemize{
+ \item{\code{controlTopNcells}}{Automatically 
+selects the top N mostly significantly enriched cell-types}.  
+ \item{\code{controlledCTs}}{A user-provided list of cell-types 
+ present in the \code{ctd}}. 
+} 
+Three sets of analyses are run:  
+\itemize{
+ \item{Baseline enrichment results}{No conditioning.}
+ \item{Conditional results: separate}{ 
+ conditioning on each specified cell-type separately}
+ \item{Conditional results: grouped}{
+ conditioning all specified cell-types at once.}
+}
 }
 \examples{
 #### Prepare cell-type data ####

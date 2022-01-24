@@ -1,6 +1,13 @@
 #' Use MAGMA to test enrichment in a geneset
-#'
-#' Assumes that you have already run \link[MAGMA.Celltyping]{map_snps_to_genes}.
+#' 
+#' Run gene set enrichment analysis with a given \code{geneset} 
+#' on a GWAS previously mapped to genes 
+#' (using \link[MAGMA.Celltyping]{map_snps_to_genes}), 
+#' while conditioning on a given cell-type or list of cell-types 
+#' (\code{controlledCTs}), as defined by the "specificity_quantiles" matrix 
+#' in a given level (\code{controlledAnnotLevel}) of the provide 
+#' CellTypeDataset (\code{ctd}). This allows one to conduct gene set enrichment
+#'  analyses while controlling for strong cell-type-specific signatures.  
 #'
 #' @param controlledAnnotLevel Annotation level of the celltypes
 #' being controlled for.
@@ -10,11 +17,12 @@
 #' @inheritParams calculate_celltype_associations
 #' @inheritParams calculate_geneset_enrichment
 #'
-#' @return File path for the genes.out file.
+#' @returns \link[data.table]{data.table} of
+#'  baseline (column name prefix "BASELINE_") and 
+#'  conditioned (column name prefix "COND_") gene set enrichment results. 
+#'  
 #' 
-#' @examples
-#' ### UNDER CONSTRUCTION
-#' \dontrun{
+#' @examples 
 #' #### Import data ####
 #' ctd <- MAGMA.Celltyping::get_ctd("ctd_allKI")
 #' magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
@@ -28,8 +36,7 @@
 #'     magma_dir = magma_dir,
 #'     analysis_name = "Rbfox_16_pyrSS",  
 #'     geneset_species = "mouse", 
-#'     ctd_species = "mouse")
-#' }
+#'     ctd_species = "mouse") 
 #' @export
 #' @importFrom data.table data.table
 #' @importFrom stats pnorm
@@ -114,6 +121,7 @@ calculate_conditional_geneset_enrichment <- function(geneset,
     quantDat2 <- map_specificity_to_entrez(
         ctd = ctd,
         annotLevel = controlledAnnotLevel,
+        use_matrix = "specificity_quantiles",
         ctd_species = ctd_species
     )
     geneCovarFile <- tempfile()
@@ -159,8 +167,7 @@ calculate_conditional_geneset_enrichment <- function(geneset,
               version = version)
     #### Import results #### 
     res <- magma_read_sets_out(out_prefix = out_prefix)
-    res_cond <- magma_read_gsa_out(out_prefix = out_prefix, 
-                                   analysis_name = analysis_name)
+    res_cond <- magma_read_covar_out(out_prefix = out_prefix)
     # Calculate significance of difference
     # between baseline and conditional analyses
     z <- (as.numeric(res$BETA) -
@@ -177,7 +184,7 @@ calculate_conditional_geneset_enrichment <- function(geneset,
     }
     #### Gather results into data.table ####
     full_res <- data.table::data.table(
-        SET = res$SET,
+        # SET = res$SET,
         NGENES = res$NGENES,
         BASELINE_BETA = res$BETA,
         BASELINE_BETA_STD = res$BETA_STD,

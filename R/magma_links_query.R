@@ -16,7 +16,7 @@ magma_links_query <- function(latest_only){
     if (latest_only) {
         #### They keep the original version of MAGMA
         # in the Parent Directory as well ####
-        files <- files[!grepl("magma_v1.0.zip|magma_v1.*", files)]
+        files <- files[!grepl("magma_v1\\.0\\.zip|magma_v1\\.0", names(files))]
     }
     if((!latest_only) | length(files)==0) {
         #### Archived versions are in the 'archive' subdirectory ####
@@ -24,7 +24,7 @@ magma_links_query <- function(latest_only){
             "https://ctg.cncr.nl/software/MAGMA/prog/archive/",
             pattern = "*.zip"
         )
-        files <- c(files, archive_files) 
+        files <- c(archive_files,files) 
     }
     return(files)
 }

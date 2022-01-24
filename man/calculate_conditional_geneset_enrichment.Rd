@@ -64,14 +64,21 @@ If \code{geneset_species!="human"}, the \code{geneset} will be converted
 \item{verbose}{Print messages.}
 }
 \value{
-File path for the genes.out file.
+\link[data.table]{data.table} of
+ baseline (column name prefix "BASELINE_") and 
+ conditioned (column name prefix "COND_") gene set enrichment results.
 }
 \description{
-Assumes that you have already run \link[MAGMA.Celltyping]{map_snps_to_genes}.
+Run gene set enrichment analysis with a given \code{geneset} 
+on a GWAS previously mapped to genes 
+(using \link[MAGMA.Celltyping]{map_snps_to_genes}), 
+while conditioning on a given cell-type or list of cell-types 
+(\code{controlledCTs}), as defined by the "specificity_quantiles" matrix 
+in a given level (\code{controlledAnnotLevel}) of the provide 
+CellTypeDataset (\code{ctd}). This allows one to conduct gene set enrichment
+ analyses while controlling for strong cell-type-specific signatures.
 }
 \examples{
-### UNDER CONSTRUCTION
-\dontrun{
 #### Import data ####
 ctd <- MAGMA.Celltyping::get_ctd("ctd_allKI")
 magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
@@ -85,6 +92,5 @@ res <- MAGMA.Celltyping::calculate_conditional_geneset_enrichment(
     magma_dir = magma_dir,
     analysis_name = "Rbfox_16_pyrSS",  
     geneset_species = "mouse", 
-    ctd_species = "mouse")
-}
+    ctd_species = "mouse") 
 }

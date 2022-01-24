@@ -81,8 +81,8 @@ it can be inferred if left `NULL`:
 
 ```{r, eval=FALSE}
 genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(path_formatted = path_formatted,
-                                                     genome_build = "GRCh37",
-                                                     genome_ref_path = genome_ref_path)
+                                                    genome_build = "GRCh37",
+                                                    genome_ref_path = genome_ref_path)
 ```
 
 
@@ -108,7 +108,7 @@ ctd <- MAGMA.Celltyping::get_ctd("ctd_allKI")
 
 You can find a list of other datasets provided by this package using `?MAGMA.Celltyping::get_ctd`: 
 
-```
+```R
 ctd <- get_ctd("ctd_Tasic")
 ctd <- get_ctd("ctd_DivSeq")
 ctd <- get_ctd("ctd_AIBS")
@@ -190,7 +190,6 @@ Sometimes a single cell-type can dominate the signature in a given GWAS (e.g. py
 By default, it is assumed that you want to run the linear enrichment analysis. There are two modes for conditional analyses, you can either control for the top N cell types from the baseline analysis (in which case, set `controlTopNcells`) or control for specific specified cell types (in which case, set `controlledCTs`).
 
 ```{r, eval=FALSE }
-# Conditional analysis
 ctCondAssocs <- MAGMA.Celltyping::calculate_conditional_celltype_associations(
   ctd = ctd,
   gwas_sumstats_path_formatted = path_formatted,
@@ -202,7 +201,8 @@ MAGMA.Celltyping::plot_celltype_associations(ctAssocs = ctCondAssocs,
                                              ctd = ctd)
 ```
 
-Let's try as an alternative to control for expression of both the level 1 pyramidal neuron types at the same time
+Let's try as an alternative to control for expression of 3 neuronal subtypes
+at the same time: 
 
 ```{r, eval=FALSE}
 ctCondAssocs <- MAGMA.Celltyping::calculate_conditional_celltype_associations(
@@ -344,7 +344,13 @@ FigsLinear = MAGMA.Celltyping::plot_celltype_associations(ctAssocs = ctAssocsLin
 
 We find that after controlling for prospective memory, there is no significant enrichment left associated with fluid intelligence.
 
-## Calculate cell type enrichments directly (using linear model)
+## Calculate cell type enrichments directly (using linear model) 
+
+Instead of relying on the tool MAGMA 
+(which requires an extra installation step), 
+we can also compute cell-type enrichment 
+scores in an R-native re-implementation of the MAGMA enrichment analyses using
+the following functions:    
 
 ```{r, eval=FALSE}
 magmaGenesOut <- MAGMA.Celltyping::adjust_zstat_in_genesOut(
