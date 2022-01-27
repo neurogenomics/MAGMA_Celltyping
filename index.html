@@ -81,12 +81,12 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<img src="https://github.com/neurogenomics/MAGMA.Celltyping/raw/bschilder_dev/inst/hex/hex.png" height="300"><br><br><a href="https://github.com/neurogenomics/MAGMA_Celltyping" class="external-link"><img src="https://img.shields.io/badge/devel%20version-2.0.0-black.svg"></a> <a href="https://github.com/neurogenomics/MAGMA_Celltyping/actions" class="external-link"><img src="https://github.com/neurogenomics/MAGMA_Celltyping/workflows/R-CMD-check-bioc/badge.svg" alt="R build status"></a> <a href="https://github.com/neurogenomics/MAGMA_Celltyping/commits/master" class="external-link"><img src="https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg"></a> <a href="https://codecov.io/gh/neurogenomics/MAGMA_Celltyping" class="external-link"><img src="https://codecov.io/gh/neurogenomics/MAGMA_Celltyping/branch/master/graph/badge.svg"></a> <a href="https://cran.r-project.org/web/licenses/GPL-3" class="external-link"><img src="https://img.shields.io/badge/license-GPL--3-blue.svg" alt="License: GPL-3"></a>
+<img src="https://github.com/neurogenomics/MAGMA_Celltyping/raw/master/inst/hex/hex.png" height="300"><br><br><a href="https://github.com/neurogenomics/MAGMA_Celltyping" class="external-link"><img src="https://img.shields.io/badge/devel%20version-2.0.0-black.svg"></a> <a href="https://github.com/neurogenomics/MAGMA_Celltyping/actions" class="external-link"><img src="https://github.com/neurogenomics/MAGMA_Celltyping/workflows/R-CMD-check-bioc/badge.svg" alt="R build status"></a> <a href="https://github.com/neurogenomics/MAGMA_Celltyping/actions" class="external-link"><img src="https://github.com/neurogenomics/MAGMA_Celltyping/workflows/DockerHub/badge.svg" alt="R build status"></a> <a href="https://github.com/neurogenomics/MAGMA_Celltyping/commits/master" class="external-link"><img src="https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg"></a> <a href="https://codecov.io/gh/neurogenomics/MAGMA_Celltyping" class="external-link"><img src="https://codecov.io/gh/neurogenomics/MAGMA_Celltyping/branch/master/graph/badge.svg"></a> <a href="https://cran.r-project.org/web/licenses/GPL-3" class="external-link"><img src="https://img.shields.io/badge/license-GPL--3-blue.svg" alt="License: GPL-3"></a>
 <h4>
-Authors: <i>Brian M. Schilder, Alan Murphy, Julien Bryois &amp; Nathan Skene</i>
+Authors: <i>Alan Murphy, Brian Schilder, Julien Bryois, Nathan Skene</i>
 </h4>
 <h4>
-README updated: <i>Jan-07-2022</i>
+README updated: <i>Jan-27-2022</i>
 </h4>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
@@ -98,22 +98,22 @@ README updated: <i>Jan-07-2022</i>
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="section level3">
-<h3 id="magma">MAGMA<a class="anchor" aria-label="anchor" href="#magma"></a>
-</h3>
-<p><code>MAGMA.Celltyping</code> now installs the command line software MAGMA automatically when you first use a function that relies on MAGMA (e.g. <code>celltype_associations_pipeline</code>). If you prefer, you can later install other versions of MAGMA with:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">install_magma</span><span class="op">(</span>desired_version<span class="op">=</span><span class="st">"&lt;version&gt;"</span>,
-                                update <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-</div>
-<div class="section level3">
 <h3 id="r">R<a class="anchor" aria-label="anchor" href="#r"></a>
 </h3>
-<p>Then install <code>MAGMA.Celltyping</code> as follows:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<p>Install <code>MAGMA.Celltyping</code> as follows:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
 
 <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"neurogenomics/MAGMA.Celltyping"</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/neurogenomics/MAGMA_Celltyping" class="external-link">MAGMA.Celltyping</a></span><span class="op">)</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="magma">MAGMA<a class="anchor" aria-label="anchor" href="#magma"></a>
+</h3>
+<p><code>MAGMA.Celltyping</code> now installs the command line software MAGMA automatically when you first use a function that relies on MAGMA (e.g. <code>celltype_associations_pipeline</code>). If you prefer, you can later install other versions of MAGMA with:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">install_magma</span><span class="op">(</span>desired_version<span class="op">=</span><span class="st">"&lt;version&gt;"</span>,
+                                update <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -129,7 +129,7 @@ README updated: <i>Jan-07-2022</i>
 <div class="section level2">
 <h2 id="using-older-versions">Using older versions<a class="anchor" aria-label="anchor" href="#using-older-versions"></a>
 </h2>
-<p>With the release of <code>MAGMA_Celltyping</code> 2.0 in Sept 2021, there have been a number of major updates.</p>
+<p>With the release of <code>MAGMA_Celltyping</code> 2.0 in January 2022, there have been a number of <a href="https://github.com/neurogenomics/MAGMA_Celltyping/pull/93" class="external-link">major updates and bug fixes</a>.</p>
 <ul>
 <li>Only R&gt;4.0.0 is supported. To use this package with older versions of R, install with:<code>remotes::install_github("neurogenomics/MAGMA_Celltyping@01a9e53")</code>
 </li>
@@ -172,6 +172,21 @@ README updated: <i>Jan-07-2022</i>
 <blockquote>
 <p><a href="http://www.nature.com/neuro/journal/vaop/ncurrent/full/nn.4462.html" class="external-link">Romanov, et al. Molecular interrogation of hypothalamic organization reveals distinct dopamine neuronal subtypes. Nature Neuroscience, 2016.</a></p>
 </blockquote>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="contact">Contact<a class="anchor" aria-label="anchor" href="#contact"></a>
+</h2>
+<div class="section level3">
+<h3 id="neurogenomics-lab">
+<a href="https://www.neurogenomics.co.uk/" class="external-link">Neurogenomics Lab</a><a class="anchor" aria-label="anchor" href="#neurogenomics-lab"></a>
+</h3>
+<p>UK Dementia Research Institute<br>
+Department of Brain Sciences<br>
+Faculty of Medicine<br>
+Imperial College London<br><a href="https://github.com/neurogenomics" class="external-link">GitHub</a><br><a href="https://hub.docker.com/orgs/neurogenomicslab" class="external-link">DockerHub</a></p>
+<p><br></p>
+</div>
 </div>
 
   </div>
