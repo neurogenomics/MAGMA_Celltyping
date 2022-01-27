@@ -7,34 +7,28 @@
 check_inputs_to_magma_celltype_analysis(
   ctd,
   gwas_sumstats_path,
-  analysis_name,
   upstream_kb,
-  downstream_kb,
-  genome_ref_path
+  downstream_kb
 )
 }
 \arguments{
-\item{ctd}{Cell type data strucutre containing $specificity_quantiles}
+\item{ctd}{Cell type data structure containing
+\code{specificity_quantiles}.}
 
-\item{gwas_sumstats_path}{Filepath of the summary statistics file}
+\item{gwas_sumstats_path}{File path of the summary statistics file.}
 
-\item{analysis_name}{Used in filenames which area created}
+\item{upstream_kb}{How many kb upstream of the gene
+should SNPs be included?}
 
-\item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}
-
-\item{downstream_kb}{How many kb downstream of the gene should SNPs be included?}
-
-\item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be 
-downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
+\item{downstream_kb}{How many kb downstream of the gene
+should SNPs be included?}
 }
 \value{
-Nothing returned but sends error if there is a fault with the arguments
+Nothing returned but sends error if there is a fault
+with the arguments.
 }
 \description{
-This code was functonalised because it is called by both baseline and conditional analysis.
+This code was functonalised because it is called by both baseline
+and conditional analysis.
 }
-\examples{
-check_inputs_to_magma_celltype_analysis(ctd,gwas_sumstats_path,analysis_name,upstream_kb,
-downstream_kb,genome_ref_path)
-
-}
+\keyword{internal}

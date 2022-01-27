@@ -2,10 +2,26 @@
 % Please edit documentation in R/create_DT.R
 \name{create_DT}
 \alias{create_DT}
-\title{Create an interactive data table with download buttons}
+\title{Create data table}
 \usage{
-create_DT(DF, caption = "", scrollY = 400)
+create_DT(data, caption = "", scrollY = 400)
+}
+\arguments{
+\item{data}{a data object (either a matrix or a data frame)}
+
+\item{caption}{the table caption; a character vector or a tag object
+generated from \code{htmltools::tags$caption()}}
+
+\item{scrollY}{Max height (in pixels) before wrapping the 
+table in a vertical scroll bar.}
+}
+\value{
+datatables object.
 }
 \description{
-Create an interactive data table with download buttons
+Create an interactive data table with download buttons.
+}
+\examples{
+data("mtcars")
+create_DT(mtcars)
 }

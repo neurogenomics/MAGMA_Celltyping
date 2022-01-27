@@ -1,31 +1,77 @@
 Package: MAGMA.Celltyping
 Type: Package
-Title: MAGMA.Celltyping
-Version: 1.0.0
-Date: 2018-8-01
-Author: Dr Nathan Skene
-Maintainer: Nathan Skene <nathan.skene@gmail.com>
-Description: Used to test for cell type enrichments using MAGMA.
-License: Artistic-2.0
-LazyData: TRUE
-Depends: R(>= 3.2)
+Title: Find causal cell-types underlying complex trait genetics
+Version: 2.0.0
+Authors@R:
+    c(person(given = "Alan",
+           family = "Murphy",
+           role = c("ctb"),
+           email = "alanmurph94@hotmail.com",
+           comment = c(ORCID = "0000-0002-2487-8753")),
+     person(given = "Brian",
+           family = "Schilder",
+           role = c("cre","aut"),
+           email = "brian_schilder@alumni.brown.edu",
+           comment = c(ORCID = "0000-0001-5949-2191")),
+     person(given = "Julien",
+           family = "Bryois",
+           role = c("aut"),
+           email = "julien.bryois@gmail.com",
+           comment = c(ORCID = "0000-0002-4747-2166")),
+     person(given = "Nathan",
+           family = "Skene",
+           role = c("aut"),
+           email = "nathan.skene@gmail.com",
+           comment = c(ORCID = "0000-0002-6807-3180")))   
+Description: This R package contains code used for testing which cell types can explain the heritability signal from GWAS summary statistics.
+URL: https://github.com/neurogenomics/MAGMA_Celltyping
+BugReports: https://github.com/neurogenomics/MAGMA_Celltyping/issues
+License: GPL-3
+LazyData: true
+Depends: R(>= 4.0.0)
 VignetteBuilder: knitr
-Imports: EWCE, 
-        One2One,
-        R.utils,
-        ggdendro, cowplot, dplyr, data.table,
-        ggplot2, stringr, tibble,
-        SNPlocs.Hsapiens.dbSNP144.GRCh38,
-        magrittr, grDevices, limma,
-        BSgenome, BiocGenerics, GenomeInfoDb, S4Vectors, gridExtra, rlang,
-        SNPlocs.Hsapiens.dbSNP144.GRCh37, purrr, usethis
-Suggests: knitr, BiocStyle,
-    rmarkdown
-Remotes: nathanskene/ewce,
-    nathanskene/one2one
+BiocViews:
+Imports:
+    EWCE (>= 1.3.3),
+    MungeSumstats,
+    orthogene,
+    XML,
+    httr,
+    R.utils,
+    utils,
+    ggdendro,
+    dplyr,
+    data.table,
+    ggplot2,
+    stringr,
+    grDevices,
+    limma,
+    lme4,
+    gridExtra,
+    parallel,
+    Matrix,
+    methods,
+    reshape2
+Suggests: 
+    markdown,
+    rmarkdown,
+    knitr,
+    BiocStyle,
+    usethis,
+    xml2,
+    covr,
+    testthat (>= 3.0.0), 
+    piggyback,
+    DT,
+    biomaRt,
+    ewceData,
+    badger
+Remotes:
+    github::NathanSkene/EWCE
 SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
 biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
         Genetics, scRNASeq, Single Cell RNAseq,
         BiomedicalInformatics, FunctionalGenomics
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Encoding: UTF-8
+Config/testthat/edition: 3

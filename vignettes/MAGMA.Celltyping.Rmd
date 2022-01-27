@@ -1,0 +1,203 @@
+---
+title: "MAGMA_Celltyping: Getting started"
+author: "<h4>Authors: <i>Brian M. Schilder, Alan Murphy, Julien Bryois & Nathan Skene</i></h4>"
+date: "<h4>Updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
+output:
+  BiocStyle::html_document:
+vignette: >
+    %\VignetteIndexEntry{MAGMA_Celltyping} 
+    %\usepackage[utf8]{inputenc}
+    %\VignetteEngine{knitr::rmarkdown}
+---
+
+
+```{r setup, include=TRUE, message=FALSE}
+library(MAGMA.Celltyping)
+library(ggplot2)
+library(dplyr)
+```
+
+# Intro 
+
+`MAGMA.Celltyping` is a software package that facilitates conducting cell-type-specific enrichment tests on GWAS summary statistics. 
+
+# Setup 
+
+Specify where you want the large files to be downloaded to. 
+
+*NOTE*: Make sure you change `storage_dir` to somewhere other than `tempdir()` 
+if you want to make sure the results aren't deleted after this R session closes!
+
+```{r, eval=FALSE}
+storage_dir <- tempdir()
+```
+
+
+# Prepare data
+
+## GWAS
+
+- We need to have a summary statistics file to analyse as input.  
+- As an example, you can download UK Biobank summary statistics 
+for 'fluid_intelligence' using `get_example_gwas()`.
+
+Here we provide a 
+pre-munged version of the above file.
+
+### Munging 
+
+Our lab have created [`MungeSumstats`](https://github.com/neurogenomics/MungeSumstats), a robust Bioconductor package for formatting multiple types
+of summary statistics files. We highly recommend processing your GWAS summary statistics with
+`MungeSumstats` before continuing.
+See the *full_workflow* vignette for more details.
+
+The minimum info needed *after* munging is:  
+- "SNP", "CHR", and "BP" as first three columns.
+- It has at least one of these columns: "Z","OR","BETA","LOG_ODDS","SIGNED_SUMSTAT"
+
+```{r, eval=FALSE}
+path_formatted <- MAGMA.Celltyping::get_example_gwas(
+  trait = "prospective_memory")
+```
+
+### Map SNPs to Genes
+
+Note you can input the genome build of your summary statistics for this step or
+it can be inferred if left `NULL`:
+
+```{r, eval=FALSE}
+genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(
+  path_formatted = path_formatted,
+  genome_build = "GRCh37")
+```
+
+### MAGMA_Files_Public
+
+Rather than preprocessing the GWAS yourself, you can instead use the [`MAGMA_Files_Public`](https://github.com/neurogenomics/MAGMA_Files_Public) database we have created. It contains pre-computed MAGMA SNP-to-genes mapping files for hundreds of GWAS.
+
+You can browse which GWAS traits are available by looking at the provided  [*metadata.csv*](https://github.com/neurogenomics/MAGMA_Files_Public/blob/master/metadata.csv) file.
+
+```{r, eval = TRUE}
+magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
+```
+
+
+## CellTypeDataset
+
+`ewceData` provides a number of CellTypeDatasets (CTD) to be used a cell-type
+transcriptomic signature reference files.
+
+If you want to create your own single-cell transcriptomic reference, you'll need
+to first convert it to CTD using the instructions found in the `EWCE` package
+[documentation here](https://github.com/NathanSkene/EWCE/).
+
+```{r} 
+ctd <- ewceData::ctd()
+```
+
+Note that the cell type dataset loaded in the code above is the Karolinksa cortex/hippocampus data only. For the full Karolinska dataset with hypothalamus and midbrain instead use the following:
+
+```
+ctd <- MAGMA.Celltyping::get_ctd("ctd_allKI")
+```
+
+Or for the DRONC seq or AIBS datasets use:
+
+```
+ctd <- get_ctd("ctd_Tasic")
+ctd <- get_ctd("ctd_DivSeq")
+ctd <- get_ctd("ctd_AIBS")
+ctd <- get_ctd("ctd_DRONC_human")
+ctd <- get_ctd("ctd_DRONC_mouse")
+ctd <- get_ctd("ctd_BlueLake2018_FrontalCortexOnly")
+ctd <- get_ctd("ctd_BlueLake2018_VisualCortexOnly")
+ctd <- get_ctd("ctd_Saunders")
+```
+ 
+# Run cell-type enrichment analyses  
+
+`MAGMA.Celltyping` offers a suite of functions for conducting various types of cell-type-specific enrichment tests on GWAS summary statistics. 
+
+The `celltype_associations_pipeline` wraps several functions that in previous versions of `MAGMA.Celltyping` had to be set up and run separately. These include: 
+
+- **Linear enrichment**: `calculate_celltype_associations(EnrichmentMode = "linear")` internally. Activated when `run_linear=TRUE`. 
+- **Top 10% enrichment**: Uses `calculate_celltype_associations(EnrichmentMode = "Top 10%")` internally. Activated when `run_top10=TRUE`. 
+- **Conditional enrichment**: Uses `calculate_conditional_celltype_associations` internally. Activated when `run_conditional=TRUE`.  
+
+Thus, `celltype_associations_pipeline` is designed to make these analyses easier to run. 
+
+```{r, eval = FALSE}
+MAGMA_results <- MAGMA.Celltyping::celltype_associations_pipeline(
+  magma_dirs = magma_dirs,
+  ctd = ctd,
+  ctd_species = "mouse", 
+  ctd_name = "Zeisel2015", 
+  run_linear = TRUE, 
+  run_top10 = TRUE)
+```
+
+We've also saved a pre-computed version of these results as a dataset:
+
+```{r}
+MAGMA_results <- MAGMA.Celltyping::enrichment_results
+```
+
+# Plot results
+
+## Merge results  
+
+`merge_results` imports each of the MAGMA enrichment results files and merges them into one so that they can easily be plotted and further analysed. 
+
+```{r}
+merged_results <- MAGMA.Celltyping::merge_results(
+  MAGMA_results = MAGMA_results)
+knitr::kable(merged_results)
+```
+
+## Heatmap   
+
+Now we'll construct a heatmap visualizing the enrichment results, such that each GWAS is shown on the y-axis and each cell-type is shown on the x-axis. Results can be further facetted by what kind of test was run (linear, top10%, and/or conditional). 
+
+```{r Heatmap, error=TRUE}  
+heat <- MAGMA.Celltyping::results_heatmap(
+  merged_results = merged_results, 
+  title = "Alzheimer's Disease (ieu-a-298) vs. nervous system cell-types (Zeisel2015)",
+  fdr_thresh = 1)
+```
+
+
+# Top results
+
+## Top phenotypes 
+
+Get the phenotypes with the greatest number of significant cell-type enrichment results. 
+
+```{r}
+top_phenos <- merged_results %>% 
+  dplyr::group_by(EnrichmentMode, GWAS) %>%
+  dplyr::summarise(Celltype=dplyr::n_distinct(Celltype)) %>%
+  dplyr::arrange(desc(Celltype))
+print(top_phenos)
+```
+
+## Top enrichments 
+
+Get the phenotypes-celltype enrichment results with the most significant p-values (per phenotype).
+
+```{r} 
+top_enrich <- merged_results %>% 
+  dplyr::group_by(EnrichmentMode, GWAS) %>%
+  dplyr::slice_min(FDR, n = 2)
+print(top_enrich) 
+```
+
+# Session Info
+
+<details>
+
+```{r}
+utils::sessionInfo()
+```
+
+</details>
+<hr>

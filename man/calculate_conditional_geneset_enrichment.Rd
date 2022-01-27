@@ -7,43 +7,90 @@
 calculate_conditional_geneset_enrichment(
   geneset,
   ctd,
+  ctd_species = "mouse",
   controlledAnnotLevel = 1,
   controlledCTs,
-  gwas_sumstats_path,
-  analysis_name,
-  upstream_kb = 10,
-  downstream_kb = 1.5,
-  genome_ref_path,
+  prepare_ctd = TRUE,
+  gwas_sumstats_path = NULL,
+  magma_dir = NULL,
+  analysis_name = "MainRun",
+  upstream_kb = 35,
+  downstream_kb = 10,
   geneset_species = "mouse",
-  specificity_species
+  version = NULL,
+  verbose = TRUE
 )
 }
 \arguments{
-\item{geneset}{Genes which are to be tested (as HGNC / MGI symbols)}
+\item{geneset}{Genes which are to be tested. 
+Can be gene symbols (or other gene IDs) from any species listed in 
+\link[EWCE]{list_species}.}
 
-\item{ctd}{Cell type data strucutre containing $specificity_quantiles}
+\item{ctd}{Cell type data structure containing
+\code{specificity_quantiles}.}
 
-\item{controlledAnnotLevel}{Annotation level of the celltypes being controlled for}
+\item{ctd_species}{Species name relevant to the cell type data.
+See \link[EWCE]{list_species} for all available species.}
 
-\item{controlledCTs}{Array of the celltype to be controlled for, i.e. c("Interneuron type 16","Medium Spiny Neuron)}
+\item{controlledAnnotLevel}{Annotation level of the celltypes
+being controlled for.}
 
-\item{gwas_sumstats_path}{Filepath of the summary statistics file}
+\item{controlledCTs}{Array of the celltype to be controlled for,
+e.g. c("Interneuron type 16","Medium Spiny Neuron).}
 
-\item{analysis_name}{Used in filenames which area created}
+\item{prepare_ctd}{Whether to run
+\link[MAGMA.Celltyping]{prepare_quantile_groups} on the \code{ctd} first.}
 
-\item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}
+\item{gwas_sumstats_path}{File path of the summary statistics file.}
 
-\item{downstream_kb}{How many kb downstream of the gene should SNPs be included?}
+\item{magma_dir}{Path to folder containing the
+pre-computed MAGMA GWAS files (\emph{.gsa.raw}and \emph{.gsa.out}).}
 
-\item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
+\item{analysis_name}{Used in file names which area created.}
 
-\item{geneset_species}{Species name relevant to the genes in the geneset, i.e. "mouse" or "human"}
+\item{upstream_kb}{How many kb upstream of the gene
+should SNPs be included?}
 
-\item{specificity_species}{Species name relevant to the cell type data, i.e. "mouse" or "human"}
+\item{downstream_kb}{How many kb downstream of the gene
+should SNPs be included?}
+
+\item{geneset_species}{Species that the \code{geneset} came from.
+Can be any species listed in \link[EWCE]{list_species}.
+If \code{geneset_species!="human"}, the \code{geneset} will be converted
+ to 1:1 human orthologs using \link[orthogene]{convert_orthologs}.}
+
+\item{version}{MAGMA version to use.}
+
+\item{verbose}{Print messages.}
 }
 \value{
-Filepath for the genes.out file
+\link[data.table]{data.table} of
+ baseline (column name prefix "BASELINE_") and 
+ conditioned (column name prefix "COND_") gene set enrichment results.
 }
 \description{
-Assumes that you have already run map.snps.to.genes()
+Run gene set enrichment analysis with a given \code{geneset} 
+on a GWAS previously mapped to genes 
+(using \link[MAGMA.Celltyping]{map_snps_to_genes}), 
+while conditioning on a given cell-type or list of cell-types 
+(\code{controlledCTs}), as defined by the "specificity_quantiles" matrix 
+in a given level (\code{controlledAnnotLevel}) of the provide 
+CellTypeDataset (\code{ctd}). This allows one to conduct gene set enrichment
+ analyses while controlling for strong cell-type-specific signatures.
+}
+\examples{
+#### Import data ####
+ctd <- MAGMA.Celltyping::get_ctd("ctd_allKI")
+magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
+geneset <- MAGMA.Celltyping::rbfox_binding
+
+res <- MAGMA.Celltyping::calculate_conditional_geneset_enrichment(
+    geneset = geneset,
+    ctd = ctd,
+    controlledAnnotLevel = 1,
+    controlledCTs = "pyramidal SS",
+    magma_dir = magma_dir,
+    analysis_name = "Rbfox_16_pyrSS",  
+    geneset_species = "mouse", 
+    ctd_species = "mouse") 
 }

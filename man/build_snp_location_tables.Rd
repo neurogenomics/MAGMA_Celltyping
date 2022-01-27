@@ -2,7 +2,7 @@
 % Please edit documentation in R/build_snp_location_tables.r
 \name{build_snp_location_tables}
 \alias{build_snp_location_tables}
-\title{Build data table with RSID / CHR / BP / GenomeBuild for all Hapmap3 SNPs in GRCh37 and GRCh38}
+\title{Build SNP location tables}
 \usage{
 build_snp_location_tables()
 }
@@ -10,9 +10,7 @@ build_snp_location_tables()
 Save SNP_LOC_DATA to package data
 }
 \description{
-Build data table with RSID / CHR / BP / GenomeBuild for all Hapmap3 SNPs in GRCh37 and GRCh38
+Build data table with RSID / CHR / BP / GenomeBuild
+for all Hapmap3 SNPs in GRCh37 and GRCh38.
 }
-\examples{
-# build_snp_location_tables()
-
-}
+\keyword{internal}

@@ -1,0 +1,120 @@
+---
+title: "hexSticker"
+author: "<h5>Author: <i>Brian M. Schilder</i></h5>" 
+date: "<h5>`r format( Sys.Date(), '%b-%d-%Y')`</h4>"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{hexSticker}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width = 7, fig.height = 5, root.dir=here::here())
+knitr::opts_knit$set(root.dir=here::here())
+```
+
+You can make awesome hex stickers for your R packages using:
+
+- [hexSticker](https://github.com/GuangchuangYu/hexSticker)  
+- [ggimage](https://github.com/GuangchuangYu/ggimage) 
+lets you render images as data points.  
+- [ggpattern](https://coolbutuseless.github.io/package/ggpattern/)
+lets you fill objects with patterns or images.
+- [magick](https://cran.r-project.org/web/packages/magick/vignettes/intro.html) 
+modify PNGs.
+
+
+
+# `MAGMA.Celltyping`
+ 
+```{r setup}
+# If you're using R<4.1.1, need this version of rvcheck
+# devtools::install_version('rvcheck',version='0.1.8') 
+library(hexSticker)
+library(dplyr)
+library(ggplot2)
+library(ggimage)
+library(ggpattern)# remotes::install_github("coolbutuseless/ggpattern")
+ 
+```
+
+## Volcano ggplot
+
+Data from [here](https://zenodo.org/record/2529117#.YZ2rYr3MKhk).
+
+```{r}
+{
+  tmp <- file.path("/Desktop/volcano_dat")
+  if(!file.exists(tmp)){
+    URL <- "https://zenodo.org/record/2529117/files/limma-voom_luminalpregnant-luminallactate?download=1"   
+  download.file(URL, tmp)
+  } 
+  vdat <- data.table::fread(tmp)
+}
+
+### Scatter plot data
+vdat <- subset(vdat, P.Value < .05 & P.Value >  0.00001 & abs(logFC)< 5 ) 
+
+{
+  gg_volcano <- ggplot(vdat, 
+         aes(x = logFC * log10(abs(logFC))^3, 
+             y = -adj.P.Val,
+             color= -adj.P.Val)) +
+  geom_point(alpha = .5, show.legend = FALSE,
+             aes(size = AveExpr/10)) + 
+  geom_point(alpha = 1, shape = 20, show.legend = FALSE, 
+             aes(size = AveExpr/100)) + 
+  scale_color_gradientn(colours=pals::plasma(100), guide = "colourbar") +
+  #### Trapezoid ####
+  # geom_polygon(data = trap_dat, aes(x=x, y=y, fill = fill, group = id), inherit.aes = FALSE) 
+  theme_void()
+print(gg_volcano)
+}
+ 
+```
+
+
+## ggimage subplot
+
+[ggimage](https://yulab-smu.top/pkgdocs/ggimage.html)
+
+```{r, eval=FALSE}
+img <- png::readPNG(here::here("inst/hex/volcano_black.png"),
+                    native = TRUE)
+height <- .4
+g <- grid::rasterGrob(img, interpolate=FALSE,
+                      width = height/1.25, height = height)
+gp <-  gg_volcano + 
+  annotation_custom(g, ymax = .1, ymin = bottom*1.35) 
+print(gp)
+```
+
+
+## hexSticker 
+
+[hexSticker](https://github.com/GuangchuangYu/hexSticker)
+
+```{r, eval=FALSE}    
+s_size = 1.4
+stick <- hexSticker::sticker(subplot = gp, 
+                             package="MAGMA.Celltyping", 
+                             p_size=14, p_y = 1.45,
+                             s_x=1, s_y=.7, s_width = s_size*1.2, s_height = s_size*.9,
+        h_fill = "black", h_color = "#C0C0C0",
+        spotlight = TRUE, l_alpha = .3,
+        filename=here::here("inst/hex/hex.png"), dpi = 300)
+print(stick)
+```
+
+
+# Session Info 
+
+<details> 
+
+```{r Session Info}
+utils::sessionInfo()
+```
+
+</details>  
+

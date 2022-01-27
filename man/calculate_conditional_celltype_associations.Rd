@@ -6,48 +6,106 @@
 \usage{
 calculate_conditional_celltype_associations(
   ctd,
-  gwas_sumstats_path,
+  ctd_species = "mouse",
+  gwas_sumstats_path = NULL,
+  magma_dir = NULL,
   analysis_name = "MainRun",
-  upstream_kb = 10,
-  downstream_kb = 1.5,
-  genome_ref_path,
+  prepare_ctd = TRUE,
+  upstream_kb = 35,
+  downstream_kb = 10,
   controlledAnnotLevel = 1,
-  specificity_species = "mouse",
   controlTopNcells = NA,
   controlledCTs = NA,
-  EnrichmentMode = "Linear"
+  EnrichmentMode = "Linear",
+  force_new = FALSE,
+  version = NULL,
+  verbose = TRUE
 )
 }
 \arguments{
-\item{ctd}{Cell type data strucutre containing $specificity_quantiles}
+\item{ctd}{Cell type data structure containing
+\code{specificity_quantiles}.}
 
-\item{gwas_sumstats_path}{Filepath of the summary statistics file}
+\item{ctd_species}{Species name relevant to the cell type data.
+See \link[EWCE]{list_species} for all available species.}
 
-\item{analysis_name}{Used in filenames which area created}
+\item{gwas_sumstats_path}{File path of the summary statistics file.}
 
-\item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}
+\item{magma_dir}{Path to folder containing the
+pre-computed MAGMA GWAS files (\emph{.gsa.raw}and \emph{.gsa.out}).}
 
-\item{downstream_kb}{How many kb downstream of the gene should SNPs be included?}
+\item{analysis_name}{Used in file names which area created.}
 
-\item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
+\item{prepare_ctd}{Whether to run
+\link[MAGMA.Celltyping]{prepare_quantile_groups} on the \code{ctd} first.}
 
-\item{controlledAnnotLevel}{Which annotation level should be controlled for}
+\item{upstream_kb}{How many kb upstream of the gene
+should SNPs be included?}
 
-\item{specificity_species}{Species name relevant to the cell type data, i.e. 'mouse' or 'human'}
+\item{downstream_kb}{How many kb downstream of the gene
+should SNPs be included?}
 
-\item{controlTopNcells}{How many of the most significant cell types at that annotation level should be controlled for?}
+\item{controlledAnnotLevel}{Which annotation level should be controlled for.}
 
-\item{controlledCTs}{Array of the celltype to be controlled for, i.e. c('Interneuron type 16','Medium Spiny Neuron')}
+\item{controlTopNcells}{How many of the most significant cell types at
+that annotation level should be controlled for?}
 
-\item{EnrichmentMode}{[Optional] Either 'Linear' or 'Top 10\%'. Default assumes Linear.}
+\item{controlledCTs}{Array of the celltype to be controlled for,
+e.g. \code{c('Interneuron type 16','Medium Spiny Neuron')}.}
+
+\item{EnrichmentMode}{[Optional] Should either 'Linear' or 'Top 10\%' mode
+be used for testing enrichment?}
+
+\item{force_new}{[Optional] Force new MAGMA analyses even if the
+pre-existing results files are detected.}
+
+\item{version}{MAGMA version to use.}
+
+\item{verbose}{Print messages.}
 }
 \value{
-Filepath for the genes.out file
+A concatenated results table containing:
+\itemize{
+ \item{Baseline enrichment results}. 
+ \item{Conditional results: conditioning on each 
+ specified cell-type individually}.
+ \item{Conditional results: conditioning all specified cell-types at once}.
+}
 }
 \description{
-Assumes that you have already run map.snps.to.genes()
+Run cell-type enrichment analysis on a GWAS previously mapped to genes 
+(using \link[MAGMA.Celltyping]{map_snps_to_genes}) while controlling for 
+certain cell-types. This allows one to conduct cell-type enrichment
+ analyses while controlling for the strongest cell-type-specific signatures.   
+Which cell-types are controlled for can be specified by
+ either of the following arguments: 
+\itemize{
+ \item{\code{controlTopNcells}}{Automatically 
+selects the top N mostly significantly enriched cell-types}.  
+ \item{\code{controlledCTs}}{A user-provided list of cell-types 
+ present in the \code{ctd}}. 
+} 
+Three sets of analyses are run:  
+\itemize{
+ \item{Baseline enrichment results}{No conditioning.}
+ \item{Conditional results: separate}{ 
+ conditioning on each specified cell-type separately}
+ \item{Conditional results: grouped}{
+ conditioning all specified cell-types at once.}
+}
 }
 \examples{
-ctAssocs = calculate_celltype_associations(ctd,gwas_sumstats_path)
+#### Prepare cell-type data ####
+ctd <- ewceData::ctd()
 
+#### Prepare GWAS MAGMA data ####
+magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
+    
+#### Run pipeline ####
+ctAssocs <- MAGMA.Celltyping::calculate_conditional_celltype_associations(
+    ctd = ctd,
+    controlledAnnotLevel = 1,
+    controlTopNcells = 1,
+    magma_dir = magma_dir,
+    ctd_species = "mouse") 
 }

@@ -2,19 +2,24 @@
 % Please edit documentation in R/format_sumstats_for_magma.r
 \name{format_sumstats_for_magma}
 \alias{format_sumstats_for_magma}
-\title{Check that sumstats has correct columns and that they are in the correct order for MAGMA and LDSC}
+\title{Format GWAS summary statistics}
 \usage{
 format_sumstats_for_magma(path)
 }
 \arguments{
-\item{path}{Filepath for the summary statistics file to be formatted}
+\item{path}{Filepath for the summary statistics file to be formatted.}
 }
 \value{
 col_headers The new column headers for the sumstats file
 }
 \description{
-Check that sumstats has correct columns and that they are in the correct order for MAGMA and LDSC
+Check that sumstats has correct columns and that they are
+ in the correct order for MAGMA and LDSC.
 }
 \examples{
-format_sumstats_for_magma(path)
+\dontrun{
+path <- MAGMA.Celltyping::get_example_gwas()
+new_path <- MAGMA.Celltyping:::format.sumstats.for.magma(path)
+}
+
 }

@@ -6,47 +6,79 @@
 \usage{
 calculate_celltype_associations(
   ctd,
-  gwas_sumstats_path,
+  ctd_levels = seq_len(length(ctd)),
+  ctd_species = "mouse",
+  gwas_sumstats_path = NULL,
+  magma_dir = NULL,
   analysis_name = "MainRun",
-  upstream_kb = 10,
-  downstream_kb = 1.5,
-  genome_ref_path,
-  specificity_species = "mouse",
+  prepare_ctd = TRUE,
+  upstream_kb = 35,
+  downstream_kb = 10,
   genesOutCOND = NA,
-  EnrichmentMode = "Linear"
+  EnrichmentMode = "Linear",
+  force_new = FALSE,
+  version = NULL,
+  verbose = TRUE
 )
 }
 \arguments{
-\item{ctd}{Cell type data strucutre containing $specificity_quantiles}
+\item{ctd}{Cell type data structure containing
+\code{specificity_quantiles}.}
 
-\item{gwas_sumstats_path}{Filepath of the summary statistics file}
+\item{ctd_levels}{Which levels of \code{ctd} to
+iterate the enrichment analysis over.}
 
-\item{analysis_name}{Used in filenames which area created}
+\item{ctd_species}{Species name relevant to the cell type data.
+See \link[EWCE]{list_species} for all available species.}
 
-\item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}
+\item{gwas_sumstats_path}{File path of the summary statistics file.}
 
-\item{downstream_kb}{How many kb downstream of the gene should SNPs be included?}
+\item{magma_dir}{Path to folder containing the
+pre-computed MAGMA GWAS files (\emph{.gsa.raw}and \emph{.gsa.out}).}
 
-\item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be downloaded 
-from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
+\item{analysis_name}{Used in file names which area created.}
 
-\item{specificity_species}{Species name relevant to the cell type data, i.e. "mouse" or "human"}
+\item{prepare_ctd}{Whether to run
+\link[MAGMA.Celltyping]{prepare_quantile_groups} on the \code{ctd} first.}
 
-\item{genesOutCOND}{[Optional] Path to a genes.out file to condition on. Used if you want to condition on a different GWAS.}
+\item{upstream_kb}{How many kb upstream of the gene
+should SNPs be included?}
 
-\item{EnrichmentMode}{[Optional] Should either 'Linear' or 'Top 10\%' mode be used for testing enrichment?}
+\item{downstream_kb}{How many kb downstream of the gene
+should SNPs be included?}
+
+\item{genesOutCOND}{[Optional] Path to a genes.out file to condition on.
+Used if you want to condition on a different GWAS.}
+
+\item{EnrichmentMode}{[Optional] Should either 'Linear' or 'Top 10\%' mode
+be used for testing enrichment?}
+
+\item{force_new}{[Optional] Force new MAGMA analyses even if the
+pre-existing results files are detected.}
+
+\item{version}{MAGMA version to use.}
+
+\item{verbose}{Print messages.}
 }
 \value{
-Filepath for the genes.out file
+File path for the genes.out file
 }
 \description{
-Assumes that you have already run map.snps.to.genes()
+Assumes that you have already run
+\link[MAGMA.Celltyping]{map_snps_to_genes}.
 }
 \examples{
-ctAssocs = calculate_celltype_associations(EWCE::ctd,gwas_sumstats_path,
-gwas_sumstats_path = "PATH_TO_SUMSTATS",
-upstream_kb=10,downstream_kb=1.5,genome_ref_path="~/Downloads/g1000_eur/g1000_eur",
-specificity_species="mouse",
-EnrichmentMode="Top 10\%")
+#### Prepare cell-type data ####
+ctd <- ewceData::ctd()
 
+#### Prepare GWAS MAGMA data ####
+magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
+    
+#### Run pipeline ####
+ctAssocs <- MAGMA.Celltyping::calculate_celltype_associations(
+    ctd = ctd,
+    ctd_levels = 1,
+    magma_dir = magma_dir,
+    ctd_species = "mouse")
 }
+\keyword{main_function}

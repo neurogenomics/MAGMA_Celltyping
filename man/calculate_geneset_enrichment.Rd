@@ -6,32 +6,47 @@
 \usage{
 calculate_geneset_enrichment(
   geneset,
-  gwas_sumstats_path,
+  gwas_sumstats_path = NULL,
+  magma_dir = NULL,
   analysis_name,
-  upstream_kb = 10,
-  downstream_kb = 1.5,
-  genome_ref_path,
-  geneset_species = "mouse"
+  upstream_kb = 35,
+  downstream_kb = 10,
+  geneset_species = "mouse",
+  version = NULL,
+  verbose = TRUE
 )
 }
 \arguments{
-\item{geneset}{Genes which are to be tested (as HGNC / MGI symbols)}
+\item{geneset}{Genes which are to be tested. 
+Can be gene symbols (or other gene IDs) from any species listed in 
+\link[EWCE]{list_species}.}
 
-\item{gwas_sumstats_path}{Filepath of the summary statistics file}
+\item{gwas_sumstats_path}{File path of the summary statistics file.}
 
-\item{analysis_name}{Used in filenames which area created}
+\item{magma_dir}{Path to folder containing the
+pre-computed MAGMA GWAS files (\emph{.gsa.raw}and \emph{.gsa.out}).}
 
-\item{upstream_kb}{How many kb upstream of the gene should SNPs be included?}
+\item{analysis_name}{Used in file names which area created.}
 
-\item{downstream_kb}{How many kb downstream of the gene should SNPs be included?}
+\item{upstream_kb}{How many kb upstream of the gene
+should SNPs be included?}
 
-\item{genome_ref_path}{Path to the folder containing the 1000 genomes .bed files (which can be downloaded from https://ctg.cncr.nl/software/MAGMA/ref_data/g1000_eur.zip)}
+\item{downstream_kb}{How many kb downstream of the gene
+should SNPs be included?}
 
-\item{geneset_species}{Species name relevant to the genes in the geneset, i.e. "mouse" or "human"}
+\item{geneset_species}{Species that the \code{geneset} came from.
+Can be any species listed in \link[EWCE]{list_species}.
+If \code{geneset_species!="human"}, the \code{geneset} will be converted
+ to 1:1 human orthologs using \link[orthogene]{convert_orthologs}.}
+
+\item{version}{MAGMA version to use.}
+
+\item{verbose}{Print messages.}
 }
 \value{
-Filepath for the genes.out file
+Filepath for the genes.out file.
 }
 \description{
-Assumes that you have already run map.snps.to.genes()
+Assumes that you have already run
+\link[MAGMA.Celltyping]{map_snps_to_genes}.
 }

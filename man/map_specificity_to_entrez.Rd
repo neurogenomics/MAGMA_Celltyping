@@ -2,24 +2,39 @@
 % Please edit documentation in R/map_specificity_to_entrez.r
 \name{map_specificity_to_entrez}
 \alias{map_specificity_to_entrez}
-\title{Map specificity to entrez}
+\title{Map specificity to Entrez gene IDs}
 \usage{
-map_specificity_to_entrez(ctd, annotLevel, specificity_species)
+map_specificity_to_entrez(
+  ctd,
+  annotLevel,
+  ctd_species,
+  use_matrix = "specificity_quantiles",
+  return_ctd = FALSE,
+  use_saved = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
-\item{ctd}{Cell type data structure. Must contain quantiles.}
+\item{ctd}{Cell type data structure containing
+\code{specificity_quantiles}.}
 
-\item{annotLevel}{Annot level for which the gene covar file should be constructed}
+\item{ctd_species}{Species name relevant to the cell type data.
+See \link[EWCE]{list_species} for all available species.}
 
-\item{specificity_species}{Species name relevant to the cell type data, i.e. "mouse" or "human"}
+\item{use_matrix}{Which CTD matrix to use as input.}
+
+\item{return_ctd}{Return the actual CellTypeDataset,
+rather than path to where it is saved.}
+
+\item{use_saved}{Use a saved version of the gene mapping table.}
+
+\item{verbose}{Print messages.}
 }
 \value{
-Matrix in which the first column is 'entrez' and then the specificity decile for each cell type
+Matrix in which the first column is 'entrez'
+and then the specificity decile for each cell type
 }
 \description{
-Convenience function used in 'create_gene_covar_file()'
+Convenience function used in \link[MAGMA.Celltyping]{create_gene_covar_file}.
 }
-\examples{
-genesCovarFilePath = create_gene_covar_file(genesOutFile,ctd)
-
-}
+\keyword{internal}

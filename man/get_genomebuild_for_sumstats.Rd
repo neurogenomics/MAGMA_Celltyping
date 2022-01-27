@@ -13,9 +13,14 @@ get_genomebuild_for_sumstats(path)
 Either 'GRCh37' or 'GRCh38'
 }
 \description{
-Compare the SNP:CHR:BP data against a dataset of all Hapmap3 SNP:CHR:BP data for two genome builds (GRCh37 and GRCh38). Evaluate which genome build matches the SNP locations from the sum stats file.
+Compare the SNP:CHR:BP data against a dataset of all
+Hapmap3 SNP:CHR:BP data for two genome builds (GRCh37 and GRCh38).
+Evaluate which genome build matches the SNP locations from
+the sum stats file.
 }
 \examples{
-genome_build = get_genomebuild_for_sumstats(gwas_sumstats_path)
-
+\dontrun{
+path <- MAGMA.Celltyping::get_example_gwas()
+genome_build <- MAGMA.Celltyping::get_genomebuild_for_sumstats(path = path)
+}
 }
