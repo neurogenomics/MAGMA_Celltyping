@@ -1,12 +1,13 @@
 ---
 title: ""  
-author: "<img src='https://github.com/neurogenomics/`r read.dcf('DESCRIPTION', fields = 'Package')[1]`/raw/`r gsub('[*] ','',system('git branch', intern = TRUE)[1])`/inst/hex/hex.png' height='300'><br><br>
+author: "<img src='`r read.dcf('DESCRIPTION', fields = 'URL')[1]`/raw/master/inst/hex/hex.png' height='300'><br><br>
         `r badger::badge_github_version(color = 'black')` 
         `r badger::badge_github_actions(action = 'R-CMD-check-bioc')`
-        `r badger::badge_last_commit(branch='master')`
-        `r badger::badge_codecov(branch='master')` 
+        `r badger::badge_github_actions(action = 'DockerHub')`
+        `r badger::badge_last_commit()`
+        `r badger::badge_codecov()` 
         `r badger::badge_license()` 
-        <h4>Authors: <i>Brian M. Schilder, Alan Murphy, Julien Bryois & Nathan Skene</i></h4>" 
+        <h4>Authors: <i>`r auths <- eval(parse(text = gsub('person','c',read.dcf('DESCRIPTION', fields = 'Authors@R'))));paste(auths[names(auths)=='given'],auths[names(auths)=='family'], collapse = ', ')`</i></h4>"
 date: "<h4>README updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
 output:
   github_document
@@ -25,6 +26,17 @@ This package takes GWAS summary statistics + single-cell transcriptome specifici
 
 ## Installation
 
+### R
+
+Install `MAGMA.Celltyping` as follows:
+
+```R
+if(!require("remotes")) install.packages("remotes")
+
+remotes::install_github("neurogenomics/`r pkg`")
+library(`r pkg`)
+```
+
 ### MAGMA 
 
 `MAGMA.Celltyping` now installs the command line software MAGMA automatically
@@ -36,17 +48,6 @@ MAGMA.Celltyping::install_magma(desired_version="<version>",
                                 update = TRUE)
 ```
 
-### R
-
-Then install `MAGMA.Celltyping` as follows:
-
-```R
-if(!require("remotes")) install.packages("remotes")
-
-remotes::install_github("neurogenomics/`r pkg`")
-library(`r pkg`)
-```
-
 ## [Documentation website](https://neurogenomics.github.io/MAGMA_Celltyping)
 
 ## [Vignette](https://neurogenomics.github.io/MAGMA_Celltyping/articles/MAGMA_Celltyping)
@@ -55,7 +56,7 @@ library(`r pkg`)
 
 ## Using older versions
 
-With the release of `MAGMA_Celltyping` 2.0 in Sept 2021, there have been a number of major updates.
+With the release of `MAGMA_Celltyping` 2.0 in January 2022, there have been a number of [major updates and bug fixes](https://github.com/neurogenomics/MAGMA_Celltyping/pull/93). 
 
 - Only R>4.0.0 is supported. To use this package with older versions of R, install with:`remotes::install_github("neurogenomics/MAGMA_Celltyping@01a9e53")` 
 
@@ -96,5 +97,19 @@ If you use the midbrain and hypothalamus single cell datasets associated with th
 
 > [Romanov, et al. Molecular interrogation of hypothalamic organization reveals distinct dopamine neuronal subtypes. Nature Neuroscience, 2016.](http://www.nature.com/neuro/journal/vaop/ncurrent/full/nn.4462.html)
 
+<hr>
+
+## Contact
+ 
+### [Neurogenomics Lab](https://www.neurogenomics.co.uk/)
+
+UK Dementia Research Institute  
+Department of Brain Sciences  
+Faculty of Medicine  
+Imperial College London   
+[GitHub](https://github.com/neurogenomics)  
+[DockerHub](https://hub.docker.com/orgs/neurogenomicslab)  
+
+<br>
 
 

@@ -1,17 +1,18 @@
-<img src='https://github.com/neurogenomics/MAGMA.Celltyping/raw/bschilder_dev/inst/hex/hex.png' height='300'><br><br>
+<img src='https://github.com/neurogenomics/MAGMA_Celltyping/raw/master/inst/hex/hex.png' height='300'><br><br>
 [![](https://img.shields.io/badge/devel%20version-2.0.0-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
 [![R build
 status](https://github.com/neurogenomics/MAGMA_Celltyping/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/actions)
+[![R build
+status](https://github.com/neurogenomics/MAGMA_Celltyping/workflows/DockerHub/badge.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/actions)
 [![](https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/commits/master)
 [![](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping/branch/master/graph/badge.svg)](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping)
 [![License:
 GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)
 <h4>
-Authors: <i>Brian M. Schilder, Alan Murphy, Julien Bryois & Nathan
-Skene</i>
+Authors: <i>Alan Murphy, Brian Schilder, Julien Bryois, Nathan Skene</i>
 </h4>
 <h4>
-README updated: <i>Jan-07-2022</i>
+README updated: <i>Jan-27-2022</i>
 </h4>
 
 ## Introduction
@@ -28,6 +29,17 @@ enrichment between the GWAS trait and the cell-types.
 
 ## Installation
 
+### R
+
+Install `MAGMA.Celltyping` as follows:
+
+``` r
+if(!require("remotes")) install.packages("remotes")
+
+remotes::install_github("neurogenomics/MAGMA.Celltyping")
+library(MAGMA.Celltyping)
+```
+
 ### MAGMA
 
 `MAGMA.Celltyping` now installs the command line software MAGMA
@@ -40,25 +52,15 @@ MAGMA.Celltyping::install_magma(desired_version="<version>",
                                 update = TRUE)
 ```
 
-### R
-
-Then install `MAGMA.Celltyping` as follows:
-
-``` r
-if(!require("remotes")) install.packages("remotes")
-
-remotes::install_github("neurogenomics/MAGMA.Celltyping")
-library(MAGMA.Celltyping)
-```
-
 ## [Documentation website](https://neurogenomics.github.io/MAGMA_Celltyping)
 
 ## [Vignette](https://neurogenomics.github.io/MAGMA_Celltyping/articles/MAGMA_Celltyping)
 
 ## Using older versions
 
-With the release of `MAGMA_Celltyping` 2.0 in Sept 2021, there have been
-a number of major updates.
+With the release of `MAGMA_Celltyping` 2.0 in January 2022, there have
+been a number of [major updates and bug
+fixes](https://github.com/neurogenomics/MAGMA_Celltyping/pull/93).
 
 -   Only R&gt;4.0.0 is supported. To use this package with older
     versions of R, install
@@ -125,3 +127,18 @@ with the 2018 paper then please cite the following papers:
 > [Romanov, et al. Molecular interrogation of hypothalamic organization
 > reveals distinct dopamine neuronal subtypes. Nature Neuroscience,
 > 2016.](http://www.nature.com/neuro/journal/vaop/ncurrent/full/nn.4462.html)
+
+<hr>
+
+## Contact
+
+### [Neurogenomics Lab](https://www.neurogenomics.co.uk/)
+
+UK Dementia Research Institute  
+Department of Brain Sciences  
+Faculty of Medicine  
+Imperial College London  
+[GitHub](https://github.com/neurogenomics)  
+[DockerHub](https://hub.docker.com/orgs/neurogenomicslab)
+
+<br>

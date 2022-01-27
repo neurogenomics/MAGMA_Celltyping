@@ -9,7 +9,9 @@ on:
     branches:
       - main
       - master
-
+env:
+  run_bioccheck: 'false'
+  
 jobs:
   R-CMD-check:
     name: DockerHub-push
@@ -36,6 +38,7 @@ jobs:
           #### DockerHub repos must be lowercase (,,) ####
           name=$(grep '^Package:' DESCRIPTION | cut -d\   -f2)
           echo "packageName=${name,,}" >> $GITHUB_ENV
+          echo "packageNameOrig=${name}" >> $GITHUB_ENV
           echo $name
           
           version=$(grep Version DESCRIPTION | grep -o "[0-9.]\+")
@@ -63,6 +66,9 @@ jobs:
           tags: |
             ${{ env.DOCKER_ORG }}/${{ env.packageName }}:${{ env.packageVersion }}
             ${{ env.DOCKER_ORG }}/${{ env.packageName }}:latest 
+          build-args: |
+            PKG=${{ env.packageNameOrig }}
+            BIOC=${{ env.run_bioccheck }}
 
       - name: push service
         run: |
