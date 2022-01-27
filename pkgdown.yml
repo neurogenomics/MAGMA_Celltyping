@@ -1,0 +1,8 @@
+pandoc: 2.14.0.3
+pkgdown: 2.0.2.9000
+pkgdown_sha: 25a1ab2d04c2b8251214b5189fa6735896468cd7
+articles:
+  MAGMA.Celltyping: MAGMA.Celltyping.html
+  full_workflow: full_workflow.html
+last_built: 2022-01-27T15:09Z
+
