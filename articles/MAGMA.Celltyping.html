@@ -87,7 +87,7 @@ Authors: <i>Brian M. Schilder, Alan Murphy, Julien Bryois &amp; Nathan Skene</i>
 </h4></h4>
             
             <h4 data-toc-skip class="date"><h4>
-Updated: <i>Jan-27-2022</i>
+Updated: <i>Jan-28-2022</i>
 </h4></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/blob/HEAD/vignettes/MAGMA.Celltyping.Rmd" class="external-link"><code>vignettes/MAGMA.Celltyping.Rmd</code></a></small>
@@ -218,7 +218,7 @@ Updated: <i>Jan-27-2022</i>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">merged_results</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/merge_results.html">merge_results</a></span><span class="op">(</span>
   MAGMA_results <span class="op">=</span> <span class="va">MAGMA_results</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Saving full merged results to ==&gt; /tmp/RtmpFVhSFA/MAGMA_celltyping..lvl1.csv</span></code></pre>
+<pre><code><span class="co">## Saving full merged results to ==&gt; /tmp/Rtmpxk6Bst/MAGMA_celltyping..lvl1.csv</span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">merged_results</span><span class="op">)</span></code></pre></div>
 <table style="width:100%;" class="table">
@@ -821,7 +821,8 @@ Updated: <i>Jan-27-2022</i>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">EnrichmentMode</span>, <span class="va">GWAS</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>Celltype<span class="op">=</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/n_distinct.html" class="external-link">n_distinct</a></span><span class="op">(</span><span class="va">Celltype</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">Celltype</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## `summarise()` has grouped output by 'EnrichmentMode'. You can override using the `.groups` argument.</span></code></pre>
+<pre><code><span class="co">## `summarise()` has grouped output by 'EnrichmentMode'. You can override using the</span>
+<span class="co">## `.groups` argument.</span></code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">top_phenos</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 2 × 3</span></span>
@@ -897,7 +898,7 @@ Updated: <i>Jan-27-2022</i>
 <span class="co">##   [7] orthogene_1.0.0               BiocParallel_1.28.3          </span>
 <span class="co">##   [9] GenomeInfoDb_1.30.0           digest_0.6.29                </span>
 <span class="co">##  [11] htmltools_0.5.2               RNOmni_1.0.0                 </span>
-<span class="co">##  [13] fansi_1.0.2                   magrittr_2.0.1               </span>
+<span class="co">##  [13] fansi_1.0.2                   magrittr_2.0.2               </span>
 <span class="co">##  [15] memoise_2.0.1                 BSgenome_1.62.0              </span>
 <span class="co">##  [17] limma_3.50.0                  Biostrings_2.62.0            </span>
 <span class="co">##  [19] matrixStats_0.61.0            R.utils_2.11.0               </span>
@@ -922,7 +923,7 @@ Updated: <i>Jan-27-2022</i>
 <span class="co">##  [57] XML_3.99-0.8                  R.methodsS3_1.8.1            </span>
 <span class="co">##  [59] sass_0.4.0                    utf8_1.2.2                   </span>
 <span class="co">##  [61] labeling_0.4.2                tidyselect_1.1.1             </span>
-<span class="co">##  [63] rlang_0.4.12                  reshape2_1.4.4               </span>
+<span class="co">##  [63] rlang_1.0.0                   reshape2_1.4.4               </span>
 <span class="co">##  [65] later_1.3.0                   AnnotationDbi_1.56.2         </span>
 <span class="co">##  [67] munsell_0.5.0                 BiocVersion_3.14.0           </span>
 <span class="co">##  [69] tools_4.1.2                   cachem_1.0.6                 </span>
@@ -946,7 +947,7 @@ Updated: <i>Jan-27-2022</i>
 <span class="co">## [105] stringi_1.7.6                 highr_0.9                    </span>
 <span class="co">## [107] GenomicFeatures_1.46.4        desc_1.4.0                   </span>
 <span class="co">## [109] lattice_0.20-45               Matrix_1.3-4                 </span>
-<span class="co">## [111] nloptr_1.2.2.3                vctrs_0.3.8                  </span>
+<span class="co">## [111] nloptr_2.0.0                  vctrs_0.3.8                  </span>
 <span class="co">## [113] pillar_1.6.5                  lifecycle_1.0.1              </span>
 <span class="co">## [115] BiocManager_1.30.16           jquerylib_0.1.4              </span>
 <span class="co">## [117] data.table_1.14.2             bitops_1.0-7                 </span>
