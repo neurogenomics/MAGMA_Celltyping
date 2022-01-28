@@ -42,6 +42,7 @@ RUN apt-get update && \
 	biber \
 	libsbml5-dev \
 	qpdf \
+	cmake \
 	&& apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 # Create a buildzone folder named after the R package 
