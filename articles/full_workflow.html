@@ -99,13 +99,11 @@ Updated: <i>Feb-01-2022</i>
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/neurogenomics/MAGMA_Celltyping" class="external-link">MAGMA.Celltyping</a></span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in register(): Can't find generic `scale_type` in package ggplot2 to</span>
-<span class="co">## register S3 method.</span></code></pre>
 <pre><code><span class="co">## ===== Welcome to MAGMA.Celltyping =====</span>
 <span class="co">## This package depends on the MAGMA command line tool:</span>
 <span class="co">## https://ctg.cncr.nl/software/magma</span>
 <span class="co">## ===== =========================== =====</span></code></pre>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## </span>
@@ -133,7 +131,7 @@ Updated: <i>Feb-01-2022</i>
 </li>
 <li>As an example, you can download UK Biobank summary statistics for ‘fluid_intelligence’ using <code><a href="../reference/get_example_gwas.html">get_example_gwas()</a></code>.</li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gwas_sumstats_path</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/get_example_gwas.html">get_example_gwas</a></span><span class="op">(</span>
   trait <span class="op">=</span> <span class="st">"fluid_intelligence"</span>,
   munged <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
@@ -157,12 +155,12 @@ Updated: <i>Feb-01-2022</i>
 </li>
 <li>However, if you don’t know which genome build you GWAS sum stats are in, <code>MungeSumstats</code> will infer this information by default (simply set <code>ref_genome=NULL</code>).</li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">path_formatted</span> <span class="op">&lt;-</span> <span class="fu">MungeSumstats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MungeSumstats/man/format_sumstats.html" class="external-link">format_sumstats</a></span><span class="op">(</span>path<span class="op">=</span><span class="va">gwas_sumstats_path</span>,
                                                  save_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".formatted.tsv.gz"</span><span class="op">)</span>,
                                                  ref_genome <span class="op">=</span><span class="st">"GRCh37"</span><span class="op">)</span></code></pre></div>
 <p>For the sake of this example, we also provide a pre-munged version of the above file. If you use this, you can skip the previous two steps.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">path_formatted</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/get_example_gwas.html">get_example_gwas</a></span><span class="op">(</span>trait <span class="op">=</span> <span class="st">"fluid_intelligence"</span>,
                                                      munged <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
@@ -171,7 +169,7 @@ Updated: <i>Feb-01-2022</i>
 </h3>
 <p>Next, we must convert the GWAS summary statistics file to a gene-level signature so that we can compare it to a gene-level transcriptomic cell-type reference.</p>
 <p>Note you can input the genome build of your summary statistics for this step or it can be inferred if left <code>NULL</code>:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">genesOutPath</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/map_snps_to_genes.html">map_snps_to_genes</a></span><span class="op">(</span>path_formatted <span class="op">=</span> <span class="va">path_formatted</span>,
                                                     genome_build <span class="op">=</span> <span class="st">"GRCh37"</span>,
                                                     genome_ref_path <span class="op">=</span> <span class="va">genome_ref_path</span><span class="op">)</span></code></pre></div>
@@ -185,13 +183,13 @@ Updated: <i>Feb-01-2022</i>
 <p>The second step in <code>MAGMA.Celltyping</code> is to prepare your Cell Type Dataset (CTD) reference, from which we will get gene signatures for each cell-type in the reference.</p>
 <p>The <a href="https://bioconductor.org/packages/release/data/experiment/html/ewceData.html" class="external-link"><code>ewceData</code></a> package comes with a CTD which we use as an example.</p>
 <p>If you want to import your own single cell RNA-seq dataset, then this needs converting into CTD format; please see the <a href="https://nathanskene.github.io/EWCE/articles/extended.html#create-a-celltypedataset" class="external-link"><code>EWCE</code> vingette</a> for explanation of how to do this.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu">ewceData</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ewceData/man/ctd.html" class="external-link">ctd</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>Note that the cell type dataset loaded in the code above is the Karolinksa cortex/hippocampus data only. For the full Karolinska dataset with hypothalamus and midbrain instead use the following:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/get_ctd.html">get_ctd</a></span><span class="op">(</span><span class="st">"ctd_allKI"</span><span class="op">)</span></code></pre></div>
 <p>You can find a list of other datasets provided by this package using <code><a href="../reference/get_ctd.html">?MAGMA.Celltyping::get_ctd</a></code>:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_ctd.html">get_ctd</a></span><span class="op">(</span><span class="st">"ctd_Tasic"</span><span class="op">)</span>
 <span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_ctd.html">get_ctd</a></span><span class="op">(</span><span class="st">"ctd_DivSeq"</span><span class="op">)</span>
 <span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_ctd.html">get_ctd</a></span><span class="op">(</span><span class="st">"ctd_AIBS"</span><span class="op">)</span>
@@ -208,7 +206,7 @@ Updated: <i>Feb-01-2022</i>
 <p>Preparing quantiles in the CTD is now something that is automatically handled by by <code>MAGMA.Celltyping</code> so the user doesn’t need to do this themselves as a pre-step anymore.</p>
 <p>However, we still export the function <code>prepare_quantile_groups</code> in case users want to have more control.</p>
 <p><code>prepare_quantile_groups</code> calculates the quantile groups for each celltype within the single-cell dataset. If your single-cell dataset is not from mouse, then change the <code>ctd_species</code> argument.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/prepare_quantile_groups.html">prepare_quantile_groups</a></span><span class="op">(</span>ctd <span class="op">=</span> <span class="va">ctd</span>,
                                                  ctd_species<span class="op">=</span><span class="st">"mouse"</span><span class="op">)</span>
 <span class="co"># Examine how the quantile groups look</span>
@@ -229,7 +227,7 @@ Updated: <i>Feb-01-2022</i>
 <strong>Top 10% mode</strong>: Performs gene-set enrichment analysis (GSEA) using only the top 10% most cell-type-specific genes for each cell-type (i.e. genes in the top specificity decile). Unlike linear mode, top 10% mode discards any gene-level weight data during testing and instead treats genes as categorical data (in the gene list or not in the gene list). While you do lose the nuance of the gene-level weights, you potential capture less cell-type signatures in a given test (due to only using a handful of top genes), which can make interpretation easier.</li>
 </ul>
 <p>Let’s start with linear:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ctAssocsLinear</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_celltype_associations.html">calculate_celltype_associations</a></span><span class="op">(</span>
   ctd<span class="op">=</span><span class="va">ctd</span>,
   gwas_sumstats_path<span class="op">=</span><span class="va">gwas_sumstats_path_formatted</span>,
@@ -240,7 +238,7 @@ Updated: <i>Feb-01-2022</i>
   ctAssocs<span class="op">=</span><span class="va">ctAssocsLinear</span>,
   ctd<span class="op">=</span><span class="va">ctd</span><span class="op">)</span></code></pre></div>
 <p>Now let’s add the top 10% mode</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ctAssocsTop</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_celltype_associations.html">calculate_celltype_associations</a></span><span class="op">(</span>
   ctd <span class="op">=</span> <span class="va">ctd</span>,
   gwas_sumstats_path <span class="op">=</span> <span class="va">gwas_sumstats_path_formatted</span>,
@@ -251,7 +249,7 @@ Updated: <i>Feb-01-2022</i>
   ctAssocs <span class="op">=</span> <span class="va">ctAssocsTop</span>,
   ctd <span class="op">=</span> <span class="va">ctd</span><span class="op">)</span></code></pre></div>
 <p>Then plot linear together with the top 10% mode.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ctAssocMerged</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/merge_magma_results.html">merge_magma_results</a></span><span class="op">(</span>
   ctAssoc1 <span class="op">=</span> <span class="va">ctAssocsLinear</span>,
   ctAssoc2 <span class="op">=</span> <span class="va">ctAssocsTop</span><span class="op">)</span>
@@ -264,7 +262,7 @@ Updated: <i>Feb-01-2022</i>
 </h4>
 <p>Sometimes a single cell-type can dominate the signature in a given GWAS (e.g. pyramidal cells in Schizophrenia). This makes it difficult to disentangle whether other cell-types are truly associated with the GWAS trait, or whether the are simply enriched because they have an overlapping signature with the top cell-type. Conditional mode allows you to control for one (or several) cell-type(s) and see whether other cell-types still remain significantly enriched.</p>
 <p>By default, it is assumed that you want to run the linear enrichment analysis. There are two modes for conditional analyses, you can either control for the top N cell types from the baseline analysis (in which case, set <code>controlTopNcells</code>) or control for specific specified cell types (in which case, set <code>controlledCTs</code>).</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ctCondAssocs</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_conditional_celltype_associations.html">calculate_conditional_celltype_associations</a></span><span class="op">(</span>
   ctd <span class="op">=</span> <span class="va">ctd</span>,
   gwas_sumstats_path_formatted <span class="op">=</span> <span class="va">path_formatted</span>,
@@ -275,7 +273,7 @@ Updated: <i>Feb-01-2022</i>
 <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/plot_celltype_associations.html">plot_celltype_associations</a></span><span class="op">(</span>ctAssocs <span class="op">=</span> <span class="va">ctCondAssocs</span>,
                                              ctd <span class="op">=</span> <span class="va">ctd</span><span class="op">)</span></code></pre></div>
 <p>Let’s try as an alternative to control for expression of 3 neuronal subtypes at the same time:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ctCondAssocs</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_conditional_celltype_associations.html">calculate_conditional_celltype_associations</a></span><span class="op">(</span>
   ctd <span class="op">=</span> <span class="va">ctd</span>,
   gwas_sumstats_path <span class="op">=</span> <span class="va">path_formatted</span>,
@@ -287,7 +285,7 @@ Updated: <i>Feb-01-2022</i>
 <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/plot_celltype_associations.html">plot_celltype_associations</a></span><span class="op">(</span>ctAssocs <span class="op">=</span> <span class="va">ctCondAssocs</span>,
                                              ctd<span class="op">=</span><span class="va">ctd</span><span class="op">)</span></code></pre></div>
 <p>Note that Periventricular Microglia (PVM) go from totally non-significant to significant once the neurons are controlled for. Test if this change is significant as follows:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">magma1</span> <span class="op">=</span> <span class="va">ctCondAssocs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">results</span><span class="op">[</span><span class="va">ctCondAssocs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">results</span><span class="op">$</span><span class="va">CONTROL</span><span class="op">==</span><span class="st">"BASELINE"</span>,<span class="op">]</span>
 <span class="va">magma2</span> <span class="op">=</span> <span class="va">ctCondAssocs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">results</span><span class="op">[</span><span class="va">ctCondAssocs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">results</span><span class="op">$</span><span class="va">CONTROL</span><span class="op">==</span><span class="st">"pyramidal CA1,pyramidal SS,interneurons"</span>,<span class="op">]</span>
 
@@ -302,7 +300,7 @@ Updated: <i>Feb-01-2022</i>
 <h3 id="conditional-analyses-top-10-mode">Conditional analyses (top 10% mode)<a class="anchor" aria-label="anchor" href="#conditional-analyses-top-10-mode"></a>
 </h3>
 <p>Conditional analyses can also be performed with top 10% mode (although the conditioning is done in linear mode).</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ctCondAssocsTopTen</span> <span class="op">=</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_conditional_celltype_associations.html">calculate_conditional_celltype_associations</a></span><span class="op">(</span>
   ctd <span class="op">=</span> <span class="va">ctd</span>,
   gwas_sumstats_path <span class="op">=</span> <span class="va">path_formatted</span>,
@@ -324,7 +322,7 @@ Updated: <i>Feb-01-2022</i>
 <div class="section level4">
 <h4 id="download-and-prepare-the-prospective-memory-gwas-summary-statistics">Download and prepare the ‘Prospective memory’ GWAS summary statistics<a class="anchor" aria-label="anchor" href="#download-and-prepare-the-prospective-memory-gwas-summary-statistics"></a>
 </h4>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gwas_sumstats_path</span> <span class="op">=</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/get_example_gwas.html">get_example_gwas</a></span><span class="op">(</span>storage_dir <span class="op">=</span> <span class="va">storage_dir</span>, 
                                                         trait <span class="op">=</span> <span class="st">"prospective_memory"</span><span class="op">)</span>
 <span class="co"># Format sumstats - infer genome build from the data</span>
@@ -340,7 +338,7 @@ Updated: <i>Feb-01-2022</i>
 <div class="section level4">
 <h4 id="check-which-cell-types-this-gwas-is-associated-with-at-baseline">Check which cell types this GWAS is associated with at baseline<a class="anchor" aria-label="anchor" href="#check-which-cell-types-this-gwas-is-associated-with-at-baseline"></a>
 </h4>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">path_formatted_intelligence</span> <span class="op">&lt;-</span> <span class="va">path_formatted</span>
 
 <span class="va">ctAssocsLinear_memory</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/calculate_celltype_associations.html">calculate_celltype_associations</a></span><span class="op">(</span>
@@ -361,7 +359,7 @@ Updated: <i>Feb-01-2022</i>
 <div class="section level4">
 <h4 id="compare-enrichments-in-the-two-gwas-using-a-tile-plot">Compare enrichments in the two GWAS using a tile plot<a class="anchor" aria-label="anchor" href="#compare-enrichments-in-the-two-gwas-using-a-tile-plot"></a>
 </h4>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ctAssocMerged_MemInt</span> <span class="op">=</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/merge_magma_results.html">merge_magma_results</a></span><span class="op">(</span>
   ctAssoc1 <span class="op">=</span> <span class="va">ctAssocsLinear_memory</span>,
   ctAssoc2 <span class="op">=</span> <span class="va">ctAssocsLinear_intelligence</span><span class="op">)</span>
@@ -381,7 +379,7 @@ Updated: <i>Feb-01-2022</i>
 <div class="section level4">
 <h4 id="check-which-cell-types-fluid-intelligence-is-associated-with-after-controlling-for-prospective-memory">Check which cell types ‘Fluid Intelligence’ is associated with after controlling for ‘Prospective memory’<a class="anchor" aria-label="anchor" href="#check-which-cell-types-fluid-intelligence-is-associated-with-after-controlling-for-prospective-memory"></a>
 </h4>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Set paths for GWAS sum stats + .genes.out file (with the z-scores)</span>
 <span class="va">gwas_sumstats_path</span> <span class="op">&lt;-</span> <span class="va">path_formatted_intelligence</span> <span class="co"># "/Users/natske/GWAS_Summary_Statistics/20016.assoc.tsv"</span>
 <span class="va">memoryGenesOut</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%s.genes.out"</span>,
@@ -408,7 +406,7 @@ Updated: <i>Feb-01-2022</i>
 <h3 id="calculate-cell-type-enrichments-directly-using-linear-model">Calculate cell type enrichments directly (using linear model)<a class="anchor" aria-label="anchor" href="#calculate-cell-type-enrichments-directly-using-linear-model"></a>
 </h3>
 <p>Instead of relying on the tool MAGMA (which requires an extra installation step), we can also compute cell-type enrichment scores in an R-native re-implementation of the MAGMA enrichment analyses using the following functions:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">magmaGenesOut</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/adjust_zstat_in_genesOut.html">adjust_zstat_in_genesOut</a></span><span class="op">(</span>
   ctd <span class="op">=</span> <span class="va">ctd</span>,
   magma_file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"/Users/natske/GWAS_Summary_Statistics/MAGMA_Files"</span>,
@@ -423,7 +421,7 @@ Updated: <i>Feb-01-2022</i>
   ctd_species <span class="op">=</span> <span class="st">"mouse"</span>,
   annotLevel <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
 <p>We can then get the probability of the celltype being enriched as follows</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>The results should closely resemble those obtained using MAGMA</p>
 </div>
@@ -431,7 +429,7 @@ Updated: <i>Feb-01-2022</i>
 <h3 id="gene-set-enrichments">Gene set enrichments<a class="anchor" aria-label="anchor" href="#gene-set-enrichments"></a>
 </h3>
 <p>To test whether a gene set is enriched using MAGMA the following commands can be used:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"rbfox_binding"</span><span class="op">)</span>
 
 <span class="va">gwas_sumstats_path</span> <span class="op">=</span> <span class="st">"/Users/natske/GWAS_Summary_Statistics/20016.assoc.tsv"</span>
@@ -443,7 +441,7 @@ Updated: <i>Feb-01-2022</i>
   geneset_species <span class="op">=</span> <span class="st">"mouse"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">geneset_res</span><span class="op">)</span></code></pre></div>
 <p>We can then test whether the gene set is still enriched after controlling for celltype enrichment:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/get_ctd.html">get_ctd</a></span><span class="op">(</span><span class="st">"ctd_allKI"</span><span class="op">)</span>
 
 <span class="va">analysis_name</span> <span class="op">&lt;-</span> <span class="st">"Rbfox_16_pyrSS"</span>
@@ -507,9 +505,9 @@ Updated: <i>Feb-01-2022</i>
 <div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<details><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<details><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## R version 4.1.2 (2021-11-01)</span>
+<pre><code><span class="co">## R Under development (unstable) (2022-01-29 r81593)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
 <span class="co">## Running under: Ubuntu 20.04.3 LTS</span>
 <span class="co">## </span>
@@ -519,7 +517,7 @@ Updated: <i>Feb-01-2022</i>
 <span class="co">## locale:</span>
 <span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
 <span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span>
-<span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             </span>
+<span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span>
 <span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span>
 <span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span>
 <span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span>
@@ -529,85 +527,85 @@ Updated: <i>Feb-01-2022</i>
 <span class="co">## </span>
 <span class="co">## other attached packages:</span>
 <span class="co">## [1] dplyr_1.0.7            ggplot2_3.3.5          MAGMA.Celltyping_2.0.0</span>
-<span class="co">## [4] BiocStyle_2.22.0      </span>
+<span class="co">## [4] BiocStyle_2.23.1      </span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
-<span class="co">##   [1] backports_1.4.1               AnnotationHub_3.2.1          </span>
-<span class="co">##   [3] BiocFileCache_2.2.1           systemfonts_1.0.3            </span>
+<span class="co">##   [1] backports_1.4.1               AnnotationHub_3.3.8          </span>
+<span class="co">##   [3] BiocFileCache_2.3.4           systemfonts_1.0.3            </span>
 <span class="co">##   [5] googleAuthR_2.0.0             plyr_1.8.6                   </span>
-<span class="co">##   [7] lazyeval_0.2.2                splines_4.1.2                </span>
-<span class="co">##   [9] orthogene_1.0.0               ewceData_1.2.0               </span>
-<span class="co">##  [11] BiocParallel_1.28.3           GenomeInfoDb_1.30.1          </span>
+<span class="co">##   [7] lazyeval_0.2.2                splines_4.2.0                </span>
+<span class="co">##   [9] orthogene_1.1.1               ewceData_1.3.0               </span>
+<span class="co">##  [11] BiocParallel_1.29.12          GenomeInfoDb_1.31.4          </span>
 <span class="co">##  [13] digest_0.6.29                 htmltools_0.5.2              </span>
 <span class="co">##  [15] RNOmni_1.0.0                  fansi_1.0.2                  </span>
 <span class="co">##  [17] magrittr_2.0.2                memoise_2.0.1                </span>
-<span class="co">##  [19] BSgenome_1.62.0               limma_3.50.0                 </span>
-<span class="co">##  [21] Biostrings_2.62.0             matrixStats_0.61.0           </span>
+<span class="co">##  [19] BSgenome_1.63.4               limma_3.51.3                 </span>
+<span class="co">##  [21] Biostrings_2.63.1             matrixStats_0.61.0           </span>
 <span class="co">##  [23] R.utils_2.11.0                pkgdown_2.0.2.9000           </span>
 <span class="co">##  [25] prettyunits_1.1.1             colorspace_2.0-2             </span>
 <span class="co">##  [27] blob_1.2.2                    rappdirs_0.3.3               </span>
 <span class="co">##  [29] textshaping_0.3.6             xfun_0.29                    </span>
 <span class="co">##  [31] crayon_1.4.2                  RCurl_1.98-1.5               </span>
 <span class="co">##  [33] jsonlite_1.7.3                lme4_1.1-27.1                </span>
-<span class="co">##  [35] VariantAnnotation_1.40.0      glue_1.6.1                   </span>
+<span class="co">##  [35] VariantAnnotation_1.41.3      glue_1.6.1                   </span>
 <span class="co">##  [37] gargle_1.2.0                  gtable_0.3.0                 </span>
-<span class="co">##  [39] zlibbioc_1.40.0               XVector_0.34.0               </span>
-<span class="co">##  [41] HGNChelper_0.8.1              DelayedArray_0.20.0          </span>
-<span class="co">##  [43] car_3.0-12                    SingleCellExperiment_1.16.0  </span>
-<span class="co">##  [45] BiocGenerics_0.40.0           abind_1.4-5                  </span>
+<span class="co">##  [39] zlibbioc_1.41.0               XVector_0.35.0               </span>
+<span class="co">##  [41] HGNChelper_0.8.1              DelayedArray_0.21.2          </span>
+<span class="co">##  [43] car_3.0-12                    SingleCellExperiment_1.17.2  </span>
+<span class="co">##  [45] BiocGenerics_0.41.2           abind_1.4-5                  </span>
 <span class="co">##  [47] scales_1.1.1                  DBI_1.1.2                    </span>
 <span class="co">##  [49] rstatix_0.7.0                 Rcpp_1.0.8                   </span>
 <span class="co">##  [51] progress_1.2.2                viridisLite_0.4.0            </span>
 <span class="co">##  [53] xtable_1.8-4                  bit_4.0.4                    </span>
-<span class="co">##  [55] stats4_4.1.2                  htmlwidgets_1.5.4            </span>
+<span class="co">##  [55] stats4_4.2.0                  htmlwidgets_1.5.4            </span>
 <span class="co">##  [57] httr_1.4.2                    ellipsis_0.3.2               </span>
 <span class="co">##  [59] pkgconfig_2.0.3               XML_3.99-0.8                 </span>
 <span class="co">##  [61] R.methodsS3_1.8.1             sass_0.4.0                   </span>
 <span class="co">##  [63] dbplyr_2.1.1                  utf8_1.2.2                   </span>
 <span class="co">##  [65] tidyselect_1.1.1              rlang_1.0.0                  </span>
 <span class="co">##  [67] reshape2_1.4.4                later_1.3.0                  </span>
-<span class="co">##  [69] AnnotationDbi_1.56.2          munsell_0.5.0                </span>
-<span class="co">##  [71] BiocVersion_3.14.0            tools_4.1.2                  </span>
+<span class="co">##  [69] AnnotationDbi_1.57.1          munsell_0.5.0                </span>
+<span class="co">##  [71] BiocVersion_3.15.0            tools_4.2.0                  </span>
 <span class="co">##  [73] cachem_1.0.6                  cli_3.1.1                    </span>
-<span class="co">##  [75] generics_0.1.1                RSQLite_2.2.9                </span>
-<span class="co">##  [77] ExperimentHub_2.2.1           MungeSumstats_1.2.0          </span>
+<span class="co">##  [75] generics_0.1.2                RSQLite_2.2.9                </span>
+<span class="co">##  [77] ExperimentHub_2.3.5           MungeSumstats_1.3.1          </span>
 <span class="co">##  [79] broom_0.7.12                  ggdendro_0.1.22              </span>
 <span class="co">##  [81] evaluate_0.14                 stringr_1.4.0                </span>
 <span class="co">##  [83] fastmap_1.1.0                 yaml_2.2.2                   </span>
 <span class="co">##  [85] ragg_1.2.1                    babelgene_21.4               </span>
 <span class="co">##  [87] knitr_1.37                    bit64_4.0.5                  </span>
 <span class="co">##  [89] fs_1.5.2                      purrr_0.3.4                  </span>
-<span class="co">##  [91] KEGGREST_1.34.0               gprofiler2_0.2.1             </span>
-<span class="co">##  [93] nlme_3.1-153                  mime_0.12                    </span>
+<span class="co">##  [91] KEGGREST_1.35.0               gprofiler2_0.2.1             </span>
+<span class="co">##  [93] nlme_3.1-155                  mime_0.12                    </span>
 <span class="co">##  [95] R.oo_1.24.0                   xml2_1.3.3                   </span>
-<span class="co">##  [97] biomaRt_2.50.2                compiler_4.1.2               </span>
+<span class="co">##  [97] biomaRt_2.51.2                compiler_4.2.0               </span>
 <span class="co">##  [99] plotly_4.10.0                 filelock_1.0.2               </span>
 <span class="co">## [101] curl_4.3.2                    png_0.1-7                    </span>
-<span class="co">## [103] interactiveDisplayBase_1.32.0 ggsignif_0.6.3               </span>
+<span class="co">## [103] interactiveDisplayBase_1.33.0 ggsignif_0.6.3               </span>
 <span class="co">## [105] tibble_3.1.6                  EWCE_1.3.3                   </span>
 <span class="co">## [107] bslib_0.3.1                   homologene_1.4.68.19.3.27    </span>
-<span class="co">## [109] stringi_1.7.6                 GenomicFeatures_1.46.4       </span>
+<span class="co">## [109] stringi_1.7.6                 GenomicFeatures_1.47.7       </span>
 <span class="co">## [111] desc_1.4.0                    lattice_0.20-45              </span>
-<span class="co">## [113] Matrix_1.3-4                  nloptr_2.0.0                 </span>
-<span class="co">## [115] vctrs_0.3.8                   pillar_1.6.5                 </span>
+<span class="co">## [113] Matrix_1.4-0                  nloptr_2.0.0                 </span>
+<span class="co">## [115] vctrs_0.3.8                   pillar_1.7.0                 </span>
 <span class="co">## [117] lifecycle_1.0.1               BiocManager_1.30.16          </span>
 <span class="co">## [119] jquerylib_0.1.4               data.table_1.14.2            </span>
 <span class="co">## [121] bitops_1.0-7                  httpuv_1.6.5                 </span>
-<span class="co">## [123] patchwork_1.1.1               rtracklayer_1.54.0           </span>
-<span class="co">## [125] GenomicRanges_1.46.1          R6_2.5.1                     </span>
-<span class="co">## [127] BiocIO_1.4.0                  bookdown_0.24                </span>
+<span class="co">## [123] patchwork_1.1.1               rtracklayer_1.55.3           </span>
+<span class="co">## [125] GenomicRanges_1.47.6          R6_2.5.1                     </span>
+<span class="co">## [127] BiocIO_1.5.0                  bookdown_0.24                </span>
 <span class="co">## [129] promises_1.2.0.1              gridExtra_2.3                </span>
-<span class="co">## [131] IRanges_2.28.0                boot_1.3-28                  </span>
-<span class="co">## [133] MASS_7.3-54                   assertthat_0.2.1             </span>
-<span class="co">## [135] SummarizedExperiment_1.24.0   rprojroot_2.0.2              </span>
+<span class="co">## [131] IRanges_2.29.1                boot_1.3-28                  </span>
+<span class="co">## [133] MASS_7.3-55                   assertthat_0.2.1             </span>
+<span class="co">## [135] SummarizedExperiment_1.25.3   rprojroot_2.0.2              </span>
 <span class="co">## [137] rjson_0.2.21                  withr_2.4.3                  </span>
-<span class="co">## [139] GenomicAlignments_1.30.0      Rsamtools_2.10.0             </span>
-<span class="co">## [141] S4Vectors_0.32.3              GenomeInfoDbData_1.2.7       </span>
-<span class="co">## [143] hms_1.1.1                     parallel_4.1.2               </span>
-<span class="co">## [145] grid_4.1.2                    minqa_1.2.4                  </span>
-<span class="co">## [147] tidyr_1.1.4                   rmarkdown_2.11               </span>
-<span class="co">## [149] MatrixGenerics_1.6.0          carData_3.0-5                </span>
-<span class="co">## [151] ggpubr_0.4.0                  Biobase_2.54.0               </span>
+<span class="co">## [139] GenomicAlignments_1.31.2      Rsamtools_2.11.0             </span>
+<span class="co">## [141] S4Vectors_0.33.10             GenomeInfoDbData_1.2.7       </span>
+<span class="co">## [143] hms_1.1.1                     parallel_4.2.0               </span>
+<span class="co">## [145] grid_4.2.0                    minqa_1.2.4                  </span>
+<span class="co">## [147] tidyr_1.2.0                   rmarkdown_2.11               </span>
+<span class="co">## [149] MatrixGenerics_1.7.0          carData_3.0-5                </span>
+<span class="co">## [151] ggpubr_0.4.0                  Biobase_2.55.0               </span>
 <span class="co">## [153] shiny_1.7.1                   restfulr_0.0.13</span></code></pre>
 </details>
 </div>
