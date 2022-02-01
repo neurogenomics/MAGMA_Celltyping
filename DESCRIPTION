@@ -3,16 +3,16 @@ Type: Package
 Title: Find causal cell-types underlying complex trait genetics
 Version: 2.0.0
 Authors@R:
-    c(person(given = "Alan",
-           family = "Murphy",
-           role = c("ctb"),
-           email = "alanmurph94@hotmail.com",
-           comment = c(ORCID = "0000-0002-2487-8753")),
-     person(given = "Brian",
+    c(person(given = "Brian",
            family = "Schilder",
            role = c("cre","aut"),
            email = "brian_schilder@alumni.brown.edu",
            comment = c(ORCID = "0000-0001-5949-2191")),
+     person(given = "Alan",
+           family = "Murphy",
+           role = c("ctb"),
+           email = "alanmurph94@hotmail.com",
+           comment = c(ORCID = "0000-0002-2487-8753")),
      person(given = "Julien",
            family = "Bryois",
            role = c("aut"),

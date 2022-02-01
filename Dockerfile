@@ -26,7 +26,7 @@
 # and you can set the password to whatever you like,
 #
 # This DockerFile was partly adapted from the [scFlow Dockerfile](https://github.com/combiz/scFlow/blob/master/Dockerfile).
-FROM bioconductor/bioconductor_docker:latest
+FROM bioconductor/bioconductor_docker:devel
 RUN apt-get update && \
     apt-get install -y \
     git-core \
@@ -65,11 +65,10 @@ RUN Rscript -e 'options(download.file.method= "libcurl"); \
                                   download.file.method = "libcurl", Ncpus = 2); \
                 deps <- remotes::dev_package_deps(dependencies = TRUE)$package; \
                 AnVIL::install(pkgs = deps,  ask = FALSE); \
-                remotes::install_github("NathanSkene/EWCE", force=TRUE); \
-                deps_left <- deps[!deps %in% rownames(utils::installed.packages())]; \
+                deps_left <- deps[!deps %in% rownames(installed.packages())]; \
                 if(length(deps_left)>0) devtools::install_dev_deps(dependencies = TRUE, upgrade = "never");'
 # Run R CMD check - will fail with any errors or warnings
-Run Rscript -e 'devtools::check()'
+# Run Rscript -e 'devtools::check()'
 # Run Bioconductor's BiocCheck (optional)
 #ARG BIOC
 #RUN if [ "$BIOC" = "true" ]; then \

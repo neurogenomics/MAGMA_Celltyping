@@ -9,10 +9,10 @@ status](https://github.com/neurogenomics/MAGMA_Celltyping/workflows/DockerHub/ba
 [![License:
 GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)
 <h4>
-Authors: <i>Alan Murphy, Brian Schilder, Julien Bryois, Nathan Skene</i>
+Authors: <i>Brian Schilder, Alan Murphy, Julien Bryois, Nathan Skene</i>
 </h4>
 <h4>
-README updated: <i>Jan-27-2022</i>
+README updated: <i>Jan-28-2022</i>
 </h4>
 
 ## Introduction
