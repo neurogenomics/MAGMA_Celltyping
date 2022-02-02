@@ -2,8 +2,6 @@
 [![](https://img.shields.io/badge/devel%20version-2.0.0-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
 [![R build
 status](https://github.com/neurogenomics/MAGMA_Celltyping/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/actions)
-[![R build
-status](https://github.com/neurogenomics/MAGMA_Celltyping/workflows/DockerHub/badge.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/actions)
 [![](https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/commits/master)
 [![](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping/branch/master/graph/badge.svg)](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping)
 [![License:
@@ -12,7 +10,7 @@ GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-pro
 Authors: <i>Brian Schilder, Alan Murphy, Julien Bryois, Nathan Skene</i>
 </h4>
 <h4>
-README updated: <i>Jan-28-2022</i>
+README updated: <i>Feb-02-2022</i>
 </h4>
 
 ## Introduction
