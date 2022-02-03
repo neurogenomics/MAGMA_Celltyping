@@ -10,7 +10,7 @@ GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-pro
 Authors: <i>Brian Schilder, Alan Murphy, Julien Bryois, Nathan Skene</i>
 </h4>
 <h4>
-README updated: <i>Feb-02-2022</i>
+README updated: <i>Feb-03-2022</i>
 </h4>
 
 ## Introduction
@@ -34,7 +34,7 @@ Install `MAGMA.Celltyping` as follows:
 ``` r
 if(!require("remotes")) install.packages("remotes")
 
-remotes::install_github("neurogenomics/MAGMA.Celltyping")
+remotes::install_github("neurogenomics/MAGMA_Celltyping")
 library(MAGMA.Celltyping)
 ```
 
