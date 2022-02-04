@@ -40,7 +40,8 @@ piggyback::pb_upload(file = path_formatted,
 get_example_gwas(
   trait = c("educational_attainment", "fluid_intelligence", "prospective_memory"),
   munged = TRUE,
-  storage_dir = tempdir()
+  storage_dir = tempdir(),
+  timeout = 60 * 5
 )
 }
 \arguments{
@@ -50,6 +51,8 @@ get_example_gwas(
 version of each GWAS (\emph{Default:} \code{TRUE}).}
 
 \item{storage_dir}{Folder in which to store the GWAS summary stats.}
+
+\item{timeout}{How many seconds to wait before timeout.}
 }
 \value{
 Path to downloaded GWAS summary statistics.

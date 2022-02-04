@@ -12,7 +12,8 @@
 #' @param munged Whether to download the raw or pre-munged
 #'  version of each GWAS (\emph{Default:} \code{TRUE}).
 #' @param storage_dir Folder in which to store the GWAS summary stats.
-#'
+#' @inheritParams get_example_gwas_raw
+#' 
 #' @source
 #' \code{
 #' #### fluid_intelligence ####
@@ -59,7 +60,8 @@ get_example_gwas <- function(trait = c(
                                  "prospective_memory"
                              ),
                              munged = TRUE,
-                             storage_dir = tempdir()) {
+                             storage_dir = tempdir(),
+                             timeout = 60 * 5) {
     trait <- tolower(trait)[1]
     if (munged) {
         if (!trait %in% c(
@@ -92,7 +94,8 @@ get_example_gwas <- function(trait = c(
     } else {
         unzipped_path <- get_example_gwas_raw(
             storage_dir = storage_dir,
-            trait = trait
+            trait = trait,
+            timeout = timeout
         )
     }
     return(unzipped_path)

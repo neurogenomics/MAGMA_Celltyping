@@ -8,7 +8,7 @@
 #' \item{"ctd_AIBS"}{CTD file with AIBS human cortex data.
 #' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Reference}.}
 #'
-#' \item{"ctd_allKI":}{CTD file with cortex, hippocampus,
+#' \item{"ctd_allKI"}{CTD file with cortex, hippocampus,
 #' hypothalamus and midbrain.
 #' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Reference}.}
 #'
@@ -20,6 +20,11 @@
 #'
 #' \item{"ctd_Saunders"}{
 #' CTD file with data from humans.}
+#'
+#' \item{"ctd_DescartesHuman"}{
+#' CTD file with scRNA-seq data from human embryo across multiple organ systems.
+#' \href{https://descartes.brotmanbaty.org/bbi/human-gene-expression-during-development/}{Reference}.
+#' }
 #'
 #' \item{"ctd_DRONC_human"}{
 #' CTD file with DRONC-seq data from humans.
@@ -56,13 +61,36 @@
 #' #     file.path("../../model_celltype_conservation/processed_data/",
 #' #               "EWCE/standardized_CTD"),
 #' #     "*.rds$", full.names = TRUE)
-#' all_ctd=c(all_ctd, file.path("../../model_celltype_conservation/processed_data",
-#'                              "EWCE/standardized_CTD/DescartesHuman.rds"))
+#' all_ctd=c(all_ctd, 
+#'           file.path("../../model_celltype_conservation/processed_data",
+#'                     "EWCE/standardized_CTD/DescartesHuman.rds"))
 #' for(save_path in all_ctd){
 #'     piggyback::pb_upload(file = save_path,
 #'                          repo = "neurogenomics/MAGMA_Celltyping",
 #'                          overwrite = TRUE)
 #' }
+#' 
+#' arg_list <- rlang::fn_fmls(fn = MAGMA.Celltyping::get_ctd)
+#' ctd_names <- eval(arg_list$ctd_name)
+#' for(d in ctd_names){
+#'     message(d)
+#'     ctd <- MAGMA.Celltyping::get_ctd(ctd_name = d)
+#'     for(lv in seq_len(length(ctd))){
+#'         if(!"annot" %in% names(ctd[[lv]])){
+#'             ctd[[lv]]$annot <- data.frame(celltype=colnames(ctd[[lv]]$mean_exp))
+#'         } 
+#'     }
+#'     # ctd <- EWCE::standardise_ctd(ctd = ctd, input_species = "human")
+#'     names(ctd) <- paste0("level",seq_len(length(ctd)))
+#'     save_path <- file.path(tempdir(),paste0(d,".rda"))
+#'     save(ctd, file = save_path) 
+#'     piggyback::pb_upload(file = save_path,
+#'                          repo = "neurogenomics/MAGMA_Celltyping",
+#'                          overwrite = TRUE)
+#' }
+
+
+
 #' }
 #'
 #' @param ctd_name Name of the CellTypeDatset to import.
@@ -70,13 +98,14 @@
 #' @return CellTypeDataset object
 #'
 #' @examples
-#' ctd <- get_ctd("ctd_AIBS")
+#' ctd <- MAGMA.Celltyping::get_ctd("ctd_AIBS")
 #' @export
 get_ctd <- function(ctd_name = c(
                         "ctd_AIBS",
                         "ctd_allKI",
                         "ctd_BlueLake2018_FrontalCortexOnly",
                         "ctd_BlueLake2018_VisualCortexOnly",
+                        "ctd_DescartesHuman",
                         "ctd_DivSeq",
                         "ctd_DRONC_human",
                         "ctd_DRONC_mouse",

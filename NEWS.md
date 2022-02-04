@@ -1,3 +1,15 @@
+# MAGMA.Celltyping 2.0.1  
+
+## New features
+
+* `get_example_gwas_raw`: Allow users to specify `timeout` when downloading 
+raw (pre-munged) files. 
+
+## Bug fixes  
+
+* Add `$annot` data.frames to each ctd in `get_ctd` to make compatible with all `EWCE` functions.  
+* Add "ctd_DescartesHuman" to documented datasets in `get_ctd`.  
+
 # MAGMA.Celltyping 2.0.0 
 
 * MAJOR UPGRADE: `MAGMA.Celltyping` was revamped to meet CRAN standards,

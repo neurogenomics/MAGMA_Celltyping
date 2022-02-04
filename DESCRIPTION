@@ -1,7 +1,7 @@
 Package: MAGMA.Celltyping
 Type: Package
 Title: Find causal cell-types underlying complex trait genetics
-Version: 2.0.0
+Version: 2.0.1
 Authors@R:
     c(person(given = "Brian",
            family = "Schilder",
@@ -30,7 +30,9 @@ License: GPL-3
 LazyData: true
 Depends: R(>= 4.0.0)
 VignetteBuilder: knitr
-BiocViews:
+biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
+        Genetics, scRNASeq, Single Cell RNAseq,
+        BiomedicalInformatics, FunctionalGenomics
 Imports:
     EWCE (>= 1.3.3),
     MungeSumstats,
@@ -69,9 +71,6 @@ Suggests:
 Remotes:
     github::NathanSkene/EWCE
 SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
-biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
-        Genetics, scRNASeq, Single Cell RNAseq,
-        BiomedicalInformatics, FunctionalGenomics
 RoxygenNote: 7.1.2
 Encoding: UTF-8
 Config/testthat/edition: 3

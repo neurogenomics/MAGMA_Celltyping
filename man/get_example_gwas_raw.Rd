@@ -6,10 +6,13 @@
 \usage{
 get_example_gwas_raw(
   storage_dir = tempdir(),
-  trait = c("prospective_memory", "fluid_intelligence")
+  trait = c("prospective_memory", "fluid_intelligence"),
+  timeout = 60 * 5
 )
 }
 \arguments{
+\item{timeout}{How many seconds to wait before timeout.}
+
 \item{save_path}{Path to save sum stats.}
 }
 \value{

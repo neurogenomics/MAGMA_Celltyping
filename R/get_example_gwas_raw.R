@@ -3,6 +3,7 @@
 #' Write example GWAS summary statistics to disk.
 #'
 #' @param save_path Path to save sum stats.
+#' @param timeout How many seconds to wait before timeout.
 #'
 #' @return Path to sumstats
 #'
@@ -13,7 +14,8 @@ get_example_gwas_raw <- function(storage_dir = tempdir(),
                                  trait = c(
                                      "prospective_memory",
                                      "fluid_intelligence"
-                                 )) {
+                                 ),
+                                 timeout = 60 * 5) {
     #### Check trait ####
     trait <- tolower(trait)[1]
     if (trait == "prospective_memory") {
@@ -38,7 +40,7 @@ get_example_gwas_raw <- function(storage_dir = tempdir(),
         message("Importing pe-existing file.")
     } else {
         message(paste("Downloading example GWAS:", trait))
-        options(timeout = 60 * 5)
+        options(timeout = timeout)
         utils::download.file(
             url = URL,
             destfile = gwas_sumstats_path
