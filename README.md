@@ -1,5 +1,5 @@
 <img src='https://github.com/neurogenomics/MAGMA_Celltyping/raw/master/inst/hex/hex.png' height='300'><br><br>
-[![](https://img.shields.io/badge/devel%20version-2.0.0-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
+[![](https://img.shields.io/badge/devel%20version-2.0.1-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
 [![R build
 status](https://github.com/neurogenomics/MAGMA_Celltyping/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/actions)
 [![](https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/commits/master)
@@ -10,7 +10,7 @@ GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-pro
 Authors: <i>Brian Schilder, Alan Murphy, Julien Bryois, Nathan Skene</i>
 </h4>
 <h4>
-README updated: <i>Feb-03-2022</i>
+README updated: <i>Feb-04-2022</i>
 </h4>
 
 ## Introduction
@@ -50,9 +50,13 @@ MAGMA.Celltyping::install_magma(desired_version="<version>",
                                 update = TRUE)
 ```
 
-## [Documentation website](https://neurogenomics.github.io/MAGMA_Celltyping)
+## Documentation
 
-## [Vignette](https://neurogenomics.github.io/MAGMA_Celltyping/articles/MAGMA_Celltyping)
+### [Website](https://neurogenomics.github.io/MAGMA_Celltyping)
+
+### [Getting started](https://neurogenomics.github.io/MAGMA_Celltyping/articles/MAGMA_Celltyping)
+
+### [Docker/Singularity](https://neurogenomics.github.io/MAGMA_Celltyping/articles/docker)
 
 ## Using older versions
 

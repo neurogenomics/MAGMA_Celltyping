@@ -47,12 +47,15 @@ If you prefer, you can later install other versions of MAGMA with:
 ```R
 MAGMA.Celltyping::install_magma(desired_version="<version>",
                                 update = TRUE)
-```
+```  
 
-## [Documentation website](https://neurogenomics.github.io/MAGMA_Celltyping)
+## Documentation 
 
-## [Vignette](https://neurogenomics.github.io/MAGMA_Celltyping/articles/MAGMA_Celltyping)
+### [Website](https://neurogenomics.github.io/MAGMA_Celltyping)
 
+### [Getting started](https://neurogenomics.github.io/MAGMA_Celltyping/articles/MAGMA_Celltyping)
+
+### [Docker/Singularity](https://neurogenomics.github.io/MAGMA_Celltyping/articles/docker)
 
 
 ## Using older versions
