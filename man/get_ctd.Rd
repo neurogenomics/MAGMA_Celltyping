@@ -3,9 +3,6 @@
 \name{get_ctd}
 \alias{get_ctd}
 \title{Import precomputed CellTypeDatasets}
-\source{
-
-}
 \usage{
 get_ctd(
   ctd_name = c("ctd_AIBS", "ctd_allKI", "ctd_BlueLake2018_FrontalCortexOnly",
@@ -78,5 +75,26 @@ CTD file with data from mice.
 }
 }
 \examples{
+\dontrun{ 
+arg_list <- rlang::fn_fmls(fn = MAGMA.Celltyping::get_ctd)
+ctd_names <- eval(arg_list$ctd_name)
+for(d in ctd_names){
+    message(d)
+    ctd <- MAGMA.Celltyping::get_ctd(ctd_name = d)
+    for(lv in seq_len(length(ctd))){
+        if(!"annot" \%in\% names(ctd[[lv]])){
+            ctd[[lv]]$annot <- data.frame(celltype=colnames(ctd[[lv]]$mean_exp))
+        } 
+    }
+    # ctd <- EWCE::standardise_ctd(ctd = ctd, input_species = "human")
+    names(ctd) <- paste0("level",seq_len(length(ctd)))
+    save_path <- file.path(tempdir(),paste0(d,".rda"))
+    save(ctd, file = save_path) 
+    piggyback::pb_upload(file = save_path,
+                         repo = "neurogenomics/MAGMA_Celltyping",
+                         overwrite = TRUE)
+} 
+}
+
 ctd <- MAGMA.Celltyping::get_ctd("ctd_AIBS")
 }

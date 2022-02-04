@@ -1,5 +1,5 @@
 ---
-title: "MAGMA_Celltyping: full_workflow"
+title: "Full workflow"
 author: "<h4>Authors: <i>Brian M. Schilder, Alan Murphy, Julien Bryois & Nathan Skene</i></h4>"
 date: "<h4>Updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
 output:

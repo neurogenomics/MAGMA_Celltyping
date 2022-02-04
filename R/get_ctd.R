@@ -53,23 +53,8 @@
 #'
 #' }
 #'
-#' @source
-#' \code{
-#' ## Move from data/ to Releases on GitHub to speed up MAGMA.Celltyping
-#' all_ctd <- list.files("data/","^ctd*", full.names = TRUE)
-#' # all_ctd2 <- list.files(
-#' #     file.path("../../model_celltype_conservation/processed_data/",
-#' #               "EWCE/standardized_CTD"),
-#' #     "*.rds$", full.names = TRUE)
-#' all_ctd=c(all_ctd, 
-#'           file.path("../../model_celltype_conservation/processed_data",
-#'                     "EWCE/standardized_CTD/DescartesHuman.rds"))
-#' for(save_path in all_ctd){
-#'     piggyback::pb_upload(file = save_path,
-#'                          repo = "neurogenomics/MAGMA_Celltyping",
-#'                          overwrite = TRUE)
-#' }
-#' 
+#' @examples
+#' \dontrun{ 
 #' arg_list <- rlang::fn_fmls(fn = MAGMA.Celltyping::get_ctd)
 #' ctd_names <- eval(arg_list$ctd_name)
 #' for(d in ctd_names){
@@ -87,10 +72,7 @@
 #'     piggyback::pb_upload(file = save_path,
 #'                          repo = "neurogenomics/MAGMA_Celltyping",
 #'                          overwrite = TRUE)
-#' }
-
-
-
+#' } 
 #' }
 #'
 #' @param ctd_name Name of the CellTypeDatset to import.

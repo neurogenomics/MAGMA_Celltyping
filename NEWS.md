@@ -4,6 +4,7 @@
 
 * `get_example_gwas_raw`: Allow users to specify `timeout` when downloading 
 raw (pre-munged) files. 
+* Added [Docker/Singularity](https://neurogenomics.github.io/MAGMA_Celltyping/articles/docker) vignette, with link in README.  
 
 ## Bug fixes  
 
