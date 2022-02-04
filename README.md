@@ -41,7 +41,8 @@ library(MAGMA.Celltyping)
 ### MAGMA
 
 `MAGMA.Celltyping` now installs the command line software MAGMA
-automatically when you first use a function that relies on MAGMA
+automatically when you first use a function that relies on
+[MAGMA](https://ctg.cncr.nl/software/magma)
 (e.g. `celltype_associations_pipeline`). If you prefer, you can later
 install other versions of MAGMA with:
 
@@ -54,7 +55,7 @@ MAGMA.Celltyping::install_magma(desired_version="<version>",
 
 ### [Website](https://neurogenomics.github.io/MAGMA_Celltyping)
 
-### [Getting started](https://neurogenomics.github.io/MAGMA_Celltyping/articles/MAGMA_Celltyping)
+### [Getting started](https://neurogenomics.github.io/MAGMA_Celltyping/articles/MAGMA.Celltyping.html)
 
 ### [Docker/Singularity](https://neurogenomics.github.io/MAGMA_Celltyping/articles/docker)
 
@@ -89,8 +90,9 @@ If you use the software then please cite:
 > schizophrenia. Nature Genetics,
 > 2018.](https://www.nature.com/articles/s41588-018-0129-5)
 
-The package utilises the MAGMA software developed in the Complex Trait
-Genetics Lab at VU university (not us!) so please also cite:
+The package utilises the [MAGMA](https://ctg.cncr.nl/software/magma)
+software developed in the Complex Trait Genetics Lab at VU university
+(not us!) so please also cite:
 
 > [de Leeuw, et al. MAGMA: Generalized gene-set analysis of GWAS data.
 > PLoS Comput Biol,
