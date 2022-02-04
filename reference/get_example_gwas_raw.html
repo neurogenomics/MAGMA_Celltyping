@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.1</span>
       </span>
     </div>
 
@@ -68,13 +68,16 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_example_gwas_raw</span><span class="op">(</span>
   storage_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,
-  trait <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prospective_memory"</span>, <span class="st">"fluid_intelligence"</span><span class="op">)</span>
+  trait <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prospective_memory"</span>, <span class="st">"fluid_intelligence"</span><span class="op">)</span>,
+  timeout <span class="op">=</span> <span class="fl">60</span> <span class="op">*</span> <span class="fl">5</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>save_path</dt>
+    <dl><dt>timeout</dt>
+<dd><p>How many seconds to wait before timeout.</p></dd>
+<dt>save_path</dt>
 <dd><p>Path to save sum stats.</p></dd>
 </dl></div>
     <div id="value">

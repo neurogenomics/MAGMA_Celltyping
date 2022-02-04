@@ -23,7 +23,7 @@ To reduce file size, SNPs have been filtered to Minor Allele Frequency (MAF)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.1</span>
       </span>
     </div>
 
@@ -81,7 +81,8 @@ To reduce file size, SNPs have been filtered to Minor Allele Frequency (MAF)
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_example_gwas</span><span class="op">(</span>
   trait <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"educational_attainment"</span>, <span class="st">"fluid_intelligence"</span>, <span class="st">"prospective_memory"</span><span class="op">)</span>,
   munged <span class="op">=</span> <span class="cn">TRUE</span>,
-  storage_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>
+  storage_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,
+  timeout <span class="op">=</span> <span class="fl">60</span> <span class="op">*</span> <span class="fl">5</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -126,6 +127,8 @@ piggyback::pb_upload(file = path_formatted,
 version of each GWAS (<em>Default:</em> <code>TRUE</code>).</p></dd>
 <dt>storage_dir</dt>
 <dd><p>Folder in which to store the GWAS summary stats.</p></dd>
+<dt>timeout</dt>
+<dd><p>How many seconds to wait before timeout.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
