@@ -6,7 +6,7 @@
 #' 
 #' @param genome_ref_dir Folder to download reference to.
 #' @param verbose Print messages.
-#' @source \href{https://ctg.cncr.nl/software/MAGMA/ref_data}{MAGMA archives} 
+#' @source \href{https://ctg.cncr.nl/software/MAGMA/ref_data/}{MAGMA archives} 
 #' 
 #' @keywords internal
 get_genome_ref_magma <- function(genome_ref_dir, 

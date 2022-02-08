@@ -9,7 +9,7 @@
 #' should it be upgraded to the latest version? (Default: \code{FALSE}). 
 #' @param verbose Print messages.
 #' @source \href{https://ctg.cncr.nl/software/magma}{MAGMA website}
-#' @source \href{https://github.com/NathanSkene/MAGMA_Celltyping}{
+#' @source \href{https://github.com/neurogenomics/MAGMA_Celltyping}{
 #' MAGMA.celltyping documentation}
 #' 
 #' @return Path to MAGMA executable.

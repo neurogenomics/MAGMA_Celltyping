@@ -20,7 +20,7 @@ this file path will be returned.}
 \item{storage_dir}{Where to store genome ref.}
 
 \item{method}{Get reference genome data from the
-\href{https://ctg.cncr.nl/software/MAGMA/ref_data}{MAGMA server} (slow).}
+\href{https://ctg.cncr.nl/software/MAGMA/ref_data/}{MAGMA server} (slow).}
 
 \item{population}{Which population subset of the genome reference
 to include.

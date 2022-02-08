@@ -8,7 +8,7 @@
 #'  this file path will be returned.
 #' @param storage_dir Where to store genome ref.
 #' @param method Get reference genome data from the
-#' \href{https://ctg.cncr.nl/software/MAGMA/ref_data}{MAGMA server} (slow).
+#' \href{https://ctg.cncr.nl/software/MAGMA/ref_data/}{MAGMA server} (slow).
 #' @param population Which population subset of the genome reference
 #'  to include.
 #'  \itemize{

@@ -10,7 +10,7 @@ GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-pro
 Authors: <i>Brian Schilder, Alan Murphy, Julien Bryois, Nathan Skene</i>
 </h4>
 <h4>
-README updated: <i>Feb-04-2022</i>
+README updated: <i>Feb-08-2022</i>
 </h4>
 
 ## Introduction
@@ -53,7 +53,7 @@ MAGMA.Celltyping::install_magma(desired_version="<version>",
 
 ## Documentation
 
-### [Website](https://neurogenomics.github.io/MAGMA_Celltyping)
+### [Website](https://neurogenomics.github.io/MAGMA_Celltyping/)
 
 ### [Getting started](https://neurogenomics.github.io/MAGMA_Celltyping/articles/MAGMA.Celltyping.html)
 
@@ -72,11 +72,11 @@ fixes](https://github.com/neurogenomics/MAGMA_Celltyping/pull/93).
 ## Bugs/fixes
 
 Having trouble? Search the
-[Issues](https://neurogenomics.github.io/MAGMA_Celltyping/issues) or
+[Issues](https://github.com/neurogenomics/MAGMA_Celltyping/issues) or
 submit a new one.
 
 Want to contribute new features/fixes? [Pull
-Requests](https://neurogenomics.github.io/MAGMA_Celltyping/pulls) are
+Requests](https://github.com/neurogenomics/MAGMA_Celltyping/pulls) are
 welcomed!
 
 Both are most welcome, we want the package to be easy to use for
@@ -118,19 +118,19 @@ If you use the cortex/hippocampus single cell data associated with this
 package then please cite the following papers:
 
 > [Zeisel, et al. Cell types in the mouse cortex and hippocampus
-> revealed by single-cell RNA-seq.Science,
-> 2015.](http://www.sciencemag.org/content/early/2015/02/18/science.aaa1934.abstract)
+> revealed by single-cell RNA-seq. Science,
+> 2015.](https://doi.org/10.1126/science.aaa1934)
 
 If you use the midbrain and hypothalamus single cell datasets associated
 with the 2018 paper then please cite the following papers:
 
 > [La Manno, et al. Molecular Diversity of Midbrain Development in
 > Mouse, Human, and Stem Cells. Cell,
-> 2016.](http://www.cell.com/cell/fulltext/S0092-8674(16)31309-5)
+> 2016.](https://doi.org/10.1016/j.cell.2016.09.027)
 
 > [Romanov, et al. Molecular interrogation of hypothalamic organization
 > reveals distinct dopamine neuronal subtypes. Nature Neuroscience,
-> 2016.](http://www.nature.com/neuro/journal/vaop/ncurrent/full/nn.4462.html)
+> 2016.](https://doi.org/10.1038/nn.4462)
 
 <hr>
 

@@ -6,7 +6,7 @@
 \source{
 \href{https://ctg.cncr.nl/software/magma}{MAGMA website}
 
-\href{https://github.com/NathanSkene/MAGMA_Celltyping}{
+\href{https://github.com/neurogenomics/MAGMA_Celltyping}{
 MAGMA.celltyping documentation}
 }
 \usage{

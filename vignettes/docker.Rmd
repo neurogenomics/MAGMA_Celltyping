@@ -3,7 +3,10 @@ title: "Docker/Singularity Containers"
 author: "<h4>Authors: <i>`r auths <- eval(parse(text = gsub('person','c',read.dcf('../DESCRIPTION', fields = 'Authors@R'))));paste(auths[names(auths)=='given'],auths[names(auths)=='family'], collapse = ', ')`</i></h4>" 
 date: "<h4>Vignette updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
 output:
-  BiocStyle::html_document
+  BiocStyle::html_document:
+    md_extensions: [ 
+      "-autolink_bare_uris" 
+    ]
 vignette: >
     %\VignetteIndexEntry{docker} 
     %\usepackage[utf8]{inputenc}
@@ -80,7 +83,7 @@ singularity pull docker://`r docker_user`/`r pkg`
 
 Finally, launch the containerised Rstudio by entering the 
 following URL in any web browser:
-[http://localhost:8787/](http://localhost:8787/)
+*http://localhost:8787/*
 
 Login using the credentials set during the Installation steps.  
 

@@ -35,6 +35,7 @@ name: R-CMD-check-bioc
 ## "/nocache" in the commit message.
 env:
   run_bioccheck: 'false'
+  run_crancheck: 'true'
   has_testthat: 'true'
   run_covr: 'true'
   run_pkgdown: 'true'
@@ -131,6 +132,7 @@ jobs:
           sysreqs=$(Rscript -e 'cat("apt-get update -y && apt-get install -y", paste(gsub("apt-get install -y ", "", remotes::system_requirements("ubuntu", "20.04")), collapse = " "))')
           echo $sysreqs
           sudo -s eval "$sysreqs"
+          sudo apt-get install -y qpdf
 
       - name: Install macOS system dependencies
         if: matrix.config.os == 'macOS-latest'
@@ -263,11 +265,13 @@ jobs:
         env:
           _R_CHECK_CRAN_INCOMING_: false
           DISPLAY: 99.0
+          AS_CRAN: ${{ env.run_crancheck }}
         run: |
           options(crayon.enabled = TRUE)
           if(!require("sessioninfo")) install.packages("rcmdcheck")
+          as_cran <- if(Sys.getenv("AS_CRAN")=='true') "--as-cran" else NULL
           rcmdcheck::rcmdcheck(
-              args = c("--no-manual", "--timings", "--as-cran"),
+              args = c("--no-manual", "--timings", as_cran),
               build_args = c("--no-manual", "--keep-empty-dirs", "--no-resave-data"),
               error_on = "warning",
               check_dir = "check"
