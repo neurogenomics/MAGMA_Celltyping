@@ -1,6 +1,6 @@
 Package: MAGMA.Celltyping
 Type: Package
-Title: Find causal cell-types underlying complex trait genetics
+Title: Find Causal Cell-Types Underlying Complex Trait Genetics
 Version: 2.0.1
 Authors@R:
     c(person(given = "Brian",
@@ -67,9 +67,7 @@ Suggests:
     DT,
     biomaRt,
     ewceData,
-    badger
-Remotes:
-    github::NathanSkene/EWCE
+    badger 
 SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
 RoxygenNote: 7.1.2
 Encoding: UTF-8
