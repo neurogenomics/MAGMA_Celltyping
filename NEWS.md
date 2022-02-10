@@ -75,7 +75,7 @@ increases the number of genes that can be converted.
 * Allow all functions to accept datasets/gene lists from any species. 
 Now automatically converted to `output_species` (default: "human") using [`orthogene`](https://github.com/neurogenomics/orthogene). 
 * Create MAGMA files repository using various OpenGWAS datasets 
-that have been munged with `MungeSumstats`: [https://github.com/neurogenomics/MAGMA_Files_Public](MAGMA_Files_Public)
+that have been munged with `MungeSumstats`: [MAGMA_Files_Public](https://github.com/neurogenomics/MAGMA_Files_Public)
     - `magma_files_metadata`: Built-in table of all pre-processed MAGMA files
     currently in the database.  
 * Added API to search and access MAGMA files repository: `import_magma_files`.

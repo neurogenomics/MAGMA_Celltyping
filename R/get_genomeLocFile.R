@@ -43,14 +43,26 @@
 get_genomeLocFile <- function(build,
                               storage_dir = tempdir(),
                               overwrite = FALSE) {
+    build <- toupper(build[1])
     dict <- c(GRCH36 = "NCBI36.3.gene.loc",
               GRCH37 = "NCBI37.3.gene.loc",
               GRCH38 = "NCBI38.gene.loc")
-    selected_file <- dict[toupper(build[1])]
+    if(!build %in% names(dict)) {
+        stopper("build must be one of:\n",
+                paste("-",names(dict),collapse = "\n "))
+    }
+    selected_file <- dict[build]
     tmp <- get_data(
         fname = selected_file,
         storage_dir = storage_dir,
         overwrite = overwrite
     ) 
+    #### Check that download was successful ####
+    d <- data.table::fread(tmp, nrows = 10)
+    if(nrow(d)!=10 || ncol(d)!=6){
+        stopper("genomeLocFile did not download properly.",
+                "Please check that you have a stable internet connection, 
+                restart your R session, and try again.")
+    }
     return(tmp)
 }
