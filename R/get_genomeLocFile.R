@@ -40,8 +40,12 @@
 #' @return File path.
 #' 
 #' @keywords internal
+#' @importFrom tools R_user_dir
+#' @importFrom data.table fread
 get_genomeLocFile <- function(build,
-                              storage_dir = tempdir(),
+                              storage_dir = tools::R_user_dir(
+                                  "MAGMA.Celltyping",
+                                  which="cache"),
                               overwrite = FALSE) {
     build <- toupper(build[1])
     dict <- c(GRCH36 = "NCBI36.3.gene.loc",
@@ -58,7 +62,7 @@ get_genomeLocFile <- function(build,
         overwrite = overwrite
     ) 
     #### Check that download was successful ####
-    d <- data.table::fread(tmp, nrows = 10)
+    d <- data.table::fread(tmp, nrows = 10, nThread = 1)
     if(nrow(d)!=10 || ncol(d)!=6){
         stopper("genomeLocFile did not download properly.",
                 "Please check that you have a stable internet connection, 

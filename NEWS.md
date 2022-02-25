@@ -1,3 +1,13 @@
+# MAGMA.Celltyping 2.0.2
+
+## New features
+
+* `get_genomeLocFile`: Store NCBI ref file in cache dir by default.  
+
+## Bug fixes  
+
+* Add windows-specific files/folders to *.Rbuildignore*.  
+
 # MAGMA.Celltyping 2.0.1  
 
 ## New features

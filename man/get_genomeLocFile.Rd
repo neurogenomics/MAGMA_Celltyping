@@ -30,7 +30,11 @@ for(x in names(local_files)){
 }
 }
 \usage{
-get_genomeLocFile(build, storage_dir = tempdir(), overwrite = FALSE)
+get_genomeLocFile(
+  build,
+  storage_dir = tools::R_user_dir("MAGMA.Celltyping", which = "cache"),
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{build}{Genome build. Must be one of:

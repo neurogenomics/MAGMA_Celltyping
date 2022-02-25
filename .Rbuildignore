@@ -14,3 +14,7 @@ Dockerfile
 ^LICENSE\.md$
 inst/hex/
 MAGMA.Celltyping/inst/hex
+
+^node_modules$
+package-lock.json
+package.json
