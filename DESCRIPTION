@@ -69,6 +69,8 @@ Suggests:
     biomaRt,
     ewceData,
     badger 
+Remotes:
+    github::NathanSkene/EWCE
 SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
 RoxygenNote: 7.1.2
 Encoding: UTF-8
