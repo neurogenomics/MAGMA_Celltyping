@@ -7,6 +7,7 @@
 ## Bug fixes  
 
 * Add windows-specific files/folders to *.Rbuildignore*.  
+* Bump *Depends* to R(>= 4.1).  
 
 # MAGMA.Celltyping 2.0.1  
 

@@ -28,7 +28,7 @@ URL: https://github.com/neurogenomics/MAGMA_Celltyping
 BugReports: https://github.com/neurogenomics/MAGMA_Celltyping/issues
 License: GPL-3
 LazyData: true
-Depends: R(>= 4.0.0)
+Depends: R(>= 4.1)
 VignetteBuilder: knitr
 biocViews: GeneExpression, Transcription, GWAS Summary Statistics,
         Genetics, scRNASeq, Single Cell RNAseq,
