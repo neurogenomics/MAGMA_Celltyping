@@ -55,7 +55,7 @@ jobs:
       matrix:
         config:
           - { os: ubuntu-latest, r: 'devel', bioc: 'devel', cont: "bioconductor/bioconductor_docker:devel", rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/release"}
-          - { os: macOS-latest, r: 'devel', bioc: 'devel'}
+          - { os: macOS-latest, r: 'devel', bioc: 'devel'} #  r: 'latest', bioc: 'release'
           - { os: windows-latest, r: 'devel', bioc: 'devel'}
           ## Check https://github.com/r-lib/actions/tree/master/examples
           ## for examples using the http-user-agent
@@ -164,7 +164,7 @@ jobs:
       - name: Install Windows system dependencies
         if: runner.os == 'Windows'
         run: |
-          ## Edit below if you have any Windows system dependencies
+          npm install curl
         shell: Rscript {0}
 
       - name: Install BiocManager
@@ -230,6 +230,15 @@ jobs:
           ## that have seen been updated in Bioconductor
           message(paste('****', Sys.time(), 'pass number 2 at installing dependencies: any remaining dependencies ****'))
           remotes::install_local(dependencies = TRUE, repos = BiocManager::repositories(), build_vignettes = TRUE, upgrade = TRUE, force = TRUE)
+        continue-on-error: true
+        shell: Rscript {0}
+        
+      - name: Install dependencies pass 3
+        run: |
+          ## Pass #3 at installing dependencies
+          ## Install via binaries
+          message(paste('****', Sys.time(), 'pass number 3 at installing dependencies: any remaining dependencies ****'))
+          remotes::install_local(type = "binary", dependencies = TRUE, repos = BiocManager::repositories(), build_vignettes = TRUE, upgrade = TRUE, force = TRUE)
         shell: Rscript {0}
 
       - name: Install BiocGenerics
