@@ -165,7 +165,6 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           npm install curl
-        shell: Rscript {0}
 
       - name: Install BiocManager
         run: |
