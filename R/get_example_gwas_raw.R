@@ -19,15 +19,17 @@ get_example_gwas_raw <- function(storage_dir = tempdir(),
     #### Check trait ####
     trait <- tolower(trait)[1]
     if (trait == "prospective_memory") {
-        URL <- file.path(
+        URL <- paste(
             "https://www.dropbox.com/s/j6mde051pl8k8vu",
-            "20018.gwas.imputed_v3.both_sexes.tsv.bgz?dl=1"
+            "20018.gwas.imputed_v3.both_sexes.tsv.bgz?dl=1",
+            sep = "/"
         )
         study_name <- "20018.gwas.imputed_v3.both_sexes.tsv"
     } else if (trait == "fluid_intelligence") {
-        URL <- file.path(
+        URL <- paste(
             "https://www.dropbox.com/s/t3lrfj1id8133sx",
-            "20016_irnt.gwas.imputed_v3.both_sexes.tsv.bgz?dl=1"
+            "20016_irnt.gwas.imputed_v3.both_sexes.tsv.bgz?dl=1",
+            sep="/"
         )
         study_name <- "20016_irnt.gwas.imputed_v3.both_sexes.tsv"
     } else {

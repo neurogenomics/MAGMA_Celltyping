@@ -19,9 +19,9 @@
 #' ### (even after it's been deleted from the current version).
 #' permalink_id <- "f931877dedcde103723f14242d5242fdca7b3af6"
 #' files <- stats::setNames(
-#'     file.path("https://github.com/neurogenomics/MAGMA_Celltyping/raw",
+#'     paste("https://github.com/neurogenomics/MAGMA_Celltyping/raw",
 #'               permalink_id,"data",
-#'               paste0(prefixes,".gene.loc")),
+#'               paste0(prefixes,".gene.loc"), sep="/"),
 #'     prefixes
 #' )
 #' local_files <- lapply(names(files), function(x){
@@ -36,7 +36,10 @@
 #'                          overwrite = TRUE)
 #' }
 #' }
-#'
+#' @source
+#' \code{
+#' tmp <- MAGMA.Celltyping:::get_genomeLocFile(build = "GRCH37")
+#' }
 #' @return File path.
 #' 
 #' @keywords internal

@@ -21,8 +21,8 @@ import_magma_files_metadata <- function(file_types,
         magma_files_metadata <- MAGMA.Celltyping::magma_files_metadata
     } else{
         magma_files_metadata <- data.table::fread(
-            file.path("https://github.com/neurogenomics/MAGMA_Files_Public",
-                      "raw/master/metadata.csv"),
+            paste("https://github.com/neurogenomics/MAGMA_Files_Public",
+                  "raw/master/metadata.csv", sep="/"),
             nThread = 1
         )
     } 

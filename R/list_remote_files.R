@@ -18,8 +18,7 @@ list_remote_files <- function(URL,
     links <- XML::xpathSApply(doc, "//a/@href")
     XML::free(doc)
     wanted <- links[grepl(pattern = pattern, links)]
-
-    GetMe <- file.path(URL, unname(wanted))
+    GetMe <- paste(URL, unname(wanted), sep="/")
     names(GetMe) <- basename(GetMe)
     return(GetMe)
 }

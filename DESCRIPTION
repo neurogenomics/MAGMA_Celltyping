@@ -1,7 +1,7 @@
 Package: MAGMA.Celltyping
 Type: Package
 Title: Find Causal Cell-Types Underlying Complex Trait Genetics
-Version: 2.0.2
+Version: 2.0.3
 Authors@R:
     c(person(given = "Brian",
            family = "Schilder",

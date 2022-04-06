@@ -159,8 +159,8 @@
 #' \code{
 #' #### Check what files are available ####
 #' magma_files_metadata <- data.table::fread(
-#'     file.path("https://github.com/neurogenomics/MAGMA_Files_Public",
-#'               "raw/master/metadata.csv"), drop = "V1"
+#'     paste("https://github.com/neurogenomics/MAGMA_Files_Public",
+#'               "raw/master/metadata.csv", sep="/"), drop = "V1"
 #' )
 #' usethis::use_data(magma_files_metadata, overwrite = TRUE)
 #' }

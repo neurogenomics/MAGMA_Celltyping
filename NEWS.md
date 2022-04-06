@@ -1,3 +1,10 @@
+# MAGMA.Celltyping 2.0.3
+
+## Bug fixes
+
+* Construct URLs with `paste` instead of `file.path` 
+to avoid cross-platforms issues (e.g. Windows inserting "\" instead of "/"). 
+
 # MAGMA.Celltyping 2.0.2
 
 ## New features

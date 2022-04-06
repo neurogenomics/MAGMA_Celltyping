@@ -22,9 +22,10 @@ github_list_files <- function(user = "neurogenomics",
                               verbose = TRUE) {
     requireNamespace("httr")
     
-    repo_api <- file.path(
+    repo_api <- paste(
         "https://api.github.com/repos", user, repo,
-        paste0("git/trees/", branch[1], "?recursive=1")
+        paste0("git/trees/", branch[1], "?recursive=1"),
+        sep="/"
     )
     req <- httr::GET(repo_api)
     httr::stop_for_status(req)
@@ -42,8 +43,9 @@ github_list_files <- function(user = "neurogenomics",
                  v = verbose)
     }
     if (return_download_api) {
-        filelist <- file.path("https://github.com", user, repo, "raw", 
-                              branch, filelist)
+        filelist <- paste("https://github.com", user, repo, "raw", 
+                              branch, filelist, 
+                          sep="/")
     }
     return(filelist)
 }

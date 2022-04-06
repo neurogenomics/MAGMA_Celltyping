@@ -7,9 +7,9 @@
 #' @inheritParams get_data
 #' @source 
 #' \code{ 
-#' URL <- file.path(
+#' URL <- paste(
 #'     "https://github.com/neurogenomics/MAGMA_Celltyping/raw/master/",
-#'     "data/sub_SNP_LOC_DATA.rda")
+#'     "data/sub_SNP_LOC_DATA.rda", sep="/")
 #' tmp <- file.path(tempdir(),basename(URL))  
 #' piggyback::pb_upload(file = tmp,
 #'                      repo = "neurogenomics/MAGMA_Celltyping",
