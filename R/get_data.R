@@ -8,6 +8,7 @@ get_data <- function(fname,
     tmp <- file.path(storage_dir, fname)
     if (!file.exists(tmp)) {
         Sys.setenv("piggyback_cache_duration" = 10)
+        dir.create(storage_dir, showWarnings = FALSE, recursive = TRUE)
         piggyback::pb_download(
             file = fname,
             dest = storage_dir,

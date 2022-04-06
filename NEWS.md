@@ -4,6 +4,7 @@
 
 * Construct URLs with `paste` instead of `file.path` 
 to avoid cross-platforms issues (e.g. Windows inserting "\" instead of "/"). 
+* Add `dir.create` to `get_data`.  
 
 # MAGMA.Celltyping 2.0.2
 
