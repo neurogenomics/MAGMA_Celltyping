@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
       </span>
     </div>
 
@@ -91,7 +91,7 @@ Skene</i>
 </h4></h4>
             
             <h4 data-toc-skip class="date"><h4>
-Updated: <i>Mar-08-2022</i>
+Updated: <i>Apr-06-2022</i>
 </h4></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/blob/HEAD/vignettes/MAGMA.Celltyping.Rmd" class="external-link"><code>vignettes/MAGMA.Celltyping.Rmd</code></a></small>
@@ -186,7 +186,7 @@ you’ll need to first convert it to CTD using the instructions found in
 the <code>EWCE</code> package <a href="https://github.com/NathanSkene/EWCE/" class="external-link">documentation here</a>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu">ewceData</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ewceData/man/ctd.html" class="external-link">ctd</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## snapshotDate(): 2022-03-01</span></code></pre>
+<pre><code><span class="co">## snapshotDate(): 2022-04-04</span></code></pre>
 <pre><code><span class="co">## see ?ewceData and browseVignettes('ewceData') for documentation</span></code></pre>
 <pre><code><span class="co">## loading from cache</span></code></pre>
 <p>Note that the cell type dataset loaded in the code above is the
@@ -254,7 +254,7 @@ plotted and further analysed.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">merged_results</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/merge_results.html">merge_results</a></span><span class="op">(</span>
   MAGMA_results <span class="op">=</span> <span class="va">MAGMA_results</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Saving full merged results to ==&gt; /tmp/RtmpGZJPFW/MAGMA_celltyping..lvl1.csv</span></code></pre>
+<pre><code><span class="co">## Saving full merged results to ==&gt; /tmp/RtmpnyhqwI/MAGMA_celltyping..lvl1.csv</span></code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">merged_results</span><span class="op">)</span></code></pre></div>
 <table style="width:100%;" class="table">
@@ -908,7 +908,7 @@ significant p-values (per phenotype).</p>
 </h2>
 <details><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## R Under development (unstable) (2022-03-03 r81847)</span>
+<pre><code><span class="co">## R Under development (unstable) (2022-03-14 r81896)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
 <span class="co">## Running under: Ubuntu 20.04.4 LTS</span>
 <span class="co">## </span>
@@ -929,24 +929,24 @@ significant p-values (per phenotype).</p>
 <span class="co">## other attached packages:</span>
 <span class="co">##  [1] ewceData_1.3.0         ExperimentHub_2.3.5    AnnotationHub_3.3.9   </span>
 <span class="co">##  [4] BiocFileCache_2.3.4    dbplyr_2.1.1           BiocGenerics_0.41.2   </span>
-<span class="co">##  [7] dplyr_1.0.8            ggplot2_3.3.5          MAGMA.Celltyping_2.0.2</span>
+<span class="co">##  [7] dplyr_1.0.8            ggplot2_3.3.5          MAGMA.Celltyping_2.0.3</span>
 <span class="co">## [10] BiocStyle_2.23.1      </span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
 <span class="co">##   [1] backports_1.4.1               systemfonts_1.0.4            </span>
-<span class="co">##   [3] googleAuthR_2.0.0             plyr_1.8.6                   </span>
+<span class="co">##   [3] googleAuthR_2.0.0             plyr_1.8.7                   </span>
 <span class="co">##   [5] lazyeval_0.2.2                splines_4.2.0                </span>
-<span class="co">##   [7] orthogene_1.1.1               BiocParallel_1.29.15         </span>
-<span class="co">##   [9] GenomeInfoDb_1.31.4           digest_0.6.29                </span>
+<span class="co">##   [7] orthogene_1.1.1               BiocParallel_1.29.19         </span>
+<span class="co">##   [9] GenomeInfoDb_1.31.7           digest_0.6.29                </span>
 <span class="co">##  [11] htmltools_0.5.2               RNOmni_1.0.0                 </span>
-<span class="co">##  [13] fansi_1.0.2                   magrittr_2.0.2               </span>
-<span class="co">##  [15] memoise_2.0.1                 BSgenome_1.63.4              </span>
-<span class="co">##  [17] limma_3.51.5                  Biostrings_2.63.1            </span>
+<span class="co">##  [13] fansi_1.0.3                   magrittr_2.0.3               </span>
+<span class="co">##  [15] memoise_2.0.1                 BSgenome_1.63.6              </span>
+<span class="co">##  [17] limma_3.51.5                  Biostrings_2.63.3            </span>
 <span class="co">##  [19] matrixStats_0.61.0            R.utils_2.11.0               </span>
 <span class="co">##  [21] pkgdown_2.0.2.9000            prettyunits_1.1.1            </span>
 <span class="co">##  [23] colorspace_2.0-3              blob_1.2.2                   </span>
 <span class="co">##  [25] rappdirs_0.3.3                textshaping_0.3.6            </span>
-<span class="co">##  [27] xfun_0.30                     crayon_1.5.0                 </span>
+<span class="co">##  [27] xfun_0.30                     crayon_1.5.1                 </span>
 <span class="co">##  [29] RCurl_1.98-1.6                jsonlite_1.8.0               </span>
 <span class="co">##  [31] lme4_1.1-28                   VariantAnnotation_1.41.3     </span>
 <span class="co">##  [33] glue_1.6.2                    gargle_1.2.0                 </span>
@@ -955,26 +955,26 @@ significant p-values (per phenotype).</p>
 <span class="co">##  [39] DelayedArray_0.21.2           car_3.0-12                   </span>
 <span class="co">##  [41] SingleCellExperiment_1.17.2   abind_1.4-5                  </span>
 <span class="co">##  [43] scales_1.1.1                  DBI_1.1.2                    </span>
-<span class="co">##  [45] rstatix_0.7.0                 Rcpp_1.0.8                   </span>
+<span class="co">##  [45] rstatix_0.7.0                 Rcpp_1.0.8.3                 </span>
 <span class="co">##  [47] progress_1.2.2                viridisLite_0.4.0            </span>
 <span class="co">##  [49] xtable_1.8-4                  bit_4.0.4                    </span>
 <span class="co">##  [51] stats4_4.2.0                  htmlwidgets_1.5.4            </span>
 <span class="co">##  [53] httr_1.4.2                    ellipsis_0.3.2               </span>
 <span class="co">##  [55] farver_2.1.0                  pkgconfig_2.0.3              </span>
 <span class="co">##  [57] XML_3.99-0.9                  R.methodsS3_1.8.1            </span>
-<span class="co">##  [59] sass_0.4.0                    utf8_1.2.2                   </span>
+<span class="co">##  [59] sass_0.4.1                    utf8_1.2.2                   </span>
 <span class="co">##  [61] labeling_0.4.2                tidyselect_1.1.2             </span>
 <span class="co">##  [63] rlang_1.0.2                   reshape2_1.4.4               </span>
 <span class="co">##  [65] later_1.3.0                   AnnotationDbi_1.57.1         </span>
-<span class="co">##  [67] munsell_0.5.0                 BiocVersion_3.15.0           </span>
+<span class="co">##  [67] munsell_0.5.0                 BiocVersion_3.15.2           </span>
 <span class="co">##  [69] tools_4.2.0                   cachem_1.0.6                 </span>
 <span class="co">##  [71] cli_3.2.0                     generics_0.1.2               </span>
-<span class="co">##  [73] RSQLite_2.2.10                MungeSumstats_1.3.8          </span>
+<span class="co">##  [73] RSQLite_2.2.12                MungeSumstats_1.3.16         </span>
 <span class="co">##  [75] broom_0.7.12                  ggdendro_0.1.23              </span>
 <span class="co">##  [77] evaluate_0.15                 stringr_1.4.0                </span>
 <span class="co">##  [79] fastmap_1.1.0                 yaml_2.3.5                   </span>
-<span class="co">##  [81] ragg_1.2.2                    babelgene_21.4               </span>
-<span class="co">##  [83] knitr_1.37                    bit64_4.0.5                  </span>
+<span class="co">##  [81] ragg_1.2.2                    babelgene_22.3               </span>
+<span class="co">##  [83] knitr_1.38                    bit64_4.0.5                  </span>
 <span class="co">##  [85] fs_1.5.2                      purrr_0.3.4                  </span>
 <span class="co">##  [87] KEGGREST_1.35.0               gprofiler2_0.2.1             </span>
 <span class="co">##  [89] nlme_3.1-155                  mime_0.12                    </span>
@@ -986,28 +986,28 @@ significant p-values (per phenotype).</p>
 <span class="co">## [101] tibble_3.1.6                  EWCE_1.3.3                   </span>
 <span class="co">## [103] bslib_0.3.1                   homologene_1.4.68.19.3.27    </span>
 <span class="co">## [105] stringi_1.7.6                 highr_0.9                    </span>
-<span class="co">## [107] GenomicFeatures_1.47.12       desc_1.4.1                   </span>
+<span class="co">## [107] GenomicFeatures_1.47.13       desc_1.4.1                   </span>
 <span class="co">## [109] lattice_0.20-45               Matrix_1.4-0                 </span>
-<span class="co">## [111] nloptr_2.0.0                  vctrs_0.3.8                  </span>
+<span class="co">## [111] nloptr_2.0.0                  vctrs_0.4.0                  </span>
 <span class="co">## [113] pillar_1.7.0                  lifecycle_1.0.1              </span>
 <span class="co">## [115] BiocManager_1.30.16           jquerylib_0.1.4              </span>
 <span class="co">## [117] data.table_1.14.2             bitops_1.0-7                 </span>
 <span class="co">## [119] httpuv_1.6.5                  patchwork_1.1.1              </span>
-<span class="co">## [121] rtracklayer_1.55.3            GenomicRanges_1.47.6         </span>
+<span class="co">## [121] rtracklayer_1.55.4            GenomicRanges_1.47.6         </span>
 <span class="co">## [123] R6_2.5.1                      BiocIO_1.5.0                 </span>
-<span class="co">## [125] bookdown_0.24                 promises_1.2.0.1             </span>
+<span class="co">## [125] bookdown_0.25                 promises_1.2.0.1             </span>
 <span class="co">## [127] gridExtra_2.3                 IRanges_2.29.1               </span>
 <span class="co">## [129] boot_1.3-28                   MASS_7.3-55                  </span>
 <span class="co">## [131] assertthat_0.2.1              SummarizedExperiment_1.25.3  </span>
-<span class="co">## [133] rprojroot_2.0.2               rjson_0.2.21                 </span>
+<span class="co">## [133] rprojroot_2.0.3               rjson_0.2.21                 </span>
 <span class="co">## [135] withr_2.5.0                   GenomicAlignments_1.31.2     </span>
-<span class="co">## [137] Rsamtools_2.11.0              S4Vectors_0.33.10            </span>
+<span class="co">## [137] Rsamtools_2.11.0              S4Vectors_0.33.16            </span>
 <span class="co">## [139] GenomeInfoDbData_1.2.7        hms_1.1.1                    </span>
 <span class="co">## [141] parallel_4.2.0                grid_4.2.0                   </span>
 <span class="co">## [143] minqa_1.2.4                   tidyr_1.2.0                  </span>
-<span class="co">## [145] rmarkdown_2.12                MatrixGenerics_1.7.0         </span>
+<span class="co">## [145] rmarkdown_2.13                MatrixGenerics_1.7.0         </span>
 <span class="co">## [147] carData_3.0-5                 ggpubr_0.4.0                 </span>
-<span class="co">## [149] Biobase_2.55.0                shiny_1.7.1                  </span>
+<span class="co">## [149] Biobase_2.55.1                shiny_1.7.1                  </span>
 <span class="co">## [151] restfulr_0.0.13</span></code></pre>
 </details><hr>
 </div>

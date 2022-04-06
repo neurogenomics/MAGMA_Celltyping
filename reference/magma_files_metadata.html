@@ -19,7 +19,7 @@ MAGMA_Files_Public GitHub repository."><!-- mathjax --><script src="https://cdnj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
       </span>
     </div>
 
@@ -85,8 +85,8 @@ MAGMA_Files_Public</a> GitHub repository.</p>
     <p><code>
 #### Check what files are available ####
 magma_files_metadata &lt;- data.table::fread(
-    file.path("https://github.com/neurogenomics/MAGMA_Files_Public",
-              "raw/master/metadata.csv"), drop = "V1"
+    paste("https://github.com/neurogenomics/MAGMA_Files_Public",
+              "raw/master/metadata.csv", sep="/"), drop = "V1"
 )
 usethis::use_data(magma_files_metadata, overwrite = TRUE)
 </code></p>
