@@ -2,6 +2,8 @@
 
 ## Bug fixes
 
+* Fix GHA release/devel conflicts. 
+* Add error handling to `get_genomeLocFile`
 * Construct URLs with `paste` instead of `file.path` 
 to avoid cross-platforms issues (e.g. Windows inserting "\" instead of "/"). 
 * Add `dir.create` to `get_data`.  

@@ -64,8 +64,17 @@ get_genomeLocFile <- function(build,
         storage_dir = storage_dir,
         overwrite = overwrite
     ) 
+    #### Check that download didn't fail due to bad credentials #####
+    l <- readLines(tmp)
+    if(any(grepl("Bad credentials",l, ignore.case = TRUE))){
+        stp <- paste(
+            "genomeLocFile download failed due to bad GitHub credentials.",
+            "Please see here for details:\n",
+            "https://github.com/ropensci/piggyback/issues/49")
+        stop(stp)
+    }
     #### Check that download was successful ####
-    d <- data.table::fread(tmp, nrows = 10, nThread = 1, quote='')
+    d <- data.table::fread(tmp, nrows = 10, nThread = 1)
     if(nrow(d)!=10 || ncol(d)!=6){
         stopper("genomeLocFile did not download properly.",
                 "Please check that you have a stable internet connection, 
