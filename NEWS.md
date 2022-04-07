@@ -2,6 +2,8 @@
 
 ## Bug fixes
 
+* Ensure `get_genome_ref` saves to cache dir (not temp dir)
+during `map_snps_to_genes`. 
 * Fix GHA release/devel conflicts. 
 * Add optional error handling with GitHub PAT fix instructions to `get_data`, 
 specifically `get_genomeLocFile`. 

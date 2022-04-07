@@ -36,6 +36,7 @@
 #' } 
 #' @export
 #' @importFrom MungeSumstats get_genome_builds
+#' @importFrom tools R_user_dir
 map_snps_to_genes <- function(path_formatted,
                               genome_build = NULL,
                               upstream_kb = 35,
@@ -43,7 +44,9 @@ map_snps_to_genes <- function(path_formatted,
                               N = NULL,
                               genome_ref_path = NULL,
                               population = "eur",
-                              storage_dir = tempdir(),
+                              storage_dir = tools::R_user_dir(
+                                  "MAGMA.Celltyping",
+                                  which="cache"),
                               force_new = FALSE,
                               version = NULL,
                               verbose = TRUE) {

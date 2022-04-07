@@ -12,7 +12,7 @@ map_snps_to_genes(
   N = NULL,
   genome_ref_path = NULL,
   population = "eur",
-  storage_dir = tempdir(),
+  storage_dir = tools::R_user_dir("MAGMA.Celltyping", which = "cache"),
   force_new = FALSE,
   version = NULL,
   verbose = TRUE

@@ -13,7 +13,7 @@ get_genome_ref_magma <- function(genome_ref_dir,
                                  timeout = 60 * 5,
                                  verbose = TRUE) {
     #### Get link ####
-    input_url = paste(
+    input_url <- paste(
         "https://ctg.cncr.nl/software/MAGMA",
         "ref_data",paste0(basename(genome_ref_dir),".zip"), 
         sep="/"
