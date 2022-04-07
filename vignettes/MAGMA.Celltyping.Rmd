@@ -66,7 +66,7 @@ Note you can input the genome build of your summary statistics for this step or
 it can be inferred if left `NULL`:
 
 ```{r, eval=FALSE}
-genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(
+genesOutPath <- MAGMA.Celltyping:: map_snps_to_genes(
   path_formatted = path_formatted,
   genome_build = "GRCh37")
 ```

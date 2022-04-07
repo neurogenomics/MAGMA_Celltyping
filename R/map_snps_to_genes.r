@@ -25,7 +25,10 @@
 #' @inheritParams celltype_associations_pipeline
 #'
 #' @return Path to the genes.out file.
-#'
+#' 
+#' @export
+#' @importFrom MungeSumstats get_genome_builds
+#' @importFrom tools R_user_dir
 #' @examples
 #' \dontrun{
 #' path_formatted <- MAGMA.Celltyping::get_example_gwas()
@@ -34,9 +37,6 @@
 #'     genome_build = "hg19",
 #'     N = 5000)
 #' } 
-#' @export
-#' @importFrom MungeSumstats get_genome_builds
-#' @importFrom tools R_user_dir
 map_snps_to_genes <- function(path_formatted,
                               genome_build = NULL,
                               upstream_kb = 35,
