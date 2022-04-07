@@ -8,7 +8,8 @@ get_data(
   fname,
   repo = "neurogenomics/MAGMA_Celltyping",
   storage_dir = tempdir(),
-  overwrite = FALSE
+  overwrite = FALSE,
+  check = FALSE
 )
 }
 \description{

@@ -3,7 +3,8 @@
 ## Bug fixes
 
 * Fix GHA release/devel conflicts. 
-* Add error handling to `get_genomeLocFile`
+* Add optional error handling with GitHub PAT fix instructions to `get_data`, 
+specifically `get_genomeLocFile`. 
 * Construct URLs with `paste` instead of `file.path` 
 to avoid cross-platforms issues (e.g. Windows inserting "\" instead of "/"). 
 * Add `dir.create` to `get_data`.  

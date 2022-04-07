@@ -4,7 +4,8 @@
 get_data <- function(fname,
                      repo = "neurogenomics/MAGMA_Celltyping",
                      storage_dir = tempdir(),
-                     overwrite = FALSE) {
+                     overwrite = FALSE,
+                     check = FALSE) {
     tmp <- file.path(storage_dir, fname)
     if (!file.exists(tmp)) {
         Sys.setenv("piggyback_cache_duration" = 10)
@@ -15,6 +16,10 @@ get_data <- function(fname,
             repo = repo,
             overwrite = overwrite
         )
+    }
+    #### Check that download didn't fail due to bad credentials #####
+    if(isTRUE(check)){
+        get_data_check(tmp = tmp)    
     }
     return(tmp)
 }

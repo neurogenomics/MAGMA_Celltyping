@@ -62,9 +62,8 @@ get_genomeLocFile <- function(build,
     tmp <- get_data(
         fname = selected_file,
         storage_dir = storage_dir,
-        overwrite = overwrite
-    ) 
-    #### Check that download didn't fail due to bad credentials #####
-    get_genomeLocFile_check(tmp = tmp)
+        overwrite = overwrite, 
+        check = TRUE
+    )  
     return(tmp)
 }

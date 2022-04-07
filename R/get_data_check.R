@@ -1,9 +1,9 @@
-get_genomeLocFile_check <- function(tmp){
+get_data_check <- function(tmp){
     l <- readLines(tmp)
     if(any(grepl("Bad credentials",l, ignore.case = TRUE))){
         file.remove(tmp)
         stp <- paste(
-            "genomeLocFile download failed due to bad GitHub credentials.",
+            "piggyback::pb_download() failed due to bad GitHub credentials.",
             "Please add a GitHub Personal Access Token (PAT)",
             "to your ~/.Renviron file and restart R",
             "before retrying this function.\ne.g.:\n\n",
