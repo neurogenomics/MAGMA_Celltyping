@@ -13,7 +13,9 @@ test_that("map_snps_to_genes works", {
             path_formatted = path_formatted,
             genome_build = "hg19",
             N = 5000)
-        genesOutPath <- MAGMA.Celltyping:::fix_path(genesOutPath)
+        if(MAGMA.Celltyping:::get_os()=='Windows'){
+            genesOutPath <- normalizePath(genesOutPath, mustWork = FALSE)
+        }
         ## Test
         genesOut_cols <- c("GENE","CHR","START","STOP","NSNPS",
                            "NPARAM","N","ZSTAT","P")
