@@ -65,7 +65,7 @@ get_genomeLocFile <- function(build,
         overwrite = overwrite
     ) 
     #### Check that download was successful ####
-    d <- data.table::fread(tmp, nrows = 10, nThread = 1)
+    d <- data.table::fread(tmp, nrows = 10, nThread = 1, quote='')
     if(nrow(d)!=10 || ncol(d)!=6){
         stopper("genomeLocFile did not download properly.",
                 "Please check that you have a stable internet connection, 
