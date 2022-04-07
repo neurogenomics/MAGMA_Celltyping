@@ -13,12 +13,13 @@ test_that("map_snps_to_genes works", {
             path_formatted = path_formatted,
             genome_build = "hg19",
             N = 5000)
+        genesOutPath <- MAGMA.Celltyping:::fix_path(genesOutPath)
         ## Test
         genesOut_cols <- c("GENE","CHR","START","STOP","NSNPS",
                            "NPARAM","N","ZSTAT","P")
         testthat::expect_true(file.exists(genesOutPath))
         testthat::expect_true(file.exists(gsub(".out",".raw",genesOutPath)))
-        genesOut_dt <- data.table::fread(MAGMA.Celltyping:::fix_path(genesOutPath))
+        genesOut_dt <- data.table::fread(genesOutPath)
         testthat::expect_true(all(genesOut_cols %in% colnames(genesOut_dt)))
         testthat::expect_true(nrow(genesOut_dt)>70)
 
