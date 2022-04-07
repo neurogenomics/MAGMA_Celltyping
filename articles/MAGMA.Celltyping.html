@@ -156,7 +156,7 @@ of these columns: “Z”,“OR”,“BETA”,“LOG_ODDS”,“SIGNED_SUMSTAT�
 <p>Note you can input the genome build of your summary statistics for
 this step or it can be inferred if left <code>NULL</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">genesOutPath</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/map_snps_to_genes.html">map_snps_to_genes</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">genesOutPath</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span> <span class="fu"><a href="../reference/map_snps_to_genes.html">map_snps_to_genes</a></span><span class="op">(</span>
   path_formatted <span class="op">=</span> <span class="va">path_formatted</span>,
   genome_build <span class="op">=</span> <span class="st">"GRCh37"</span><span class="op">)</span></code></pre></div>
 </div>
@@ -254,7 +254,7 @@ plotted and further analysed.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">merged_results</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/merge_results.html">merge_results</a></span><span class="op">(</span>
   MAGMA_results <span class="op">=</span> <span class="va">MAGMA_results</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Saving full merged results to ==&gt; /tmp/RtmpiTcnx4/MAGMA_celltyping..lvl1.csv</span></code></pre>
+<pre><code><span class="co">## Saving full merged results to ==&gt; /tmp/RtmpuHwUHf/MAGMA_celltyping..lvl1.csv</span></code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">merged_results</span><span class="op">)</span></code></pre></div>
 <table style="width:100%;" class="table">
@@ -948,7 +948,7 @@ significant p-values (per phenotype).</p>
 <span class="co">##  [25] rappdirs_0.3.3                textshaping_0.3.6            </span>
 <span class="co">##  [27] xfun_0.30                     crayon_1.5.1                 </span>
 <span class="co">##  [29] RCurl_1.98-1.6                jsonlite_1.8.0               </span>
-<span class="co">##  [31] lme4_1.1-28                   VariantAnnotation_1.41.3     </span>
+<span class="co">##  [31] lme4_1.1-29                   VariantAnnotation_1.41.3     </span>
 <span class="co">##  [33] glue_1.6.2                    gargle_1.2.0                 </span>
 <span class="co">##  [35] gtable_0.3.0                  zlibbioc_1.41.0              </span>
 <span class="co">##  [37] XVector_0.35.0                HGNChelper_0.8.1             </span>
