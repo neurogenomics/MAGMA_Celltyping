@@ -67,7 +67,9 @@
 <h2 class="page-header" data-toc-text="2.0.3" id="magmacelltyping-203">MAGMA.Celltyping 2.0.3<a class="anchor" aria-label="anchor" href="#magmacelltyping-203"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-2-0-3">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-3"></a></h3>
-<ul><li>Fix GHA release/devel conflicts.</li>
+<ul><li>Ensure <code>get_genome_ref</code> saves to cache dir (not temp dir)
+during <code>map_snps_to_genes</code>.</li>
+<li>Fix GHA release/devel conflicts.</li>
 <li>Add optional error handling with GitHub PAT fix instructions to
 <code>get_data</code>, specifically <code>get_genomeLocFile</code>.</li>
 <li>Construct URLs with <code>paste</code> instead of

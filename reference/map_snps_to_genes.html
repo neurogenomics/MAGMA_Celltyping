@@ -81,7 +81,7 @@
   N <span class="op">=</span> <span class="cn">NULL</span>,
   genome_ref_path <span class="op">=</span> <span class="cn">NULL</span>,
   population <span class="op">=</span> <span class="st">"eur"</span>,
-  storage_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,
+  storage_dir <span class="op">=</span> <span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/userdir.html" class="external-link">R_user_dir</a></span><span class="op">(</span><span class="st">"MAGMA.Celltyping"</span>, which <span class="op">=</span> <span class="st">"cache"</span><span class="op">)</span>,
   force_new <span class="op">=</span> <span class="cn">FALSE</span>,
   version <span class="op">=</span> <span class="cn">NULL</span>,
   verbose <span class="op">=</span> <span class="cn">TRUE</span>
