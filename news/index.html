@@ -67,7 +67,10 @@
 <h2 class="page-header" data-toc-text="2.0.3" id="magmacelltyping-203">MAGMA.Celltyping 2.0.3<a class="anchor" aria-label="anchor" href="#magmacelltyping-203"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-2-0-3">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-3"></a></h3>
-<ul><li>Construct URLs with <code>paste</code> instead of
+<ul><li>Fix GHA release/devel conflicts.</li>
+<li>Add error handling to <code>get_genomeLocFile</code>
+</li>
+<li>Construct URLs with <code>paste</code> instead of
 <code>file.path</code> to avoid cross-platforms issues (e.g. Windows
 inserting “" instead of”/“).</li>
 <li>Add <code>dir.create</code> to <code>get_data</code>.</li>
