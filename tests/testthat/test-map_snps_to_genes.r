@@ -18,7 +18,7 @@ test_that("map_snps_to_genes works", {
                            "NPARAM","N","ZSTAT","P")
         testthat::expect_true(file.exists(genesOutPath))
         testthat::expect_true(file.exists(gsub(".out",".raw",genesOutPath)))
-        genesOut_dt <- data.table::fread(genesOutPath)
+        genesOut_dt <- data.table::fread(MAGMA.Celltyping:::fix_path(genesOutPath))
         testthat::expect_true(all(genesOut_cols %in% colnames(genesOut_dt)))
         testthat::expect_true(nrow(genesOut_dt)>70)
 
