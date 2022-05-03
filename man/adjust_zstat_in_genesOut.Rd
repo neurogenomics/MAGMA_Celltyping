@@ -30,10 +30,9 @@ See \link[EWCE]{list_species} for all available species.}
 \item{\code{"gprofiler"} : Slower but more species and genes.}
 \item{\code{"homologene"} : Faster but fewer species and genes.}
 \item{\code{"babelgene"} : Faster but fewer species and genes.
-Also gives }
-}
- (slower but more species and genes) or
-\code{"homologene"} (faster but fewer species and genes).}
+Also gives consensus scores for each gene mapping based on a
+ several different data sources.}
+}}
 
 \item{...}{Additional arguments passed for \link[EWCE]{standardise_ctd}.}
 }
