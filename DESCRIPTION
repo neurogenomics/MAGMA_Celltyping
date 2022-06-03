@@ -68,10 +68,8 @@ Suggests:
     DT,
     biomaRt,
     ewceData,
-    badger 
-Remotes:
-    github::NathanSkene/EWCE
+    badger
 SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Encoding: UTF-8
 Config/testthat/edition: 3

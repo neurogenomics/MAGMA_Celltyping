@@ -54,11 +54,9 @@ vary.  This setting has no effect unless the appropriate scales also vary.}
 
 \item{show_plot}{Whether to print the plot.}
 
-\item{height}{Plot size in \code{units} ("in", "cm", "mm", or "px").
-If not supplied, uses the size of current graphics device.}
+\item{height}{Plot height.}
 
-\item{width}{Plot size in \code{units} ("in", "cm", "mm", or "px").
-If not supplied, uses the size of current graphics device.}
+\item{width}{Plot width.}
 
 \item{dpi}{Plot resolution. Also accepts a string input: "retina" (320),
 "print" (300), or "screen" (72). Applies only to raster output types.}

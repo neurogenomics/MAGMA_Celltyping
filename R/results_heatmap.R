@@ -16,6 +16,8 @@
 #' @param fill_var Fill variable.
 #' @param show_plot Whether to print the plot.
 #' @param save_path Path to save plot to.
+#' @param height Plot height.
+#' @param width Plot width. 
 #' @inheritParams ggplot2::facet_grid
 #' @inheritParams ggplot2::ggsave
 #' 
