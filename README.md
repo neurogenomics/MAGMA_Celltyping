@@ -1,16 +1,16 @@
 <img src='https://github.com/neurogenomics/MAGMA_Celltyping/raw/master/inst/hex/hex.png' height='300'><br><br>
-[![](https://img.shields.io/badge/devel%20version-2.0.1-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
+[![](https://img.shields.io/badge/devel%20version-2.0.4-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
 [![R build
 status](https://github.com/neurogenomics/MAGMA_Celltyping/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/actions)
 [![](https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/commits/master)
-[![](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping/branch/master/graph/badge.svg)](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping)
+[![](https://app.codecov.io/gh/neurogenomics/MAGMA_Celltyping/branch/master/graph/badge.svg)](https://app.codecov.io/gh/neurogenomics/MAGMA_Celltyping)
 [![License:
 GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)
 <h4>
 Authors: <i>Brian Schilder, Alan Murphy, Julien Bryois, Nathan Skene</i>
 </h4>
 <h4>
-README updated: <i>Feb-08-2022</i>
+README updated: <i>Jun-29-2022</i>
 </h4>
 
 ## Introduction
@@ -65,8 +65,8 @@ With the release of `MAGMA_Celltyping` 2.0 in January 2022, there have
 been a number of [major updates and bug
 fixes](https://github.com/neurogenomics/MAGMA_Celltyping/pull/93).
 
--   Only R&gt;4.0.0 is supported. To use this package with older
-    versions of R, install
+-   Only R\>4.0.0 is supported. To use this package with older versions
+    of R, install
     with:`remotes::install_github("neurogenomics/MAGMA_Celltyping@01a9e53")`
 
 ## Bugs/fixes

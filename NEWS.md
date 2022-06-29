@@ -1,3 +1,10 @@
+# MAGMA.Celltyping 2.0.5
+
+## New features
+
+* Documented new CTDs from model celltype conservation project.  
+Added better documentation for each of the other CTDs as well (including references).
+
 # MAGMA.Celltyping 2.0.4
 
 ## Bug fixes

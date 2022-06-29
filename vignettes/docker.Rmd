@@ -65,14 +65,14 @@ docker run \
 * The `-d` ensures the container will run in "detached" mode,
 which means it will persist even after you've closed your command line session.  
 * The username will be *"rstudio"* by default.  
-* Optionally, you can also install the [Docker Desktop](https://www.docker.com/products/docker-desktop) 
+* Optionally, you can also install the [Docker Desktop](https://www.docker.com/products/docker-desktop/) 
 to easily manage your containers.  
 
 ## Method 2: via Singularity
 
 If you are using a system that does not allow Docker 
 (as is the case for many institutional computing clusters), 
-you can instead [install Docker images via Singularity](https://sylabs.io/guides/2.6/user-guide/singularity_and_docker.html).  
+you can instead [install Docker images via Singularity](https://docs.sylabs.io/guides/2.6/user-guide/singularity_and_docker.html).  
 
 ```
 singularity pull docker://`r docker_user`/`r pkg`

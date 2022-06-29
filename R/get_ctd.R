@@ -5,52 +5,144 @@
 #'
 #' \itemize{
 #'
-#' \item{"ctd_AIBS"}{CTD file with AIBS human cortex data.
-#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Reference}.}
+#' \item{"ctd_AIBS"\cr}{CTD file derived from adult human cortex 
+#' scRNA-seq data collected by the Allen Institute for Brain Science (AIBS) 
+#' Note that this CTD used an early release of the AIBS data that only included
+#' samples from human Medial Temporal Gyrus (MTG).
+#' \cr Reference: \doi{10.1038/s41586-019-1506-7}\cr
+#' \href{https://portal.brain-map.org/atlases-and-data/rnaseq/data-files-2018}{
+#' Allen Brain Institute website}\cr 
+#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Source}
+#' }
 #'
-#' \item{"ctd_allKI"}{CTD file with cortex, hippocampus,
+#' \item{"ctd_allKI"\cr}{CTD file with cortex, hippocampus,
 #' hypothalamus and midbrain.
-#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Reference}.}
+#' \cr Reference: \doi{10.1038/s41588-018-0129-5}\cr
+#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Source}
+#' }
 #'
-#' \item{"ctd_BlueLake2018_FrontalCortexOnly"}{
-#' CTD file with data from humans.}
+#' \item{"ctd_BlueLake2018_FrontalCortexOnly"\cr}{
+#' CTD file with data from humans.
+#' \cr Reference: \doi{10.1038/nbt.4038}\cr 
+#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Source}
+#' }
 #'
-#' \item{"ctd_BlueLake2018_VisualCortexOnly"}{
-#' CTD file with data from humans.}
+#' \item{"ctd_BlueLake2018_VisualCortexOnly"\cr}{
+#' CTD file with data from humans.
+#' \cr Reference: \doi{10.1038/nbt.4038}\cr 
+#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Source}
+#' }
 #'
-#' \item{"ctd_Saunders"}{
-#' CTD file with data from humans.}
+#' \item{"ctd_Saunders"\cr}{
+#' CTD file with data from humans.
+#' \cr Reference: \doi{10.1016/j.cell.2018.07.028}\cr  
+#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Source}
+#' }
 #'
-#' \item{"ctd_DescartesHuman"}{
+#' \item{"ctd_DescartesHuman"\cr}{
 #' CTD file with scRNA-seq data from human embryo across multiple organ systems.
-#' \href{https://descartes.brotmanbaty.org/bbi/human-gene-expression-during-development/}{Reference}.
+#' \cr Reference: \doi{10.1126/science.aba7721}\cr 
+#' \href{https://descartes.brotmanbaty.org/bbi/human-gene-expression-during-development/}{
+#' Source}
 #' }
 #'
-#' \item{"ctd_DRONC_human"}{
+#' \item{"ctd_DRONC_human"\cr}{
 #' CTD file with DRONC-seq data from humans.
-#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Reference}.
+#' \cr Reference: \doi{10.1038/nmeth.4407}\cr  
+#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Source}
 #' }
 #'
-#' \item{"ctd_DRONC_mouse"}{
+#' \item{"ctd_DRONC_mouse"\cr}{
 #' CTD file with Tasic data from mouse.
-#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Reference}.
+#' \cr Reference: \doi{10.1038/nmeth.4407}\cr  
+#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Reference}
 #' }
 #'
-#' \item{"ctd_DivSeq"}{
+#' \item{"ctd_DivSeq"\cr}{
 #' CTD file with DivSeq data.
-#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Reference}.
+#' \cr Reference: \doi{10.1126/science.aad7038}\cr
+#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Source}
 #' }
 #'
-#' \item{"ctd_Tasic"}{
+#' \item{"ctd_Tasic"\cr}{
 #' CTD file with Tasic data.
-#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Reference}.
+#' \cr Reference: \doi{10.1038/nn.4216}\cr
+#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Source}
 #' }
 #'
-#' \item{"ctd_Zeisel2018"}{
-#' CTD file with data from mice.
-#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Reference}.
+#' \item{"ctd_Zeisel2016"\cr}{
+#' CTD file with data from adult mouse hippocampus.
+#' \cr Reference: \doi{10.1126/science.aaa1934}\cr 
+#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Source}
 #' }
 #'
+#' \item{"ctd_Zeisel2018"\cr}{
+#' CTD file with data from juvenile mouse central nervous system atlas.
+#' \cr Reference: \doi{10.1016/j.cell.2018.06.021}\cr 
+#' \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Source}
+#' }
+#' 
+#' \item{"ctd_LaManno2020"\cr}{
+#' CTD file with data from developing mouse central nervous system atlas.
+#' \cr Reference: \doi{10.1038/s41586-021-03775-x}\cr 
+#' \href{http://mousebrain.org/development/downloads.html}{Source}
+#' }
+#' 
+#' \item{"ctd_Aerts2018"\cr}{
+#' CTD file with data from aging fly central nervous system atlas.
+#' \cr Reference: \doi{10.1016/j.cell.2018.05.057}\cr
+#' \href{https://scope.aertslab.org/}{Source}
+#' }
+#' 
+#' \item{"ctd_Aerts2021"\cr}{
+#' CTD file with data from adult fly whole-body atlas
+#'  (a.k.a the FlyCellAtlas).
+#' \cr Reference: \doi{10.1126/science.abk2432}\cr
+#' \href{https://www.flycellatlas.org/#data}{Source}
+#' }
+#' 
+#' \item{"ctd_Raj2018"\cr}{
+#' CTD file with data from juvenile zebrafish central nervous system atlas.
+#' \cr Reference: \doi{10.1038/nbt.4103}\cr 
+#' \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE105010}{Source}
+#' }
+#' 
+#' \item{"ctd_Raj2020"\cr}{
+#' CTD file with data from developing zebrafish central nervous system atlas.
+#' \cr Reference: \doi{10.1016/j.neuron.2020.09.023}\cr  
+#' \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE158142}{Source}
+#' }
+#' 
+#' \item{"ctd_Farnsworth2020"\cr}{
+#' CTD file with data from developing zebrafish central nervous system atlas.
+#' \cr Reference: \doi{10.1016/j.ydbio.2019.11.008}\cr  
+#' \href{http://cells.ucsc.edu/?ds=zebrafish-dev}{Source}
+#' }
+#' 
+#' \item{"ctd_TabulaMuris"\cr}{
+#' CTD file with data from adult mouse whole-body atlas.
+#' \cr Reference: \doi{10.1038/s41586-018-0590-4}\cr   
+#' \href{https://tabula-muris.ds.czbiohub.org/}{Source}
+#' }
+#' 
+#' \item{"ctd_TabulaMurisSenis"\cr}{
+#' CTD file with data from aging adult mouse whole-body atlas.
+#' \cr Reference: \doi{10.1038/s41586-020-2496-1}\cr
+#' \href{https://tabula-muris-senis.ds.czbiohub.org/}{Source}
+#' }
+#' 
+#' \item{"ctd_Avalos2019"\cr}{
+#' CTD file with data from developing fly central nervous system atlas.
+#' \cr Reference: \doi{10.7554/eLife.50354}\cr 
+#' \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE134722}{Source}
+#' }
+#' 
+#' \item{"ctd_Han2022"\cr}{
+#' CTD file with data from adult monkey whole-body atlas.
+#' \cr Reference: \doi{10.1038/s41586-022-04587-3}\cr 
+#' \href{https://db.cngb.org/nhpca/download}{Source}
+#' }
+#' 
 #' }
 #' 
 #' @param ctd_name Name of the CellTypeDatset to import.
