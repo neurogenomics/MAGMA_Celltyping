@@ -40,7 +40,7 @@ piggyback::pb_upload(file = path_formatted,
 get_example_gwas(
   trait = c("educational_attainment", "fluid_intelligence", "prospective_memory"),
   munged = TRUE,
-  storage_dir = tempdir(),
+  storage_dir = tools::R_user_dir(package = "MAGMA.Celltyping", which = "cache"),
   timeout = 60 * 5
 )
 }
@@ -68,5 +68,4 @@ To reduce file size, SNPs have been filtered to Minor Allele Frequency (MAF)
 }
 \examples{
 path_formatted <- MAGMA.Celltyping::get_example_gwas()
-
 }

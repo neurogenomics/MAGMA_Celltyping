@@ -51,16 +51,19 @@
 #'
 #' @examples 
 #' path_formatted <- MAGMA.Celltyping::get_example_gwas()
-#' 
 #' @export
 #' @importFrom data.table fwrite
+#' @importFrom tools R_user_dir
 get_example_gwas <- function(trait = c(
                                  "educational_attainment",
                                  "fluid_intelligence",
                                  "prospective_memory"
                              ),
                              munged = TRUE,
-                             storage_dir = tempdir(),
+                             storage_dir = tools::R_user_dir(
+                                 package = "MAGMA.Celltyping",
+                                 which = "cache"
+                             ),
                              timeout = 60 * 5) {
     trait <- tolower(trait)[1]
     if (munged) {

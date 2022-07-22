@@ -2,17 +2,24 @@
 % Please edit documentation in R/get_data.R
 \name{get_data}
 \alias{get_data}
-\title{get data via \pkg{piggyback}}
+\title{Get remote data}
 \usage{
 get_data(
   fname,
   repo = "neurogenomics/MAGMA_Celltyping",
-  storage_dir = tempdir(),
+  storage_dir = tools::R_user_dir(package = "MAGMA.Celltyping", which = "cache"),
   overwrite = FALSE,
   check = FALSE
 )
 }
+\arguments{
+\item{repo}{Repository name in format "owner/repo". Will guess the current
+repo if not specified.}
+
+\item{overwrite}{Should any local files of the same name be overwritten?
+default \code{TRUE}.}
+}
 \description{
-get data via \pkg{piggyback}
+Download remotely stored data via \link[piggyback]{pb_download}.
 }
 \keyword{internal}

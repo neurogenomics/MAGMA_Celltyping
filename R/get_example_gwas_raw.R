@@ -10,7 +10,11 @@
 #' @keywords internal
 #' @importFrom utils download.file
 #' @importFrom R.utils gunzip
-get_example_gwas_raw <- function(storage_dir = tempdir(),
+#' @importFrom tools R_user_dir
+get_example_gwas_raw <- function(storage_dir = tools::R_user_dir(
+                                    package = "MAGMA.Celltyping",
+                                    which = "cache"
+                                 ),
                                  trait = c(
                                      "prospective_memory",
                                      "fluid_intelligence"

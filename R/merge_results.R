@@ -70,8 +70,9 @@ merge_results <- function(MAGMA_results,
         dplyr::arrange(FDR)
     ### Save
     if (!is.null(save_dir)) {
-        save_path <- paste0(save_dir, "/MAGMA_celltyping.",
-                            dataset_name, ".lvl", level, ".csv")
+        save_path <- file.path(save_dir, "MAGMA_celltyping.",
+                               paste0(dataset_name, ".lvl", level, ".csv"))
+        save_path <- fix_path(save_path)
         messager("Saving full merged results to ==>", save_path, v=verbose)
         data.table::fwrite(merged_results, save_path)
     }

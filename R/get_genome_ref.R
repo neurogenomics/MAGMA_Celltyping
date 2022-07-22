@@ -62,6 +62,7 @@ get_genome_ref <- function(genome_ref_path = NULL,
     } else {
         genome_ref_dir <- dirname(genome_ref_path)
     }
+    genome_ref_path <- fix_path(genome_ref_path)
     #### Check if the genome ref is already available ####
     if (file.exists(paste0(genome_ref_path, ".bed"))) {
         messager("Using existing genome_ref found in storage_dir.",

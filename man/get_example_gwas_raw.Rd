@@ -5,7 +5,7 @@
 \title{Example GWAS: raw (pre-munged)}
 \usage{
 get_example_gwas_raw(
-  storage_dir = tempdir(),
+  storage_dir = tools::R_user_dir(package = "MAGMA.Celltyping", which = "cache"),
   trait = c("prospective_memory", "fluid_intelligence"),
   timeout = 60 * 5
 )

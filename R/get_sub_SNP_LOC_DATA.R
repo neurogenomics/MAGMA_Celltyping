@@ -16,7 +16,11 @@
 #'                      overwrite = TRUE)
 #' }
 #' @keywords internal
-get_sub_SNP_LOC_DATA <- function(storage_dir = tempdir()) {
+#' @importFrom tools R_user_dir
+get_sub_SNP_LOC_DATA <- function(storage_dir = tools::R_user_dir(
+                                    package = "MAGMA.Celltyping",
+                                    which = "cache"
+                                )) {
      tmp <- get_data(fname = "sub_SNP_LOC_DATA.rda", 
                      storage_dir = storage_dir)
      sub_SNP_LOC_DATA <- EWCE::load_rdata(fileName = tmp)

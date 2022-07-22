@@ -2,8 +2,13 @@
 
 ## New features
 
-* Documented new CTDs from model celltype conservation project.  
-Added better documentation for each of the other CTDs as well (including references).
+* `get_ctd`:
+    - Documented new CTDs from model celltype conservation project.  
+    - Added better documentation for each of the other CTDs as well (including references).
+    - Re-standardized all CTD with updated `EWCE::standardise_ctd` function.
+    - Enabled download of multiple CTDs in one call. 
+    - Cached all CTDs (not in `tempdir`). 
+    - Import either RDS or RDA files. 
 
 # MAGMA.Celltyping 2.0.4
 

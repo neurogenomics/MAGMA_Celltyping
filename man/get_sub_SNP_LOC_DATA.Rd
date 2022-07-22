@@ -15,7 +15,9 @@ piggyback::pb_upload(file = tmp,
 }
 }
 \usage{
-get_sub_SNP_LOC_DATA(storage_dir = tempdir())
+get_sub_SNP_LOC_DATA(
+  storage_dir = tools::R_user_dir(package = "MAGMA.Celltyping", which = "cache")
+)
 }
 \description{
 Download and decompress the genome reference needed to run
