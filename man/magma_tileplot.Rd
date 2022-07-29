@@ -11,7 +11,7 @@ magma_tileplot(
   width = 4,
   annotLevel = 1,
   fileTag = "",
-  output_path
+  output_path = tempdir()
 )
 }
 \arguments{

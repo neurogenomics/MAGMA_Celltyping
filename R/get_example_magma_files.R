@@ -9,6 +9,7 @@
 #' @keywords internal
 get_example_magma_files <- function(file_types,
                                     storage_dir = tempdir(),
+                                    nested = FALSE,
                                     verbose = TRUE){
     
     messager("Using built-in example files: ieu-a-298.tsv.gz.35UP.10DOWN",
@@ -29,5 +30,11 @@ get_example_magma_files <- function(file_types,
                                           basename(local_files)))
     temp_paths <- fix_path(temp_paths)
     out <- file.copy(local_files, temp_paths) 
+    #### Name each file ####
+    names(temp_paths) <- ifelse(
+        grepl("\\.genes\\.out$",temp_paths),"genes.out",
+        ifelse(grepl("\\.genes\\.raw$",temp_paths),"genes.raw",NA))
+    temp_paths <- list("ieu-a-298"=temp_paths) 
+    if(isFALSE(nested)) temp_paths <- unlist(temp_paths)
     return(temp_paths)
 }

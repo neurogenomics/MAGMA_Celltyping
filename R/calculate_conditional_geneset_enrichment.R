@@ -40,22 +40,22 @@
 #' @export
 #' @importFrom data.table data.table
 #' @importFrom stats pnorm
-#' @importFrom orthogene convert_orthologs
-calculate_conditional_geneset_enrichment <- function(geneset,
-                                                     ctd,
-                                                     ctd_species = "mouse",
-                                                     controlledAnnotLevel = 1,
-                                                     controlledCTs,
-                                                     prepare_ctd = TRUE,
-                                                     gwas_sumstats_path = NULL,
-                                                     magma_dir = NULL,
-                                                     analysis_name = "MainRun",
-                                                     upstream_kb = 35,
-                                                     downstream_kb = 10, 
-                                                     geneset_species = "mouse",
-                                                     version = NULL,
-                                                     verbose = TRUE
-                                                    ) {
+#' @importFrom orthogene convert_orthologs infer_species
+calculate_conditional_geneset_enrichment <- function(
+        geneset,
+        ctd,
+        ctd_species = infer_ctd_species(ctd),
+        controlledAnnotLevel = 1,
+        controlledCTs,
+        prepare_ctd = TRUE,
+        gwas_sumstats_path = NULL,
+        magma_dir = NULL,
+        analysis_name = "MainRun",
+        upstream_kb = 35,
+        downstream_kb = 10, 
+        geneset_species = infer_geneset_species(geneset),
+        version = NULL,
+        verbose = TRUE) {
     #### Check MAGMA installation ####
     magma_check(version = version, 
                 verbose = verbose)
@@ -70,7 +70,7 @@ calculate_conditional_geneset_enrichment <- function(geneset,
     }
     #### prepare quantile groups ####
     # MAGMA.Celltyping can only use human GWAS
-    if (prepare_ctd) {
+    if (isTRUE(prepare_ctd)) {
         output_species <- "human"
         ctd <- prepare_quantile_groups(
             ctd = ctd,

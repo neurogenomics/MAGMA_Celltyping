@@ -13,7 +13,7 @@ find_GenesOut_files <- function(GenesOut_dir,
                                       ".genes.out",
                                       recursive = TRUE, full.names = TRUE
     )
-    messager(length(magma_GenesOut_file), " genes.out file(s) found.", 
+    messager(length(magma_GenesOut_file), "genes.out file(s) found.", 
              v=verbose)
     return(magma_GenesOut_file)
 }

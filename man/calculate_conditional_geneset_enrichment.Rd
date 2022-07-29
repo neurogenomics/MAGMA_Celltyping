@@ -7,7 +7,7 @@
 calculate_conditional_geneset_enrichment(
   geneset,
   ctd,
-  ctd_species = "mouse",
+  ctd_species = infer_ctd_species(ctd),
   controlledAnnotLevel = 1,
   controlledCTs,
   prepare_ctd = TRUE,
@@ -16,7 +16,7 @@ calculate_conditional_geneset_enrichment(
   analysis_name = "MainRun",
   upstream_kb = 35,
   downstream_kb = 10,
-  geneset_species = "mouse",
+  geneset_species = infer_geneset_species(geneset),
   version = NULL,
   verbose = TRUE
 )
@@ -29,8 +29,11 @@ Can be gene symbols (or other gene IDs) from any species listed in
 \item{ctd}{Cell type data structure containing
 \code{specificity_quantiles}.}
 
-\item{ctd_species}{Species name relevant to the cell type data.
-See \link[EWCE]{list_species} for all available species.}
+\item{ctd_species}{Species name relevant to the CellTypeDataset (\code{ctd}).
+See \link[EWCE]{list_species} for all available species. 
+If \code{ctd_species=NULL} (default),
+ the \code{ctd} species will automatically 
+ be inferred using \link[orthogene]{infer_species}.}
 
 \item{controlledAnnotLevel}{Annotation level of the celltypes
 being controlled for.}

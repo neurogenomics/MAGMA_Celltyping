@@ -7,8 +7,11 @@
 #'
 #' @param ctd Cell type data structure containing
 #'  \code{specificity_quantiles}.
-#' @param ctd_species Species name relevant to the cell type data.
-#' See \link[EWCE]{list_species} for all available species.
+#' @param ctd_species Species name relevant to the CellTypeDataset (\code{ctd}).
+#' See \link[EWCE]{list_species} for all available species. 
+#' If \code{ctd_species=NULL} (default),
+#'  the \code{ctd} species will automatically 
+#'  be inferred using \link[orthogene]{infer_species}. 
 #' @param ctd_levels Which levels of \code{ctd} to
 #' iterate the enrichment analysis over.
 #' @param ctd_name Used in file names
@@ -36,6 +39,7 @@
 #' @param verbose Print messages.
 #' @inheritParams calculate_celltype_associations
 #' @inheritParams calculate_conditional_celltype_associations
+#' @inheritParams prepare_quantile_groups
 #'
 #' @returns A list containing the results of each selected
 #' celltype associations analysis.
@@ -53,10 +57,12 @@
 #' )
 #' @keywords main_function
 #' @export
+#' @importFrom parallel mclapply
 celltype_associations_pipeline <- function(ctd,
                                            ctd_levels = seq_len(length(ctd)),
                                            ctd_name,
-                                           ctd_species = "mouse",
+                                           ctd_species = infer_ctd_species(ctd),
+                                           standardise = TRUE,
                                            magma_dirs, 
                                            run_linear = TRUE,
                                            run_top10 = TRUE,
@@ -87,6 +93,7 @@ celltype_associations_pipeline <- function(ctd,
             ctd = ctd,
             input_species = ctd_species,
             output_species = output_species,
+            standardise = standardise,
             verbose = FALSE
         )
         ctd_species <- output_species

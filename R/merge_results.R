@@ -73,6 +73,7 @@ merge_results <- function(MAGMA_results,
         save_path <- file.path(save_dir, "MAGMA_celltyping.",
                                paste0(dataset_name, ".lvl", level, ".csv"))
         save_path <- fix_path(save_path)
+        dir.create(dirname(save_path), showWarnings = FALSE, recursive = TRUE)
         messager("Saving full merged results to ==>", save_path, v=verbose)
         data.table::fwrite(merged_results, save_path)
     }

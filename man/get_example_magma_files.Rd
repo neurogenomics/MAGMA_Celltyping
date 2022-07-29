@@ -4,7 +4,12 @@
 \alias{get_example_magma_files}
 \title{Get example MAGMA files}
 \usage{
-get_example_magma_files(file_types, storage_dir = tempdir(), verbose = TRUE)
+get_example_magma_files(
+  file_types,
+  storage_dir = tempdir(),
+  nested = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{file_types}{MAGMA file types to import. 
@@ -12,6 +17,8 @@ Both ".genes.out" and ".genes.raw" are needed to run \pkg{MAGMA.Celltyping}
 cell-type enrichment functions}
 
 \item{storage_dir}{Directory to store files in.}
+
+\item{nested}{Return files as a list nested by \code{id} (default: \code{FALSE}).}
 
 \item{verbose}{Print messages.}
 }

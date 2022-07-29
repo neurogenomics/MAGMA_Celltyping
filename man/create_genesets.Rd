@@ -7,8 +7,9 @@
 create_genesets(
   res_input,
   n_genes = 100,
-  spec_deciles = 10,
-  human.symbol = TRUE
+  spec_deciles = NULL,
+  gene_col = "hgnc_symbol",
+  verbose = TRUE
 )
 }
 \arguments{
@@ -17,10 +18,12 @@ create_genesets(
 
 \item{n_genes}{Max number of genes to return.}
 
-\item{spec_deciles}{Which specificity deciles to use
+\item{spec_deciles}{[Optional] Which specificity deciles to use
 from the CellTypeDataset.}
 
-\item{human.symbol}{Whether to use human gene symbols.}
+\item{gene_col}{Column containing gene symbols.}
+
+\item{verbose}{Print messages.}
 }
 \description{
 Support function for \link[MAGMA.Celltyping]{get_driver_genes}.

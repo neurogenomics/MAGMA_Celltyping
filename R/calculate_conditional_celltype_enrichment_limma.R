@@ -15,6 +15,7 @@
 #' @returns Data.frame with conditional enrichment results.
 #'
 #' @examples
+#' \dontrun{
 #' ctd <- ewceData::ctd()
 #' 
 #' #### MAGMA 1 #####
@@ -41,6 +42,7 @@
 #'     magma1 = magma1,
 #'     magma2 = magma2,
 #'     ctd = ctd) 
+#'     }
 #' @export
 #' @importFrom dplyr %>% rename filter select
 #' @importFrom stats residuals cor anova lm quantile
@@ -50,7 +52,7 @@ calculate_conditional_celltype_enrichment_limma <- function(
     magma1,
     magma2,
     ctd,
-    ctd_species = "mouse",
+    ctd_species = infer_ctd_species(ctd),
     annotLevel = 1,
     prepare_ctd = TRUE,
     thresh = 0.0001,

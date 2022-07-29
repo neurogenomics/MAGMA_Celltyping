@@ -6,13 +6,15 @@
 \usage{
 get_driver_genes(
   ctd,
-  ctd_species = "mouse",
+  ctd_species = infer_ctd_species(ctd = ctd),
+  prepare_ctd = TRUE,
   magma_res,
   GenesOut_dir,
   fdr_thresh = 0.05,
   n_genes = 100,
-  spec_deciles = 10,
-  verbose = TRUE
+  spec_deciles = NULL,
+  verbose = TRUE,
+  ...
 )
 }
 \arguments{
@@ -20,7 +22,10 @@ get_driver_genes(
 
 \item{ctd_species}{Either 'human' or 'mouse'}
 
-\item{magma_res}{Merged results from \code{MAGMA.Celltyping::merge_results}.}
+\item{prepare_ctd}{Whether to run
+\link[MAGMA.Celltyping]{prepare_quantile_groups} on the \code{ctd} first.}
+
+\item{magma_res}{Merged results from \link[MAGMA.Celltyping]{merge_results}.}
 
 \item{GenesOut_dir}{Folder to search for \emph{.genes.out} 
 files implicated in \code{magma_res}.}
@@ -29,14 +34,80 @@ files implicated in \code{magma_res}.}
 
 \item{n_genes}{Max number of drive genes to return per cell-type enrichment.}
 
-\item{spec_deciles}{Which \emph{specificity_proportion} deciles to 
+\item{spec_deciles}{[Optional] 
+Which \emph{"specificity_proportion"} deciles to 
 include when calculating driver genes.
 (10 = most specific).}
 
 \item{verbose}{Print messages.}
+
+\item{...}{
+  Arguments passed on to \code{\link[EWCE:standardise_ctd]{EWCE::standardise_ctd}}
+  \describe{
+    \item{\code{dataset}}{CellTypeData. name.}
+    \item{\code{input_species}}{Which species the gene names in \code{exp} come from.
+See \link[EWCE]{list_species} for all available species.}
+    \item{\code{output_species}}{Which species' genes names to convert \code{exp} to.
+See \link[EWCE]{list_species} for all available species.}
+    \item{\code{non121_strategy}}{How to handle genes that don't have
+1:1 mappings between \code{input_species}:\code{output_species}.
+Options include:\cr
+\itemize{
+\item{\code{"drop_both_species" or "dbs" or 1} : \cr}{
+Drop genes that have duplicate
+mappings in either the \code{input_species} or \code{output_species} \cr
+(\emph{DEFAULT}).}
+\item{\code{"drop_input_species" or "dis" or 2} : \cr}{
+Only drop genes that have duplicate
+mappings in the \code{input_species}.}
+\item{\code{"drop_output_species" or "dos" or 3} : \cr}{
+Only drop genes that have duplicate
+mappings in the \code{output_species}.}
+\item{\code{"keep_both_species" or "kbs" or 4} : \cr}{
+Keep all genes regardless of whether
+they have duplicate mappings in either species.}
+\item{\code{"keep_popular" or "kp" or 5} : \cr}{
+Return only the most "popular" interspecies ortholog mappings.
+ This procedure tends to yield a greater number of returned genes
+ but at the cost of many of them not being true biological 1:1 orthologs.}
+ \item{\code{"sum","mean","median","min" or "max"} : \cr}{
+ When \code{gene_df} is a matrix and \code{gene_output="rownames"},
+  these options will aggregate many-to-one gene mappings
+  (\code{input_species}-to-\code{output_species})
+  after dropping any duplicate genes in the \code{output_species}.
+ }
+}}
+    \item{\code{method}}{R package to use for gene mapping:
+\itemize{
+\item{\code{"gprofiler"} : Slower but more species and genes.}
+\item{\code{"homologene"} : Faster but fewer species and genes.}
+\item{\code{"babelgene"} : Faster but fewer species and genes.
+Also gives consensus scores for each gene mapping based on a
+ several different data sources.}
+}}
+    \item{\code{force_new_quantiles}}{By default, quantile computation is
+skipped if they have already been computed.
+Set \code{=TRUE} to override this and generate new quantiles.}
+    \item{\code{force_standardise}}{If \code{ctd} has already been standardised, whether
+to rerun standardisation anyway (Default: \code{FALSE}).}
+    \item{\code{remove_unlabeled_clusters}}{Remove any samples that have
+numeric column names.}
+    \item{\code{numberOfBins}}{Number of non-zero quantile bins.}
+    \item{\code{keep_annot}}{Keep the column annotation data if provided.}
+    \item{\code{keep_plots}}{Keep the dendrograms if provided.}
+    \item{\code{as_sparse}}{Convert to sparse matrix.}
+    \item{\code{as_DelayedArray}}{Convert to \code{DelayedArray}.}
+    \item{\code{rename_columns}}{Remove \code{replace_chars} from column names.}
+    \item{\code{make_columns_unique}}{Rename each columns with the prefix
+\code{dataset.species.celltype}.}
+  }}
 }
 \description{
-Get genes driving significant \pkg{MAGMA_celltyping} results
+Infers the genes driving significant cell-type-specific enrichment results 
+by computing the mean rank of the adjusted Z-score from the 
+GWAS gene annotation file (\code{"ADJ_ZSTAT"}) and 
+the cell-type specificity score from the CellTypeDataset 
+(\code{"specificity_proportion"}).
 }
 \examples{
 ctd <- ewceData::ctd()

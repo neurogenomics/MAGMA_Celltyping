@@ -43,6 +43,9 @@ plot_celltype_associations <- function(ctAssocs,
                                        figsDir = NA,
                                        show_plot = TRUE) {
 
+    if(is.null(ctAssocs)){
+        stop("ctAssocs is NULL.")
+    }
     #### CHECK: THAT RESULTS FOR ONLY ONE GWAS WERE PROVIDED  ####
     # (for more than one use magma_tileplot.r)
     whichGWAS <- unique(gsub("DOWN\\..*", "DOWN", 

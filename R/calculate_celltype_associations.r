@@ -34,7 +34,7 @@
 #' @keywords main_function
 calculate_celltype_associations <- function(ctd,
                                             ctd_levels = seq_len(length(ctd)),
-                                            ctd_species = "mouse",
+                                            ctd_species = infer_ctd_species(ctd),
                                             gwas_sumstats_path = NULL,
                                             magma_dir = NULL,
                                             analysis_name = "MainRun", 

@@ -25,7 +25,8 @@ create_gene_covar_file(
   ctd,
   annotLevel,
   ctd_species,
-  genesOutCOND = NA
+  genesOutCOND = NA,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -42,6 +43,8 @@ i.e. "mouse" or "human"}
 
 \item{genesOutCOND}{[Optional] Path to a \emph{genes.out}
 file to condition on. Used if you want to condition on a different GWAS.}
+
+\item{verbose}{Print messages.}
 }
 \value{
 File path for the gene covar file.

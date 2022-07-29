@@ -12,6 +12,7 @@ map_snps_to_genes(
   N = NULL,
   genome_ref_path = NULL,
   population = "eur",
+  genes_only = FALSE,
   storage_dir = tools::R_user_dir("MAGMA.Celltyping", which = "cache"),
   force_new = FALSE,
   version = NULL,
@@ -50,6 +51,13 @@ the most common GWAS subpopulation).}
 \item{"eas" : }{East Asian descent.}
 \item{"sas" : }{South Asian descent.}
 }}
+
+\item{genes_only}{The \emph{.genes.raw} file is the intermediary file 
+that serves as  the input for subsequent gene-level analyses. 
+ To perform only a gene analysis, with no subsequent gene-set analysis,
+ the \code{--genes-only} flag can be added (\code{TRUE}). 
+ This suppresses the creation of the \emph{.genes.raw} file, 
+ and significantly reduces the running time and memory required.}
 
 \item{storage_dir}{Where to store genome ref.}
 

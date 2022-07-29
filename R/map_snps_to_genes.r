@@ -18,6 +18,12 @@
 #' @param N What is the N number for this GWAS? That is cases + controls.
 #' @param genome_ref_path Path to the folder containing the 1000
 #' genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).
+#' @param genes_only The \emph{.genes.raw} file is the intermediary file 
+#' that serves as  the input for subsequent gene-level analyses. 
+#'  To perform only a gene analysis, with no subsequent gene-set analysis,
+#'  the \code{--genes-only} flag can be added (\code{TRUE}). 
+#'  This suppresses the creation of the \emph{.genes.raw} file, 
+#'  and significantly reduces the running time and memory required.
 #' @param force_new Set to \code{TRUE} to
 #' rerun \code{MAGMA} even if the output files already exist.
 #'  (Default: \code{FALSE}).
@@ -44,6 +50,7 @@ map_snps_to_genes <- function(path_formatted,
                               N = NULL,
                               genome_ref_path = NULL,
                               population = "eur",
+                              genes_only = FALSE,
                               storage_dir = tools::R_user_dir(
                                   "MAGMA.Celltyping",
                                   which="cache"),
@@ -148,14 +155,14 @@ map_snps_to_genes <- function(path_formatted,
     )
     #### Run MAGMA command ####
     magma_run(cmd = magma_cmd, 
-              version = version)
-
+              version = version) 
     #### Create genes.out ####
     message_parallel("\n==== MAGMA Step 2: Generate genes.out ====\n")
     magma_cmd <- sprintf(
         paste("magma",
               "--bfile '%s'",
               "--pval '%s' %s",
+              if(isTRUE(genes_only)) "--genes-only" else NULL,
               "--gene-annot '%s.genes.annot'",
               "--out '%s'"),
         genome_ref_path, 

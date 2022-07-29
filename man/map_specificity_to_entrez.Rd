@@ -18,8 +18,11 @@ map_specificity_to_entrez(
 \item{ctd}{Cell type data structure containing
 \code{specificity_quantiles}.}
 
-\item{ctd_species}{Species name relevant to the cell type data.
-See \link[EWCE]{list_species} for all available species.}
+\item{ctd_species}{Species name relevant to the CellTypeDataset (\code{ctd}).
+See \link[EWCE]{list_species} for all available species. 
+If \code{ctd_species=NULL} (default),
+ the \code{ctd} species will automatically 
+ be inferred using \link[orthogene]{infer_species}.}
 
 \item{use_matrix}{Which CTD matrix to use as input.}
 

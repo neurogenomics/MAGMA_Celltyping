@@ -14,6 +14,8 @@ import_magma_files(
   file_types = c(".genes.out", ".genes.raw"),
   overwrite = FALSE,
   return_dir = TRUE,
+  return_tables = FALSE,
+  nested = FALSE,
   nThread = 1,
   verbose = TRUE
 )
@@ -37,12 +39,19 @@ them to be re-downloaded (Default: \code{FALSE}).}
 \item{return_dir}{Return a list of unique directory names instead of the 
 full file paths (Default: \code{TRUE}).}
 
+\item{return_tables}{Returns the files imported as tables (\code{TRUE}),
+instead of as paths (default: \code{FALSE}). 
+Overrides \code{return_dir} argument.}
+
+\item{nested}{Return files as a list nested by \code{id} (default: \code{FALSE}).}
+
 \item{nThread}{Number of threads to parallelise downloads across.}
 
 \item{verbose}{Print messages.}
 }
 \value{
-Named vector of paths to downloaded MAGMA files (or directories).
+Named vector of paths to downloaded MAGMA files (or directories), 
+or a \link[data.table]{data.table}.
 }
 \description{
 Import preprocessed MAGMA SNPs-to-genes mapping files for many GWAS. 

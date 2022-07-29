@@ -4,10 +4,16 @@
 \alias{decompress}
 \title{Decompress a file}
 \usage{
-decompress(path_formatted, remove = FALSE, overwrite = FALSE)
+decompress(
+  path_formatted,
+  remove = FALSE,
+  overwrite = FALSE,
+  storage_dir = tools::R_user_dir(package = "MAGMA.Celltyping", which = "cache"),
+  verbose = TRUE
+)
 }
 \arguments{
-\item{path_formatted}{Path to compressd file.}
+\item{path_formatted}{Path to compressed file.}
 
 \item{remove}{If \code{\link[base:logical]{TRUE}}, the input file is removed afterward,
    otherwise not.}
@@ -15,6 +21,13 @@ decompress(path_formatted, remove = FALSE, overwrite = FALSE)
 \item{overwrite}{If \code{\link[base:logical]{TRUE}} and the output file already exists,
    the file is silently overwritten, otherwise an exception is
    thrown (unless \code{skip} is \code{\link[base:logical]{TRUE}}).}
+
+\item{storage_dir}{Folder in which to store the GWAS summary stats.}
+
+\item{verbose}{Print messages.}
+}
+\value{
+Path to decompressed file.
 }
 \description{
 Decompress a gzipped (.gz) or bgzipped (.bgz) file.

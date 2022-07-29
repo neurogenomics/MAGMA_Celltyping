@@ -8,7 +8,8 @@ celltype_associations_pipeline(
   ctd,
   ctd_levels = seq_len(length(ctd)),
   ctd_name,
-  ctd_species = "mouse",
+  ctd_species = infer_ctd_species(ctd),
+  standardise = TRUE,
   magma_dirs,
   run_linear = TRUE,
   run_top10 = TRUE,
@@ -36,8 +37,14 @@ iterate the enrichment analysis over.}
 
 \item{ctd_name}{Used in file names}
 
-\item{ctd_species}{Species name relevant to the cell type data.
-See \link[EWCE]{list_species} for all available species.}
+\item{ctd_species}{Species name relevant to the CellTypeDataset (\code{ctd}).
+See \link[EWCE]{list_species} for all available species. 
+If \code{ctd_species=NULL} (default),
+ the \code{ctd} species will automatically 
+ be inferred using \link[orthogene]{infer_species}.}
+
+\item{standardise}{Whether to run \link[EWCE]{standardise_ctd} first.
+Provides gene ortholog conversion.}
 
 \item{magma_dirs}{Path to folders containing the
 pre-computed MAGMA GWAS files (\emph{.gsa.raw}and \emph{.gsa.out}).

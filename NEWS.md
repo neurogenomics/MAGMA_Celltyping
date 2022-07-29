@@ -1,3 +1,41 @@
+# MAGMA.Celltyping 2.0.6
+
+## New features
+
+* `import_magma_files`:
+    - Add args to import as nested list and/or `data.table`s. 
+    - Add dedicated unit tests. 
+* `magma_files_metadata`
+    - Update after deleting old files. 
+* `celltype_associations_pipeline`:
+    - Pass up `standardise` arg.
+* `adjust_zstat_in_genesOut`:
+    - Enable usage without CTD.
+    - Add unit tests.
+* Infer `ctd` and `geneset` species by default:
+    - `infer_ctd_species`
+    - `infer_geneset_species`
+
+## Bug fixes 
+
+* Ensure all functions work with sparse matrices.
+* `check_quantiles`:
+    - Compute "specificity_quantiles" if not already present in CTD 
+    (workaround for bug in `EWCE::standardise_ctd`). 
+* `decompress`
+    - Specify file path as `storage_dir` instead of `tempdir()`. 
+* Update `full_workflow` vignette to work.
+* `magma_tileplot`:
+    - Fix to handle situations where all q-values equal 1. 
+* `get_example_gwas`:
+    - Revert default storage dir to `tempdir()` 
+    to make easier to infer MAGMA output file paths in vignettes. 
+* `merge_results`: 
+    - Create`save_dir` if not already present.
+* `get_driver_genes`:
+    - Fix bug that searched for "hgnc.symbol" instead of "hgnc_symbol". 
+    - Sort by mean rank between "ADJ_ZSTAT" and "specificity_proportion". 
+    
 # MAGMA.Celltyping 2.0.5
 
 ## New features

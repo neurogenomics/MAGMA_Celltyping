@@ -4,6 +4,7 @@
 #'
 #' @param save_path Path to save sum stats.
 #' @param timeout How many seconds to wait before timeout.
+#' @param verbose Print messages. 
 #'
 #' @return Path to sumstats
 #'
@@ -19,7 +20,8 @@ get_example_gwas_raw <- function(storage_dir = tools::R_user_dir(
                                      "prospective_memory",
                                      "fluid_intelligence"
                                  ),
-                                 timeout = 60 * 5) {
+                                 timeout = 60 * 5,
+                                 verbose = TRUE) {
     #### Check trait ####
     trait <- tolower(trait)[1]
     if (trait == "prospective_memory") {
@@ -43,20 +45,20 @@ get_example_gwas_raw <- function(storage_dir = tools::R_user_dir(
     gwas_sumstats_path <- file.path(storage_dir, basename(URL))
     unzipped_path <- gsub(".bgz|.gz|[?]|dl=1", "", gwas_sumstats_path)
     if (file.exists(unzipped_path)) {
-        message("Importing pe-existing file.")
+        messager("Importing pe-existing file.",v=verbose)
     } else {
-        message(paste("Downloading example GWAS:", trait))
+        messager("Downloading example GWAS:", trait,v=verbose)
         options(timeout = timeout)
         utils::download.file(
             url = URL,
             destfile = gwas_sumstats_path
         )
-        message("Unzipping example GWAS.")
+        messager("Unzipping example GWAS.",v=verbose)
         R.utils::gunzip(
             gwas_sumstats_path,
             unzipped_path
         )
     }
-    message(paste("File saved at:", unzipped_path))
+    messager("File saved at:", unzipped_path,v=verbose)
     return(unzipped_path)
 }

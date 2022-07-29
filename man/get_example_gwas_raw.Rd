@@ -7,11 +7,14 @@
 get_example_gwas_raw(
   storage_dir = tools::R_user_dir(package = "MAGMA.Celltyping", which = "cache"),
   trait = c("prospective_memory", "fluid_intelligence"),
-  timeout = 60 * 5
+  timeout = 60 * 5,
+  verbose = TRUE
 )
 }
 \arguments{
 \item{timeout}{How many seconds to wait before timeout.}
+
+\item{verbose}{Print messages.}
 
 \item{save_path}{Path to save sum stats.}
 }

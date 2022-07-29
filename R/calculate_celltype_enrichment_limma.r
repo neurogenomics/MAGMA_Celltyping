@@ -34,13 +34,16 @@
 #'     magmaAdjZ = magmaAdjZ,
 #'     ctd = ctd)
 #' @export
-#' @importFrom dplyr %>% rename filter
+#' @importFrom dplyr mutate rename filter
+#' @importFrom methods is
 #' @importFrom limma lmFit eBayes topTable
 #' @importFrom stats quantile setNames 
+#' @importFrom data.table rbindlist
+#' @importFrom EWCE fix_celltype_names standardise_ctd
 calculate_celltype_enrichment_limma <- function(
     magmaAdjZ,
     ctd, 
-    ctd_species = "mouse",
+    ctd_species = infer_ctd_species(ctd),
     annotLevel = 1,
     prepare_ctd = TRUE,
     thresh = 0.0001,
@@ -50,16 +53,16 @@ calculate_celltype_enrichment_limma <- function(
     ...) {
     
     #### Avoid confusing checks ####
-    hgnc.symbol <- human.symbol <- selected_celltypes <- percentile <- NULL; 
-    Celltype_id <- proportion <- NULL;
+    hgnc.symbol <- human.symbol <- percentile <- NULL; 
+    Celltype_id <- NULL;
     
     #### Check hgnc_symbol are present ####
     if (!"hgnc_symbol" %in% colnames(magmaAdjZ)) {
         if("hgnc.symbol" %in% colnames(magmaAdjZ)){
-            magmaAdjZ <- magmaAdjZ %>%
+            magmaAdjZ <- magmaAdjZ |>
                 dplyr::rename(hgnc_symbol = hgnc.symbol)
         } else if ("human.symbol" %in% colnames(magmaAdjZ)){
-            magmaAdjZ <- magmaAdjZ %>%
+            magmaAdjZ <- magmaAdjZ |>
                 dplyr::rename(hgnc_symbol = human.symbol)
         }else {
             stopper("Could not find hgnc_symbol or hgnc.symbol column ",
@@ -83,17 +86,15 @@ calculate_celltype_enrichment_limma <- function(
     ## the same as in the MAGMA.Celltyping pipeline
     messager("Preparing specificity matrix.", v = verbose)
     spec <- ctd[[annotLevel]]$specificity 
-    spec <- as.matrix(data.frame(
-        spec,
-        check.rows = FALSE,
-        check.names = FALSE
-    ))
-    allCellTypes <- colnames(spec)
+    if(methods::is(spec,"data.frame")){
+        spec <- as.matrix(spec)
+    } 
+    allCellTypes <- EWCE::fix_celltype_names(colnames(spec))
     celltype_dict <- stats::setNames(og_colnames, allCellTypes)
     #### Select a subset of cell types to test####
     if (!is.null(celltypes)) {
         celltypes <- EWCE::fix_celltype_names(celltypes = celltypes) 
-        allCellTypes <- allCellTypes[allCellTypes %in% selected_celltypes]
+        allCellTypes <- allCellTypes[allCellTypes %in% celltypes]
         messager(length(allCellTypes), "cell-types selected.", v = verbose)
     }
     #### Initialise variables ####
@@ -124,8 +125,8 @@ calculate_celltype_enrichment_limma <- function(
             proportion = props,
             percentile = perc
         )
-        magma_with_ct1 <- geneGroups %>% 
-            merge(magmaAdjZ, by = "hgnc_symbol") %>%
+        magma_with_ct1 <- geneGroups |>
+            merge(magmaAdjZ, by = "hgnc_symbol") |>
             dplyr::filter(percentile >= 0)
         input_all[[ct1]] <- magma_with_ct1
         #### Fit a linear model and get p-value and coefficient (slope) ####
@@ -149,16 +150,18 @@ calculate_celltype_enrichment_limma <- function(
         ## Add columns to differentiation original cell type names
         ## from standardized cell type names.
         res_all_df <- data.table::rbindlist(res_all, 
-                                            idcol = "Celltype_id") %>% 
+                                            use.names = TRUE,
+                                            idcol = "Celltype_id") |>
             dplyr::mutate(Celltype = celltype_dict[Celltype_id],
                           ctd_level = annotLevel,
                           .after = 1) 
         #### input df ####
         input_all_df <- data.table::rbindlist(input_all,
-            idcol = "Celltype_id") %>%
+                                              use.names = TRUE,
+                                              idcol = "Celltype_id") |>
             dplyr::rename(
-                specificity_proportion = dplyr::all_of(proportion),
-                specificity_decile = dplyr::all_of(percentile)) %>%
+                specificity_proportion = dplyr::all_of("proportion"),
+                specificity_decile = dplyr::all_of("percentile")) |>
             dplyr::mutate(Celltype = celltype_dict[Celltype_id],
                           ctd_level = annotLevel,
                           .after = 1) 

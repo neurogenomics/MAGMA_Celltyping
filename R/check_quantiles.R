@@ -10,6 +10,8 @@ check_quantiles <- function(ctd,
                             metric = c("n","max")){
     # col_maxes <- apply(ctd_1lvl[[new_matrix_name]], 2, max)\
     #### Check number of unique non-zero quantile values in each col ####
+    
+    metric <- tolower(metric)[1]
     quantile_counts <- lapply(seq_len(length(ctd)),
                               function(lvl,
                                        .matrix_name=matrix_name,

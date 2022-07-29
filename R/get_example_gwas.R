@@ -12,6 +12,7 @@
 #' @param munged Whether to download the raw or pre-munged
 #'  version of each GWAS (\emph{Default:} \code{TRUE}).
 #' @param storage_dir Folder in which to store the GWAS summary stats.
+#' @param verbose Print messages. 
 #' @inheritParams get_example_gwas_raw
 #' 
 #' @source
@@ -60,11 +61,9 @@ get_example_gwas <- function(trait = c(
                                  "prospective_memory"
                              ),
                              munged = TRUE,
-                             storage_dir = tools::R_user_dir(
-                                 package = "MAGMA.Celltyping",
-                                 which = "cache"
-                             ),
-                             timeout = 60 * 5) {
+                             storage_dir = tempdir(),
+                             timeout = 60 * 5,
+                             verbose = TRUE) {
     trait <- tolower(trait)[1]
     if (munged) {
         if (!trait %in% c(
@@ -75,7 +74,8 @@ get_example_gwas <- function(trait = c(
             stop("trait must be one of: 'prospective_memory',
                  'fluid_intelligence', or 'educational_attainment'")
         }
-        message(paste("Importing munged GWAS summary statistics:", trait))
+        messager("Importing munged GWAS summary statistics:", trait,
+                 v=verbose)
         if (trait == "educational_attainment") {
             unzipped_path <- file.path(
                 storage_dir,
@@ -92,13 +92,16 @@ get_example_gwas <- function(trait = c(
                 fname = paste0(trait, ".ukb.tsv.gz"),
                 storage_dir = storage_dir
             )
-            unzipped_path <- decompress(path_formatted = path)
+            unzipped_path <- decompress(path_formatted = path, 
+                                        storage_dir = storage_dir,
+                                        verbose = verbose)
         }
     } else {
         unzipped_path <- get_example_gwas_raw(
             storage_dir = storage_dir,
             trait = trait,
-            timeout = timeout
+            timeout = timeout,
+            verbose = verbose
         )
     }
     return(unzipped_path)

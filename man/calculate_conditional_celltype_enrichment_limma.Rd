@@ -9,7 +9,7 @@ calculate_conditional_celltype_enrichment_limma(
   magma1,
   magma2,
   ctd,
-  ctd_species = "mouse",
+  ctd_species = infer_ctd_species(ctd),
   annotLevel = 1,
   prepare_ctd = TRUE,
   thresh = 1e-04,
@@ -28,8 +28,11 @@ calculate_conditional_celltype_enrichment_limma(
 \item{ctd}{Cell type data structure containing
 \code{specificity_quantiles}.}
 
-\item{ctd_species}{Species name relevant to the cell type data.
-See \link[EWCE]{list_species} for all available species.}
+\item{ctd_species}{Species name relevant to the CellTypeDataset (\code{ctd}).
+See \link[EWCE]{list_species} for all available species. 
+If \code{ctd_species=NULL} (default),
+ the \code{ctd} species will automatically 
+ be inferred using \link[orthogene]{infer_species}.}
 
 \item{annotLevel}{Level within the \code{ctd} to use.}
 
@@ -52,6 +55,7 @@ Calculate celltype enrichments without MAGMA
 using adjusted MAGMA Z-statistic from .genes.out files.
 }
 \examples{
+\dontrun{
 ctd <- ewceData::ctd()
 
 #### MAGMA 1 #####
@@ -78,4 +82,5 @@ MAGMA.Celltyping::calculate_conditional_celltype_enrichment_limma(
     magma1 = magma1,
     magma2 = magma2,
     ctd = ctd) 
+    }
 }

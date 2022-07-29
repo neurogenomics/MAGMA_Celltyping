@@ -6,7 +6,7 @@
 \usage{
 calculate_conditional_celltype_associations(
   ctd,
-  ctd_species = "mouse",
+  ctd_species = infer_ctd_species(ctd),
   gwas_sumstats_path = NULL,
   magma_dir = NULL,
   analysis_name = "MainRun",
@@ -26,8 +26,11 @@ calculate_conditional_celltype_associations(
 \item{ctd}{Cell type data structure containing
 \code{specificity_quantiles}.}
 
-\item{ctd_species}{Species name relevant to the cell type data.
-See \link[EWCE]{list_species} for all available species.}
+\item{ctd_species}{Species name relevant to the CellTypeDataset (\code{ctd}).
+See \link[EWCE]{list_species} for all available species. 
+If \code{ctd_species=NULL} (default),
+ the \code{ctd} species will automatically 
+ be inferred using \link[orthogene]{infer_species}.}
 
 \item{gwas_sumstats_path}{File path of the summary statistics file.}
 

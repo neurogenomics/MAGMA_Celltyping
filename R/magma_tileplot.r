@@ -17,13 +17,14 @@
 #' 
 #' @export 
 #' @importFrom stats p.adjust 
+#' @importFrom methods show
 magma_tileplot <- function(ctd,
                            results, 
                            height = 13, 
                            width = 4, 
                            annotLevel = 1,
                            fileTag = "", 
-                           output_path) {
+                           output_path = tempdir()) {
     requireNamespace("ggplot2")
     requireNamespace("ggdendro")
     requireNamespace("grDevices")
@@ -57,6 +58,9 @@ magma_tileplot <- function(ctd,
                                levels = ctdDendro$ordered_cells)
     # Plot it!
     results$q <- stats::p.adjust(results$P, method = "bonferroni")
+    results$dotsize <- cut(x = results$q, 
+                           breaks = c(0,0.00001,0.0001,0.001,0.05,1),
+                           labels = c(4,3,2,1,NA)) 
 
     # Prepare the tileplot
     fig_Heatmap_WOdendro <- ggplot2::ggplot(results) +
@@ -72,15 +76,8 @@ magma_tileplot <- function(ctd,
         ggplot2::ggtitle("MAGMA") +
         ggplot2::geom_point(
             ggplot2::aes_string(x = "GCOV_FILE", y = "Celltype", 
-                      size = ifelse(q < 0.00001, "HUGEdot", 
-                                    ifelse(q < 0.0001, "BIGdot", 
-                                           ifelse(q < 0.001, "BiiGdot", 
-                                                  ifelse(q < 0.05, "dot",
-                                                         "no_dot"))))), 
-            col = "black") +
-        ggplot2::scale_size_manual(
-            values = c(HUGEdot = 4, BIGdot = 3, BiiGdot = 2, 
-                       dot = 1, no_dot = NA), guide = "none")
+                                size = "dotsize"), 
+            col = "black") 
 
     #### Prepare the dendrogram ####
     Fig_Dendro <- ggplot2::ggplot(ggdendro::segment(ctdDendro$ddata)) +
@@ -96,15 +93,17 @@ magma_tileplot <- function(ctd,
         sprintf("%s/CombinedRes_TilePlot_MAGMA_noDendro_level%s_%s.pdf", 
                 figurePath, annotLevel, fileTag),
         width = width, height = height)
-    print(fig_Heatmap_WOdendro)
+    methods::show(fig_Heatmap_WOdendro)
     grDevices::dev.off()
 
     grDevices::pdf(
         sprintf("%s/CombinedRes_TilePlot_MAGMA_wtDendro_level%s_%s.pdf", 
                 figurePath, annotLevel, fileTag),
         width = width + 1, height = height)
-    print(gridExtra::grid.arrange(fig_Heatmap_WOdendro,
-                                  Fig_Dendro, ncol = 2, widths = c(0.8, 0.2)))
+    methods::show(gridExtra::grid.arrange(fig_Heatmap_WOdendro,
+                                  Fig_Dendro, 
+                                  ncol = 2, 
+                                  widths = c(0.8, 0.2)))
     grDevices::dev.off()
 
     return(list(heatmap = fig_Heatmap_WOdendro, 

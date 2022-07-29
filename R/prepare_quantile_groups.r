@@ -29,7 +29,7 @@ prepare_quantile_groups <- function(ctd,
                                     ...) {
 
     #### Convert orthologs ####
-    if (standardise) {
+    if (isTRUE(standardise)) {
         ctd <- EWCE::standardise_ctd(
             ctd = ctd,
             dataset = NULL,
@@ -37,9 +37,15 @@ prepare_quantile_groups <- function(ctd,
             input_species = input_species,
             output_species = output_species,
             numberOfBins = numberOfBins,
-            verbose = verbose,
+            verbose = verbose, 
             ...
         )
+    }
+    #### Compute specificity quantiles (if necessary) ####
+    if(!"specificity_quantiles" %in% names(ctd[[1]])){
+        ctd <- lapply(ctd, EWCE::bin_specificity_into_quantiles,
+                      numberOfBins = numberOfBins, 
+                      matrix_name = "specificity_quantiles") 
     }
     #### Compute specificity deciles ####
     ctd <- lapply(ctd, EWCE::bin_specificity_into_quantiles,

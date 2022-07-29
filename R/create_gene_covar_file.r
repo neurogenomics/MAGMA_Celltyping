@@ -14,7 +14,7 @@
 #'  i.e. "mouse" or "human"
 #' @param genesOutCOND [Optional] Path to a \emph{genes.out}
 #'  file to condition on. Used if you want to condition on a different GWAS.
-#'
+#' @param verbose Print messages.
 #' @source
 #' \code{
 #' #### Example usage ####
@@ -34,19 +34,19 @@
 #' @return File path for the gene covar file.
 #'
 #' @keywords internal
-#' @importFrom utils read.table
-#' @importFrom dplyr %>% rename
+#' @importFrom utils read.table write.table
 create_gene_covar_file <- function(genesOutFile,
                                    ctd,
                                    annotLevel,
                                    ctd_species,
-                                   genesOutCOND = NA) {
-    human.symbol <- entrez <- NULL;
+                                   genesOutCOND = NA,
+                                   verbose = TRUE) { 
     quantDat2 <- map_specificity_to_entrez(
         ctd = ctd,
         annotLevel = annotLevel,
         ctd_species = ctd_species, 
-        use_matrix = "specificity_quantiles"
+        use_matrix = "specificity_quantiles",
+        verbose = verbose
     ) 
     if (dim(quantDat2)[1] < 100) {
         stop_msg <- paste(
@@ -65,31 +65,33 @@ create_gene_covar_file <- function(genesOutFile,
         for (i in seq_len(length(genesOutCOND))) {
             genesOutCOND_data <- read.table(
                 file = genesOutCOND[i],
-                stringsAsFactors = FALSE
-            )
-            colnames(genesOutCOND_data) <- genesOutCOND_data[1, ]
-            genesOutCOND_data <- genesOutCOND_data[-1, c("GENE", "ZSTAT")]
-            colnames(genesOutCOND_data)[1] <- "entrezgene"
-
+                stringsAsFactors = FALSE, 
+                header = TRUE,
+            )[, c("GENE", "ZSTAT")]
+            colnames(genesOutCOND_data)[1] <- "entrez" 
             ## Expand the entrez definitions to include other entrez symbols
             ## matching the relevant gene symbols.  
             genesOutCOND_data2 <- merge(
-                x = MAGMA.Celltyping::hgnc2entrez_orthogene %>% 
-                    dplyr::rename(hgnc_symbol = human.symbol,
-                                  entrezgene = entrez),
+                x = MAGMA.Celltyping::hgnc2entrez_orthogene,
                 y = genesOutCOND_data,
-                by = "entrezgene"
-            )[, c(1, 3)]
-            colnames(genesOutCOND_data2)[1] <- "entrez"
-            colnames(genesOutCOND_data2)[2] <- sprintf("ZSTAT%s", i)
-
-            # quantDat2new = merge(quantDat2,genesOutCOND_data2,by="entrez")
-            quantDat2 <- merge(quantDat2, genesOutCOND_data2, by = "entrez")
+                by = "entrez"
+            )[, c(1, 3)] 
+            colnames(genesOutCOND_data2)[2] <- sprintf("ZSTAT%s", i)  
+            quantDat2 <- merge(quantDat2, 
+                               genesOutCOND_data2, 
+                               by = "entrez")
         }
+    }
+    #### Ensure there are no duplicate genes ####
+    dup_genes <- duplicated(quantDat2$entrez)
+    if(sum(dup_genes, na.rm = TRUE)>0){
+        messager("Removing", sum(dup_genes, na.rm = TRUE),
+                 "genes with duplicate entrez IDs.",v=verbose)
+        quantDat2 <- quantDat2[!dup_genes,]
     }
     #### Write genes covar file to disk ####
     geneCovarFile <- tempfile()
-    write.table(
+    utils::write.table(
         x = quantDat2,
         file = geneCovarFile,
         quote = FALSE,
