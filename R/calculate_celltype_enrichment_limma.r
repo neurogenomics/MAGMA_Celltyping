@@ -43,7 +43,7 @@
 calculate_celltype_enrichment_limma <- function(
     magmaAdjZ,
     ctd, 
-    ctd_species = infer_ctd_species(ctd),
+    ctd_species = "mouse",
     annotLevel = 1,
     prepare_ctd = TRUE,
     thresh = 0.0001,
@@ -53,7 +53,7 @@ calculate_celltype_enrichment_limma <- function(
     ...) {
     
     #### Avoid confusing checks ####
-    hgnc.symbol <- human.symbol <- percentile <- NULL; 
+    hgnc.symbol <- human.symbol <- selected_celltypes <- percentile <- NULL; 
     Celltype_id <- NULL;
     
     #### Check hgnc_symbol are present ####
@@ -94,7 +94,7 @@ calculate_celltype_enrichment_limma <- function(
     #### Select a subset of cell types to test####
     if (!is.null(celltypes)) {
         celltypes <- EWCE::fix_celltype_names(celltypes = celltypes) 
-        allCellTypes <- allCellTypes[allCellTypes %in% celltypes]
+        allCellTypes <- allCellTypes[allCellTypes %in% selected_celltypes]
         messager(length(allCellTypes), "cell-types selected.", v = verbose)
     }
     #### Initialise variables ####

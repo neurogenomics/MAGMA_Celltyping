@@ -104,7 +104,7 @@ import_magma_files <- function(save_dir = tempdir(),
         return(magma_dirs)
     } else {
     ## as file paths
-        messager("Returning MAGMA gene.raw and gene.out file paths",v=verbose)
+        messager("Returning MAGMA gene.* file paths",v=verbose)
         ### Must include OpenGWAS ID + upstream/downtream params + file type
         ## bc we need all info in order to make list names unique.
         if(isFALSE(nested)){

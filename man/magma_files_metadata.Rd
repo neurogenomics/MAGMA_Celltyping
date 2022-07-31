@@ -5,14 +5,14 @@
 \alias{magma_files_metadata}
 \title{MAGMA_Files_Public: metadata}
 \format{
-An object of class \code{data.table} (inherits from \code{data.frame}) with 714 rows and 44 columns.
+An object of class \code{data.table} (inherits from \code{data.frame}) with 288 rows and 49 columns.
 }
 \source{
 \code{
 #### Check what files are available ####
 magma_files_metadata <- data.table::fread(
     paste("https://github.com/neurogenomics/MAGMA_Files_Public",
-              "raw/master/metadata.csv", sep="/"), drop = "V1"
+              "raw/master/metadata.csv", sep="/")
 )
 usethis::use_data(magma_files_metadata, overwrite = TRUE)
 }

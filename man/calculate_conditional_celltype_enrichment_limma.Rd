@@ -55,7 +55,6 @@ Calculate celltype enrichments without MAGMA
 using adjusted MAGMA Z-statistic from .genes.out files.
 }
 \examples{
-\dontrun{
 ctd <- ewceData::ctd()
 
 #### MAGMA 1 #####
@@ -81,6 +80,5 @@ cond_res <-
 MAGMA.Celltyping::calculate_conditional_celltype_enrichment_limma(
     magma1 = magma1,
     magma2 = magma2,
-    ctd = ctd) 
-    }
+    ctd = ctd)
 }

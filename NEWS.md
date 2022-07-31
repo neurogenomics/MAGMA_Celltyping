@@ -15,6 +15,10 @@
 * Infer `ctd` and `geneset` species by default:
     - `infer_ctd_species`
     - `infer_geneset_species`
+* `map_snps_to_genes`:
+    - Can interpret `N` when `=NULL` or `=NA`.
+    - Added `genes_only` arg to make function faster and 
+    skip generating "genes.raw" file.  
 
 ## Bug fixes 
 
@@ -35,6 +39,9 @@
 * `get_driver_genes`:
     - Fix bug that searched for "hgnc.symbol" instead of "hgnc_symbol". 
     - Sort by mean rank between "ADJ_ZSTAT" and "specificity_proportion". 
+* `magma_files_metadata`:
+    - Updated to reflect newly reprocessed 288 datasets. 
+    - Reprocessed "ukb-b-6548" to get `calculate_conditional_celltype_enrichment_limma` example working again. 
     
 # MAGMA.Celltyping 2.0.5
 

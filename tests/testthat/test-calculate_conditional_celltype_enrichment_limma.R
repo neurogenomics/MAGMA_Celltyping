@@ -9,7 +9,8 @@ test_that("calculate_conditional_celltype_enrichment_limma works", {
     
     if(!is_32bit()){
         ctd <- ewceData::ctd()
-        magma_cols <- c("entrez","GENE","CHR","START","STOP","NSNPS","NPARAM",
+        magma_cols <- c("entrez","hgnc_symbol",
+                        "CHR","START","STOP","NSNPS","NPARAM",
                         "N","ZSTAT","P","hgnc_symbol","Q","logNSNPS","logNPARAM",
                         "GENELEN","logGENELEN","ADJ_ZSTAT")
         

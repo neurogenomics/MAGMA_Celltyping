@@ -71,6 +71,6 @@ Suggests:
     ewceData,
     badger
 SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Encoding: UTF-8
 Config/testthat/edition: 3

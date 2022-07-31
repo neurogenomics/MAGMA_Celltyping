@@ -14,8 +14,7 @@
 #'
 #' @returns Data.frame with conditional enrichment results.
 #'
-#' @examples
-#' \dontrun{
+#' @examples 
 #' ctd <- ewceData::ctd()
 #' 
 #' #### MAGMA 1 #####
@@ -41,10 +40,9 @@
 #' MAGMA.Celltyping::calculate_conditional_celltype_enrichment_limma(
 #'     magma1 = magma1,
 #'     magma2 = magma2,
-#'     ctd = ctd) 
-#'     }
+#'     ctd = ctd)
 #' @export
-#' @importFrom dplyr %>% rename filter select
+#' @importFrom dplyr rename filter select
 #' @importFrom stats residuals cor anova lm quantile
 #' @importFrom reshape2 melt dcast
 #' @importFrom lme4 lmer
@@ -67,13 +65,13 @@ calculate_conditional_celltype_enrichment_limma <- function(
     if(show_plot) requireNamespace("ggplot2")
     #### Join the two MAGMA Z-score data frames ####
     m1 <- magma1[!duplicated(magma1$entrez),]
+    data.table::setkeyv(m1,"entrez")
     m2 <- magma2[!duplicated(magma2$entrez),] 
+    data.table::setkeyv(m2,"entrez")
     shared <- intersect(m1$entrez, m2$entrez)
-    rownames(m1) <- m1$entrez
-    rownames(m2) <- m2$entrez
-    m1a <- m1[as.character(shared), ] %>% 
+    m1a <- m1[as.character(shared), ] |> 
         dplyr::select(entrez,hgnc_symbol, ADJ_ZSTAT)
-    m2a <- m2[as.character(shared), ] %>% 
+    m2a <- m2[as.character(shared), ] |> 
         dplyr::select(entrez,hgnc_symbol, ADJ_ZSTAT)
     m3 <- merge(m1a, m2a, by = c("entrez","hgnc_symbol"))
     #### Regress the second from the first & get the residuals ####
@@ -84,12 +82,12 @@ calculate_conditional_celltype_enrichment_limma <- function(
     # capture(stats::anova(mod)) 
     capture(summary(mod))
     m3$zNew <- stats::residuals(mod)
-    m3 <- m3 %>%
-        dplyr::rename(ADJ_original = ADJ_ZSTAT.y) %>%
+    m3 <- m3 |>
+        dplyr::rename(ADJ_original = ADJ_ZSTAT.y) |>
         dplyr::rename(ADJ_ZSTAT.y = zNew)
-    magma2_NEW <- merge(x = m3[, c("entrez", "ADJ_ZSTAT.y")] %>% 
+    magma2_NEW <- merge(x = m3[, c("entrez", "ADJ_ZSTAT.y")] |> 
                             dplyr::rename(ADJ_ZSTAT = ADJ_ZSTAT.y), 
-                        y = magma2 %>%
+                        y = magma2 |>
                             dplyr::select(entrez, hgnc_symbol),
                         by = "entrez")
     #### Melt it (so it's ready for mixed modelling)! ####
@@ -139,8 +137,8 @@ calculate_conditional_celltype_enrichment_limma <- function(
             check.rows = FALSE,
             check.names = FALSE
         )
-        magma_with_ct1 <- geneGroups %>% 
-            merge(magmaAdjZ, by = "hgnc_symbol") %>%
+        magma_with_ct1 <- geneGroups |> 
+            merge(magmaAdjZ, by = "hgnc_symbol") |>
             dplyr::filter(percentile >= 0)
         #### Fit a linear model and get p,-value and coefficient (slope) ####
         mZ <- reshape2::dcast(
@@ -152,7 +150,7 @@ calculate_conditional_celltype_enrichment_limma <- function(
             x = mZ,
             y = magma_with_ct1[, c("hgnc_symbol", "percentile")],
             by = "hgnc_symbol"
-        ) %>% unique()
+        ) |> unique()
         mZ2$residualPercentile <- stats::residuals(
             stats::lm(formula = percentile ~ ADJ_ZSTAT.y,
                       data = mZ2)
@@ -222,10 +220,10 @@ calculate_conditional_celltype_enrichment_limma <- function(
     df4_a <- df3b[, c("ct", "qs", "coef")]
     df4_a$log10p <- log(df4_a$qs)
     df4_a[df4_a$coef < 0, ]$log10p <- -1 * df4_a[df4_a$coef < 0, ]$log10p
-    df4_a <- df4_a %>% dplyr::select(ct, qs, log10p)
+    df4_a <- df4_a |> dplyr::select(ct, qs, log10p)
     df4_a$variable <- ""
     df4_a$type <- "Significance of Changes"
-    df4_b <- df3[, c("ct", "value", "log10p", "variable")] %>% 
+    df4_b <- df3[, c("ct", "value", "log10p", "variable")] |> 
         dplyr::rename(qs = value)
     df4_b$type <- "Baseline"
     df4 <- rbind(df4_a, df4_b)
@@ -241,9 +239,9 @@ calculate_conditional_celltype_enrichment_limma <- function(
             ggplot2::ylab(expression("-log"[10] * "(pvalue)")) +
             ggplot2::xlab("") +
             ggplot2::theme_bw()
-        print(plot2)
+        methods::show(plot2)
     }
-    return(df2 %>% dplyr::rename(Celltype = ct))
+    return(df2 |> dplyr::rename(Celltype = ct))
 }
 
 calculate.conditional.celltype.enrichment.probabilities.wtLimma <-

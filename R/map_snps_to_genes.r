@@ -53,7 +53,7 @@ map_snps_to_genes <- function(path_formatted,
                               genes_only = FALSE,
                               storage_dir = tools::R_user_dir(
                                   "MAGMA.Celltyping",
-                                  which="cache"),
+                                  which="cache"), 
                               force_new = FALSE,
                               version = NULL,
                               verbose = TRUE) {
@@ -84,10 +84,12 @@ map_snps_to_genes <- function(path_formatted,
     }
     dir.create(dirname(genes_out), showWarnings = FALSE, recursive = TRUE)
     #### MAGMA requires files to be decompressed #####
-    path_formatted <- decompress(path_formatted = path_formatted)
+    path_formatted <- decompress(path_formatted = path_formatted, 
+                                 storage_dir = tempdir(),
+                                 verbose = verbose)
     # Check whether there is an N column in the sumstats file
     # (if it wasn't provided as an argument)
-    if (is.null(N)) {
+    if (is.null(N) | is.na(N)) {
         first_line <- readLines(path_formatted, n = 1)
         column_headers <- strsplit(first_line, "\t")[[1]]
         if ("N" %in% column_headers) {

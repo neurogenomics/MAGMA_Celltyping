@@ -8,7 +8,7 @@ decompress(
   path_formatted,
   remove = FALSE,
   overwrite = FALSE,
-  storage_dir = tools::R_user_dir(package = "MAGMA.Celltyping", which = "cache"),
+  storage_dir = tempdir(),
   verbose = TRUE
 )
 }
