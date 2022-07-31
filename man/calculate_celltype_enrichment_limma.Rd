@@ -7,7 +7,7 @@
 calculate_celltype_enrichment_limma(
   magmaAdjZ,
   ctd,
-  ctd_species = "mouse",
+  ctd_species = infer_ctd_species(ctd = ctd),
   annotLevel = 1,
   prepare_ctd = TRUE,
   thresh = 1e-04,

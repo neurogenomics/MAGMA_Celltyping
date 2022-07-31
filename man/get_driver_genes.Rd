@@ -111,11 +111,11 @@ the cell-type specificity score from the CellTypeDataset
 }
 \examples{
 ctd <- ewceData::ctd()
-magma_dir <- MAGMA.Celltyping::import_magma_files()
+GenesOut_dir <- MAGMA.Celltyping::import_magma_files()
 magma_res <- MAGMA.Celltyping::merge_results(
     MAGMA.Celltyping::enrichment_results)
 genesets <- MAGMA.Celltyping::get_driver_genes(ctd = ctd, 
                                                magma_res = magma_res, 
-                                               GenesOut_dir = magma_dir, 
+                                               GenesOut_dir = GenesOut_dir, 
                                                fdr_thresh = 1)
 }

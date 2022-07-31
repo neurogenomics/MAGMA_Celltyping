@@ -38,7 +38,7 @@
     - Create`save_dir` if not already present.
 * `get_driver_genes`:
     - Fix bug that searched for "hgnc.symbol" instead of "hgnc_symbol". 
-    - Sort by mean rank between "ADJ_ZSTAT" and "specificity_proportion". 
+    - Sort by mean rank between "ADJ_ZSTAT" and "specificity_proportion".  
 * `magma_files_metadata`:
     - Updated to reflect newly reprocessed 288 datasets. 
     - Reprocessed "ukb-b-6548" to get `calculate_conditional_celltype_enrichment_limma` example working again. 

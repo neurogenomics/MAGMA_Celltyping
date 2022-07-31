@@ -22,12 +22,12 @@
 #'
 #' @examples
 #' ctd <- ewceData::ctd()
-#' magma_dir <- MAGMA.Celltyping::import_magma_files()
+#' GenesOut_dir <- MAGMA.Celltyping::import_magma_files()
 #' magma_res <- MAGMA.Celltyping::merge_results(
 #'     MAGMA.Celltyping::enrichment_results)
 #' genesets <- MAGMA.Celltyping::get_driver_genes(ctd = ctd, 
 #'                                                magma_res = magma_res, 
-#'                                                GenesOut_dir = magma_dir, 
+#'                                                GenesOut_dir = GenesOut_dir, 
 #'                                                fdr_thresh = 1)
 #' @export
 #' @importFrom stringr str_split
@@ -73,14 +73,14 @@ get_driver_genes <- function(ctd,
     } 
     #### iterate over sig GWAS ####
     GENESETS <- lapply(magma_GenesOut_files, 
-                       function(genesout,
+                       function(magma_GenesOut_file,
                                 .ctd_species = ctd_species) {
         messager("+ Finding driver genes for:", 
-                 gwas_dict[[genesout]], "GWAS x CTD")
+                 gwas_dict[[magma_GenesOut_file]], "GWAS x CTD")
         magmaAdjZ <- adjust_zstat_in_genesOut(
             ctd = ctd, 
             prepare_ctd = FALSE,
-            magma_GenesOut_file = genesout,
+            magma_GenesOut_file = magma_GenesOut_file,
             ctd_species = .ctd_species, 
             verbose = verbose
         )
@@ -93,7 +93,7 @@ get_driver_genes <- function(ctd,
                 prepare_ctd = FALSE,
                 annotLevel = annotLevel,
                 ctd_species = .ctd_species,
-                celltypes = sig_res$Celltype_id,
+                celltypes = unique(sig_res$Celltype_id),
                 return_all = TRUE,
                 verbose = verbose
             )

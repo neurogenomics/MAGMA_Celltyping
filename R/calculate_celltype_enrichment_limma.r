@@ -43,7 +43,7 @@
 calculate_celltype_enrichment_limma <- function(
     magmaAdjZ,
     ctd, 
-    ctd_species = "mouse",
+    ctd_species = infer_ctd_species(ctd = ctd),
     annotLevel = 1,
     prepare_ctd = TRUE,
     thresh = 0.0001,
@@ -53,7 +53,7 @@ calculate_celltype_enrichment_limma <- function(
     ...) {
     
     #### Avoid confusing checks ####
-    hgnc.symbol <- human.symbol <- selected_celltypes <- percentile <- NULL; 
+    hgnc.symbol <- human.symbol <- percentile <- NULL; 
     Celltype_id <- NULL;
     
     #### Check hgnc_symbol are present ####
@@ -92,18 +92,20 @@ calculate_celltype_enrichment_limma <- function(
     allCellTypes <- EWCE::fix_celltype_names(colnames(spec))
     celltype_dict <- stats::setNames(og_colnames, allCellTypes)
     #### Select a subset of cell types to test####
-    if (!is.null(celltypes)) {
+    if ((length(celltypes)>0) &&
+        (as.logical(!all(is.na(celltypes)))) ) {
         celltypes <- EWCE::fix_celltype_names(celltypes = celltypes) 
-        allCellTypes <- allCellTypes[allCellTypes %in% selected_celltypes]
-        messager(length(allCellTypes), "cell-types selected.", v = verbose)
-    }
+        allCellTypes <- allCellTypes[allCellTypes %in% celltypes]
+        messager(length(allCellTypes), "cell-types selected.", v = verbose) 
+        if(length(allCellTypes)==0) {
+            stop("Cannot find any of the specified celltypes.")
+        }
+    } 
     #### Initialise variables ####
     ps <- coef <- rep(0, length(allCellTypes))
     names(ps) <- names(coef) <- allCellTypes
     #### Loop over each celltype testing for enrichment ####
-    count <- 0
-    res_all <- list()
-    input_all <- list()
+    count <- 0; res_all <- list(); input_all <- list()
     for (ct1 in allCellTypes) {
         count <- count + 1
         messager("Running enrichment tests:",ct1,v=verbose)
@@ -141,9 +143,9 @@ calculate_celltype_enrichment_limma <- function(
         res[res$logFC < 0, "P.Value"] <- 1
         res[res$logFC >= 0, "P.Value"] <- res[res$logFC >= 0, "P.Value"] / 2
         #### Convert p-value to one-sided ####
-        ps[count] <- res$P.Value
+        ps[count] <- res$P.Value 
         res_all[[ct1]] <- res
-    }
+    } 
 
     if (return_all) {
         #### res df ####
