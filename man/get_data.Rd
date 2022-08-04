@@ -13,8 +13,7 @@ get_data(
 )
 }
 \arguments{
-\item{repo}{Repository name in format "owner/repo". Will guess the current
-repo if not specified.}
+\item{repo}{Repository name in format "owner/repo". Defaults to \code{guess_repo()}.}
 
 \item{overwrite}{Should any local files of the same name be overwritten?
 default \code{TRUE}.}

@@ -6,8 +6,12 @@
 \usage{
 get_ctd(
   ctd_name = c("ctd_AIBS", "ctd_allKI", "ctd_BlueLake2018_FrontalCortexOnly",
-    "ctd_BlueLake2018_VisualCortexOnly", "ctd_DescartesHuman", "ctd_DivSeq",
-    "ctd_DRONC_human", "ctd_DRONC_mouse", "ctd_Saunders", "ctd_Tasic", "ctd_Zeisel2018"),
+    "ctd_BlueLake2018_VisualCortexOnly", "ctd_DivSeq", "ctd_DRONC_human",
+    "ctd_DRONC_mouse", "ctd_Saunders", "ctd_Tasic", "ctd_Zeisel2015", "ctd_Zeisel2018",
+    "ctd_TabulaMuris", "ctd_Aerts2018", "ctd_Aerts2021", "ctd_Avalos2019",
+    "ctd_DescartesHuman", "ctd_DescartesHuman_brain", "ctd_HumanCellLandscape",
+    "ctd_Jiang2021", "ctd_Han2022", "ctd_Cao2019", "ctd_Raj2018", "ctd_Raj2018",
+    "ctd_Farnsworth2020"),
   storage_dir = tools::R_user_dir(package = "MAGMA.Celltyping", which = "cache")
 )
 }
@@ -124,7 +128,7 @@ CTD file with data from adult mouse whole-body atlas.
 \cr Reference: \doi{10.1038/s41586-018-0590-4}\cr   
 \href{https://tabula-muris.ds.czbiohub.org/}{Source}
 }
-\item{"ctd_TabulaMurisSenis"\cr}{
+\item{"ctd_TabulaMurisSenis" (Under construction)\cr}{
 CTD file with data from aging adult mouse whole-body atlas.
 \cr Reference: \doi{10.1038/s41586-020-2496-1}\cr
 \href{https://tabula-muris-senis.ds.czbiohub.org/}{Source}
