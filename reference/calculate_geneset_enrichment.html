@@ -18,7 +18,7 @@ map_snps_to_genes."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -90,32 +90,51 @@ map_snps_to_genes."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
 <dd><p>Genes which are to be tested. 
 Can be gene symbols (or other gene IDs) from any species listed in 
 <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a>.</p></dd>
+
+
 <dt>gwas_sumstats_path</dt>
 <dd><p>File path of the summary statistics file.</p></dd>
+
+
 <dt>magma_dir</dt>
 <dd><p>Path to folder containing the
 pre-computed MAGMA GWAS files (<em>.gsa.raw</em>and <em>.gsa.out</em>).</p></dd>
+
+
 <dt>analysis_name</dt>
 <dd><p>Used in file names which area created.</p></dd>
+
+
 <dt>upstream_kb</dt>
 <dd><p>How many kb upstream of the gene
 should SNPs be included?</p></dd>
+
+
 <dt>downstream_kb</dt>
 <dd><p>How many kb downstream of the gene
 should SNPs be included?</p></dd>
+
+
 <dt>geneset_species</dt>
 <dd><p>Species that the <code>geneset</code> came from.
 Can be any species listed in <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a>.
 If <code>geneset_species!="human"</code>, the <code>geneset</code> will be converted
  to 1:1 human orthologs using <a href="https://rdrr.io/pkg/orthogene/man/convert_orthologs.html" class="external-link">convert_orthologs</a>.</p></dd>
+
+
 <dt>version</dt>
 <dd><p>MAGMA version to use.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Print messages.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Filepath for the genes.out file.</p>
+    
+
+<p>Filepath for the genes.out file.</p>
     </div>
 
   </div>
@@ -130,8 +149,7 @@ If <code>geneset_species!="human"</code>, the <code>geneset</code> will be conve
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

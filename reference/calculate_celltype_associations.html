@@ -18,7 +18,7 @@ map_snps_to_genes."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -74,7 +74,7 @@ map_snps_to_genes."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">calculate_celltype_associations</span><span class="op">(</span>
   <span class="va">ctd</span>,
   ctd_levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ctd</span><span class="op">)</span><span class="op">)</span>,
-  ctd_species <span class="op">=</span> <span class="st">"mouse"</span>,
+  ctd_species <span class="op">=</span> <span class="fu"><a href="infer_ctd_species.html">infer_ctd_species</a></span><span class="op">(</span><span class="va">ctd</span><span class="op">)</span>,
   gwas_sumstats_path <span class="op">=</span> <span class="cn">NULL</span>,
   magma_dir <span class="op">=</span> <span class="cn">NULL</span>,
   analysis_name <span class="op">=</span> <span class="st">"MainRun"</span>,
@@ -94,45 +94,77 @@ map_snps_to_genes."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
     <dl><dt>ctd</dt>
 <dd><p>Cell type data structure containing
 <code>specificity_quantiles</code>.</p></dd>
+
+
 <dt>ctd_levels</dt>
 <dd><p>Which levels of <code>ctd</code> to
 iterate the enrichment analysis over.</p></dd>
+
+
 <dt>ctd_species</dt>
-<dd><p>Species name relevant to the cell type data.
-See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a> for all available species.</p></dd>
+<dd><p>Species name relevant to the CellTypeDataset (<code>ctd</code>).
+See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a> for all available species. 
+If <code>ctd_species=NULL</code> (default),
+ the <code>ctd</code> species will automatically 
+ be inferred using <a href="https://rdrr.io/pkg/orthogene/man/infer_species.html" class="external-link">infer_species</a>.</p></dd>
+
+
 <dt>gwas_sumstats_path</dt>
 <dd><p>File path of the summary statistics file.</p></dd>
+
+
 <dt>magma_dir</dt>
 <dd><p>Path to folder containing the
 pre-computed MAGMA GWAS files (<em>.gsa.raw</em>and <em>.gsa.out</em>).</p></dd>
+
+
 <dt>analysis_name</dt>
 <dd><p>Used in file names which area created.</p></dd>
+
+
 <dt>prepare_ctd</dt>
 <dd><p>Whether to run
 <a href="prepare_quantile_groups.html">prepare_quantile_groups</a> on the <code>ctd</code> first.</p></dd>
+
+
 <dt>upstream_kb</dt>
 <dd><p>How many kb upstream of the gene
 should SNPs be included?</p></dd>
+
+
 <dt>downstream_kb</dt>
 <dd><p>How many kb downstream of the gene
 should SNPs be included?</p></dd>
+
+
 <dt>genesOutCOND</dt>
 <dd><p>[Optional] Path to a genes.out file to condition on.
 Used if you want to condition on a different GWAS.</p></dd>
+
+
 <dt>EnrichmentMode</dt>
 <dd><p>[Optional] Should either 'Linear' or 'Top 10%' mode
 be used for testing enrichment?</p></dd>
+
+
 <dt>force_new</dt>
 <dd><p>[Optional] Force new MAGMA analyses even if the
 pre-existing results files are detected.</p></dd>
+
+
 <dt>version</dt>
 <dd><p>MAGMA version to use.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Print messages.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>File path for the genes.out file</p>
+    
+
+<p>File path for the genes.out file</p>
     </div>
 
     <div id="ref-examples">
@@ -158,9 +190,10 @@ pre-existing results files are detected.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The desired_version of MAGMA is currently installed: v1.10</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using: magma_v1.10</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Standardising CellTypeDataset</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Level: 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 5 matrix types across 2 CTD levels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Level: 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
@@ -180,8 +213,7 @@ pre-existing results files are detected.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -84,27 +84,18 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<img src="https://github.com/neurogenomics/MAGMA_Celltyping/raw/master/inst/hex/hex.png" height="300"><br><br><a href="https://github.com/neurogenomics/MAGMA_Celltyping" class="external-link"><img src="https://img.shields.io/badge/devel%20version-2.0.3-black.svg"></a>
-<a href="https://github.com/neurogenomics/MAGMA_Celltyping/actions" class="external-link"><img src="https://github.com/neurogenomics/MAGMA_Celltyping/workflows/R-CMD-check-bioc/badge.svg" alt="R build status"></a> <a href="https://github.com/neurogenomics/MAGMA_Celltyping/commits/master" class="external-link"><img src="https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg"></a>
-<a href="https://app.codecov.io/gh/neurogenomics/MAGMA_Celltyping" class="external-link"><img src="https://app.codecov.io/gh/neurogenomics/MAGMA_Celltyping/branch/master/graph/badge.svg"></a>
-<a href="https://cran.r-project.org/web/licenses/GPL-3" class="external-link"><img src="https://img.shields.io/badge/license-GPL--3-blue.svg" alt="License: GPL-3"></a>
+<img src="https://github.com/neurogenomics/MAGMA_Celltyping/raw/master/inst/hex/hex.png" height="300"><br><br><a href="https://github.com/neurogenomics/MAGMA_Celltyping" class="external-link"><img src="https://img.shields.io/badge/devel%20version-2.0.6-black.svg"></a> <a href="https://github.com/neurogenomics/MAGMA_Celltyping/actions" class="external-link"><img src="https://github.com/neurogenomics/MAGMA_Celltyping/workflows/R-CMD-check-bioc/badge.svg" alt="R build status"></a> <a href="https://github.com/neurogenomics/MAGMA_Celltyping/commits/master" class="external-link"><img src="https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg"></a> <a href="https://app.codecov.io/gh/neurogenomics/MAGMA_Celltyping" class="external-link"><img src="https://app.codecov.io/gh/neurogenomics/MAGMA_Celltyping/branch/master/graph/badge.svg"></a> <a href="https://cran.r-project.org/web/licenses/GPL-3" class="external-link"><img src="https://img.shields.io/badge/license-GPL--3-blue.svg" alt="License: GPL-3"></a>
 <h4>
 Authors: <i>Brian Schilder, Alan Murphy, Julien Bryois, Nathan Skene</i>
 </h4>
 <h4>
-README updated: <i>Apr-07-2022</i>
+README updated: <i>Aug-10-2022</i>
 </h4>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This R package contains code used for testing which cell types can
-explain the heritability signal from GWAS summary statistics. The method
-was described in our <a href="https://www.nature.com/articles/s41588-018-0129-5" class="external-link">2018 Nature
-Genetics paper</a>.</p>
-<p>This package takes GWAS summary statistics + single-cell
-transcriptome specificity data (in <a href="https://github.com/NathanSkene/EWCE" class="external-link">EWCE</a>’s CellTypeData
-format) as input. It then calculates and returns the enrichment between
-the GWAS trait and the cell-types.</p>
+<p>This R package contains code used for testing which cell types can explain the heritability signal from GWAS summary statistics. The method was described in our <a href="https://www.nature.com/articles/s41588-018-0129-5" class="external-link">2018 Nature Genetics paper</a>.</p>
+<p>This package takes GWAS summary statistics + single-cell transcriptome specificity data (in <a href="https://github.com/NathanSkene/EWCE" class="external-link">EWCE</a>’s CellTypeData format) as input. It then calculates and returns the enrichment between the GWAS trait and the cell-types.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -122,10 +113,7 @@ the GWAS trait and the cell-types.</p>
 <div class="section level3">
 <h3 id="magma">MAGMA<a class="anchor" aria-label="anchor" href="#magma"></a>
 </h3>
-<p><code>MAGMA.Celltyping</code> now installs the command line software
-MAGMA automatically when you first use a function that relies on <a href="https://ctg.cncr.nl/software/magma" class="external-link">MAGMA</a>
-(e.g. <code>celltype_associations_pipeline</code>). If you prefer, you
-can later install other versions of MAGMA with:</p>
+<p><code>MAGMA.Celltyping</code> now installs the command line software MAGMA automatically when you first use a function that relies on <a href="https://ctg.cncr.nl/software/magma" class="external-link">MAGMA</a> (e.g. <code>celltype_associations_pipeline</code>). If you prefer, you can later install other versions of MAGMA with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">install_magma</span><span class="op">(</span>desired_version<span class="op">=</span><span class="st">"&lt;version&gt;"</span>,
                                 update <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
@@ -141,8 +129,7 @@ can later install other versions of MAGMA with:</p>
 </div>
 <div class="section level3">
 <h3 id="getting-started">
-<a href="https://neurogenomics.github.io/MAGMA_Celltyping/articles/MAGMA.Celltyping.html" class="external-link">Getting
-started</a><a class="anchor" aria-label="anchor" href="#getting-started"></a>
+<a href="https://neurogenomics.github.io/MAGMA_Celltyping/articles/MAGMA.Celltyping.html" class="external-link">Getting started</a><a class="anchor" aria-label="anchor" href="#getting-started"></a>
 </h3>
 </div>
 <div class="section level3">
@@ -154,78 +141,48 @@ started</a><a class="anchor" aria-label="anchor" href="#getting-started"></a>
 <div class="section level2">
 <h2 id="using-older-versions">Using older versions<a class="anchor" aria-label="anchor" href="#using-older-versions"></a>
 </h2>
-<p>With the release of <code>MAGMA_Celltyping</code> 2.0 in January
-2022, there have been a number of <a href="https://github.com/neurogenomics/MAGMA_Celltyping/pull/93" class="external-link">major
-updates and bug fixes</a>.</p>
+<p>With the release of <code>MAGMA_Celltyping</code> 2.0 in January 2022, there have been a number of <a href="https://github.com/neurogenomics/MAGMA_Celltyping/pull/93" class="external-link">major updates and bug fixes</a>.</p>
 <ul>
-<li>Only R&gt;4.0.0 is supported. To use this package with older
-versions of R, install
-with:<code>remotes::install_github("neurogenomics/MAGMA_Celltyping@01a9e53")</code>
+<li>Only R&gt;4.0.0 is supported. To use this package with older versions of R, install with:<code>remotes::install_github("neurogenomics/MAGMA_Celltyping@01a9e53")</code>
 </li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="bugsfixes">Bugs/fixes<a class="anchor" aria-label="anchor" href="#bugsfixes"></a>
 </h2>
-<p>Having trouble? Search the <a href="https://github.com/neurogenomics/MAGMA_Celltyping/issues" class="external-link">Issues</a>
-or submit a new one.</p>
-<p>Want to contribute new features/fixes? <a href="https://github.com/neurogenomics/MAGMA_Celltyping/pulls" class="external-link">Pull
-Requests</a> are welcomed!</p>
-<p>Both are most welcome, we want the package to be easy to use for
-everyone!</p>
+<p>Having trouble? Search the <a href="https://github.com/neurogenomics/MAGMA_Celltyping/issues" class="external-link">Issues</a> or submit a new one.</p>
+<p>Want to contribute new features/fixes? <a href="https://github.com/neurogenomics/MAGMA_Celltyping/pulls" class="external-link">Pull Requests</a> are welcomed!</p>
+<p>Both are most welcome, we want the package to be easy to use for everyone!</p>
 </div>
 <div class="section level2">
 <h2 id="citations">Citations<a class="anchor" aria-label="anchor" href="#citations"></a>
 </h2>
 <p>If you use the software then please cite:</p>
 <blockquote>
-<p><a href="https://www.nature.com/articles/s41588-018-0129-5" class="external-link">Skene, et
-al. Genetic identification of brain cell types underlying schizophrenia.
-Nature Genetics, 2018.</a></p>
+<p><a href="https://www.nature.com/articles/s41588-018-0129-5" class="external-link">Skene, et al. Genetic identification of brain cell types underlying schizophrenia. Nature Genetics, 2018.</a></p>
 </blockquote>
-<p>The package utilises the <a href="https://ctg.cncr.nl/software/magma" class="external-link">MAGMA</a> software developed
-in the Complex Trait Genetics Lab at VU university (not us!) so please
-also cite:</p>
+<p>The package utilises the <a href="https://ctg.cncr.nl/software/magma" class="external-link">MAGMA</a> software developed in the Complex Trait Genetics Lab at VU university (not us!) so please also cite:</p>
 <blockquote>
-<p><a href="https://journals.plos.org/ploscompbiol/article?id=10.1371%2Fjournal.pcbi.1004219" class="external-link">de
-Leeuw, et al. MAGMA: Generalized gene-set analysis of GWAS data. PLoS
-Comput Biol, 2015.</a></p>
+<p><a href="https://journals.plos.org/ploscompbiol/article?id=10.1371%2Fjournal.pcbi.1004219" class="external-link">de Leeuw, et al. MAGMA: Generalized gene-set analysis of GWAS data. PLoS Comput Biol, 2015.</a></p>
 </blockquote>
 <p>If you use the EWCE package as well then please cite:</p>
 <blockquote>
-<p><a href="https://www.frontiersin.org/articles/10.3389/fnins.2016.00016/full" class="external-link">Skene,
-et al. Identification of Vulnerable Cell Types in Major Brain Disorders
-Using Single Cell Transcriptomes and Expression Weighted Cell Type
-Enrichment. Front. Neurosci, 2016.</a></p>
+<p><a href="https://www.frontiersin.org/articles/10.3389/fnins.2016.00016/full" class="external-link">Skene, et al. Identification of Vulnerable Cell Types in Major Brain Disorders Using Single Cell Transcriptomes and Expression Weighted Cell Type Enrichment. Front. Neurosci, 2016.</a></p>
 </blockquote>
-<p>If you use <code>MungeSumstats</code> to format your summary
-statistics then please cite:</p>
+<p>If you use <code>MungeSumstats</code> to format your summary statistics then please cite:</p>
 <blockquote>
-<p><a href="https://doi.org/10.1093/bioinformatics/btab665" class="external-link">Murphy,
-Schilder, &amp; Skene, MungeSumstats: a Bioconductor package for the
-standardization and quality control of many GWAS summary statistics,
-Bioinformatics, Volume 37, Issue 23, 1 December 2021, Pages 4593–4596,
-https://doi.org/10.1093/bioinformatics/btab665</a></p>
+<p><a href="https://doi.org/10.1093/bioinformatics/btab665" class="external-link">Murphy, Schilder, &amp; Skene, MungeSumstats: a Bioconductor package for the standardization and quality control of many GWAS summary statistics, Bioinformatics, Volume 37, Issue 23, 1 December 2021, Pages 4593–4596, https://doi.org/10.1093/bioinformatics/btab665</a></p>
 </blockquote>
-<p>If you use the cortex/hippocampus single cell data associated with
-this package then please cite the following papers:</p>
+<p>If you use the cortex/hippocampus single cell data associated with this package then please cite the following papers:</p>
 <blockquote>
-<p><a href="https://doi.org/10.1126/science.aaa1934" class="external-link">Zeisel, et al. Cell
-types in the mouse cortex and hippocampus revealed by single-cell
-RNA-seq. Science, 2015.</a></p>
+<p><a href="https://doi.org/10.1126/science.aaa1934" class="external-link">Zeisel, et al. Cell types in the mouse cortex and hippocampus revealed by single-cell RNA-seq. Science, 2015.</a></p>
 </blockquote>
-<p>If you use the midbrain and hypothalamus single cell datasets
-associated with the 2018 paper then please cite the following
-papers:</p>
+<p>If you use the midbrain and hypothalamus single cell datasets associated with the 2018 paper then please cite the following papers:</p>
 <blockquote>
-<p><a href="https://doi.org/10.1016/j.cell.2016.09.027" class="external-link">La Manno, et
-al. Molecular Diversity of Midbrain Development in Mouse, Human, and
-Stem Cells. Cell, 2016.</a></p>
+<p><a href="https://doi.org/10.1016/j.cell.2016.09.027" class="external-link">La Manno, et al. Molecular Diversity of Midbrain Development in Mouse, Human, and Stem Cells. Cell, 2016.</a></p>
 </blockquote>
 <blockquote>
-<p><a href="https://doi.org/10.1038/nn.4462" class="external-link">Romanov, et al. Molecular
-interrogation of hypothalamic organization reveals distinct dopamine
-neuronal subtypes. Nature Neuroscience, 2016.</a></p>
+<p><a href="https://doi.org/10.1038/nn.4462" class="external-link">Romanov, et al. Molecular interrogation of hypothalamic organization reveals distinct dopamine neuronal subtypes. Nature Neuroscience, 2016.</a></p>
 </blockquote>
 <hr>
 </div>
@@ -234,8 +191,7 @@ neuronal subtypes. Nature Neuroscience, 2016.</a></p>
 </h2>
 <div class="section level3">
 <h3 id="neurogenomics-lab">
-<a href="https://www.neurogenomics.co.uk/" class="external-link">Neurogenomics
-Lab</a><a class="anchor" aria-label="anchor" href="#neurogenomics-lab"></a>
+<a href="https://www.neurogenomics.co.uk/" class="external-link">Neurogenomics Lab</a><a class="anchor" aria-label="anchor" href="#neurogenomics-lab"></a>
 </h3>
 <p>UK Dementia Research Institute<br>
 Department of Brain Sciences<br>
@@ -294,8 +250,7 @@ Imperial College London<br><a href="https://github.com/neurogenomics" class="ext
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer>

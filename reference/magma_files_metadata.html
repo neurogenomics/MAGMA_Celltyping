@@ -19,7 +19,7 @@ MAGMA_Files_Public GitHub repository."><!-- mathjax --><script src="https://cdnj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -78,7 +78,7 @@ MAGMA_Files_Public</a> GitHub repository.</p>
 
     <div id="format">
     <h2>Format</h2>
-    <p>An object of class <code>data.table</code> (inherits from <code>data.frame</code>) with 714 rows and 44 columns.</p>
+    <p>An object of class <code>data.table</code> (inherits from <code>data.frame</code>) with 302 rows and 49 columns.</p>
     </div>
     <div id="source">
     <h2>Source</h2>
@@ -86,7 +86,7 @@ MAGMA_Files_Public</a> GitHub repository.</p>
 #### Check what files are available ####
 magma_files_metadata &lt;- data.table::fread(
     paste("https://github.com/neurogenomics/MAGMA_Files_Public",
-              "raw/master/metadata.csv", sep="/"), drop = "V1"
+              "raw/master/metadata.csv", sep="/")
 )
 usethis::use_data(magma_files_metadata, overwrite = TRUE)
 </code></p>
@@ -104,8 +104,7 @@ usethis::use_data(magma_files_metadata, overwrite = TRUE)
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

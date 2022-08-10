@@ -196,7 +196,16 @@
     <loc>/reference/import_magma_files_metadata.html</loc>
   </url>
   <url>
+    <loc>/reference/import_magma_files_tables.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>/reference/infer_ctd_species.html</loc>
+  </url>
+  <url>
+    <loc>/reference/infer_geneset_species.html</loc>
   </url>
   <url>
     <loc>/reference/invert_dict.html</loc>
@@ -317,6 +326,12 @@
   </url>
   <url>
     <loc>/reference/rbfox_binding.html</loc>
+  </url>
+  <url>
+    <loc>/reference/read_magma_genes_out.html</loc>
+  </url>
+  <url>
+    <loc>/reference/read_magma_genes_raw.html</loc>
   </url>
   <url>
     <loc>/reference/results_heatmap.html</loc>

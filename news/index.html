@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -64,17 +64,112 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="2.0.7" id="magmacelltyping-207">MAGMA.Celltyping 2.0.7<a class="anchor" aria-label="anchor" href="#magmacelltyping-207"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-2-0-7">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-7"></a></h3>
+<ul><li>Get GitHub Actions to pass on all 3 OS.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.0.6" id="magmacelltyping-206">MAGMA.Celltyping 2.0.6<a class="anchor" aria-label="anchor" href="#magmacelltyping-206"></a></h2>
+<div class="section level3">
+<h3 id="new-features-2-0-6">New features<a class="anchor" aria-label="anchor" href="#new-features-2-0-6"></a></h3>
+<ul><li>
+<code>import_magma_files</code>:
+<ul><li>Add args to import as nested list and/or <code>data.table</code>s.</li>
+<li>Add dedicated unit tests.</li>
+</ul></li>
+<li>
+<code>magma_files_metadata</code>
+<ul><li>Update after deleting old files.</li>
+</ul></li>
+<li>
+<code>celltype_associations_pipeline</code>:
+<ul><li>Pass up <code>standardise</code> arg.</li>
+</ul></li>
+<li>
+<code>adjust_zstat_in_genesOut</code>:
+<ul><li>Enable usage without CTD.</li>
+<li>Add unit tests.</li>
+</ul></li>
+<li>Infer <code>ctd</code> and <code>geneset</code> species by default:
+<ul><li><code>infer_ctd_species</code></li>
+<li><code>infer_geneset_species</code></li>
+</ul></li>
+<li>
+<code>map_snps_to_genes</code>:
+<ul><li>Can interpret <code>N</code> when <code>=NULL</code> or <code>=NA</code>.</li>
+<li>Added <code>genes_only</code> arg to make function faster and skip generating “genes.raw” file.</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-2-0-6">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-6"></a></h3>
+<ul><li>Ensure all functions work with sparse matrices.</li>
+<li>
+<code>check_quantiles</code>:
+<ul><li>Compute “specificity_quantiles” if not already present in CTD (workaround for bug in <code><a href="https://rdrr.io/pkg/EWCE/man/standardise_ctd.html" class="external-link">EWCE::standardise_ctd</a></code>).</li>
+</ul></li>
+<li>
+<code>decompress</code>
+<ul><li>Specify file path as <code>storage_dir</code> instead of <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code>.</li>
+</ul></li>
+<li>Update <code>full_workflow</code> vignette to work.</li>
+<li>
+<code>magma_tileplot</code>:
+<ul><li>Fix to handle situations where all q-values equal 1.</li>
+</ul></li>
+<li>
+<code>get_example_gwas</code>:
+<ul><li>Revert default storage dir to <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code> to make easier to infer MAGMA output file paths in vignettes.</li>
+</ul></li>
+<li>
+<code>merge_results</code>:
+<ul><li>Create<code>save_dir</code> if not already present.</li>
+</ul></li>
+<li>
+<code>get_driver_genes</code>:
+<ul><li>Fix bug that searched for “hgnc.symbol” instead of “hgnc_symbol”.</li>
+<li>Sort by mean rank between “ADJ_ZSTAT” and “specificity_proportion”.<br></li>
+</ul></li>
+<li>
+<code>magma_files_metadata</code>:
+<ul><li>Updated to reflect newly reprocessed 288 datasets.</li>
+<li>Reprocessed “ukb-b-6548” to get <code>calculate_conditional_celltype_enrichment_limma</code> example working again.</li>
+</ul></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.0.5" id="magmacelltyping-205">MAGMA.Celltyping 2.0.5<a class="anchor" aria-label="anchor" href="#magmacelltyping-205"></a></h2>
+<div class="section level3">
+<h3 id="new-features-2-0-5">New features<a class="anchor" aria-label="anchor" href="#new-features-2-0-5"></a></h3>
+<ul><li>
+<code>get_ctd</code>:
+<ul><li>Documented new CTDs from model celltype conservation project.<br></li>
+<li>Added better documentation for each of the other CTDs as well (including references).</li>
+<li>Re-standardized all CTD with updated <code><a href="https://rdrr.io/pkg/EWCE/man/standardise_ctd.html" class="external-link">EWCE::standardise_ctd</a></code> function.</li>
+<li>Enabled download of multiple CTDs in one call.</li>
+<li>Cached all CTDs (not in <code>tempdir</code>).</li>
+<li>Import either RDS or RDA files.</li>
+</ul></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.0.4" id="magmacelltyping-204">MAGMA.Celltyping 2.0.4<a class="anchor" aria-label="anchor" href="#magmacelltyping-204"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-2-0-4">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-4"></a></h3>
+<ul><li>Fix GHA pkgdown building:
+<ul><li>The newest version of <a href="https://github.com/actions/checkout/issues/760" class="external-link">git introduced bugs when building pkgdown sites</a> from within Docker containers (e.g. via my Linux GHA workflow). Adjusting GHA to fix this.</li>
+</ul></li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.3" id="magmacelltyping-203">MAGMA.Celltyping 2.0.3<a class="anchor" aria-label="anchor" href="#magmacelltyping-203"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-2-0-3">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-3"></a></h3>
-<ul><li>Ensure <code>get_genome_ref</code> saves to cache dir (not temp dir)
-during <code>map_snps_to_genes</code>.</li>
+<ul><li>Ensure <code>get_genome_ref</code> saves to cache dir (not temp dir) during <code>map_snps_to_genes</code>.</li>
 <li>Fix GHA release/devel conflicts.</li>
-<li>Add optional error handling with GitHub PAT fix instructions to
-<code>get_data</code>, specifically <code>get_genomeLocFile</code>.</li>
-<li>Construct URLs with <code>paste</code> instead of
-<code>file.path</code> to avoid cross-platforms issues (e.g. Windows
-inserting “" instead of”/“).</li>
+<li>Add optional error handling with GitHub PAT fix instructions to <code>get_data</code>, specifically <code>get_genomeLocFile</code>.</li>
+<li>Construct URLs with <code>paste</code> instead of <code>file.path</code> to avoid cross-platforms issues (e.g. Windows inserting “" instead of”/“).</li>
 <li>Add <code>dir.create</code> to <code>get_data</code>.</li>
 </ul></div>
 </div>
@@ -83,8 +178,7 @@ inserting “" instead of”/“).</li>
 <div class="section level3">
 <h3 id="new-features-2-0-2">New features<a class="anchor" aria-label="anchor" href="#new-features-2-0-2"></a></h3>
 <ul><li>
-<code>get_genomeLocFile</code>: Store NCBI ref file in cache dir by
-default.</li>
+<code>get_genomeLocFile</code>: Store NCBI ref file in cache dir by default.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-2-0-2">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-2"></a></h3>
@@ -97,54 +191,35 @@ default.</li>
 <div class="section level3">
 <h3 id="new-features-2-0-1">New features<a class="anchor" aria-label="anchor" href="#new-features-2-0-1"></a></h3>
 <ul><li>
-<code>get_example_gwas_raw</code>: Allow users to specify
-<code>timeout</code> when downloading raw (pre-munged) files.</li>
-<li>Added <a href="https://neurogenomics.github.io/MAGMA_Celltyping/articles/docker" class="external-link">Docker/Singularity</a>
-vignette, with link in README.<br></li>
+<code>get_example_gwas_raw</code>: Allow users to specify <code>timeout</code> when downloading raw (pre-munged) files.</li>
+<li>Added <a href="https://neurogenomics.github.io/MAGMA_Celltyping/articles/docker" class="external-link">Docker/Singularity</a> vignette, with link in README.<br></li>
 <li>Add <em>–as-cran</em> to R CMD check in GHA.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-2-0-1">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-1"></a></h3>
-<ul><li>Add <code>$annot</code> data.frames to each ctd in
-<code>get_ctd</code> to make compatible with all <code>EWCE</code>
-functions.<br></li>
-<li>Add “ctd_DescartesHuman” to documented datasets in
-<code>get_ctd</code>.</li>
+<ul><li>Add <code>$annot</code> data.frames to each ctd in <code>get_ctd</code> to make compatible with all <code>EWCE</code> functions.<br></li>
+<li>Add “ctd_DescartesHuman” to documented datasets in <code>get_ctd</code>.</li>
 </ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.0" id="magmacelltyping-200">MAGMA.Celltyping 2.0.0<a class="anchor" aria-label="anchor" href="#magmacelltyping-200"></a></h2>
-<ul><li>MAJOR UPGRADE: <code>MAGMA.Celltyping</code> was revamped to meet
-CRAN standards, automatically install MAGMA, and take any species are
-input.</li>
+<ul><li>MAJOR UPGRADE: <code>MAGMA.Celltyping</code> was revamped to meet CRAN standards, automatically install MAGMA, and take any species are input.</li>
 </ul><div class="section level3">
 <h3 id="new-features-2-0-0">New features<a class="anchor" aria-label="anchor" href="#new-features-2-0-0"></a></h3>
-<ul><li>Added a <code>NEWS.md</code> file to track changes to the
-package.</li>
-<li>Automatically install MAGMA with new <code>magma_install</code>
-function; stores binaries in <code>MAGMA.Celltyping</code>-specific
-cache dir. Added various support functions to make this possible and
-ensure correct version is being used.</li>
-<li>Added <code>magma_uninstall</code> function to remove one or all
-MAGMA binaries.</li>
-<li>Allow <code>MAGMA.Celltyping</code> to install even if MAGMA is not
-installed. Instead, check at the beginning of functions that require
-MAGMA using <code>magma_check</code>.
+<ul><li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
+<li>Automatically install MAGMA with new <code>magma_install</code> function; stores binaries in <code>MAGMA.Celltyping</code>-specific cache dir. Added various support functions to make this possible and ensure correct version is being used.</li>
+<li>Added <code>magma_uninstall</code> function to remove one or all MAGMA binaries.</li>
+<li>Allow <code>MAGMA.Celltyping</code> to install even if MAGMA is not installed. Instead, check at the beginning of functions that require MAGMA using <code>magma_check</code>.
 <ul><li>
-<code>magma_links_stored</code>: Include built-in metadata with
-links to all MAGMA versions with parsed version numbers, OS, and which
-is the latest version.</li>
+<code>magma_links_stored</code>: Include built-in metadata with links to all MAGMA versions with parsed version numbers, OS, and which is the latest version.</li>
 </ul></li>
-<li>Call MAGMA commands with <code>magma_run</code> which finds the
-requested version of MAGMA and uses it.</li>
-<li>Print readable, user-friendly MAGMA commands when being run through
-<code>magma_cmd</code> function.</li>
+<li>Call MAGMA commands with <code>magma_run</code> which finds the requested version of MAGMA and uses it.</li>
+<li>Print readable, user-friendly MAGMA commands when being run through <code>magma_cmd</code> function.</li>
 <li>Added unit tests.</li>
 <li>Create hex sticker</li>
 <li>New function: <code>get_sub_SNP_LOC_DATA</code>
 </li>
-<li>Formally deprecated functions using <code>.Deprecated</code>
-function and removing all other internal code:
+<li>Formally deprecated functions using <code>.Deprecated</code> function and removing all other internal code:
 <ul><li><code>get_genomebuild_for_sumstats</code></li>
 <li><code>build_snp_location_tables</code></li>
 <li><code>format.sumstats.for.magma</code></li>
@@ -152,44 +227,34 @@ function and removing all other internal code:
 <li><code>standardise.sumstats.column.headers</code></li>
 <li><code>standardise.sumstats.column.headers.crossplatform</code></li>
 </ul></li>
-<li>Removed <code>sumstatsColHeaders</code> from data, as it was only
-used in now-deprecated functions.<br></li>
+<li>Removed <code>sumstatsColHeaders</code> from data, as it was only used in now-deprecated functions.<br></li>
 <li>Renamed all functions with “.” to “_” to meet coding standards.</li>
-<li>Renamed functions to be more concise and avoid issues with test file
-names being too long:
+<li>Renamed functions to be more concise and avoid issues with test file names being too long:
 <ul><li>
-<code>calculate.celltype.enrichment.probabilities.wtLimma</code>
-–&gt; <code>calculate_celltype_enrichment_limma</code>
+<code>calculate.celltype.enrichment.probabilities.wtLimma</code> –&gt; <code>calculate_celltype_enrichment_limma</code>
 </li>
 <li>
-<code>calculate.conditional.celltype.enrichment.probabilities.wtLimma</code>
-–&gt; <code>calculate_conditional_celltype_enrichment_limma</code>
+<code>calculate.conditional.celltype.enrichment.probabilities.wtLimma</code> –&gt; <code>calculate_conditional_celltype_enrichment_limma</code>
 </li>
 </ul></li>
-<li>Removed all large <em>data/</em> to GitHub Releases, now accessible
-with dedicated <code>piggyback</code>-based functions:
+<li>Removed all large <em>data/</em> to GitHub Releases, now accessible with dedicated <code>piggyback</code>-based functions:
 <ul><li>
 <code>get_ctd</code>: CellTypeDatasets</li>
 <li>
 <code>get_example_gwas</code>: GWAS summary stats</li>
 <li>
-<code>get_genomeLocFile</code>: NCBI gene coordinate
-references.</li>
+<code>get_genomeLocFile</code>: NCBI gene coordinate references.</li>
 </ul></li>
-<li>Create example full GWAS summary stats (both unfiltered and filtered
-+ munged with <code>MungeSumstats</code>). Accessed by
-<code>get_example_gwas</code>.
+<li>Create example full GWAS summary stats (both unfiltered and filtered + munged with <code>MungeSumstats</code>). Accessed by <code>get_example_gwas</code>.
 <ul><li>“prospective_memory”</li>
 <li>“fluid_intelligence”</li>
 <li>“educational_attainment”</li>
 </ul></li>
 <li>Updated vignettes:
 <ul><li>Created concise <em>Getting started</em> vignette.</li>
-<li>Updated origiinal vignette and turned into <em>full_workflow</em>
-vignette.</li>
+<li>Updated origiinal vignette and turned into <em>full_workflow</em> vignette.</li>
 </ul></li>
-<li>Made certain functions run automatically internally, instead of
-having the user run them:
+<li>Made certain functions run automatically internally, instead of having the user run them:
 <ul><li><code>get_genome_ref</code></li>
 <li><code>prepare_quantile_groups</code></li>
 </ul></li>
@@ -199,37 +264,19 @@ having the user run them:
 <li><code>SNPlocs.Hsapiens.dbSNP144.GRCh37</code></li>
 <li><code>SNPlocs.Hsapiens.dbSNP144.GRCh38</code></li>
 </ul></li>
-<li>Replaced <code>hgnc2entrez</code> with improved
-<code>hgnc2entrez_ortohgene</code> from
-<code><a href="https://rdrr.io/pkg/orthogene/man/all_genes.html" class="external-link">orthogene::all_genes</a></code>. Benchmarked to confirm that the
-latter increases the number of genes that can be converted.</li>
-<li>Allow all functions to accept datasets/gene lists from any species.
-Now automatically converted to <code>output_species</code> (default:
-“human”) using <a href="https://github.com/neurogenomics/orthogene" class="external-link"><code>orthogene</code></a>.</li>
-<li>Create MAGMA files repository using various OpenGWAS datasets that
-have been munged with <code>MungeSumstats</code>: <a href="https://github.com/neurogenomics/MAGMA_Files_Public" class="external-link">MAGMA_Files_Public</a>
+<li>Replaced <code>hgnc2entrez</code> with improved <code>hgnc2entrez_ortohgene</code> from <code><a href="https://rdrr.io/pkg/orthogene/man/all_genes.html" class="external-link">orthogene::all_genes</a></code>. Benchmarked to confirm that the latter increases the number of genes that can be converted.</li>
+<li>Allow all functions to accept datasets/gene lists from any species. Now automatically converted to <code>output_species</code> (default: “human”) using <a href="https://github.com/neurogenomics/orthogene" class="external-link"><code>orthogene</code></a>.</li>
+<li>Create MAGMA files repository using various OpenGWAS datasets that have been munged with <code>MungeSumstats</code>: <a href="https://github.com/neurogenomics/MAGMA_Files_Public" class="external-link">MAGMA_Files_Public</a>
 <ul><li>
-<code>magma_files_metadata</code>: Built-in table of all
-pre-processed MAGMA files currently in the database.<br></li>
+<code>magma_files_metadata</code>: Built-in table of all pre-processed MAGMA files currently in the database.<br></li>
 </ul></li>
-<li>Added API to search and access MAGMA files repository:
-<code>import_magma_files</code>.</li>
-<li>Allow all relevant functions to take only MAGMA files as input
-(instead of requiring the GWAS summary stats);
-e.g. <code>calculate_celltype_associations(magma_dir="&lt;folder_containing_magma_files&gt;")</code>
-This function is also used for downloading MAGMA files in examples/unit
-tests.</li>
-<li>Add header notation in code comments to improve code
-navigability.</li>
+<li>Added API to search and access MAGMA files repository: <code>import_magma_files</code>.</li>
+<li>Allow all relevant functions to take only MAGMA files as input (instead of requiring the GWAS summary stats); e.g. <code>calculate_celltype_associations(magma_dir="&lt;folder_containing_magma_files&gt;")</code> This function is also used for downloading MAGMA files in examples/unit tests.</li>
+<li>Add header notation in code comments to improve code navigability.</li>
 <li>Fix Roxygen notes:
-<ul><li>Document
-<code>@title</code>,<code>@description</code>,<code>@param</code>,
-<code>@return</code> for all exported (and many internal)
-functions.</li>
-<li>Document <code>@examples</code> for all exported (and many internal)
-functions.</li>
-<li>Used <code>@importFrom</code> or <code>requireNamespace</code> for
-all imports functions.</li>
+<ul><li>Document <code>@title</code>,<code>@description</code>,<code>@param</code>, <code>@return</code> for all exported (and many internal) functions.</li>
+<li>Document <code>@examples</code> for all exported (and many internal) functions.</li>
+<li>Used <code>@importFrom</code> or <code>requireNamespace</code> for all imports functions.</li>
 </ul></li>
 <li>Replace usage of all <code>1:10</code> syntax.</li>
 <li>Reduce number of functions in NAMESPACE</li>
@@ -237,29 +284,21 @@ all imports functions.</li>
 <ul><li><code>upstream_kb = 35</code></li>
 <li><code>downstream_kb = 10</code></li>
 </ul></li>
-<li>Allow the use of non-European populations by downloading
-population-specific LD panels from 1KG with
-<code>get_genome_ref(population = "&lt;population_name&gt;")</code>
+<li>Allow the use of non-European populations by downloading population-specific LD panels from 1KG with <code>get_genome_ref(population = "&lt;population_name&gt;")</code>
 </li>
-<li>Handle other CTD matrix input types by ensuring standardisation as
-dense matrices when computing quantiles/normalization.</li>
-<li>Take advantage of new <code>EWCE</code> features in
-<em>bschilder_dev</em> branch:
-<ul><li>Standardise CTD internally in all relevant functions using new
-<code><a href="https://rdrr.io/pkg/EWCE/man/standardise_ctd.html" class="external-link">EWCE::standardise_ctd</a></code>
+<li>Handle other CTD matrix input types by ensuring standardisation as dense matrices when computing quantiles/normalization.</li>
+<li>Take advantage of new <code>EWCE</code> features in <em>bschilder_dev</em> branch:
+<ul><li>Standardise CTD internally in all relevant functions using new <code><a href="https://rdrr.io/pkg/EWCE/man/standardise_ctd.html" class="external-link">EWCE::standardise_ctd</a></code>
 </li>
 </ul></li>
-<li>Create all-in-one functions
-<code>celltype_associations_pipeline</code>, which lets users specify
-which test they want to run with arguments, including:
+<li>Create all-in-one functions <code>celltype_associations_pipeline</code>, which lets users specify which test they want to run with arguments, including:
 <ul><li>
 <code>calculate_celltype_associations</code> (Linear mode)</li>
 <li>
 <code>calculate_celltype_associations</code> (Top10% mode)</li>
 <li><code>calculate_conditional_celltype_associations</code></li>
 </ul></li>
-<li>Parallelise <code>celltype_associations_pipeline</code> across
-multiple cores.</li>
+<li>Parallelise <code>celltype_associations_pipeline</code> across multiple cores.</li>
 <li>Removed old functions whose output were not being used:
 <ul><li><code>normalise_mean_exp</code></li>
 <li><code>bin_specificityDistance_into_quantiles</code></li>
@@ -274,32 +313,20 @@ multiple cores.</li>
 <li><code>adjust_zstat_in_genesOut</code></li>
 <li>Deprecated functions</li>
 </ul></li>
-<li>Added R script to produce vignette results
-<em>inst/extdata/MAGMA_Celltyping_1.0_vignette.R</em>, and uploaded
-zipped folder via piggyback:
-<em>MAGMA_Celltyping_1.0_results.zip</em><br></li>
-<li>Added unit tests comparing old (1.0.0) vs new (&gt;=2.0)
-MAGMA.Celltyping versions produce the same results;
-<em>test-MAGMA_Celltyping_1.0_vs_2.0.R</em>. Full report <a href="https://github.com/neurogenomics/MAGMA_Celltyping/issues/96" class="external-link">here</a>.</li>
+<li>Added R script to produce vignette results <em>inst/extdata/MAGMA_Celltyping_1.0_vignette.R</em>, and uploaded zipped folder via piggyback: <em>MAGMA_Celltyping_1.0_results.zip</em><br></li>
+<li>Added unit tests comparing old (1.0.0) vs new (&gt;=2.0) MAGMA.Celltyping versions produce the same results; <em>test-MAGMA_Celltyping_1.0_vs_2.0.R</em>. Full report <a href="https://github.com/neurogenomics/MAGMA_Celltyping/issues/96" class="external-link">here</a>.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-2-0-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-0"></a></h3>
 <ul><li>Removed <code>usethis</code> call from code.</li>
 <li>Removed all <code>library</code> calls from code.</li>
-<li>Avoid accidentally renaming columns with
-<code>data.frame</code>
+<li>Avoid accidentally renaming columns with <code>data.frame</code>
 </li>
-<li>Remove all <code>suppressWarnings</code> calls and resolve the
-underlying issues instead.</li>
+<li>Remove all <code>suppressWarnings</code> calls and resolve the underlying issues instead.</li>
 <li>Add <code>utils</code> as Suggest.</li>
-<li>Normalize paths to magma executables (to avoid path issues on
-WindowsOS).</li>
-<li>Fixed axes in <code>plot_celltype_associations</code>, first
-reported <a href="https://github.com/neurogenomics/MAGMA_Celltyping/issues/12" class="external-link">here</a>.<br></li>
-<li>Fixed <code>prepare_quantile_groups</code> so that it’s consistent
-with how <code>EWCE</code> compute specificity quantiles. Ensures that
-all celltypes (columns) have exactly the same number of quantiles, which
-was not the case before.</li>
+<li>Normalize paths to magma executables (to avoid path issues on WindowsOS).</li>
+<li>Fixed axes in <code>plot_celltype_associations</code>, first reported <a href="https://github.com/neurogenomics/MAGMA_Celltyping/issues/12" class="external-link">here</a>.<br></li>
+<li>Fixed <code>prepare_quantile_groups</code> so that it’s consistent with how <code>EWCE</code> compute specificity quantiles. Ensures that all celltypes (columns) have exactly the same number of quantiles, which was not the case before.</li>
 <li>Fixed bug in ``</li>
 </ul></div>
 </div>
@@ -317,8 +344,7 @@ was not the case before.</li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -23,7 +23,7 @@ here."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -87,6 +87,8 @@ Metadata for each dataset (including trait descriptions) can be found here
   file_types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".genes.out"</span>, <span class="st">".genes.raw"</span><span class="op">)</span>,
   overwrite <span class="op">=</span> <span class="cn">FALSE</span>,
   return_dir <span class="op">=</span> <span class="cn">TRUE</span>,
+  return_tables <span class="op">=</span> <span class="cn">FALSE</span>,
+  nested <span class="op">=</span> <span class="cn">FALSE</span>,
   nThread <span class="op">=</span> <span class="fl">1</span>,
   verbose <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span></code></pre></div>
@@ -101,30 +103,56 @@ Metadata for each dataset (including trait descriptions) can be found here
     <h2>Arguments</h2>
     <dl><dt>save_dir</dt>
 <dd><p>Parent folder where you want to save the MAGMA files.</p></dd>
+
+
 <dt>ids</dt>
 <dd><p>[Optional] <a href="https://gwas.mrcieu.ac.uk/" class="external-link">OpenGWAS</a> dataset IDs. 
 You see metadata for the GWAS 
 <a href="https://github.com/neurogenomics/MAGMA_Files_Public/blob/master/metadata.csv" class="external-link">here</a>.</p></dd>
+
+
 <dt>file_types</dt>
 <dd><p>MAGMA file types to import. 
 Both ".genes.out" and ".genes.raw" are needed to run <span class="pkg">MAGMA.Celltyping</span>
 cell-type enrichment functions</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>If the files have already been downloaded in 
 the specified directory,
 these downloads will be skipped. Set <code>overwrite=TRUE</code> to force 
 them to be re-downloaded (Default: <code>FALSE</code>).</p></dd>
+
+
 <dt>return_dir</dt>
 <dd><p>Return a list of unique directory names instead of the 
 full file paths (Default: <code>TRUE</code>).</p></dd>
+
+
+<dt>return_tables</dt>
+<dd><p>Returns the files imported as tables (<code>TRUE</code>),
+instead of as paths (default: <code>FALSE</code>). 
+Overrides <code>return_dir</code> argument.</p></dd>
+
+
+<dt>nested</dt>
+<dd><p>Return files as a list nested by <code>id</code> (default: <code>FALSE</code>).</p></dd>
+
+
 <dt>nThread</dt>
 <dd><p>Number of threads to parallelise downloads across.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Print messages.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Named vector of paths to downloaded MAGMA files (or directories).</p>
+    
+
+<p>Named vector of paths to downloaded MAGMA files (or directories), 
+or a <a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a>.</p>
     </div>
 
     <div id="ref-examples">
@@ -146,8 +174,7 @@ full file paths (Default: <code>TRUE</code>).</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -69,21 +69,46 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">decompress</span><span class="op">(</span><span class="va">path_formatted</span>, remove <span class="op">=</span> <span class="cn">FALSE</span>, overwrite <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">decompress</span><span class="op">(</span>
+  <span class="va">path_formatted</span>,
+  remove <span class="op">=</span> <span class="cn">FALSE</span>,
+  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,
+  storage_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,
+  verbose <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>path_formatted</dt>
-<dd><p>Path to compressd file.</p></dd>
+<dd><p>Path to compressed file.</p></dd>
+
+
 <dt>remove</dt>
 <dd><p>If <code><a href="https://rdrr.io/r/base/logical.html" class="external-link">TRUE</a></code>, the input file is removed afterward,
    otherwise not.</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>If <code><a href="https://rdrr.io/r/base/logical.html" class="external-link">TRUE</a></code> and the output file already exists,
    the file is silently overwritten, otherwise an exception is
    thrown (unless <code>skip</code> is <code><a href="https://rdrr.io/r/base/logical.html" class="external-link">TRUE</a></code>).</p></dd>
+
+
+<dt>storage_dir</dt>
+<dd><p>Folder in which to store the GWAS summary stats.</p></dd>
+
+
+<dt>verbose</dt>
+<dd><p>Print messages.</p></dd>
+
 </dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    
+
+<p>Path to decompressed file.</p>
+    </div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -97,8 +122,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

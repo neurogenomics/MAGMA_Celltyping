@@ -19,7 +19,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -81,6 +81,7 @@
   N <span class="op">=</span> <span class="cn">NULL</span>,
   genome_ref_path <span class="op">=</span> <span class="cn">NULL</span>,
   population <span class="op">=</span> <span class="st">"eur"</span>,
+  genes_only <span class="op">=</span> <span class="cn">FALSE</span>,
   storage_dir <span class="op">=</span> <span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/userdir.html" class="external-link">R_user_dir</a></span><span class="op">(</span><span class="st">"MAGMA.Celltyping"</span>, which <span class="op">=</span> <span class="st">"cache"</span><span class="op">)</span>,
   force_new <span class="op">=</span> <span class="cn">FALSE</span>,
   version <span class="op">=</span> <span class="cn">NULL</span>,
@@ -94,22 +95,34 @@
 <dd><p>Filepath of the summary statistics file
 (which is expected to already be in the required format).
 Can be uncompressed or compressed (".gz" or ".bgz").</p></dd>
+
+
 <dt>genome_build</dt>
 <dd><p>The build of the reference genome
  (<code>"GRCh37"</code> or <code>"GRCh38"</code>).
 If <code>NULL</code>, it will be inferred with
 <a href="https://rdrr.io/pkg/MungeSumstats/man/get_genome_build.html" class="external-link">get_genome_build</a>.</p></dd>
+
+
 <dt>upstream_kb</dt>
 <dd><p>How many kilobases (kb) upstream of the gene
 should SNPs be included?</p></dd>
+
+
 <dt>downstream_kb</dt>
 <dd><p>How many kilobases (kb) downstream of the gene
 should SNPs be included?</p></dd>
+
+
 <dt>N</dt>
 <dd><p>What is the N number for this GWAS? That is cases + controls.</p></dd>
+
+
 <dt>genome_ref_path</dt>
 <dd><p>Path to the folder containing the 1000
 genomes reference (downloaded with <a href="get_genome_ref.html">get_genome_ref</a>).</p></dd>
+
+
 <dt>population</dt>
 <dd><p>Which population subset of the genome reference
 to include.</p><ul><li><p>"eur" : European descent
@@ -120,20 +133,40 @@ the most common GWAS subpopulation).</p></li>
 <li><p>"eas" : East Asian descent.</p></li>
 <li><p>"sas" : South Asian descent.</p></li>
 </ul></dd>
+
+
+<dt>genes_only</dt>
+<dd><p>The <em>.genes.raw</em> file is the intermediary file 
+that serves as  the input for subsequent gene-level analyses. 
+ To perform only a gene analysis, with no subsequent gene-set analysis,
+ the <code>--genes-only</code> flag can be added (<code>TRUE</code>). 
+ This suppresses the creation of the <em>.genes.raw</em> file, 
+ and significantly reduces the running time and memory required.</p></dd>
+
+
 <dt>storage_dir</dt>
 <dd><p>Where to store genome ref.</p></dd>
+
+
 <dt>force_new</dt>
 <dd><p>Set to <code>TRUE</code> to
 rerun <code>MAGMA</code> even if the output files already exist.
  (Default: <code>FALSE</code>).</p></dd>
+
+
 <dt>version</dt>
 <dd><p>MAGMA version to use.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Print messages.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Path to the genes.out file.</p>
+    
+
+<p>Path to the genes.out file.</p>
     </div>
 
     <div id="ref-examples">
@@ -159,8 +192,7 @@ rerun <code>MAGMA</code> even if the output files already exist.
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -18,7 +18,7 @@ specificity and mean_exp from CTD list to only keep a subset of genes."><!-- mat
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -86,12 +86,17 @@ ctd2 &lt;- lapply(ctd, filter_by_orthologs, orths$MGI.symbol)
     <h2>Arguments</h2>
     <dl><dt>ctd_oneLevel</dt>
 <dd><p>A single level of a CTD</p></dd>
+
+
 <dt>one2one_ortholog_symbols</dt>
 <dd><p>character expansion for the text.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The CTD with both specificity and mean
+    
+
+<p>The CTD with both specificity and mean
  expression matrices filtered to only contain 1:1 ortholog genes.</p>
     </div>
     <div id="details">
@@ -111,8 +116,7 @@ ctd2 &lt;- lapply(ctd, filter_by_orthologs, orths$MGI.symbol)
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -18,7 +18,7 @@ using adjusted MAGMA Z-statistic from .genes.out files."><!-- mathjax --><script
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -74,7 +74,7 @@ using adjusted MAGMA Z-statistic from .genes.out files.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">calculate_celltype_enrichment_limma</span><span class="op">(</span>
   <span class="va">magmaAdjZ</span>,
   <span class="va">ctd</span>,
-  ctd_species <span class="op">=</span> <span class="st">"mouse"</span>,
+  ctd_species <span class="op">=</span> <span class="fu"><a href="infer_ctd_species.html">infer_ctd_species</a></span><span class="op">(</span>ctd <span class="op">=</span> <span class="va">ctd</span><span class="op">)</span>,
   annotLevel <span class="op">=</span> <span class="fl">1</span>,
   prepare_ctd <span class="op">=</span> <span class="cn">TRUE</span>,
   thresh <span class="op">=</span> <span class="fl">1e-04</span>,
@@ -90,30 +90,52 @@ using adjusted MAGMA Z-statistic from .genes.out files.</p>
     <dl><dt>magmaAdjZ</dt>
 <dd><p>Output from
 <a href="adjust_zstat_in_genesOut.html">adjust_zstat_in_genesOut</a>.</p></dd>
+
+
 <dt>ctd</dt>
 <dd><p>Cell type data structure containing
 <code>specificity_quantiles</code>.</p></dd>
+
+
 <dt>ctd_species</dt>
-<dd><p>Species name relevant to the cell type data.
-See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a> for all available species.</p></dd>
+<dd><p>Species name relevant to the CellTypeDataset (<code>ctd</code>).
+See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a> for all available species. 
+If <code>ctd_species=NULL</code> (default),
+ the <code>ctd</code> species will automatically 
+ be inferred using <a href="https://rdrr.io/pkg/orthogene/man/infer_species.html" class="external-link">infer_species</a>.</p></dd>
+
+
 <dt>annotLevel</dt>
 <dd><p>Level within the <code>ctd</code> to use.</p></dd>
+
+
 <dt>prepare_ctd</dt>
 <dd><p>Whether to run
 <a href="prepare_quantile_groups.html">prepare_quantile_groups</a> on the <code>ctd</code> first.</p></dd>
+
+
 <dt>thresh</dt>
 <dd><p>A threshold on low specificity values (used to drop genes).</p></dd>
+
+
 <dt>celltypes</dt>
 <dd><p>Cell types to conduct tests for. Defaults to all cell types
 available in selected <code>ctd</code> level.</p></dd>
+
+
 <dt>return_all</dt>
 <dd><p>Return a list of both the processed 
 data input and the enrichment results (Default).
  If <code>FALSE</code>, will only return enrichment results.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Print messages.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed to <a href="https://rdrr.io/pkg/EWCE/man/standardise_ctd.html" class="external-link">standardise_ctd</a>.</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
@@ -128,26 +150,36 @@ data input and the enrichment results (Default).
 <span class="r-in">    file_types <span class="op">=</span> <span class="st">".genes.out"</span>,</span>
 <span class="r-in">    return_dir <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using built-in example files: ieu-a-298.tsv.gz.35UP.10DOWN</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning MAGMA gene.raw and gene.out file paths</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning MAGMA gene.* file paths</span>
 <span class="r-in">    </span>
 <span class="r-in"><span class="co">#### Get adjust gene z-scores ####    </span></span>
 <span class="r-in"><span class="va">magmaAdjZ</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="adjust_zstat_in_genesOut.html">adjust_zstat_in_genesOut</a></span><span class="op">(</span></span>
 <span class="r-in">    ctd <span class="op">=</span> <span class="va">ctd</span>,</span>
 <span class="r-in">    magma_GenesOut_file <span class="op">=</span> <span class="va">myGenesOut</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ctd_species=NULL: Inferring species from gene names.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Inferred ctd species: mouse</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Standardising CellTypeDataset</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Level: 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 5 matrix types across 2 CTD levels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Level: 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Importing genes.out file.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 genes without HGNC gene symbols were dropped.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 371 genes that are absent from the ctd were dropped.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Computing adjusted Z-statistic.</span>
 <span class="r-in">    </span>
 <span class="r-in"><span class="co">#### Get cell type enrichment ####</span></span>
 <span class="r-in"><span class="va">ps</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">calculate_celltype_enrichment_limma</span><span class="op">(</span></span>
 <span class="r-in">    magmaAdjZ <span class="op">=</span> <span class="va">magmaAdjZ</span>,</span>
 <span class="r-in">    ctd <span class="op">=</span> <span class="va">ctd</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ctd_species=NULL: Inferring species from gene names.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Inferred ctd species: mouse</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Standardising CellTypeDataset</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Level: 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 5 matrix types across 2 CTD levels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Level: 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Preparing specificity matrix.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Running enrichment tests: astrocytes_ependymal</span>
@@ -178,8 +210,7 @@ data input and the enrichment results (Default).
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

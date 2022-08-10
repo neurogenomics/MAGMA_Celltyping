@@ -18,7 +18,7 @@ using adjusted MAGMA Z-statistic from .genes.out files."><!-- mathjax --><script
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -75,7 +75,7 @@ using adjusted MAGMA Z-statistic from .genes.out files.</p>
   <span class="va">magma1</span>,
   <span class="va">magma2</span>,
   <span class="va">ctd</span>,
-  ctd_species <span class="op">=</span> <span class="st">"mouse"</span>,
+  ctd_species <span class="op">=</span> <span class="fu"><a href="infer_ctd_species.html">infer_ctd_species</a></span><span class="op">(</span><span class="va">ctd</span><span class="op">)</span>,
   annotLevel <span class="op">=</span> <span class="fl">1</span>,
   prepare_ctd <span class="op">=</span> <span class="cn">TRUE</span>,
   thresh <span class="op">=</span> <span class="fl">1e-04</span>,
@@ -90,32 +90,56 @@ using adjusted MAGMA Z-statistic from .genes.out files.</p>
     <dl><dt>magma1</dt>
 <dd><p>Output from <a href="adjust_zstat_in_genesOut.html">adjust_zstat_in_genesOut</a>
 (e.g. trait 1).</p></dd>
+
+
 <dt>magma2</dt>
 <dd><p>Output from <a href="adjust_zstat_in_genesOut.html">adjust_zstat_in_genesOut</a>
 (e.g. trait 2).</p></dd>
+
+
 <dt>ctd</dt>
 <dd><p>Cell type data structure containing
 <code>specificity_quantiles</code>.</p></dd>
+
+
 <dt>ctd_species</dt>
-<dd><p>Species name relevant to the cell type data.
-See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a> for all available species.</p></dd>
+<dd><p>Species name relevant to the CellTypeDataset (<code>ctd</code>).
+See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a> for all available species. 
+If <code>ctd_species=NULL</code> (default),
+ the <code>ctd</code> species will automatically 
+ be inferred using <a href="https://rdrr.io/pkg/orthogene/man/infer_species.html" class="external-link">infer_species</a>.</p></dd>
+
+
 <dt>annotLevel</dt>
 <dd><p>Level within the <code>ctd</code> to use.</p></dd>
+
+
 <dt>prepare_ctd</dt>
 <dd><p>Whether to run
 <a href="prepare_quantile_groups.html">prepare_quantile_groups</a> on the <code>ctd</code> first.</p></dd>
+
+
 <dt>thresh</dt>
 <dd><p>A threshold on low specificity values (used to drop genes).</p></dd>
+
+
 <dt>show_plot</dt>
 <dd><p>Show plot visualizations of results (Default: <code>TRUE</code>).</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Print messages.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed to <a href="https://rdrr.io/pkg/EWCE/man/standardise_ctd.html" class="external-link">standardise_ctd</a>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Data.frame with conditional enrichment results.</p>
+    
+
+<p>Data.frame with conditional enrichment results.</p>
     </div>
 
     <div id="ref-examples">
@@ -130,15 +154,22 @@ See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-lin
 <span class="r-in">    file_types <span class="op">=</span> <span class="st">".genes.out"</span>,</span>
 <span class="r-in">    return_dir <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using built-in example files: ieu-a-298.tsv.gz.35UP.10DOWN</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning MAGMA gene.raw and gene.out file paths</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning MAGMA gene.* file paths</span>
 <span class="r-in"><span class="va">magma1</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="adjust_zstat_in_genesOut.html">adjust_zstat_in_genesOut</a></span><span class="op">(</span></span>
 <span class="r-in">    ctd <span class="op">=</span> <span class="va">ctd</span>, </span>
 <span class="r-in">    magma_GenesOut_file <span class="op">=</span> <span class="va">genesOut1</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ctd_species=NULL: Inferring species from gene names.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Inferred ctd species: mouse</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Standardising CellTypeDataset</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Level: 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 5 matrix types across 2 CTD levels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Level: 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Importing genes.out file.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 genes without HGNC gene symbols were dropped.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 371 genes that are absent from the ctd were dropped.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Computing adjusted Z-statistic.</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">#### MAGMA 2 #####</span></span>
 <span class="r-in"><span class="va">genesOut2</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="import_magma_files.html">import_magma_files</a></span><span class="op">(</span></span>
@@ -147,45 +178,56 @@ See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-lin
 <span class="r-in">    return_dir <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Filtering IDs to only 1 requested dataset(s).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Downloading 1 files.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning MAGMA gene.raw and gene.out file paths</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Returning MAGMA gene.* file paths</span>
 <span class="r-in"><span class="va">magma2</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="adjust_zstat_in_genesOut.html">adjust_zstat_in_genesOut</a></span><span class="op">(</span></span>
 <span class="r-in">    ctd <span class="op">=</span> <span class="va">ctd</span>, </span>
 <span class="r-in">    magma_GenesOut_file <span class="op">=</span> <span class="va">genesOut2</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ctd_species=NULL: Inferring species from gene names.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Inferred ctd species: mouse</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Standardising CellTypeDataset</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Level: 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 5 matrix types across 2 CTD levels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Level: 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Importing genes.out file.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 54 genes without HGNC gene symbols were dropped.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 5,861 genes that are absent from the ctd were dropped.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 13 genes with duplicated HGNC gene symbols were dropped.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Computing adjusted Z-statistic.</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">#### Run conditional enrichment ####</span></span>
 <span class="r-in"><span class="va">cond_res</span> <span class="op">&lt;-</span> </span>
 <span class="r-in"><span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">calculate_conditional_celltype_enrichment_limma</span><span class="op">(</span></span>
 <span class="r-in">    magma1 <span class="op">=</span> <span class="va">magma1</span>,</span>
 <span class="r-in">    magma2 <span class="op">=</span> <span class="va">magma2</span>,</span>
-<span class="r-in">    ctd <span class="op">=</span> <span class="va">ctd</span><span class="op">)</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Correlation between magma1 and magma2 ADJ_ZSTAT: 0.015</span>
+<span class="r-in">    ctd <span class="op">=</span> <span class="va">ctd</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Correlation between magma1 and magma2 ADJ_ZSTAT: -0.007</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> stats::lm(formula = ADJ_ZSTAT.x ~ ADJ_ZSTAT.y, data = m3)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Residuals:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     Min      1Q  Median      3Q     Max </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> -4.3915 -0.5082  0.0403  0.5920  2.9097 </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> -4.4043 -0.5145  0.0209  0.5746  3.1372 </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>             Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> (Intercept)  5.29304    0.03981 132.966   &lt;2e-16 ***</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ADJ_ZSTAT.y  0.01427    0.03953   0.361    0.718    </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>              Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> (Intercept)  5.292476   0.033416 158.382   &lt;2e-16 ***</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ADJ_ZSTAT.y -0.005987   0.029548  -0.203    0.839    </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Residual standard error: 0.9308 on 554 degrees of freedom</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Multiple R-squared:  0.0002352,	Adjusted R-squared:  -0.001569 </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> F-statistic: 0.1303 on 1 and 554 DF,  p-value: 0.7183</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Residual standard error: 0.9048 on 963 degrees of freedom</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Multiple R-squared:  4.263e-05,	Adjusted R-squared:  -0.0009957 </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> F-statistic: 0.04106 on 1 and 963 DF,  p-value: 0.8395</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ctd_species=NULL: Inferring species from gene names.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Inferred ctd species: mouse</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Standardising CellTypeDataset</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Level: 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 5 matrix types across 2 CTD levels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Level: 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Running conditonal enrichment tests: astrocytes_ependymal</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Running conditonal enrichment tests: endothelial_mural</span>
@@ -244,8 +286,7 @@ See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-lin
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

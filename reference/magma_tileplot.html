@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -76,7 +76,7 @@
   width <span class="op">=</span> <span class="fl">4</span>,
   annotLevel <span class="op">=</span> <span class="fl">1</span>,
   fileTag <span class="op">=</span> <span class="st">""</span>,
-  <span class="va">output_path</span>
+  output_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -84,25 +84,40 @@
     <h2>Arguments</h2>
     <dl><dt>ctd</dt>
 <dd><p>Cell type data structure containing "specificity_quantiles".</p></dd>
+
+
 <dt>results</dt>
 <dd><p>Output from either 
 <a href="calculate_celltype_associations.html">calculate_celltype_associations</a> or
 <a href="calculate_conditional_celltype_associations.html">calculate_conditional_celltype_associations</a>.</p></dd>
+
+
 <dt>height</dt>
 <dd><p>Height of the output tileplot.</p></dd>
+
+
 <dt>width</dt>
 <dd><p>Width of the output tileplot.</p></dd>
+
+
 <dt>annotLevel</dt>
 <dd><p>Annotation level to plot the results for.</p></dd>
+
+
 <dt>fileTag</dt>
 <dd><p>String appended to the names of the saved PDFs,
 i.e. the name of the celltype data file used.</p></dd>
+
+
 <dt>output_path</dt>
 <dd><p>Location where the results should be plotted.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>List of two ggplot objects.</p>
+    
+
+<p>List of two ggplot objects.</p>
     </div>
 
   </div>
@@ -117,8 +132,7 @@ i.e. the name of the celltype data file used.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

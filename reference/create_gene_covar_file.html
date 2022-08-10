@@ -20,7 +20,7 @@ baseline and conditional analysis."><!-- mathjax --><script src="https://cdnjs.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -80,7 +80,8 @@ baseline and conditional analysis.</p>
   <span class="va">ctd</span>,
   <span class="va">annotLevel</span>,
   <span class="va">ctd_species</span>,
-  genesOutCOND <span class="op">=</span> <span class="cn">NA</span>
+  genesOutCOND <span class="op">=</span> <span class="cn">NA</span>,
+  verbose <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -104,21 +105,36 @@ genesOutFile &lt;- MAGMA.Celltyping::import_magma_files(
     <dl><dt>genesOutFile</dt>
 <dd><p>The output of the second call to MAGMA
 (performed in the <a href="map_snps_to_genes.html">map_snps_to_genes</a> function).</p></dd>
+
+
 <dt>ctd</dt>
 <dd><p>Cell type data structure. Must contain quantiles.</p></dd>
+
+
 <dt>annotLevel</dt>
 <dd><p>Annot level for which the gene covar file
 should be constructed</p></dd>
+
+
 <dt>ctd_species</dt>
 <dd><p>Species name relevant to the cell type data,
 i.e. "mouse" or "human"</p></dd>
+
+
 <dt>genesOutCOND</dt>
 <dd><p>[Optional] Path to a <em>genes.out</em>
 file to condition on. Used if you want to condition on a different GWAS.</p></dd>
+
+
+<dt>verbose</dt>
+<dd><p>Print messages.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>File path for the gene covar file.</p>
+    
+
+<p>File path for the gene covar file.</p>
     </div>
 
   </div>
@@ -133,8 +149,7 @@ file to condition on. Used if you want to condition on a different GWAS.</p></dd
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

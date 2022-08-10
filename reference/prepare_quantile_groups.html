@@ -19,7 +19,7 @@ from the CTD data which are not 1:1 orthologs with the GWAS species."><!-- mathj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -89,9 +89,13 @@ from the CTD data which are not 1:1 orthologs with the GWAS species.</p>
     <h2>Arguments</h2>
     <dl><dt>ctd</dt>
 <dd><p>Input CellTypeData.</p></dd>
+
+
 <dt>standardise</dt>
 <dd><p>Whether to run <a href="https://rdrr.io/pkg/EWCE/man/standardise_ctd.html" class="external-link">standardise_ctd</a> first.
 Provides gene ortholog conversion.</p></dd>
+
+
 <dt>non121_strategy</dt>
 <dd><p>How to handle genes that don't have
 1:1 mappings between <code>input_species</code>:<code>output_species</code>.
@@ -118,24 +122,37 @@ Return only the most "popular" interspecies ortholog mappings.
   (<code>input_species</code>-to-<code>output_species</code>)
   after dropping any duplicate genes in the <code>output_species</code>.</p></li>
 </ul></dd>
+
+
 <dt>input_species</dt>
 <dd><p>Which species the gene names in <code>exp</code> come from.
 See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a> for all available species.</p></dd>
+
+
 <dt>output_species</dt>
 <dd><p>Which species' genes names to convert <code>exp</code> to.
 See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a> for all available species.</p></dd>
+
+
 <dt>numberOfBins</dt>
 <dd><p>Number of non-zero quantile bins.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Print messages.
 Set <code>verbose=2</code> if you want to print all messages
  from internal functions as well.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed to <a href="https://rdrr.io/pkg/EWCE/man/standardise_ctd.html" class="external-link">standardise_ctd</a>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The ctd converted to <code>output_species</code> gene symbols
+    
+
+<p>The ctd converted to <code>output_species</code> gene symbols
 with additional quantiles matrix.</p>
     </div>
 
@@ -146,9 +163,10 @@ with additional quantiles matrix.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> loading from cache</span>
 <span class="r-in"><span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">prepare_quantile_groups</span><span class="op">(</span>ctd <span class="op">=</span> <span class="va">ctd_orig</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Standardising CellTypeDataset</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Level: 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 5 matrix types across 2 CTD levels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Level: 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
@@ -166,8 +184,7 @@ with additional quantiles matrix.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

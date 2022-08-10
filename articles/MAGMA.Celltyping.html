@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -91,7 +91,7 @@ Skene</i>
 </h4></h4>
             
             <h4 data-toc-skip class="date"><h4>
-Updated: <i>Apr-07-2022</i>
+Updated: <i>Aug-10-2022</i>
 </h4></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/blob/HEAD/vignettes/MAGMA.Celltyping.Rmd" class="external-link"><code>vignettes/MAGMA.Celltyping.Rmd</code></a></small>
@@ -102,8 +102,7 @@ Updated: <i>Apr-07-2022</i>
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/neurogenomics/MAGMA_Celltyping" class="external-link">MAGMA.Celltyping</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/neurogenomics/MAGMA_Celltyping" class="external-link">MAGMA.Celltyping</a></span><span class="op">)</span> 
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></code></pre></div>
 <div class="section level2">
 <h2 id="intro">Intro<a class="anchor" aria-label="anchor" href="#intro"></a>
@@ -156,7 +155,7 @@ of these columns: “Z”,“OR”,“BETA”,“LOG_ODDS”,“SIGNED_SUMSTAT�
 <p>Note you can input the genome build of your summary statistics for
 this step or it can be inferred if left <code>NULL</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">genesOutPath</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span> <span class="fu"><a href="../reference/map_snps_to_genes.html">map_snps_to_genes</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">genesOutPath</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/map_snps_to_genes.html">map_snps_to_genes</a></span><span class="op">(</span>
   path_formatted <span class="op">=</span> <span class="va">path_formatted</span>,
   genome_build <span class="op">=</span> <span class="st">"GRCh37"</span><span class="op">)</span></code></pre></div>
 </div>
@@ -186,7 +185,7 @@ you’ll need to first convert it to CTD using the instructions found in
 the <code>EWCE</code> package <a href="https://github.com/NathanSkene/EWCE/" class="external-link">documentation here</a>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu">ewceData</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ewceData/man/ctd.html" class="external-link">ctd</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## snapshotDate(): 2022-04-06</span></code></pre>
+<pre><code><span class="co">## snapshotDate(): 2022-07-22</span></code></pre>
 <pre><code><span class="co">## see ?ewceData and browseVignettes('ewceData') for documentation</span></code></pre>
 <pre><code><span class="co">## loading from cache</span></code></pre>
 <p>Note that the cell type dataset loaded in the code above is the
@@ -254,7 +253,7 @@ plotted and further analysed.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">merged_results</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/merge_results.html">merge_results</a></span><span class="op">(</span>
   MAGMA_results <span class="op">=</span> <span class="va">MAGMA_results</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Saving full merged results to ==&gt; /tmp/Rtmpxqw3jK/MAGMA_celltyping..lvl1.csv</span></code></pre>
+<pre><code><span class="co">## Saving full merged results to ==&gt; /tmp/RtmpI4K1RY/MAGMA_celltyping./.lvl1.csv</span></code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">merged_results</span><span class="op">)</span></code></pre></div>
 <table style="width:100%;" class="table">
@@ -860,60 +859,325 @@ enrichment results.</p>
 <code class="sourceCode R"><span class="va">top_phenos</span> <span class="op">&lt;-</span> <span class="va">merged_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">EnrichmentMode</span>, <span class="va">GWAS</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>Celltype<span class="op">=</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/n_distinct.html" class="external-link">n_distinct</a></span><span class="op">(</span><span class="va">Celltype</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">Celltype</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">Celltype</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## `summarise()` has grouped output by 'EnrichmentMode'. You can override using</span>
 <span class="co">## the `.groups` argument.</span></code></pre>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">top_phenos</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 2 × 3</span></span>
-<span class="co">## <span style="color: #949494;"># Groups:   EnrichmentMode [2]</span></span>
-<span class="co">##   EnrichmentMode GWAS                         Celltype</span>
-<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> Linear         finn-a-AD.tsv.gz.35UP.10DOWN        7</span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> Top 10%        finn-a-AD.tsv.gz.35UP.10DOWN        7</span></code></pre>
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">top_phenos</span><span class="op">)</span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">EnrichmentMode</th>
+<th align="left">GWAS</th>
+<th align="right">Celltype</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Linear</td>
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">Top 10%</td>
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN</td>
+<td align="right">7</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section level3">
 <h3 id="top-enrichments">Top enrichments<a class="anchor" aria-label="anchor" href="#top-enrichments"></a>
 </h3>
 <p>Get the phenotypes-celltype enrichment results with the most
 significant p-values (per phenotype).</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">top_enrich</span> <span class="op">&lt;-</span> <span class="va">merged_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">EnrichmentMode</span>, <span class="va">GWAS</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_min</a></span><span class="op">(</span><span class="va">FDR</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">top_enrich</span><span class="op">)</span> </code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 12 × 17</span></span>
-<span class="co">## <span style="color: #949494;"># Groups:   EnrichmentMode, GWAS [2]</span></span>
-<span class="co">##    GWAS          Celltype OBS_GENES    BETA BETA_STD      SE      P level Method</span>
-<span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
-<span class="co">## <span style="color: #BCBCBC;"> 1</span> finn-a-AD.ts… <span style="color: #949494;">"</span> i n t… 11809     1.22<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>  0.014<span style="text-decoration: underline;">4</span>  6.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 0.034<span style="text-decoration: underline;">2</span>     1 MAGMA </span>
-<span class="co">## <span style="color: #BCBCBC;"> 2</span> finn-a-AD.ts… <span style="color: #949494;">"</span> p y r… 11809     1.04<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>  0.012<span style="text-decoration: underline;">0</span>  6.86<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 0.065<span style="text-decoration: underline;">5</span>     1 MAGMA </span>
-<span class="co">## <span style="color: #BCBCBC;"> 3</span> finn-a-AD.ts… <span style="color: #949494;">"</span> p y r… 11809     9.26<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>  0.010<span style="text-decoration: underline;">9</span>  6.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 0.083<span style="text-decoration: underline;">3</span>     1 MAGMA </span>
-<span class="co">## <span style="color: #BCBCBC;"> 4</span> finn-a-AD.ts… <span style="color: #949494;">"</span> i n t… 11809     1.22<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>  0.014<span style="text-decoration: underline;">4</span>  6.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 0.034<span style="text-decoration: underline;">2</span>     1 MAGMA </span>
-<span class="co">## <span style="color: #BCBCBC;"> 5</span> finn-a-AD.ts… <span style="color: #949494;">"</span> p y r… 11809     1.04<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>  0.012<span style="text-decoration: underline;">0</span>  6.86<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 0.065<span style="text-decoration: underline;">5</span>     1 MAGMA </span>
-<span class="co">## <span style="color: #BCBCBC;"> 6</span> finn-a-AD.ts… <span style="color: #949494;">"</span> p y r… 11809     9.26<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>  0.010<span style="text-decoration: underline;">9</span>  6.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 0.083<span style="text-decoration: underline;">3</span>     1 MAGMA </span>
-<span class="co">## <span style="color: #BCBCBC;"> 7</span> finn-a-AD.ts… <span style="color: #949494;">"</span> m i c… 260       1.02<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  0.011<span style="text-decoration: underline;">9</span>  5.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 0.023<span style="text-decoration: underline;">9</span>     1 MAGMA </span>
-<span class="co">## <span style="color: #BCBCBC;"> 8</span> finn-a-AD.ts… <span style="color: #949494;">"</span> p y r… 290       7.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.008<span style="text-decoration: underline;">86</span> 4.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 0.070<span style="text-decoration: underline;">7</span>     1 MAGMA </span>
-<span class="co">## <span style="color: #BCBCBC;"> 9</span> finn-a-AD.ts… <span style="color: #949494;">"</span> p y r… 289       7.65<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.009<span style="text-decoration: underline;">48</span> 4.87<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 0.058<span style="text-decoration: underline;">4</span>     1 MAGMA </span>
-<span class="co">## <span style="color: #BCBCBC;">10</span> finn-a-AD.ts… <span style="color: #949494;">"</span> m i c… 260       1.02<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  0.011<span style="text-decoration: underline;">9</span>  5.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 0.023<span style="text-decoration: underline;">9</span>     1 MAGMA </span>
-<span class="co">## <span style="color: #BCBCBC;">11</span> finn-a-AD.ts… <span style="color: #949494;">"</span> p y r… 290       7.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.008<span style="text-decoration: underline;">86</span> 4.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 0.070<span style="text-decoration: underline;">7</span>     1 MAGMA </span>
-<span class="co">## <span style="color: #BCBCBC;">12</span> finn-a-AD.ts… <span style="color: #949494;">"</span> p y r… 289       7.65<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.009<span style="text-decoration: underline;">48</span> 4.87<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> 0.058<span style="text-decoration: underline;">4</span>     1 MAGMA </span>
-<span class="co">## <span style="color: #949494;"># … with 8 more variables: GCOV_FILE &lt;chr&gt;, CONTROL &lt;chr&gt;, CONTROL_label &lt;chr&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   log10p &lt;dbl&gt;, genesOutCOND &lt;chr&gt;, EnrichmentMode &lt;chr&gt;, FDR &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   Celltype_id &lt;chr&gt;</span></span></code></pre>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">top_enrich</span><span class="op">)</span> </code></pre></div>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="10%">
+<col width="9%">
+<col width="3%">
+<col width="3%">
+<col width="3%">
+<col width="3%">
+<col width="3%">
+<col width="2%">
+<col width="2%">
+<col width="23%">
+<col width="3%">
+<col width="5%">
+<col width="3%">
+<col width="4%">
+<col width="5%">
+<col width="3%">
+<col width="5%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">GWAS</th>
+<th align="left">Celltype</th>
+<th align="left">OBS_GENES</th>
+<th align="right">BETA</th>
+<th align="right">BETA_STD</th>
+<th align="right">SE</th>
+<th align="right">P</th>
+<th align="right">level</th>
+<th align="left">Method</th>
+<th align="left">GCOV_FILE</th>
+<th align="left">CONTROL</th>
+<th align="left">CONTROL_label</th>
+<th align="right">log10p</th>
+<th align="left">genesOutCOND</th>
+<th align="left">EnrichmentMode</th>
+<th align="right">FDR</th>
+<th align="left">Celltype_id</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN</td>
+<td align="left">i n t e r n e u r o n s</td>
+<td align="left">11809</td>
+<td align="right">0.0012211</td>
+<td align="right">0.0143570</td>
+<td align="right">0.0006699</td>
+<td align="right">0.034171</td>
+<td align="right">1</td>
+<td align="left">MAGMA</td>
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN.level1.Zeisel2015_linear.gsa.out</td>
+<td align="left">BASELINE</td>
+<td align="left">BASELINE</td>
+<td align="right">-1.466342</td>
+<td align="left">NA</td>
+<td align="left">Linear</td>
+<td align="right">0.1943643</td>
+<td align="left">interneurons</td>
+</tr>
+<tr class="even">
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN</td>
+<td align="left">p y r a m i d a l _ C A 1</td>
+<td align="left">11809</td>
+<td align="right">0.0010366</td>
+<td align="right">0.0120100</td>
+<td align="right">0.0006865</td>
+<td align="right">0.065539</td>
+<td align="right">1</td>
+<td align="left">MAGMA</td>
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN.level1.Zeisel2015_linear.gsa.out</td>
+<td align="left">BASELINE</td>
+<td align="left">BASELINE</td>
+<td align="right">-1.183500</td>
+<td align="left">NA</td>
+<td align="left">Linear</td>
+<td align="right">0.1943643</td>
+<td align="left">pyramidal_CA1</td>
+</tr>
+<tr class="odd">
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN</td>
+<td align="left">p y r a m i d a l _ S S</td>
+<td align="left">11809</td>
+<td align="right">0.0009264</td>
+<td align="right">0.0108780</td>
+<td align="right">0.0006697</td>
+<td align="right">0.083299</td>
+<td align="right">1</td>
+<td align="left">MAGMA</td>
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN.level1.Zeisel2015_linear.gsa.out</td>
+<td align="left">BASELINE</td>
+<td align="left">BASELINE</td>
+<td align="right">-1.079360</td>
+<td align="left">NA</td>
+<td align="left">Linear</td>
+<td align="right">0.1943643</td>
+<td align="left">pyramidal_SS</td>
+</tr>
+<tr class="even">
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN</td>
+<td align="left">i n t e r n e u r o n s</td>
+<td align="left">11809</td>
+<td align="right">0.0012211</td>
+<td align="right">0.0143570</td>
+<td align="right">0.0006699</td>
+<td align="right">0.034171</td>
+<td align="right">1</td>
+<td align="left">MAGMA</td>
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN.level1.Zeisel2015_linear.gsa.out</td>
+<td align="left">BASELINE</td>
+<td align="left">BASELINE</td>
+<td align="right">-1.466342</td>
+<td align="left">NA</td>
+<td align="left">Linear</td>
+<td align="right">0.1943643</td>
+<td align="left">interneurons</td>
+</tr>
+<tr class="odd">
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN</td>
+<td align="left">p y r a m i d a l _ C A 1</td>
+<td align="left">11809</td>
+<td align="right">0.0010366</td>
+<td align="right">0.0120100</td>
+<td align="right">0.0006865</td>
+<td align="right">0.065539</td>
+<td align="right">1</td>
+<td align="left">MAGMA</td>
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN.level1.Zeisel2015_linear.gsa.out</td>
+<td align="left">BASELINE</td>
+<td align="left">BASELINE</td>
+<td align="right">-1.183500</td>
+<td align="left">NA</td>
+<td align="left">Linear</td>
+<td align="right">0.1943643</td>
+<td align="left">pyramidal_CA1</td>
+</tr>
+<tr class="even">
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN</td>
+<td align="left">p y r a m i d a l _ S S</td>
+<td align="left">11809</td>
+<td align="right">0.0009264</td>
+<td align="right">0.0108780</td>
+<td align="right">0.0006697</td>
+<td align="right">0.083299</td>
+<td align="right">1</td>
+<td align="left">MAGMA</td>
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN.level1.Zeisel2015_linear.gsa.out</td>
+<td align="left">BASELINE</td>
+<td align="left">BASELINE</td>
+<td align="right">-1.079360</td>
+<td align="left">NA</td>
+<td align="left">Linear</td>
+<td align="right">0.1943643</td>
+<td align="left">pyramidal_SS</td>
+</tr>
+<tr class="odd">
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN</td>
+<td align="left">m i c r o g l i a</td>
+<td align="left">260</td>
+<td align="right">0.1015100</td>
+<td align="right">0.0119480</td>
+<td align="right">0.0512870</td>
+<td align="right">0.023904</td>
+<td align="right">1</td>
+<td align="left">MAGMA</td>
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN.level1.Zeisel2015_top10.gsa.out</td>
+<td align="left">BASELINE</td>
+<td align="left">BASELINE</td>
+<td align="right">-1.621529</td>
+<td align="left">NA</td>
+<td align="left">Top 10%</td>
+<td align="right">0.1943643</td>
+<td align="left">microglia</td>
+</tr>
+<tr class="even">
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN</td>
+<td align="left">p y r a m i d a l _ C A 1</td>
+<td align="left">290</td>
+<td align="right">0.0713330</td>
+<td align="right">0.0088599</td>
+<td align="right">0.0484960</td>
+<td align="right">0.070669</td>
+<td align="right">1</td>
+<td align="left">MAGMA</td>
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN.level1.Zeisel2015_top10.gsa.out</td>
+<td align="left">BASELINE</td>
+<td align="left">BASELINE</td>
+<td align="right">-1.150771</td>
+<td align="left">NA</td>
+<td align="left">Top 10%</td>
+<td align="right">0.1943643</td>
+<td align="left">pyramidal_CA1</td>
+</tr>
+<tr class="odd">
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN</td>
+<td align="left">p y r a m i d a l _ S S</td>
+<td align="left">289</td>
+<td align="right">0.0764730</td>
+<td align="right">0.0094821</td>
+<td align="right">0.0487460</td>
+<td align="right">0.058356</td>
+<td align="right">1</td>
+<td align="left">MAGMA</td>
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN.level1.Zeisel2015_top10.gsa.out</td>
+<td align="left">BASELINE</td>
+<td align="left">BASELINE</td>
+<td align="right">-1.233915</td>
+<td align="left">NA</td>
+<td align="left">Top 10%</td>
+<td align="right">0.1943643</td>
+<td align="left">pyramidal_SS</td>
+</tr>
+<tr class="even">
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN</td>
+<td align="left">m i c r o g l i a</td>
+<td align="left">260</td>
+<td align="right">0.1015100</td>
+<td align="right">0.0119480</td>
+<td align="right">0.0512870</td>
+<td align="right">0.023904</td>
+<td align="right">1</td>
+<td align="left">MAGMA</td>
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN.level1.Zeisel2015_top10.gsa.out</td>
+<td align="left">BASELINE</td>
+<td align="left">BASELINE</td>
+<td align="right">-1.621529</td>
+<td align="left">NA</td>
+<td align="left">Top 10%</td>
+<td align="right">0.1943643</td>
+<td align="left">microglia</td>
+</tr>
+<tr class="odd">
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN</td>
+<td align="left">p y r a m i d a l _ C A 1</td>
+<td align="left">290</td>
+<td align="right">0.0713330</td>
+<td align="right">0.0088599</td>
+<td align="right">0.0484960</td>
+<td align="right">0.070669</td>
+<td align="right">1</td>
+<td align="left">MAGMA</td>
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN.level1.Zeisel2015_top10.gsa.out</td>
+<td align="left">BASELINE</td>
+<td align="left">BASELINE</td>
+<td align="right">-1.150771</td>
+<td align="left">NA</td>
+<td align="left">Top 10%</td>
+<td align="right">0.1943643</td>
+<td align="left">pyramidal_CA1</td>
+</tr>
+<tr class="even">
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN</td>
+<td align="left">p y r a m i d a l _ S S</td>
+<td align="left">289</td>
+<td align="right">0.0764730</td>
+<td align="right">0.0094821</td>
+<td align="right">0.0487460</td>
+<td align="right">0.058356</td>
+<td align="right">1</td>
+<td align="left">MAGMA</td>
+<td align="left">finn-a-AD.tsv.gz.35UP.10DOWN.level1.Zeisel2015_top10.gsa.out</td>
+<td align="left">BASELINE</td>
+<td align="left">BASELINE</td>
+<td align="right">-1.233915</td>
+<td align="left">NA</td>
+<td align="left">Top 10%</td>
+<td align="right">0.1943643</td>
+<td align="left">pyramidal_SS</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<details><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<details><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## R Under development (unstable) (2022-03-14 r81896)</span>
+<pre><code><span class="co">## R version 4.2.0 (2022-04-22)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
 <span class="co">## Running under: Ubuntu 20.04.4 LTS</span>
 <span class="co">## </span>
 <span class="co">## Matrix products: default</span>
-<span class="co">## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so</span>
+<span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3</span>
+<span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/liblapack.so.3</span>
 <span class="co">## </span>
 <span class="co">## locale:</span>
 <span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
@@ -927,88 +1191,92 @@ significant p-values (per phenotype).</p>
 <span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">## </span>
 <span class="co">## other attached packages:</span>
-<span class="co">##  [1] ewceData_1.3.0         ExperimentHub_2.3.5    AnnotationHub_3.3.9   </span>
-<span class="co">##  [4] BiocFileCache_2.3.4    dbplyr_2.1.1           BiocGenerics_0.41.2   </span>
-<span class="co">##  [7] dplyr_1.0.8            ggplot2_3.3.5          MAGMA.Celltyping_2.0.3</span>
-<span class="co">## [10] BiocStyle_2.23.1      </span>
+<span class="co">## [1] ewceData_1.5.0         ExperimentHub_2.5.0    AnnotationHub_3.5.0   </span>
+<span class="co">## [4] BiocFileCache_2.5.0    dbplyr_2.2.1           BiocGenerics_0.43.1   </span>
+<span class="co">## [7] dplyr_1.0.9            MAGMA.Celltyping_2.0.6 BiocStyle_2.25.0      </span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
 <span class="co">##   [1] backports_1.4.1               systemfonts_1.0.4            </span>
 <span class="co">##   [3] googleAuthR_2.0.0             plyr_1.8.7                   </span>
 <span class="co">##   [5] lazyeval_0.2.2                splines_4.2.0                </span>
-<span class="co">##   [7] orthogene_1.1.1               BiocParallel_1.29.20         </span>
-<span class="co">##   [9] GenomeInfoDb_1.31.7           digest_0.6.29                </span>
-<span class="co">##  [11] htmltools_0.5.2               RNOmni_1.0.0                 </span>
-<span class="co">##  [13] fansi_1.0.3                   magrittr_2.0.3               </span>
-<span class="co">##  [15] memoise_2.0.1                 BSgenome_1.63.6              </span>
-<span class="co">##  [17] limma_3.51.6                  Biostrings_2.63.3            </span>
-<span class="co">##  [19] matrixStats_0.61.0            R.utils_2.11.0               </span>
-<span class="co">##  [21] pkgdown_2.0.2.9000            prettyunits_1.1.1            </span>
-<span class="co">##  [23] colorspace_2.0-3              blob_1.2.2                   </span>
-<span class="co">##  [25] rappdirs_0.3.3                textshaping_0.3.6            </span>
-<span class="co">##  [27] xfun_0.30                     crayon_1.5.1                 </span>
-<span class="co">##  [29] RCurl_1.98-1.6                jsonlite_1.8.0               </span>
-<span class="co">##  [31] lme4_1.1-29                   VariantAnnotation_1.41.3     </span>
-<span class="co">##  [33] glue_1.6.2                    gargle_1.2.0                 </span>
-<span class="co">##  [35] gtable_0.3.0                  zlibbioc_1.41.0              </span>
-<span class="co">##  [37] XVector_0.35.0                HGNChelper_0.8.1             </span>
-<span class="co">##  [39] DelayedArray_0.21.2           car_3.0-12                   </span>
-<span class="co">##  [41] SingleCellExperiment_1.17.2   abind_1.4-5                  </span>
-<span class="co">##  [43] scales_1.1.1                  DBI_1.1.2                    </span>
-<span class="co">##  [45] rstatix_0.7.0                 Rcpp_1.0.8.3                 </span>
-<span class="co">##  [47] progress_1.2.2                viridisLite_0.4.0            </span>
-<span class="co">##  [49] xtable_1.8-4                  bit_4.0.4                    </span>
-<span class="co">##  [51] stats4_4.2.0                  htmlwidgets_1.5.4            </span>
-<span class="co">##  [53] httr_1.4.2                    ellipsis_0.3.2               </span>
-<span class="co">##  [55] farver_2.1.0                  pkgconfig_2.0.3              </span>
-<span class="co">##  [57] XML_3.99-0.9                  R.methodsS3_1.8.1            </span>
-<span class="co">##  [59] sass_0.4.1                    utf8_1.2.2                   </span>
-<span class="co">##  [61] labeling_0.4.2                tidyselect_1.1.2             </span>
-<span class="co">##  [63] rlang_1.0.2                   reshape2_1.4.4               </span>
-<span class="co">##  [65] later_1.3.0                   AnnotationDbi_1.57.1         </span>
-<span class="co">##  [67] munsell_0.5.0                 BiocVersion_3.15.2           </span>
-<span class="co">##  [69] tools_4.2.0                   cachem_1.0.6                 </span>
-<span class="co">##  [71] cli_3.2.0                     generics_0.1.2               </span>
-<span class="co">##  [73] RSQLite_2.2.12                MungeSumstats_1.3.17         </span>
-<span class="co">##  [75] broom_0.7.12                  ggdendro_0.1.23              </span>
-<span class="co">##  [77] evaluate_0.15                 stringr_1.4.0                </span>
-<span class="co">##  [79] fastmap_1.1.0                 yaml_2.3.5                   </span>
-<span class="co">##  [81] ragg_1.2.2                    babelgene_22.3               </span>
-<span class="co">##  [83] knitr_1.38                    bit64_4.0.5                  </span>
-<span class="co">##  [85] fs_1.5.2                      purrr_0.3.4                  </span>
-<span class="co">##  [87] KEGGREST_1.35.0               gprofiler2_0.2.1             </span>
-<span class="co">##  [89] nlme_3.1-155                  mime_0.12                    </span>
-<span class="co">##  [91] R.oo_1.24.0                   xml2_1.3.3                   </span>
-<span class="co">##  [93] biomaRt_2.51.3                compiler_4.2.0               </span>
-<span class="co">##  [95] plotly_4.10.0                 filelock_1.0.2               </span>
-<span class="co">##  [97] curl_4.3.2                    png_0.1-7                    </span>
-<span class="co">##  [99] interactiveDisplayBase_1.33.0 ggsignif_0.6.3               </span>
-<span class="co">## [101] tibble_3.1.6                  EWCE_1.3.3                   </span>
-<span class="co">## [103] bslib_0.3.1                   homologene_1.4.68.19.3.27    </span>
-<span class="co">## [105] stringi_1.7.6                 highr_0.9                    </span>
-<span class="co">## [107] GenomicFeatures_1.47.13       desc_1.4.1                   </span>
-<span class="co">## [109] lattice_0.20-45               Matrix_1.4-0                 </span>
-<span class="co">## [111] nloptr_2.0.0                  vctrs_0.4.0                  </span>
-<span class="co">## [113] pillar_1.7.0                  lifecycle_1.0.1              </span>
-<span class="co">## [115] BiocManager_1.30.16           jquerylib_0.1.4              </span>
-<span class="co">## [117] data.table_1.14.2             bitops_1.0-7                 </span>
-<span class="co">## [119] httpuv_1.6.5                  patchwork_1.1.1              </span>
-<span class="co">## [121] rtracklayer_1.55.4            GenomicRanges_1.47.6         </span>
-<span class="co">## [123] R6_2.5.1                      BiocIO_1.5.0                 </span>
-<span class="co">## [125] bookdown_0.25                 promises_1.2.0.1             </span>
-<span class="co">## [127] gridExtra_2.3                 IRanges_2.29.1               </span>
-<span class="co">## [129] boot_1.3-28                   MASS_7.3-55                  </span>
-<span class="co">## [131] assertthat_0.2.1              SummarizedExperiment_1.25.3  </span>
-<span class="co">## [133] rprojroot_2.0.3               rjson_0.2.21                 </span>
-<span class="co">## [135] withr_2.5.0                   GenomicAlignments_1.31.2     </span>
-<span class="co">## [137] Rsamtools_2.11.0              S4Vectors_0.33.17            </span>
-<span class="co">## [139] GenomeInfoDbData_1.2.7        hms_1.1.1                    </span>
-<span class="co">## [141] parallel_4.2.0                grid_4.2.0                   </span>
-<span class="co">## [143] minqa_1.2.4                   tidyr_1.2.0                  </span>
-<span class="co">## [145] rmarkdown_2.13                MatrixGenerics_1.7.0         </span>
-<span class="co">## [147] carData_3.0-5                 ggpubr_0.4.0                 </span>
-<span class="co">## [149] Biobase_2.55.1                shiny_1.7.1                  </span>
-<span class="co">## [151] restfulr_0.0.13</span></code></pre>
+<span class="co">##   [7] orthogene_1.3.1               BiocParallel_1.31.12         </span>
+<span class="co">##   [9] GenomeInfoDb_1.33.4           ggplot2_3.3.6                </span>
+<span class="co">##  [11] digest_0.6.29                 yulab.utils_0.0.5            </span>
+<span class="co">##  [13] htmltools_0.5.2               RNOmni_1.0.0                 </span>
+<span class="co">##  [15] fansi_1.0.3                   magrittr_2.0.3               </span>
+<span class="co">##  [17] memoise_2.0.1                 BSgenome_1.65.2              </span>
+<span class="co">##  [19] limma_3.53.5                  Biostrings_2.65.1            </span>
+<span class="co">##  [21] matrixStats_0.62.0            R.utils_2.12.0               </span>
+<span class="co">##  [23] pkgdown_2.0.6.9000            prettyunits_1.1.1            </span>
+<span class="co">##  [25] colorspace_2.0-3              blob_1.2.3                   </span>
+<span class="co">##  [27] rappdirs_0.3.3                textshaping_0.3.6            </span>
+<span class="co">##  [29] xfun_0.31                     crayon_1.5.1                 </span>
+<span class="co">##  [31] RCurl_1.98-1.7                jsonlite_1.8.0               </span>
+<span class="co">##  [33] lme4_1.1-29                   VariantAnnotation_1.43.2     </span>
+<span class="co">##  [35] ape_5.6-2                     glue_1.6.2                   </span>
+<span class="co">##  [37] gargle_1.2.0                  gtable_0.3.0                 </span>
+<span class="co">##  [39] zlibbioc_1.43.0               XVector_0.37.0               </span>
+<span class="co">##  [41] HGNChelper_0.8.1              DelayedArray_0.23.1          </span>
+<span class="co">##  [43] car_3.1-0                     SingleCellExperiment_1.19.0  </span>
+<span class="co">##  [45] abind_1.4-5                   scales_1.2.0                 </span>
+<span class="co">##  [47] DBI_1.1.3                     rstatix_0.7.0                </span>
+<span class="co">##  [49] Rcpp_1.0.8.3                  progress_1.2.2               </span>
+<span class="co">##  [51] viridisLite_0.4.0             xtable_1.8-4                 </span>
+<span class="co">##  [53] gridGraphics_0.5-1            tidytree_0.3.9               </span>
+<span class="co">##  [55] bit_4.0.4                     stats4_4.2.0                 </span>
+<span class="co">##  [57] htmlwidgets_1.5.4             httr_1.4.3                   </span>
+<span class="co">##  [59] ellipsis_0.3.2                farver_2.1.0                 </span>
+<span class="co">##  [61] XML_3.99-0.10                 pkgconfig_2.0.3              </span>
+<span class="co">##  [63] R.methodsS3_1.8.2             sass_0.4.1                   </span>
+<span class="co">##  [65] utf8_1.2.2                    labeling_0.4.2               </span>
+<span class="co">##  [67] ggplotify_0.1.0               tidyselect_1.1.2             </span>
+<span class="co">##  [69] rlang_1.0.3                   reshape2_1.4.4               </span>
+<span class="co">##  [71] later_1.3.0                   AnnotationDbi_1.59.1         </span>
+<span class="co">##  [73] munsell_0.5.0                 BiocVersion_3.16.0           </span>
+<span class="co">##  [75] tools_4.2.0                   cachem_1.0.6                 </span>
+<span class="co">##  [77] cli_3.3.0                     generics_0.1.2               </span>
+<span class="co">##  [79] RSQLite_2.2.14                MungeSumstats_1.5.8          </span>
+<span class="co">##  [81] broom_0.8.0                   ggdendro_0.1.23              </span>
+<span class="co">##  [83] evaluate_0.15                 stringr_1.4.0                </span>
+<span class="co">##  [85] fastmap_1.1.0                 yaml_2.3.5                   </span>
+<span class="co">##  [87] ragg_1.2.2                    ggtree_3.5.1                 </span>
+<span class="co">##  [89] babelgene_22.3                knitr_1.39                   </span>
+<span class="co">##  [91] bit64_4.0.5                   fs_1.5.2                     </span>
+<span class="co">##  [93] purrr_0.3.4                   KEGGREST_1.37.3              </span>
+<span class="co">##  [95] gprofiler2_0.2.1              nlme_3.1-158                 </span>
+<span class="co">##  [97] mime_0.12                     R.oo_1.25.0                  </span>
+<span class="co">##  [99] aplot_0.1.6                   xml2_1.3.3                   </span>
+<span class="co">## [101] biomaRt_2.53.2                compiler_4.2.0               </span>
+<span class="co">## [103] plotly_4.10.0                 filelock_1.0.2               </span>
+<span class="co">## [105] curl_4.3.2                    png_0.1-7                    </span>
+<span class="co">## [107] interactiveDisplayBase_1.35.0 ggsignif_0.6.3               </span>
+<span class="co">## [109] treeio_1.21.0                 tibble_3.1.7                 </span>
+<span class="co">## [111] EWCE_1.5.5                    bslib_0.3.1                  </span>
+<span class="co">## [113] homologene_1.4.68.19.3.27     stringi_1.7.6                </span>
+<span class="co">## [115] highr_0.9                     GenomicFeatures_1.49.5       </span>
+<span class="co">## [117] desc_1.4.1                    lattice_0.20-45              </span>
+<span class="co">## [119] Matrix_1.4-1                  nloptr_2.0.3                 </span>
+<span class="co">## [121] vctrs_0.4.1                   pillar_1.7.0                 </span>
+<span class="co">## [123] lifecycle_1.0.1               BiocManager_1.30.18          </span>
+<span class="co">## [125] jquerylib_0.1.4               data.table_1.14.2            </span>
+<span class="co">## [127] bitops_1.0-7                  rtracklayer_1.57.0           </span>
+<span class="co">## [129] httpuv_1.6.5                  patchwork_1.1.1              </span>
+<span class="co">## [131] GenomicRanges_1.49.0          BiocIO_1.7.1                 </span>
+<span class="co">## [133] R6_2.5.1                      bookdown_0.27                </span>
+<span class="co">## [135] promises_1.2.0.1              gridExtra_2.3                </span>
+<span class="co">## [137] IRanges_2.31.0                codetools_0.2-18             </span>
+<span class="co">## [139] boot_1.3-28                   MASS_7.3-57                  </span>
+<span class="co">## [141] assertthat_0.2.1              SummarizedExperiment_1.27.1  </span>
+<span class="co">## [143] rjson_0.2.21                  rprojroot_2.0.3              </span>
+<span class="co">## [145] GenomicAlignments_1.33.1      Rsamtools_2.13.3             </span>
+<span class="co">## [147] S4Vectors_0.35.1              GenomeInfoDbData_1.2.8       </span>
+<span class="co">## [149] hms_1.1.1                     parallel_4.2.0               </span>
+<span class="co">## [151] grid_4.2.0                    ggfun_0.0.6                  </span>
+<span class="co">## [153] minqa_1.2.4                   tidyr_1.2.0                  </span>
+<span class="co">## [155] rmarkdown_2.14                MatrixGenerics_1.9.1         </span>
+<span class="co">## [157] carData_3.0-5                 ggpubr_0.4.0                 </span>
+<span class="co">## [159] Biobase_2.57.1                shiny_1.7.1                  </span>
+<span class="co">## [161] restfulr_0.0.15</span></code></pre>
 </details><hr>
 </div>
   </div>
@@ -1030,8 +1298,7 @@ significant p-values (per phenotype).</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer>

@@ -20,7 +20,7 @@ import_magma_files function."><!-- mathjax --><script src="https://cdnjs.cloudfl
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -79,7 +79,8 @@ Precomputed MAGMA GWAS files can be downloaded via the
   <span class="va">ctd</span>,
   ctd_levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ctd</span><span class="op">)</span><span class="op">)</span>,
   <span class="va">ctd_name</span>,
-  ctd_species <span class="op">=</span> <span class="st">"mouse"</span>,
+  ctd_species <span class="op">=</span> <span class="fu"><a href="infer_ctd_species.html">infer_ctd_species</a></span><span class="op">(</span><span class="va">ctd</span><span class="op">)</span>,
+  standardise <span class="op">=</span> <span class="cn">TRUE</span>,
   <span class="va">magma_dirs</span>,
   run_linear <span class="op">=</span> <span class="cn">TRUE</span>,
   run_top10 <span class="op">=</span> <span class="cn">TRUE</span>,
@@ -104,59 +105,108 @@ Precomputed MAGMA GWAS files can be downloaded via the
     <dl><dt>ctd</dt>
 <dd><p>Cell type data structure containing
 <code>specificity_quantiles</code>.</p></dd>
+
+
 <dt>ctd_levels</dt>
 <dd><p>Which levels of <code>ctd</code> to
 iterate the enrichment analysis over.</p></dd>
+
+
 <dt>ctd_name</dt>
 <dd><p>Used in file names</p></dd>
+
+
 <dt>ctd_species</dt>
-<dd><p>Species name relevant to the cell type data.
-See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a> for all available species.</p></dd>
+<dd><p>Species name relevant to the CellTypeDataset (<code>ctd</code>).
+See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a> for all available species. 
+If <code>ctd_species=NULL</code> (default),
+ the <code>ctd</code> species will automatically 
+ be inferred using <a href="https://rdrr.io/pkg/orthogene/man/infer_species.html" class="external-link">infer_species</a>.</p></dd>
+
+
+<dt>standardise</dt>
+<dd><p>Whether to run <a href="https://rdrr.io/pkg/EWCE/man/standardise_ctd.html" class="external-link">standardise_ctd</a> first.
+Provides gene ortholog conversion.</p></dd>
+
+
 <dt>magma_dirs</dt>
 <dd><p>Path to folders containing the
 pre-computed MAGMA GWAS files (<em>.gsa.raw</em>and <em>.gsa.out</em>).
 <em>NOTE</em>: Files within these folders must have the same naming scheme
 as the folders themselves.</p></dd>
+
+
 <dt>run_linear</dt>
 <dd><p>Run in linear mode.</p></dd>
+
+
 <dt>run_top10</dt>
 <dd><p>Run  in top 10% mode.</p></dd>
+
+
 <dt>run_conditional</dt>
 <dd><p>Run in conditional mode.</p></dd>
+
+
 <dt>upstream_kb</dt>
 <dd><p>How many kb upstream of the gene
 should SNPs be included?</p></dd>
+
+
 <dt>downstream_kb</dt>
 <dd><p>How many kb downstream of the gene
 should SNPs be included?</p></dd>
+
+
 <dt>suffix_linear</dt>
 <dd><p>This will be added to the linear results file name.</p></dd>
+
+
 <dt>suffix_top10</dt>
 <dd><p>This will be added to the top 10% results file name.</p></dd>
+
+
 <dt>suffix_condition</dt>
 <dd><p>This will be added to the
 conditional results file name.</p></dd>
+
+
 <dt>controlledAnnotLevel</dt>
 <dd><p>Which annotation level should be controlled for.</p></dd>
+
+
 <dt>controlTopNcells</dt>
 <dd><p>How many of the most significant cell types at
 that annotation level should be controlled for?</p></dd>
+
+
 <dt>force_new</dt>
 <dd><p>[Optional] Force new MAGMA analyses even if the
 pre-existing results files are detected.</p></dd>
+
+
 <dt>save_dir</dt>
 <dd><p>Folder to save results in (<code>save_dir=NULL</code>
 to not save any results).</p></dd>
+
+
 <dt>nThread</dt>
 <dd><p>Number of threads to parallelise analyses across.</p></dd>
+
+
 <dt>version</dt>
 <dd><p>MAGMA version to use.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Print messages.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list containing the results of each selected
+    
+
+<p>A list containing the results of each selected
 celltype associations analysis.</p>
     </div>
 
@@ -198,7 +248,7 @@ celltype associations analysis.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping gene symbols in specificity_deciles matrix to entrez IDs.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Constructing top10% gene marker sets for 8 cell-types.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Merging linear and top10% results</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving results ==&gt; /tmp/Rtmprm75Mo/Zeisel2015/MAGMA_celltyping.Zeisel2015.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving results ==&gt; /tmp/RtmpZsC2C9/Zeisel2015/MAGMA_celltyping.Zeisel2015.rds</span>
 </code></pre></div>
     </div>
   </div>
@@ -213,8 +263,7 @@ celltype associations analysis.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>
