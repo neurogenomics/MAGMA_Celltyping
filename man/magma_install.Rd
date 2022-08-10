@@ -32,7 +32,9 @@ Path to MAGMA executable.
 }
 \description{
 Checks whether MAGMA is currently installed, and if not, 
-tries to automatically install it.
+tries to automatically install it. 
+For a list of all changes across MAGMA versions, please see 
+ \href{https://ctg.cncr.nl/software/MAGMA/doc/changelog.txt}{here}.
 }
 \examples{
 magma <- MAGMA.Celltyping::magma_install()

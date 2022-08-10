@@ -59,7 +59,7 @@ get_magma_paths <- function(gwas_sumstats_path = NA,
             output_path, gwasFileName, upstream_kb, downstream_kb
         )
         pathFigs <- sprintf(
-            "%s/MAGMA_Figures/%s FIGS",
+            "%s/MAGMA_Figures/%s/FIGS",
             output_path, gwasFileName
         )
         pathTiles <- sprintf(
@@ -70,12 +70,8 @@ get_magma_paths <- function(gwas_sumstats_path = NA,
         pathMagmaFiles <- fix_path(pathMagmaFiles)
         pathTiles <- fix_path(pathTiles)
         pathFigs <- fix_path(pathFigs)  
-        # Create the folders (in case they don't exist yet)
-        dir.create(sprintf("%s/MAGMA_Files", output_path),
-                   showWarnings = FALSE, recursive = TRUE)
-        dir.create(pathMagmaFiles, showWarnings = FALSE)
-        dir.create(sprintf("%s/MAGMA_Figures", output_path), 
-                   showWarnings = FALSE, recursive = TRUE)
+        # Create the folders (in case they don't exist yet) 
+        dir.create(pathMagmaFiles, showWarnings = FALSE, recursive = TRUE) 
         dir.create(pathTiles, showWarnings = FALSE, recursive = TRUE)
         dir.create(pathFigs, showWarnings = FALSE, recursive = TRUE)
 
@@ -95,14 +91,18 @@ get_magma_paths <- function(gwas_sumstats_path = NA,
                            filePathPrefix = filePathPrefix, 
                            gwasFileName = gwasFileName, 
                            gwasFilePath = gwas_sumstats_path)
-    } else {
-        dir.create(sprintf("%s/MAGMA_Figures", output_path),
-                   showWarnings = FALSE, recursive = TRUE)
-        pathTiles <- sprintf("%s/MAGMA_Figures/Tileplots", output_path)
+    } else { 
+        pathTiles <- fix_path(
+            sprintf("%s/MAGMA_Figures/Tileplots", output_path)
+        )
+        pathFigs <- fix_path(
+            sprintf("%s/MAGMA_Figures", output_path)
+        )   
         dir.create(pathTiles, showWarnings = FALSE, recursive = TRUE)
-        magmaPaths <- list(tiles = pathTiles)
-    }
-
+        dir.create(pathFigs, showWarnings = FALSE, recursive = TRUE)
+        magmaPaths <- list(tiles = pathTiles,
+                           figs = pathFigs)
+    } 
     return(magmaPaths)
 }
 

@@ -1,3 +1,9 @@
+# MAGMA.Celltyping 2.0.7
+
+## Bug fixes 
+
+* Get GitHub Actions to pass on all 3 OS. 
+
 # MAGMA.Celltyping 2.0.6
 
 ## New features

@@ -350,7 +350,7 @@ jobs:
       - name: Build and deploy pkgdown site
         if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main') && env.run_pkgdown == 'true' && runner.os == 'Linux'
         run: |
-          git config --global --add safe.directory /__w/${{env.packageNameOrig}}/${{env.packageNameOrig}} 
+          git config --global --add safe.directory '*' 
           git config --local user.name "$GITHUB_ACTOR" 
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com" 
           Rscript -e "pkgdown::deploy_to_branch(new_process = FALSE)" 

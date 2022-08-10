@@ -1,7 +1,9 @@
 #' Install the MAGMA command line tool
 #'
 #' Checks whether MAGMA is currently installed, and if not, 
-#' tries to automatically install it.
+#' tries to automatically install it. 
+#' For a list of all changes across MAGMA versions, please see 
+#'  \href{https://ctg.cncr.nl/software/MAGMA/doc/changelog.txt}{here}.
 #' 
 #' @param dest_dir Folder in which to install MAGMA.
 #' @param desired_version Desired version of MAGMA.
