@@ -5,8 +5,7 @@ test_that("map_snps_to_genes works", {
         #### Gather data ####
         ctd <- ewceData::ctd()
         #### Run SNP-to-gene mapping ####
-        ## Use a very small example GWAS file
-        withr::local_tempdir()
+        ## Use a very small example GWAS file 
         path_formatted <- MAGMA.Celltyping::get_example_gwas(
             trait = "educational_attainment")
         ## Map
