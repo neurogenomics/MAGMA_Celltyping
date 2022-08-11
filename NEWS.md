@@ -1,5 +1,12 @@
 # MAGMA.Celltyping 2.0.7
 
+## New features  
+
+* `plot_celltype_associations`: added unit tests.
+* `calculate_conditional_celltype_associations`: added unit tests. 
+    - Also runs `calculate_celltype_associations` internally. 
+
+
 ## Bug fixes 
 
 * Get GitHub Actions to pass on all 3 OS. 

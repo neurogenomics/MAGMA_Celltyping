@@ -1,6 +1,5 @@
 test_that("calculate_celltype_associations works", {
     
-    if(!is_32bit()){
         {
             start <- Sys.time()
             #### import CTD ####
@@ -32,7 +31,5 @@ test_that("calculate_celltype_associations works", {
             testthat::expect_true(all(celltypes %in% 
                                           ctAssocs[[lvl]]$results$Celltype))
         } 
-    } else {
-        testthat::expect_null(NULL)
-    }
+    
 })

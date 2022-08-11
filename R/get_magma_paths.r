@@ -75,9 +75,12 @@ get_magma_paths <- function(gwas_sumstats_path = NA,
         dir.create(pathTiles, showWarnings = FALSE, recursive = TRUE)
         dir.create(pathFigs, showWarnings = FALSE, recursive = TRUE)
 
-        prefix <- sprintf("%s.%sUP.%sDOWN",
-                          gwasFileName, 
-                          upstream_kb, downstream_kb)
+        prefix <- fix_path(
+            sprintf("%s.%sUP.%sDOWN",
+                    gwasFileName, 
+                    upstream_kb, 
+                    downstream_kb)
+        )
         filePathPrefix <- sprintf("%s/%s.%sUP.%sDOWN",
                                   pathMagmaFiles, gwasFileName,
                                   upstream_kb, downstream_kb)
