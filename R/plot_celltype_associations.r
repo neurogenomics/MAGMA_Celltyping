@@ -90,9 +90,9 @@ plot_celltype_associations <- function(ctAssocs,
     }
 
     # Generate the plots (for each annotation level seperately)
-    theme_set(ggplot2::theme_bw())
+    ggplot2::theme_set(ggplot2::theme_bw())
     figures <- list()
-    for (annotLevel in seq_len(sum(names(ctAssocs) == "") )) {
+    for (annotLevel in seq_len(length(grep("^level.", names(ctAssocs))))) {
         # SET: NEW COLUMN COMBINING METHODS or ENRICHMENT TYPES
         ctAssocs[[annotLevel]]$results$FullMethod <- 
             sprintf("%s %s", 
