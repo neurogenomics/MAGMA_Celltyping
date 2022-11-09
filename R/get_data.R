@@ -7,31 +7,38 @@
 get_data <- function(fname,
                      repo = "neurogenomics/MAGMA_Celltyping",
                      storage_dir = tools::R_user_dir(
-                         package = "MAGMA.Celltyping",
-                         which = "cache"
+                       package = "MAGMA.Celltyping",
+                       which = "cache"
                      ),
-                     overwrite = FALSE,
+                     overwrite = TRUE,
                      check = FALSE
                      ){
-    tmp <- fix_path(file.path(storage_dir, fname))
-    if (!file.exists(tmp)) {
-        requireNamespace("piggyback")
-        requireNamespace("gh")
-        Sys.setenv("piggyback_cache_duration" = 10)
-        dir.create(storage_dir, showWarnings = FALSE, recursive = TRUE) 
-        .token <- gh::gh_token()
-        if(as.character(.token)=="") .token <- NULL
-        piggyback::pb_download(
-            file = fname,
-            dest = storage_dir,
-            repo = repo,
-            overwrite = overwrite,
-            .token = .token
-        )
+  tmp <- fix_path(file.path(storage_dir, fname))
+  requireNamespace("piggyback")
+  requireNamespace("gh")
+  Sys.setenv("piggyback_cache_duration" = 10)
+  dir.create(storage_dir, showWarnings = FALSE, recursive = TRUE)
+  .token <- gh::gh_token()
+  if(as.character(.token)=="")  {
+    message(paste0("Personal access token is missing and it is required to download ",
+                   names(fname), "\n"))
+    message("Please, configure git with R and try again \n")
+    stop("Personal access token missing missing")
+    } else {
+      piggyback::pb_download(
+        file = fname,
+        dest = storage_dir,
+        repo = repo,
+        overwrite = overwrite,
+        .token = .token
+      )
     }
-    #### Check that download didn't fail due to bad credentials #####
-    if(isTRUE(check)){
-        get_data_check(tmp = tmp)    
+
+  #### Check that download didn't fail due to bad credentials #####
+  if(isTRUE(check)){
+    get_data_check(tmp = tmp)
     }
-    return(tmp)
+  return(tmp)
 }
+
+
