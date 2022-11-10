@@ -20,10 +20,10 @@
 #' @examples
 #' #### Prepare cell-type data ####
 #' ctd <- ewceData::ctd()
-#' 
+#'
 #' #### Prepare GWAS MAGMA data ####
 #' magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
-#'     
+#'
 #' #### Run pipeline ####
 #' ctAssocs <- MAGMA.Celltyping::calculate_celltype_associations(
 #'     ctd = ctd,
@@ -37,7 +37,7 @@ calculate_celltype_associations <- function(ctd,
                                             ctd_species = infer_ctd_species(ctd),
                                             gwas_sumstats_path = NULL,
                                             magma_dir = NULL,
-                                            analysis_name = "MainRun", 
+                                            analysis_name = "MainRun",
                                             prepare_ctd = TRUE,
                                             upstream_kb = 35,
                                             downstream_kb = 10,
@@ -54,7 +54,7 @@ calculate_celltype_associations <- function(ctd,
     #### Handle MAGMA Files ####
     #### Trick downstream functions into working with only MAGMA files ####
     magma_dir <- magma_dir[1]
-    if(!is.null(magma_dir)){ 
+    if(!is.null(magma_dir)){
         gwas_sumstats_path <- create_fake_gwas_path(
             magma_dir = magma_dir,
             upstream_kb = upstream_kb,
@@ -72,7 +72,7 @@ calculate_celltype_associations <- function(ctd,
             verbose = verbose
         )
         ctd_species <- output_species
-    } 
+    }
     #### Setup paths ####
     magmaPaths <- get_magma_paths(
         gwas_sumstats_path = gwas_sumstats_path,
@@ -82,7 +82,7 @@ calculate_celltype_associations <- function(ctd,
     #### Check for errors in arguments ####
     check_inputs_to_magma_celltype_analysis(
         ctd = ctd,
-        gwas_sumstats_path = gwas_sumstats_path, 
+        gwas_sumstats_path = gwas_sumstats_path,
         upstream_kb = upstream_kb,
         downstream_kb = downstream_kb
     )
@@ -102,7 +102,7 @@ calculate_celltype_associations <- function(ctd,
         # messager(path,v=verbose)
 
         if ((!file.exists(path)) || force_new) {
-            messager("Running MAGMA:",EnrichmentMode,"mode", v = verbose) 
+            messager("Running MAGMA:",EnrichmentMode,"mode", v = verbose)
             if (EnrichmentMode == "Linear") {
                 # First match quantiles to the genes in the genes.out file...
                 # then write as the genesCovar file (the input to MAGMA)
@@ -204,8 +204,9 @@ calculate_celltype_associations <- function(ctd,
                         paste(
                             "magma",
                             "--gene-results '%s.genes.raw'",
-                            "--set-annot '%s' twosided",
-                            "--gene-covar '%s' condition-only='%s'",
+                            "--set-annot '%s'",
+                            "--gene-covar '%s'",
+                            "--model direction=twosided condition-only='%s'",
                             "--out '%s'"
                         ),
                         magmaPaths$filePathPrefix,
@@ -217,7 +218,7 @@ calculate_celltype_associations <- function(ctd,
                 }
             }
             #### Run MAGMA command ####
-            magma_run(cmd = magma_cmd, 
+            magma_run(cmd = magma_cmd,
                       version = version)
         } else {
             messager("Importing precomputed MAGMA results.",
@@ -231,7 +232,7 @@ calculate_celltype_associations <- function(ctd,
             genesOutCOND = genesOutCOND,
             EnrichmentMode = EnrichmentMode,
             ControlForCT = "BASELINE"
-        ) 
+        )
         return(tmp)
     }) %>% `names<-`(paste0("level",ctd_levels)) # //End lapply loop
 
