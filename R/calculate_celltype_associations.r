@@ -206,7 +206,7 @@ calculate_celltype_associations <- function(ctd,
                             "--gene-results '%s.genes.raw'",
                             "--set-annot '%s'",
                             "--gene-covar '%s'",
-                            "--model direction=twosided condition-only='%s'",
+                            "--model direction=twosided condition='%s'",
                             "--out '%s'"
                         ),
                         magmaPaths$filePathPrefix,
