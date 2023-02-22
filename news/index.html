@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.8</span>
       </span>
     </div>
 
@@ -63,6 +63,48 @@
       <small>Source: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.0.8" id="magmacelltyping-208">MAGMA.Celltyping 2.0.8<a class="anchor" aria-label="anchor" href="#magmacelltyping-208"></a></h2>
+<div class="section level3">
+<h3 id="new-features-2-0-8">New features<a class="anchor" aria-label="anchor" href="#new-features-2-0-8"></a></h3>
+<ul><li>Add <code>rworkflows</code>
+<ul><li>GHA</li>
+<li>Replace <code>badger</code>
+</li>
+</ul></li>
+<li>
+<code>get_ctd_dendro</code>
+<ul><li>Automatically compute spec quantiles matrix when its missing.</li>
+</ul></li>
+<li>
+<code>plot_celltype_associations</code>
+<ul><li>Replace <code>sprintf</code>, <code>for</code>,</li>
+<li>Control verbosity</li>
+<li>Replace grid with <code>patchwork</code>
+</li>
+<li>Save with <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave</a></code> instead of <code>grDevices</code>
+</li>
+<li>Reduce redundancy in code (e.g. saving plots)</li>
+<li>Add new arg to bind plots from multiple levels into one: <code>bind_plots</code>
+</li>
+</ul></li>
+<li>
+<code>enrichment_results</code>
+<ul><li>Update example enrichment results to new format with nested <code>levels</code>.</li>
+</ul></li>
+<li>Add <em>CITATION</em> file.</li>
+<li>Add citation info and volcano/cell icons to startup message.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-2-0-8">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-8"></a></h3>
+<ul><li>
+<code>plot_celltype_associations</code>
+<ul><li>Fix issues described in PR: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/pull/121" class="external-link uri">https://github.com/neurogenomics/MAGMA_Celltyping/pull/121</a>
+</li>
+<li>Fix NAs issue by ensuring celltype names in <code>ctAssocs</code> and <code>ctdDendro</code> are both run through <code><a href="https://rdrr.io/pkg/EWCE/man/fix_celltype_names.html" class="external-link">EWCE::fix_celltype_names()</a></code> when creating an ordered factor.</li>
+</ul></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.7" id="magmacelltyping-207">MAGMA.Celltyping 2.0.7<a class="anchor" aria-label="anchor" href="#magmacelltyping-207"></a></h2>
 <div class="section level3">
@@ -353,7 +395,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

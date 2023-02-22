@@ -21,7 +21,7 @@ the cell-type specificity score from the CellTypeDataset
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.8</span>
       </span>
     </div>
 
@@ -77,18 +77,18 @@ the cell-type specificity score from the CellTypeDataset
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_driver_genes</span><span class="op">(</span>
-  <span class="va">ctd</span>,
-  ctd_species <span class="op">=</span> <span class="fu"><a href="infer_ctd_species.html">infer_ctd_species</a></span><span class="op">(</span>ctd <span class="op">=</span> <span class="va">ctd</span><span class="op">)</span>,
-  prepare_ctd <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">magma_res</span>,
-  <span class="va">GenesOut_dir</span>,
-  fdr_thresh <span class="op">=</span> <span class="fl">0.05</span>,
-  n_genes <span class="op">=</span> <span class="fl">100</span>,
-  spec_deciles <span class="op">=</span> <span class="cn">NULL</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_driver_genes</span><span class="op">(</span></span>
+<span>  <span class="va">ctd</span>,</span>
+<span>  ctd_species <span class="op">=</span> <span class="fu"><a href="infer_ctd_species.html">infer_ctd_species</a></span><span class="op">(</span>ctd <span class="op">=</span> <span class="va">ctd</span><span class="op">)</span>,</span>
+<span>  prepare_ctd <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">magma_res</span>,</span>
+<span>  <span class="va">GenesOut_dir</span>,</span>
+<span>  fdr_thresh <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  n_genes <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  spec_deciles <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -223,19 +223,19 @@ numeric column names.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu">ewceData</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ewceData/man/ctd.html" class="external-link">ctd</a></span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu">ewceData</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ewceData/man/ctd.html" class="external-link">ctd</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> see ?ewceData and browseVignettes('ewceData') for documentation</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> loading from cache</span>
-<span class="r-in"><span class="va">GenesOut_dir</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="import_magma_files.html">import_magma_files</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">GenesOut_dir</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="import_magma_files.html">import_magma_files</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using built-in example files: ieu-a-298.tsv.gz.35UP.10DOWN</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning MAGMA directories.</span>
-<span class="r-in"><span class="va">magma_res</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="merge_results.html">merge_results</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="va"><a href="enrichment_results.html">enrichment_results</a></span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving full merged results to ==&gt; /tmp/RtmphyqoA7/MAGMA_celltyping./.lvl1.csv</span>
-<span class="r-in"><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">get_driver_genes</span><span class="op">(</span>ctd <span class="op">=</span> <span class="va">ctd</span>, </span>
-<span class="r-in">                                               magma_res <span class="op">=</span> <span class="va">magma_res</span>, </span>
-<span class="r-in">                                               GenesOut_dir <span class="op">=</span> <span class="va">GenesOut_dir</span>, </span>
-<span class="r-in">                                               fdr_thresh <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">magma_res</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="merge_results.html">merge_results</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="va"><a href="enrichment_results.html">enrichment_results</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving full merged results to ==&gt; /tmp/RtmpA6JDPw/MAGMA_celltyping./.lvl1.csv</span>
+<span class="r-in"><span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">get_driver_genes</span><span class="op">(</span>ctd <span class="op">=</span> <span class="va">ctd</span>, </span></span>
+<span class="r-in"><span>                                               magma_res <span class="op">=</span> <span class="va">magma_res</span>, </span></span>
+<span class="r-in"><span>                                               GenesOut_dir <span class="op">=</span> <span class="va">GenesOut_dir</span>, </span></span>
+<span class="r-in"><span>                                               fdr_thresh <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Filtering @ FDR&lt; 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 1 genes.out file(s) found.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ctd_species=NULL: Inferring species from gene names.</span>
@@ -290,7 +290,7 @@ numeric column names.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.8</span>
       </span>
     </div>
 
@@ -69,7 +69,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_ctd_dendro</span><span class="op">(</span><span class="va">ctd</span>, <span class="va">annotLevel</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_ctd_dendro</span><span class="op">(</span><span class="va">ctd</span>, <span class="va">annotLevel</span>, expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.66</span><span class="op">)</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="source">
@@ -81,12 +81,72 @@ MAGMA.Celltyping:::get_ctd_dendro(ctd = ctd, annotLevel = 1)
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>ctd</dt>
-<dd><p>Cell type data strucutre containing <code>specificity_quantiles</code>.</p></dd>
+<dd><p>Cell type data structure containing <code>specificity_quantiles</code>.</p></dd>
 
 
 <dt>annotLevel</dt>
 <dd><p>Annot level for which the gene covar file should
 be constructed.</p></dd>
+
+
+<dt>expand</dt>
+<dd><p>For position scales, a vector of range expansion constants used to add some
+padding around the data to ensure that they are placed some distance
+away from the axes. Use the convenience function <code><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion()</a></code>
+to generate the values for the <code>expand</code> argument. The defaults are to
+expand the scale by 5% on each side for continuous variables, and by
+0.6 units on each side for discrete variables.</p></dd>
+
+
+<dt>verbose</dt>
+<dd><p>Print messages.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Arguments passed on to <code><a href="prepare_quantile_groups.html">prepare_quantile_groups</a></code></p><dl><dt><code>standardise</code></dt>
+<dd><p>Whether to run <a href="https://rdrr.io/pkg/EWCE/man/standardise_ctd.html" class="external-link">standardise_ctd</a> first.
+Provides gene ortholog conversion.</p></dd>
+
+    <dt><code>input_species</code></dt>
+<dd><p>Which species the gene names in <code>exp</code> come from.
+See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a> for all available species.</p></dd>
+
+    <dt><code>output_species</code></dt>
+<dd><p>Which species' genes names to convert <code>exp</code> to.
+See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a> for all available species.</p></dd>
+
+    <dt><code>non121_strategy</code></dt>
+<dd><p>How to handle genes that don't have
+1:1 mappings between <code>input_species</code>:<code>output_species</code>.
+Options include:<br></p><ul><li><p><code>"drop_both_species" or "dbs" or 1</code> : <br>
+Drop genes that have duplicate
+mappings in either the <code>input_species</code> or <code>output_species</code> <br>
+(<em>DEFAULT</em>).</p></li>
+<li><p><code>"drop_input_species" or "dis" or 2</code> : <br>
+Only drop genes that have duplicate
+mappings in the <code>input_species</code>.</p></li>
+<li><p><code>"drop_output_species" or "dos" or 3</code> : <br>
+Only drop genes that have duplicate
+mappings in the <code>output_species</code>.</p></li>
+<li><p><code>"keep_both_species" or "kbs" or 4</code> : <br>
+Keep all genes regardless of whether
+they have duplicate mappings in either species.</p></li>
+<li><p><code>"keep_popular" or "kp" or 5</code> : <br>
+Return only the most "popular" interspecies ortholog mappings.
+ This procedure tends to yield a greater number of returned genes
+ but at the cost of many of them not being true biological 1:1 orthologs.</p></li>
+<li><p><code>"sum","mean","median","min" or "max"</code> : <br>
+ When <code>gene_df</code> is a matrix and <code>gene_output="rownames"</code>,
+  these options will aggregate many-to-one gene mappings
+  (<code>input_species</code>-to-<code>output_species</code>)
+  after dropping any duplicate genes in the <code>output_species</code>.</p></li>
+</ul></dd>
+
+    <dt><code>numberOfBins</code></dt>
+<dd><p>Number of non-zero quantile bins.</p></dd>
+
+  
+</dl></dd>
 
 </dl></div>
     <div id="value">
@@ -108,7 +168,7 @@ be constructed.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

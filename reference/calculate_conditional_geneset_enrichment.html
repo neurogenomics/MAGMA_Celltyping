@@ -24,7 +24,7 @@ CellTypeDataset (ctd). This allows one to conduct gene set enrichment
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.8</span>
       </span>
     </div>
 
@@ -83,22 +83,22 @@ CellTypeDataset (<code>ctd</code>). This allows one to conduct gene set enrichme
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">calculate_conditional_geneset_enrichment</span><span class="op">(</span>
-  <span class="va">geneset</span>,
-  <span class="va">ctd</span>,
-  ctd_species <span class="op">=</span> <span class="fu"><a href="infer_ctd_species.html">infer_ctd_species</a></span><span class="op">(</span><span class="va">ctd</span><span class="op">)</span>,
-  controlledAnnotLevel <span class="op">=</span> <span class="fl">1</span>,
-  <span class="va">controlledCTs</span>,
-  prepare_ctd <span class="op">=</span> <span class="cn">TRUE</span>,
-  gwas_sumstats_path <span class="op">=</span> <span class="cn">NULL</span>,
-  magma_dir <span class="op">=</span> <span class="cn">NULL</span>,
-  analysis_name <span class="op">=</span> <span class="st">"MainRun"</span>,
-  upstream_kb <span class="op">=</span> <span class="fl">35</span>,
-  downstream_kb <span class="op">=</span> <span class="fl">10</span>,
-  geneset_species <span class="op">=</span> <span class="fu"><a href="infer_geneset_species.html">infer_geneset_species</a></span><span class="op">(</span><span class="va">geneset</span><span class="op">)</span>,
-  version <span class="op">=</span> <span class="cn">NULL</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calculate_conditional_geneset_enrichment</span><span class="op">(</span></span>
+<span>  <span class="va">geneset</span>,</span>
+<span>  <span class="va">ctd</span>,</span>
+<span>  ctd_species <span class="op">=</span> <span class="fu"><a href="infer_ctd_species.html">infer_ctd_species</a></span><span class="op">(</span><span class="va">ctd</span><span class="op">)</span>,</span>
+<span>  controlledAnnotLevel <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  <span class="va">controlledCTs</span>,</span>
+<span>  prepare_ctd <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  gwas_sumstats_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  magma_dir <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  analysis_name <span class="op">=</span> <span class="st">"MainRun"</span>,</span>
+<span>  upstream_kb <span class="op">=</span> <span class="fl">35</span>,</span>
+<span>  downstream_kb <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  geneset_species <span class="op">=</span> <span class="fu"><a href="infer_geneset_species.html">infer_geneset_species</a></span><span class="op">(</span><span class="va">geneset</span><span class="op">)</span>,</span>
+<span>  version <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -186,24 +186,25 @@ If <code>geneset_species!="human"</code>, the <code>geneset</code> will be conve
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">#### Import data ####</span></span>
-<span class="r-in"><span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="get_ctd.html">get_ctd</a></span><span class="op">(</span><span class="st">"ctd_allKI"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">#### Import data ####</span></span></span>
+<span class="r-in"><span><span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="get_ctd.html">get_ctd</a></span><span class="op">(</span><span class="st">"ctd_allKI"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required namespace: piggyback</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Downloading 1 CellTypeDataset file(s).</span>
-<span class="r-in"><span class="va">magma_dir</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="import_magma_files.html">import_magma_files</a></span><span class="op">(</span>ids <span class="op">=</span> <span class="st">"ieu-a-298"</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> All local files already up-to-date!</span>
+<span class="r-in"><span><span class="va">magma_dir</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="import_magma_files.html">import_magma_files</a></span><span class="op">(</span>ids <span class="op">=</span> <span class="st">"ieu-a-298"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using built-in example files: ieu-a-298.tsv.gz.35UP.10DOWN</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning MAGMA directories.</span>
-<span class="r-in"><span class="va">geneset</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="va"><a href="rbfox_binding.html">rbfox_binding</a></span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">calculate_conditional_geneset_enrichment</span><span class="op">(</span></span>
-<span class="r-in">    geneset <span class="op">=</span> <span class="va">geneset</span>,</span>
-<span class="r-in">    ctd <span class="op">=</span> <span class="va">ctd</span>,</span>
-<span class="r-in">    controlledAnnotLevel <span class="op">=</span> <span class="fl">1</span>,</span>
-<span class="r-in">    controlledCTs <span class="op">=</span> <span class="st">"pyramidal SS"</span>,</span>
-<span class="r-in">    magma_dir <span class="op">=</span> <span class="va">magma_dir</span>,</span>
-<span class="r-in">    analysis_name <span class="op">=</span> <span class="st">"Rbfox_16_pyrSS"</span>,  </span>
-<span class="r-in">    geneset_species <span class="op">=</span> <span class="st">"mouse"</span>, </span>
-<span class="r-in">    ctd_species <span class="op">=</span> <span class="st">"mouse"</span><span class="op">)</span> </span>
+<span class="r-in"><span><span class="va">geneset</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="va"><a href="rbfox_binding.html">rbfox_binding</a></span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">calculate_conditional_geneset_enrichment</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    geneset <span class="op">=</span> <span class="va">geneset</span>,</span></span>
+<span class="r-in"><span>    ctd <span class="op">=</span> <span class="va">ctd</span>,</span></span>
+<span class="r-in"><span>    controlledAnnotLevel <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>    controlledCTs <span class="op">=</span> <span class="st">"pyramidal SS"</span>,</span></span>
+<span class="r-in"><span>    magma_dir <span class="op">=</span> <span class="va">magma_dir</span>,</span></span>
+<span class="r-in"><span>    analysis_name <span class="op">=</span> <span class="st">"Rbfox_16_pyrSS"</span>,  </span></span>
+<span class="r-in"><span>    geneset_species <span class="op">=</span> <span class="st">"mouse"</span>, </span></span>
+<span class="r-in"><span>    ctd_species <span class="op">=</span> <span class="st">"mouse"</span><span class="op">)</span> </span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Installed MAGMA version: v1.10</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Skipping MAGMA installation.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The desired_version of MAGMA is currently installed: v1.10</span>
@@ -261,7 +262,7 @@ If <code>geneset_species!="human"</code>, the <code>geneset</code> will be conve
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
