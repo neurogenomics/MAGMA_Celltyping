@@ -1,7 +1,7 @@
 Package: MAGMA.Celltyping
 Type: Package
 Title: Find Causal Cell-Types Underlying Complex Trait Genetics
-Version: 2.0.7
+Version: 2.0.8
 Authors@R:
     c(person(given = "Brian",
            family = "Schilder",
@@ -23,7 +23,8 @@ Authors@R:
            role = c("aut"),
            email = "nathan.skene@gmail.com",
            comment = c(ORCID = "0000-0002-6807-3180")))   
-Description: This R package contains code used for testing which cell types can explain the heritability signal from GWAS summary statistics.
+Description: This R package contains code used for testing which cell types 
+    can explain the heritability signal from GWAS summary statistics.
 URL: https://github.com/neurogenomics/MAGMA_Celltyping
 BugReports: https://github.com/neurogenomics/MAGMA_Celltyping/issues
 License: GPL-3
@@ -45,6 +46,7 @@ Imports:
     dplyr,
     data.table,
     ggplot2,
+    patchwork,
     stringr,
     grDevices,
     limma,
@@ -56,6 +58,7 @@ Imports:
     reshape2,
     tools
 Suggests: 
+    rworkflows,
     markdown,
     rmarkdown,
     knitr,
@@ -68,9 +71,10 @@ Suggests:
     gh,
     DT,
     biomaRt,
-    ewceData,
-    badger
-SystemRequirements: A system installation of MAGMA (https://ctg.cncr.nl/software/magma) is required 
-RoxygenNote: 7.2.1
+    ewceData
+SystemRequirements: A system installation of
+    [MAGMA](https://ctg.cncr.nl/software/magma) is required 
+    but can be installed automatically by this package.
+RoxygenNote: 7.2.3
 Encoding: UTF-8
 Config/testthat/edition: 3

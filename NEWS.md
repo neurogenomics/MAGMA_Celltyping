@@ -1,3 +1,33 @@
+# MAGMA.Celltyping 2.0.8
+
+## New features  
+
+* Add `rworkflows`
+    - GHA
+    - Replace `badger`
+* `get_ctd_dendro`
+    - Automatically compute spec quantiles matrix when its missing.
+* `plot_celltype_associations`
+    - Replace `sprintf`, `for`, 
+    - Control verbosity
+    - Replace grid with `patchwork`
+    - Save with ` ggplot2::ggsave` instead of `grDevices`
+    - Reduce redundancy in code (e.g. saving plots)
+    - Add new arg to bind plots from multiple levels into one: `bind_plots`
+* `enrichment_results`
+    - Update example enrichment results to new format with nested `levels`.
+* Add *CITATION* file.
+* Add citation info and volcano/cell icons to startup message.
+    
+## Bug fixes 
+
+* `plot_celltype_associations`
+    - Fix issues described in PR: https://github.com/neurogenomics/MAGMA_Celltyping/pull/121
+    - Fix NAs issue by ensuring celltype names in `ctAssocs` and `ctdDendro`
+        are both run through `EWCE::fix_celltype_names()` 
+        when creating an ordered factor.
+
+
 # MAGMA.Celltyping 2.0.7
 
 ## New features  
@@ -5,7 +35,6 @@
 * `plot_celltype_associations`: added unit tests.
 * `calculate_conditional_celltype_associations`: added unit tests. 
     - Also runs `calculate_celltype_associations` internally. 
-
 
 ## Bug fixes 
 

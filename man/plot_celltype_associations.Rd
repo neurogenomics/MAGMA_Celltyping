@@ -13,8 +13,11 @@ plot_celltype_associations(
   plotDendro = TRUE,
   gwas_title = "",
   plotLegend = TRUE,
-  figsDir = NA,
-  show_plot = TRUE
+  figsDir = NULL,
+  show_plot = TRUE,
+  bind_plots = FALSE,
+  ncol = 1,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -26,11 +29,11 @@ plot_celltype_associations(
 \code{specificity_quantiles}.}
 
 \item{useSignificanceLine}{TRUE or FALSE. Should their be a vertical
-line marking bonferroni signifiance?}
+line marking Bonferroni significance?}
 
 \item{savePDF}{TRUE or FALSE. Save figure to file or print to screen?}
 
-\item{fileTag}{String apprended to the names of the saved PDFs,
+\item{fileTag}{String appended to the names of the saved PDFs,
 i.e. the name of the celltype data file used}
 
 \item{plotDendro}{Should the dendrogram of celltypes be
@@ -43,6 +46,13 @@ shown alongside the figure? TRUE or FALSE.}
 \item{figsDir}{Directory where figures should be created.}
 
 \item{show_plot}{Print to the plot(s).}
+
+\item{bind_plots}{Bind the list of plots together using 
+\link[patchwork]{wrap_plots}.}
+
+\item{ncol}{Number of columns to put plots into during \code{bind_plots}.}
+
+\item{verbose}{Print messages.}
 }
 \value{
 A list of ggplot objects.
@@ -53,10 +63,10 @@ Can take input from either
  \link[MAGMA.Celltyping]{calculate_conditional_celltype_associations}.
 }
 \examples{
-res <- MAGMA.Celltyping::enrichment_results
+res <- enrichment_results
 ctAssocs <- res$`finn-a-AD.tsv.gz.35UP.10DOWN`$ctAssocsLinear
 ctd <- ewceData::ctd()
-figs <- MAGMA.Celltyping::plot_celltype_associations(
+figs <- plot_celltype_associations(
     ctAssocs = ctAssocs,
     ctd = ctd)
 }

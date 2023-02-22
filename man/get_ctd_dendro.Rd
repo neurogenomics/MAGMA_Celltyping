@@ -9,13 +9,62 @@ MAGMA.Celltyping:::get_ctd_dendro(ctd = ctd, annotLevel = 1)
 }
 }
 \usage{
-get_ctd_dendro(ctd, annotLevel)
+get_ctd_dendro(ctd, annotLevel, expand = c(0, 0.66), verbose = TRUE, ...)
 }
 \arguments{
-\item{ctd}{Cell type data strucutre containing \code{specificity_quantiles}.}
+\item{ctd}{Cell type data structure containing \code{specificity_quantiles}.}
 
 \item{annotLevel}{Annot level for which the gene covar file should
 be constructed.}
+
+\item{expand}{For position scales, a vector of range expansion constants used to add some
+padding around the data to ensure that they are placed some distance
+away from the axes. Use the convenience function \code{\link[ggplot2:expansion]{expansion()}}
+to generate the values for the \code{expand} argument. The defaults are to
+expand the scale by 5\% on each side for continuous variables, and by
+0.6 units on each side for discrete variables.}
+
+\item{verbose}{Print messages.}
+
+\item{...}{
+  Arguments passed on to \code{\link[=prepare_quantile_groups]{prepare_quantile_groups}}
+  \describe{
+    \item{\code{standardise}}{Whether to run \link[EWCE]{standardise_ctd} first.
+Provides gene ortholog conversion.}
+    \item{\code{input_species}}{Which species the gene names in \code{exp} come from.
+See \link[EWCE]{list_species} for all available species.}
+    \item{\code{output_species}}{Which species' genes names to convert \code{exp} to.
+See \link[EWCE]{list_species} for all available species.}
+    \item{\code{non121_strategy}}{How to handle genes that don't have
+1:1 mappings between \code{input_species}:\code{output_species}.
+Options include:\cr
+\itemize{
+\item{\code{"drop_both_species" or "dbs" or 1} : \cr}{
+Drop genes that have duplicate
+mappings in either the \code{input_species} or \code{output_species} \cr
+(\emph{DEFAULT}).}
+\item{\code{"drop_input_species" or "dis" or 2} : \cr}{
+Only drop genes that have duplicate
+mappings in the \code{input_species}.}
+\item{\code{"drop_output_species" or "dos" or 3} : \cr}{
+Only drop genes that have duplicate
+mappings in the \code{output_species}.}
+\item{\code{"keep_both_species" or "kbs" or 4} : \cr}{
+Keep all genes regardless of whether
+they have duplicate mappings in either species.}
+\item{\code{"keep_popular" or "kp" or 5} : \cr}{
+Return only the most "popular" interspecies ortholog mappings.
+ This procedure tends to yield a greater number of returned genes
+ but at the cost of many of them not being true biological 1:1 orthologs.}
+ \item{\code{"sum","mean","median","min" or "max"} : \cr}{
+ When \code{gene_df} is a matrix and \code{gene_output="rownames"},
+  these options will aggregate many-to-one gene mappings
+  (\code{input_species}-to-\code{output_species})
+  after dropping any duplicate genes in the \code{output_species}.
+ }
+}}
+    \item{\code{numberOfBins}}{Number of non-zero quantile bins.}
+  }}
 }
 \value{
 List containing ddata and ordered_cells

@@ -6,7 +6,6 @@ test_that("plot_celltype_associations works", {
     figs <- MAGMA.Celltyping::plot_celltype_associations(
         ctAssocs = ctAssocs,
         ctd = ctd)
-    
-    testthat::expect_length(figs,2)
-    testthat::expect_true(methods::is(figs[[1]],"gtable"))
+    testthat::expect_length(figs,1)
+    testthat::expect_true(methods::is(figs[[1]],"gg"))
 })

@@ -8,7 +8,7 @@ get_data(
   fname,
   repo = "neurogenomics/MAGMA_Celltyping",
   storage_dir = tools::R_user_dir(package = "MAGMA.Celltyping", which = "cache"),
-  overwrite = FALSE,
+  overwrite = TRUE,
   check = FALSE
 )
 }

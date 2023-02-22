@@ -1,0 +1,35 @@
+citHeader("To cite MAGMA.Celltyping in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "Genetic identification of brain cell types underlying schizophrenia",
+  author   = "Skene, N.G., Bryois, J., Bakken, T.E. et al",
+  journal  = "Nature Genetics",
+  year     = 2018,
+  volume   = 50,
+  number   = NULL,
+  pages    = "825-833",
+  url      = "https://doi.org/10.1038/s41588-018-0129-5",
+  textVersion = paste(
+    "Skene, N.G., Bryois, J., Bakken, T.E. et al. 
+    Genetic identification of brain cell types underlying schizophrenia. 
+    Nat Genet 50, 825-833 (2018). https://doi.org/10.1038/s41588-018-0129-5"
+  )
+ )
+  
+citEntry(
+  entry    = "Article",
+  title    = "MAGMA: Generalized Gene-Set Analysis of GWAS Data",
+  author   = "de Leeuw CA, Mooij JM, Heskes T, Posthuma D",
+  journal  = "PLOS Computational Biolog",
+  year     = 2015,
+  volume   = 11,
+  number   = 4,
+  pages    = "e1004219",
+  url      = "https://doi.org/10.1371/journal.pcbi.1004219",
+  textVersion = paste(
+    "de Leeuw CA, Mooij JM, Heskes T, Posthuma D (2015) 
+    MAGMA: Generalized Gene-Set Analysis of GWAS Data. 
+    PLOS Computational Biology 11(4): e1004219. https://doi.org/10.1371/journal.pcbi.1004219"
+  )
+)
