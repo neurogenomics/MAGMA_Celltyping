@@ -94,6 +94,22 @@
 </ul></li>
 <li>Add <em>CITATION</em> file.</li>
 <li>Add citation info and volcano/cell icons to startup message.</li>
+<li>Replace <code>%&gt;%</code> with <code>|&gt;</code> syntax.</li>
+<li>
+<code>celltype_associations_pipeline</code>:
+<ul><li>Print error messages.</li>
+</ul></li>
+<li>
+<code>get_ctd</code>
+<ul><li>Add new <em>ctd_allAIBS</em>: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/issues" class="external-link uri">https://github.com/neurogenomics/MAGMA_Celltyping/issues</a>
+</li>
+</ul></li>
+<li>
+<code>map_snps_to_genes</code>
+<ul><li>Fix <code>genesOut</code> path for Windows.</li>
+<li>Subfunctionalize :<code>check_n</code>, <code>check_genomeLocFile</code>
+</li>
+</ul></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-2-0-8">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-8"></a></h3>
@@ -102,6 +118,10 @@
 <ul><li>Fix issues described in PR: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/pull/121" class="external-link uri">https://github.com/neurogenomics/MAGMA_Celltyping/pull/121</a>
 </li>
 <li>Fix NAs issue by ensuring celltype names in <code>ctAssocs</code> and <code>ctdDendro</code> are both run through <code><a href="https://rdrr.io/pkg/EWCE/man/fix_celltype_names.html" class="external-link">EWCE::fix_celltype_names()</a></code> when creating an ordered factor.</li>
+</ul></li>
+<li>
+<code>merge_magma_results</code>
+<ul><li>Add names to levels</li>
 </ul></li>
 </ul></div>
 </div>

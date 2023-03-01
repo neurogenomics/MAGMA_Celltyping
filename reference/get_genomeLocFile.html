@@ -94,7 +94,7 @@ local_files &lt;- lapply(names(files), function(x){
     local &lt;- file.path(tempdir(),basename(files[x]))
     utils::download.file(files[x],local)
     return(local)
-}) <!-- %&gt;% `names&lt;-`(names(files)) -->for(x in names(local_files)){
+}) |&gt; `names&lt;-`(names(files))for(x in names(local_files)){
     piggyback::pb_upload(file = local_files[[x]],
                          repo = "neurogenomics/MAGMA_Celltyping",
                          overwrite = TRUE)

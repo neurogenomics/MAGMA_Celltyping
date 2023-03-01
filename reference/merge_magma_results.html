@@ -99,9 +99,10 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">ctAssocs</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">merge_magma_results</span><span class="op">(</span><span class="va">ctAssoc1</span>, <span class="va">ctAssoc2</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="va"><a href="enrichment_results.html">enrichment_results</a></span></span></span>
+<span class="r-in"><span><span class="va">ctAssoc1</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">ctAssocsLinear</span></span></span>
+<span class="r-in"><span><span class="va">ctAssoc2</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">ctAssocsTop</span></span></span>
+<span class="r-in"><span><span class="va">ctAssocs</span> <span class="op">&lt;-</span> <span class="fu">merge_magma_results</span><span class="op">(</span>ctAssoc1<span class="op">=</span><span class="va">ctAssoc1</span>, ctAssoc2<span class="op">=</span><span class="va">ctAssoc2</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
