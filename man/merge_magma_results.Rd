@@ -25,7 +25,8 @@ Used for instance when you want to merge results from
 'Linear' and 'Top 10\%' enrichment modes.
 }
 \examples{
-\dontrun{
-ctAssocs <- MAGMA.Celltyping::merge_magma_results(ctAssoc1, ctAssoc2)
-}
+res <- MAGMA.Celltyping::enrichment_results
+ctAssoc1 <- res[[1]]$ctAssocsLinear
+ctAssoc2 <- res[[1]]$ctAssocsTop
+ctAssocs <- merge_magma_results(ctAssoc1=ctAssoc1, ctAssoc2=ctAssoc2)
 }

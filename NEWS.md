@@ -18,6 +18,14 @@
     - Update example enrichment results to new format with nested `levels`.
 * Add *CITATION* file.
 * Add citation info and volcano/cell icons to startup message.
+* Replace `%>%` with `|>` syntax.
+* `celltype_associations_pipeline`:
+    - Print error messages.
+* `get_ctd`
+    - Add new *ctd_allAIBS*: https://github.com/neurogenomics/MAGMA_Celltyping/issues
+* `map_snps_to_genes`
+    - Fix `genesOut` path for Windows.
+    - Subfunctionalize :`check_n`, `check_genomeLocFile`
     
 ## Bug fixes 
 
@@ -26,6 +34,8 @@
     - Fix NAs issue by ensuring celltype names in `ctAssocs` and `ctdDendro`
         are both run through `EWCE::fix_celltype_names()` 
         when creating an ordered factor.
+* `merge_magma_results`
+    - Add names to levels 
 
 
 # MAGMA.Celltyping 2.0.7

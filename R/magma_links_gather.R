@@ -14,7 +14,7 @@ magma_links_gather <- function(){
                                      unique_only = FALSE,
                                      filter_v = FALSE)
     meta <- data.table::data.table(link=links,
-                                   version=versions) %>%
+                                   version=versions) |>
         dplyr::arrange(dplyr::desc(version))
     #### Add column indicating which rows are the latest version #### 
     meta$latest <- meta$version==rev(versions)[1]
@@ -26,7 +26,7 @@ magma_links_gather <- function(){
         ),
         c("Mac","Windows","Linux")
     )  
-    meta <- meta %>% 
+    meta <- meta |> 
         dplyr::mutate(os=
             ifelse(
                 grepl("_source|static|icc|gpp", link), "source", 

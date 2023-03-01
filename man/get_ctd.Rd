@@ -36,6 +36,15 @@ samples from human Medial Temporal Gyrus (MTG).
 Allen Brain Institute website}\cr 
 \href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Source}
 }
+\item{"ctd_allAIBS"\cr}{CTD file derived from adult human cortex 
+scRNA-seq data collected by the Allen Institute for Brain Science (AIBS) 
+Note that this CTD used an later release of the AIBS data that included
+samples from multiple human brain regions.
+\cr Reference: \doi{10.1038/s41586-019-1506-7}\cr
+\href{https://portal.brain-map.org/atlases-and-data/rnaseq/data-files-2018}{
+Allen Brain Institute website}\cr 
+\href{http://www.hjerling-leffler-lab.org/data/scz_singlecell/}{Source}
+}
 \item{"ctd_allKI"\cr}{CTD file with cortex, hippocampus,
 hypothalamus and midbrain.
 \cr Reference: \doi{10.1038/s41588-018-0129-5}\cr

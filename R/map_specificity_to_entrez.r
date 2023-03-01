@@ -12,7 +12,7 @@
 #' and then the specificity decile for each cell type
 #'
 #' @keywords internal
-#' @importFrom dplyr %>% rename
+#' @importFrom dplyr rename
 #' @importFrom orthogene convert_orthologs map_genes
 map_specificity_to_entrez <- function(ctd,
                                       annotLevel,
@@ -63,7 +63,7 @@ map_specificity_to_entrez <- function(ctd,
             mthreshold = 1,
             verbose = verbose
         )
-        gene_map <- gene_map %>% dplyr::rename(hgnc_symbol = input, 
+        gene_map <- gene_map |> dplyr::rename(hgnc_symbol = input, 
                                                entrez = target)
     }
     #### Subset gene_map #### 

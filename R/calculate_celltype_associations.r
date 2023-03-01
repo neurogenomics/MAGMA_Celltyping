@@ -233,7 +233,7 @@ calculate_celltype_associations <- function(ctd,
             ControlForCT = "BASELINE"
         ) 
         return(tmp)
-    }) %>% `names<-`(paste0("level",ctd_levels)) # //End lapply loop
+    }) |> `names<-`(paste0("level",ctd_levels)) # //End lapply loop
 
     #### Calculate total number of tests performed ####
     totalTests <- 0

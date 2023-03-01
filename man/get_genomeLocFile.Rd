@@ -20,7 +20,7 @@ local_files <- lapply(names(files), function(x){
     local <- file.path(tempdir(),basename(files[x]))
     utils::download.file(files[x],local)
     return(local)
-}) %>% `names<-`(names(files))
+}) |> `names<-`(names(files))
 
 for(x in names(local_files)){
     piggyback::pb_upload(file = local_files[[x]],

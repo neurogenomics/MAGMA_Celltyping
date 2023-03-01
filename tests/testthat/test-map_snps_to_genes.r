@@ -17,7 +17,7 @@ test_that("map_snps_to_genes works", {
             N = 5000) 
         ## Test
         genesOut_cols <- c("GENE","CHR","START","STOP","NSNPS",
-                           "NPARAM","N","ZSTAT","P")
+                           "NPARAM","N","ZSTAT","P") 
         testthat::expect_true(file.exists(genesOutPath))
         testthat::expect_true(file.exists(gsub(".out",".raw",genesOutPath)))
         genesOut_dt <- data.table::fread(file = genesOutPath)

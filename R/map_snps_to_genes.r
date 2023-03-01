@@ -30,7 +30,7 @@
 #' @inheritParams get_genome_ref
 #' @inheritParams celltype_associations_pipeline
 #'
-#' @return Path to the genes.out file.
+#' @returns Path to the genes.out file.
 #' 
 #' @export
 #' @importFrom MungeSumstats get_genome_builds
@@ -71,11 +71,11 @@ map_snps_to_genes <- function(path_formatted,
         upstream_kb = upstream_kb,
         downstream_kb = downstream_kb
     )
-    # Remove a trailing slash to avoid errors on windows
-    outPath <- gsub("\\/$", "", magmaPaths$filePathPrefix)
-    genes_annot <- sprintf("%s.genes.annot", outPath)
-    genes_out <- sprintf("%s.genes.out", outPath)
-
+    #### Create MAGMA output file paths ####
+    outPath <- fix_path(magmaPaths$filePathPrefix)
+    genes_annot <- paste0(outPath,".genes.annot")
+    genes_out <- paste0(outPath,".genes.out")
+    #### Check for existing files ####
     if ((file.exists(genes_annot) &
         file.exists(genes_out)) &
         (force_new == FALSE)) {
@@ -89,58 +89,17 @@ map_snps_to_genes <- function(path_formatted,
                                  verbose = verbose)
     # Check whether there is an N column in the sumstats file
     # (if it wasn't provided as an argument)
-    if (is.null(N) | is.na(N)) {
-        first_line <- readLines(path_formatted, n = 1)
-        column_headers <- strsplit(first_line, "\t")[[1]]
-        if ("N" %in% column_headers) {
-            n_arg <- "ncol=N"
-        } else {
-            nval <- as.numeric(
-                readline(paste(
-                    "There is no N column within the sumstats file.",
-                    "What is the N value for this GWAS?"
-                ))
-            )
-
-            if (is.na(nval)) {
-                stop(paste(
-                    nval, "provided but value of N for",
-                    "the GWAS must be numeric"
-                ))
-            }
-            if (nval < 1000) {
-                stop(paste(
-                    "Value of N provided is less than 1,000.",
-                    "This seems unlikely."
-                ))
-            }
-            if (nval > 100000000) {
-                stop(paste(
-                    "Value of N provided is over than 100,000,000.",
-                    "This seems unlikely."
-                ))
-            }
-            n_arg <- sprintf("N=%s", nval)
-        }
-    } else {
-        n_arg <- sprintf("N=%s", N)
-    }
-
-    #### Determine which genome build it uses & get path to gene loc file ####
+    n_arg <- check_n(path_formatted = path_formatted, 
+                     N = N) 
+    #### Get genome build ####
     if (is.null(genome_build)) {
         genome_build <-
             MungeSumstats::get_genome_builds(sumstats_list = path_formatted,
                                              names_from_paths = TRUE)
     }
-    if (toupper(genome_build) %in% c("GRCH36")) {
-        genomeLocFile <- get_genomeLocFile(build = "GRCH36")
-    } else if (toupper(genome_build) %in% c("GRCH37","HG37","HG19")) { 
-        genomeLocFile <- get_genomeLocFile(build = "GRCH37")
-    } else if (toupper(genome_build) %in% c("GRCH38","HG38")) { 
-        genomeLocFile <- get_genomeLocFile(build = "GRCH38")
-    } else {
-        stop("Genome build must be: 'GRCH36', `GRCH37', or 'GRCH38'")
-    }
+    #### Determine which genome build it uses & get path to gene loc file ####
+    genomeLocFile <- check_genomeLocFile(genome_build = genome_build,
+                                         path_formatted = path_formatted)
     #### Create genes.annot ####
     message_parallel("\n==== MAGMA Step 1: Generate genes.annot file ====\n")
     magma_cmd <- sprintf(

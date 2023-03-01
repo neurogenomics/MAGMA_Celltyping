@@ -84,6 +84,10 @@ celltype_associations_pipeline <- function(ctd,
     ctAssocsTop <- NULL
     ctCondAssocs <- NULL
     ctAssocMerged <- NULL
+    #### Check required inputs ####
+    force(ctd)
+    force(ctd_name)
+    force(magma_dirs) 
     #### prepare quantile groups ####
     # MAGMA.Celltyping can only use human GWAS
     {
@@ -108,7 +112,7 @@ celltype_associations_pipeline <- function(ctd,
                                               upstream_kb = upstream_kb,
                                               downstream_kb = downstream_kb)
         #### Linear mode ####
-        if (run_linear) {
+        if (isTRUE(run_linear)) {
             messager("=======",
                      "Calculating celltype associations: linear mode",
                      "=======",
@@ -129,12 +133,11 @@ celltype_associations_pipeline <- function(ctd,
                     version = version,
                     verbose = verbose
                 )
-            }, error = function(e) {NULL}
+            }, error = function(e) {messager(e,v=verbose);NULL}
             )
-        }
-
+        } 
         #### Top 10% mode ####
-        if (run_top10) {
+        if (isTRUE(run_top10)) {
             messager("=======",
                      "Calculating celltype associations: top10% mode",
                      "=======",
@@ -155,11 +158,9 @@ celltype_associations_pipeline <- function(ctd,
                     version = version,
                     verbose = verbose
                 )
-            }, error = function(e) {NULL}
+            }, error = function(e) {messager(e,v=verbose);NULL}
             )
-        }
-
-
+        } 
         #### Merge results ####
         if (all(!is.null(ctAssocsLinear), !is.null(ctAssocsTop))) {
             messager("Merging linear and top10% results",
@@ -169,10 +170,9 @@ celltype_associations_pipeline <- function(ctd,
                 ctAssoc1 = ctAssocsLinear,
                 ctAssoc2 = ctAssocsTop
             )
-        }
-
+        } 
         #### Conditional mode ####
-        if (run_conditional) {
+        if (isTRUE(run_conditional)) {
             messager("=======",
                      "Calculating celltype associations: conditional mode",
                      "=======",
@@ -197,7 +197,7 @@ celltype_associations_pipeline <- function(ctd,
                         version = version,
                         verbose = verbose
                     )
-                }, error = function(e) {NULL}
+                }, error = function(e) {messager(e,v=verbose);NULL}
             )
         }
 
@@ -208,9 +208,8 @@ celltype_associations_pipeline <- function(ctd,
             ctAssocMerged = ctAssocMerged,
             ctCondAssocs = ctCondAssocs
         ))
-    }, mc.cores = nThread) %>% `names<-`(basename(magma_dirs))
-
-
+    }, mc.cores = nThread) |> `names<-`(basename(magma_dirs))
+    #### Save results ####
     if (!is.null(save_dir)) {
         save_path <- file.path(
             save_dir, ctd_name,

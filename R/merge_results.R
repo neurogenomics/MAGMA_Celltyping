@@ -37,7 +37,7 @@
 #' }
 #' @export
 #' @importFrom data.table rbindlist fwrite
-#' @importFrom dplyr %>% mutate arrange
+#' @importFrom dplyr mutate arrange
 #' @importFrom stats p.adjust
 #' @importFrom stringr str_split
 merge_results <- function(MAGMA_results,
@@ -57,16 +57,16 @@ merge_results <- function(MAGMA_results,
             GWAS = stringr::str_split(nm, ".annotated")[[1]][1],
             MAGMA_results[[nm]][[filetype]][[level]]$results
         )
-    }) %>%
-        data.table::rbindlist() %>%
+    }) |>
+        data.table::rbindlist() |>
         # Remove unlabeled cell clusters
-        subset(!startsWith(Celltype, "X")) %>%
+        subset(!startsWith(Celltype, "X")) |>
         dplyr::mutate(
             FDR = stats::p.adjust(p = P, method = method),
             Celltype_id = Celltype,
             Celltype = gsub(paste(dataset_name, species, "[.]", sep = "|"),
                             " ", Celltype)
-        ) %>%
+        ) |>
         dplyr::arrange(FDR)
     ### Save
     if (!is.null(save_dir)) {

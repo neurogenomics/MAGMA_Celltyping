@@ -10,27 +10,32 @@
 #' \link[MAGMA.Celltyping]{calculate_celltype_associations} or 
 #' \link[MAGMA.Celltyping]{calculate_conditional_celltype_associations}.
 #'
-#' @return List with same format as output from either 
+#' @returns List with same format as output from either 
 #' \link[MAGMA.Celltyping]{calculate_celltype_associations} or
 #' \link[MAGMA.Celltyping]{calculate_conditional_celltype_associations}.
 #'
-#' @examples
-#' \dontrun{
-#' ctAssocs <- MAGMA.Celltyping::merge_magma_results(ctAssoc1, ctAssoc2)
-#' }
 #' @export
+#' @importFrom stats setNames
+#' @examples
+#' res <- MAGMA.Celltyping::enrichment_results
+#' ctAssoc1 <- res[[1]]$ctAssocsLinear
+#' ctAssoc2 <- res[[1]]$ctAssocsTop
+#' ctAssocs <- merge_magma_results(ctAssoc1=ctAssoc1, ctAssoc2=ctAssoc2)
 merge_magma_results <- function(ctAssoc1,
                                 ctAssoc2) {
+    
+    #### Find the number of levels ####
     levels_count <- sum(
         names(ctAssoc1) == "" | startsWith(names(ctAssoc1),"level") 
-        )
-    ctAssoc <- list()
-    for (annLev in seq_len(levels_count)) {
-        ctAssoc[[annLev]] <- list()
-        ctAssoc[[annLev]]$results <- rbind(ctAssoc1[[annLev]]$results,
-                                           ctAssoc2[[annLev]]$results)
-    }
-
+    )
+    #### Merge multiple association results ####
+    ctAssoc <- lapply(stats::setNames(seq_len(levels_count),
+                           paste0("level",seq_len(levels_count))), 
+                      function(annLev){
+                   list(results=rbind(ctAssoc1[[annLev]]$results,
+                                      ctAssoc2[[annLev]]$results))         
+    }) 
+    #### Add metadata to merged ctAssoc object ####
     if (ctAssoc1$gwas_sumstats_path == ctAssoc2$gwas_sumstats_path) {
         ctAssoc$gwas_sumstats_path <- ctAssoc2$gwas_sumstats_path
     }

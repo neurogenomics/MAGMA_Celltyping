@@ -135,9 +135,9 @@ load_magma_results_file <- function(path,
     res$log10p <- log(res$P, 10)
     res$genesOutCOND <- paste(genesOutCOND, collapse = " | ")
     res$EnrichmentMode <- EnrichmentMode 
-    res <- res %>%
+    res <- res |>
         dplyr::rename(Celltype = VARIABLE,
-                      OBS_GENES = NGENES) #%>%
+                      OBS_GENES = NGENES) #|>
         # purrr::modify_at(c("SET"), ~NULL)
     res$SET <- NULL
     res <- res[, c(

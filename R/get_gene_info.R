@@ -31,9 +31,9 @@ get_gene_info <- function(genelist,
     )
     gene_info$size <- gene_info$end_position - gene_info$start_position
     if (one_row_per_gene) {
-        gene_info <- gene_info %>%
-            dplyr::group_by(hgnc_symbol) %>%
-            dplyr::slice_head(n = 1) %>%
+        gene_info <- gene_info |>
+            dplyr::group_by(hgnc_symbol) |>
+            dplyr::slice_head(n = 1) |>
             data.frame()
         rownames(gene_info) <- gene_info$hgnc_symbol
     }

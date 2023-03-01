@@ -4,7 +4,7 @@
 \alias{infer_ctd_species}
 \title{Infer CellTypeDataset species}
 \usage{
-infer_ctd_species(ctd, ctd_species = NULL, verbose = 1, ...)
+infer_ctd_species(ctd, ctd_species = NULL, verbose = 2, ...)
 }
 \arguments{
 \item{ctd}{Cell type data structure containing
@@ -85,8 +85,11 @@ Also gives consensus scores for each gene mapping based on a
 Inferred species name.
 }
 \description{
-Infers species from from level 1 of a CellTypeDataset
-using \link[orthogene]{infer_species}. 
+Infers species from from level 1 of a CellTypeDataset (CTD)
+using either the metadata stored in the CTD
+ (if the object has previously been standardised with 
+ \link[EWCE]{standardise_ctd}) or using the gene names
+  (via \link[orthogene]{infer_species}). 
 If \code{ctd_species} is not \code{NULL}, 
 this will be returned instead of inferring the species.
 }

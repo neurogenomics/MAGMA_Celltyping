@@ -10,6 +10,8 @@
 fix_path <- function(x){
   x <- path.expand(x)
   if(get_os()=='Windows'){
+    # Remove a trailing slash to avoid errors on windows
+    x <- gsub("\\/$", "", x)
     x <- normalizePath(x, mustWork = FALSE)
   }
   return(x)

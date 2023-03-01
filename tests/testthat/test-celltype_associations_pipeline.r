@@ -7,23 +7,9 @@ test_that("celltype_associations_pipeline works", {
     ## MAGMA files were precomputed using the following steps:
     ## 1. MungeSumstats::import_sumstats()
     ## 2. MAGMA.Celltyping::map_snps_to_genes()
-    
-    if(!is_32bit()){
-        ids <- c("ieu-a-298")
-        magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = ids) 
-        #### Import CellTypeDataset ####
-        ctd <- ewceData::ctd()
-        #### Run enrichment analyses ####
-        res <- MAGMA.Celltyping::celltype_associations_pipeline(
-            ctd = ctd, 
-            ctd_name = "Zeisel2015",
-            ctd_species = "mouse",
-            run_linear = TRUE,
-            run_top10 = TRUE,
-            run_conditional = TRUE, 
-            magma_dirs = magma_dirs,
-            force_new = TRUE
-        )
+    run_tests <- function(res,
+                          ctd,
+                          ids){
         testthat::expect_length(unique(names(res)),length(ids))
         testthat::expect_true(startsWith(names(res)[1],ids[1])) 
         
@@ -58,6 +44,63 @@ test_that("celltype_associations_pipeline works", {
                 testthat::expect_true(all(cnames %in% colnames(lvl_res$results)))
             }
         } 
+    }
+    
+    if(!is_32bit()){
+        #### Import data ####
+        ids <- c("ieu-a-298")
+        magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = ids) 
+        
+        #### Using default ctd ####
+        ctd <- ewceData::ctd()
+        #### Run enrichment analyses ####
+        res <- MAGMA.Celltyping::celltype_associations_pipeline(
+            ctd = ctd, 
+            ctd_name = "Zeisel2015", 
+            run_linear = TRUE,
+            run_top10 = TRUE,
+            run_conditional = TRUE, 
+            magma_dirs = magma_dirs,
+            force_new = TRUE
+        )
+       run_tests(res = res,
+                 ctd = ctd,
+                 ids = ids)
+       
+       #### Using ctd_AIBS ####
+       ctd <- get_ctd(ctd_name = "ctd_AIBS")
+       #### Run enrichment analyses ####
+       res <- MAGMA.Celltyping::celltype_associations_pipeline(
+           ctd = ctd, 
+           ctd_name = "AIBS",
+           ctd_species = "human",
+           run_linear = TRUE,
+           run_top10 = TRUE,
+           run_conditional = TRUE, 
+           magma_dirs = magma_dirs,
+           force_new = TRUE
+       )
+       run_tests(res = res,
+                 ctd = ctd,
+                 ids = ids)
+       
+       
+       #### Using ctd_AIBS ####
+       ctd <- get_ctd(ctd_name = "ctd_Aerts2018")
+       #### Run enrichment analyses ####
+       res <- MAGMA.Celltyping::celltype_associations_pipeline(
+           ctd = ctd, 
+           ctd_name = "AIBS",
+           ctd_species = "human",
+           run_linear = TRUE,
+           run_top10 = TRUE,
+           run_conditional = TRUE, 
+           magma_dirs = magma_dirs,
+           force_new = TRUE
+       )
+       run_tests(res = res,
+                 ctd = ctd,
+                 ids = ids)
     } else {
         testthat::expect_null(NULL)
     }

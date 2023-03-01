@@ -26,16 +26,16 @@
 #'                                  method = "gprofiler",
 #'                                  target = "ENTREZGENE_ACC",
 #'                                  ensure_filter_nas = FALSE)
-#' hgnc2entrez_orthogene <- gene_map %>%
+#' hgnc2entrez_orthogene <- gene_map |>
 #'     dplyr::select(hgnc_symbol = Gene.Symbol,
-#'                   entrez = target) %>%
+#'                   entrez = target) |>
 #'     unique()
 #' #### Compare to other dataset ####
-#' dt1 <- hgnc2entrez %>% dplyr::filter(!hgnc_symbol %in% c(NA,""),
-#'                                      !entrez %in% c(NA,"")) %>%
+#' dt1 <- hgnc2entrez |> dplyr::filter(!hgnc_symbol %in% c(NA,""),
+#'                                      !entrez %in% c(NA,"")) |>
 #'     unique()
-#' dt2 <- hgnc2entrez_orthogene %>% dplyr::filter(!hgnc_symbol %in% c(NA,""),
-#'                                                !entrez %in% c(NA,"")) %>%
+#' dt2 <- hgnc2entrez_orthogene |> dplyr::filter(!hgnc_symbol %in% c(NA,""),
+#'                                                !entrez %in% c(NA,"")) |>
 #'     unique()
 #' message("hgnc2entrez_orthogene has ",
 #'         formatC(nrow(dt2) - nrow(dt1), big.mark = ","),
