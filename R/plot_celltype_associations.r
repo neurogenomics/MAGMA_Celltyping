@@ -32,7 +32,8 @@
 #' ctAssocs <- MAGMA.Celltyping::enrichment_results[[1]]$ctAssocsLinear
 #' ctd <- ewceData::ctd()
 #' figs <- plot_celltype_associations(ctAssocs = ctAssocs,
-#'                                    ctd = ctd)
+#'                                    ctd = ctd,
+#'                                    savePDF = FALSE)
 plot_celltype_associations <- function(ctAssocs,
                                        ctd, 
                                        useSignificanceLine = TRUE,

@@ -66,5 +66,6 @@ Can take input from either
 ctAssocs <- MAGMA.Celltyping::enrichment_results[[1]]$ctAssocsLinear
 ctd <- ewceData::ctd()
 figs <- plot_celltype_associations(ctAssocs = ctAssocs,
-                                   ctd = ctd)
+                                   ctd = ctd,
+                                   savePDF = FALSE)
 }
