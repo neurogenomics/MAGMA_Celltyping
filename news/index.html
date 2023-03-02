@@ -110,6 +110,33 @@
 <li>Subfunctionalize :<code>check_n</code>, <code>check_genomeLocFile</code>
 </li>
 </ul></li>
+<li>
+<code>enrichment_results</code>:
+<ul><li>Update example results with extra slots and named levels.</li>
+</ul></li>
+<li>Added raw MAGMA results file as an example:
+<ul><li>“inst/extdata/ieu-a-298.tsv.gz.35UP.10DOWN.level1.MainRun.gsa.out”</li>
+</ul></li>
+<li>
+<code>calculate_conditional_celltype_associations</code>
+<ul><li>Pass up new arg: <code>qvalue_thresh</code>
+</li>
+<li>Add unit tests that test for non-NULL results.</li>
+<li>Ensure the BASELINE</li>
+</ul></li>
+<li>
+<em>test-celltype_associations_pipeline.r</em>
+<ul><li>Add unit tests for additional CTDs (e.g. “ctd_AIBS”,“ctd_Aerts2018”).</li>
+</ul></li>
+<li>
+<code>magma_tileplot</code>
+<ul><li>Replace <code>grDevices</code> / <code>gridExtra</code> with <code>patchwork</code>
+</li>
+<li>Move legend to top</li>
+<li>Add axis labels</li>
+<li>Add unit tests</li>
+</ul></li>
+<li>Add new function <code>fix_celltype_names2</code> for situations when you don’t want to make all celltypes in vector unique.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-2-0-8">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-8"></a></h3>
@@ -122,6 +149,25 @@
 <li>
 <code>merge_magma_results</code>
 <ul><li>Add names to levels</li>
+</ul></li>
+<li>
+<code>calculate_celltype_associations</code>:
+<ul><li>Fix issue raised here: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/pull/135" class="external-link uri">https://github.com/neurogenomics/MAGMA_Celltyping/pull/135</a>
+</li>
+<li>Made flags conditional on MAGMA version.</li>
+<li>Subfunctionalize: <code>calculate_celltype_associations_linear</code>, <code>calculate_celltype_associations_top10</code>
+</li>
+<li>Ensure <code>EnrichmentMode</code> gets added to the saved file names to distinguish results from one another via new internal func: <code>check_analysis_name</code>.</li>
+</ul></li>
+<li>
+<code>load_magma_results_file</code>
+<ul><li>Was incorrectly giving <em>&gt;50% of celltypes missing. %s celltypes</em> error whenever Top10% + conditional was being used.</li>
+<li>Remove creations of <code>res$COVAR</code> column, as this is no longer relevant given the structure of the results table.</li>
+<li>Remove outdated steps to fix celltype names, which were very roundabout and convoluted.</li>
+<li>Don’t set <code>rownames(res) &lt;- res$VARIABLE</code> as this causes duplicate rownames.</li>
+<li>Now exported</li>
+<li>Add new column “analysis_name”</li>
+<li>Add new arg: <code>keep_types=</code> to subset results types.</li>
 </ul></li>
 </ul></div>
 </div>

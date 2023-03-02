@@ -74,7 +74,7 @@
 
     <div id="format">
     <h2>Format</h2>
-    <p>An object of class <code>list</code> of length 2.</p>
+    <p>An object of class <code>list</code> of length 1.</p>
     </div>
     <div id="source">
     <h2>Source</h2>
@@ -84,11 +84,13 @@ magma_dirs &lt;- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
 ctd &lt;- ewceData::ctd()
 enrichment_results &lt;- MAGMA.Celltyping::celltype_associations_pipeline(
     magma_dirs = magma_dirs,
-    ctd = ctd, 
-    ctd_species = "mouse", 
-    ctd_name = "Zeisel2015", 
-    run_linear = TRUE, 
-    run_top10 = TRUE)
+    ctd = ctd,
+    ctd_species = "mouse",
+    ctd_name = "Zeisel2015",
+    run_linear = TRUE,
+    run_top10 = TRUE, 
+    run_conditional = TRUE, 
+    force_new = TRUE)
 usethis::use_data(enrichment_results, overwrite = TRUE)
 </code></p>
     </div>

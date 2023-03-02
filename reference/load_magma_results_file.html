@@ -73,11 +73,14 @@ it easier to use.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">load_magma_results_file</span><span class="op">(</span></span>
 <span>  <span class="va">path</span>,</span>
-<span>  <span class="va">annotLevel</span>,</span>
 <span>  <span class="va">ctd</span>,</span>
+<span>  <span class="va">annotLevel</span>,</span>
+<span>  <span class="va">EnrichmentMode</span>,</span>
 <span>  genesOutCOND <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  EnrichmentMode <span class="op">=</span> <span class="st">"Linear"</span>,</span>
-<span>  ControlForCT <span class="op">=</span> <span class="st">"BASELINE"</span></span>
+<span>  analysis_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ControlForCT <span class="op">=</span> <span class="st">"BASELINE"</span>,</span>
+<span>  keep_all_rows <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -88,18 +91,13 @@ it easier to use.</p>
 or .sets.out (if EnrichmentMode=='Top 10%').</p></dd>
 
 
-<dt>annotLevel</dt>
-<dd><p>Level within the <code>ctd</code> to use.</p></dd>
-
-
 <dt>ctd</dt>
 <dd><p>Cell type data structure containing
 <code>specificity_quantiles</code>.</p></dd>
 
 
-<dt>genesOutCOND</dt>
-<dd><p>[Optional] If the analysis controlled for another GWAS, 
-then this is included as a column. Otherwise the column is <code>NA</code>.</p></dd>
+<dt>annotLevel</dt>
+<dd><p>Level within the <code>ctd</code> to use.</p></dd>
 
 
 <dt>EnrichmentMode</dt>
@@ -107,9 +105,27 @@ then this is included as a column. Otherwise the column is <code>NA</code>.</p><
 (Default: <code>'Linear'</code>).</p></dd>
 
 
+<dt>genesOutCOND</dt>
+<dd><p>[Optional] If the analysis controlled for another GWAS, 
+then this is included as a column. Otherwise the column is <code>NA</code>.</p></dd>
+
+
+<dt>analysis_name</dt>
+<dd><p>Used in file names which area created.</p></dd>
+
+
 <dt>ControlForCT</dt>
 <dd><p>[Optional] May be an internal argument. 
 We suggest ignoring or take a look at the code to figure it out.</p></dd>
+
+
+<dt>keep_all_rows</dt>
+<dd><p>Keep all rows, without filtering
+such that there is only one row per celltype.</p></dd>
+
+
+<dt>verbose</dt>
+<dd><p>Print messages.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -119,6 +135,23 @@ We suggest ignoring or take a look at the code to figure it out.</p></dd>
 <p>Contents of the .gcov.out file.</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"extdata"</span>,<span class="st">"ieu-a-298.tsv.gz.35UP.10DOWN.level1.MainRun.gsa.out"</span>,</span></span>
+<span class="r-in"><span>    package <span class="op">=</span> <span class="st">"MAGMA.Celltyping"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu">ewceData</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ewceData/man/ctd.html" class="external-link">ctd</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> see ?ewceData and browseVignettes('ewceData') for documentation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> loading from cache</span>
+<span class="r-in"><span><span class="va">annotLevel</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="va">EnrichmentMode</span> <span class="op">&lt;-</span> <span class="st">"Linear"</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">load_magma_results_file</span><span class="op">(</span>path <span class="op">=</span> <span class="va">path</span>, </span></span>
+<span class="r-in"><span>                               ctd <span class="op">=</span> <span class="va">ctd</span>,</span></span>
+<span class="r-in"><span>                               annotLevel <span class="op">=</span> <span class="va">annotLevel</span>,</span></span>
+<span class="r-in"><span>                               EnrichmentMode <span class="op">=</span> <span class="va">EnrichmentMode</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Reading enrichment results file into R.</span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

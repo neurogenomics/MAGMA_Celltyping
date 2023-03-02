@@ -112,6 +112,7 @@ selects the top N mostly significantly enriched cell-types.</p></li>
 <span>  controlTopNcells <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  controlledCTs <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  EnrichmentMode <span class="op">=</span> <span class="st">"Linear"</span>,</span>
+<span>  qvalue_thresh <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>  force_new <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  version <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -180,6 +181,11 @@ e.g. <code>c('Interneuron type 16','Medium Spiny Neuron')</code>.</p></dd>
 be used for testing enrichment?</p></dd>
 
 
+<dt>qvalue_thresh</dt>
+<dd><p>Multiple-testing corrected p-value threshold to filter
+by when determining which celltypes to condition with.</p></dd>
+
+
 <dt>force_new</dt>
 <dd><p>[Optional] Force new MAGMA analyses even if the
 pre-existing results files are detected.</p></dd>
@@ -209,19 +215,20 @@ pre-existing results files are detected.</p></dd>
 <span class="r-in"><span><span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu">ewceData</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ewceData/man/ctd.html" class="external-link">ctd</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> see ?ewceData and browseVignettes('ewceData') for documentation</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> loading from cache</span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#### Prepare GWAS MAGMA data ####</span></span></span>
 <span class="r-in"><span><span class="va">magma_dir</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="import_magma_files.html">import_magma_files</a></span><span class="op">(</span>ids <span class="op">=</span> <span class="st">"ieu-a-298"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using built-in example files: ieu-a-298.tsv.gz.35UP.10DOWN</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning MAGMA directories.</span>
-<span class="r-in"><span>    </span></span>
 <span class="r-in"><span><span class="co">#### Run pipeline ####</span></span></span>
-<span class="r-in"><span><span class="va">ctAssocs</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">calculate_conditional_celltype_associations</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">ctAssocs</span> <span class="op">&lt;-</span> <span class="fu">calculate_conditional_celltype_associations</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    ctd <span class="op">=</span> <span class="va">ctd</span>,</span></span>
 <span class="r-in"><span>    controlledAnnotLevel <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>    controlTopNcells <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>    qvalue_thresh <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>    magma_dir <span class="op">=</span> <span class="va">magma_dir</span>,</span></span>
-<span class="r-in"><span>    ctd_species <span class="op">=</span> <span class="st">"mouse"</span><span class="op">)</span> </span></span>
+<span class="r-in"><span>    ctd_species <span class="op">=</span> <span class="st">"mouse"</span>, </span></span>
+<span class="r-in"><span>    force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> WARNING: Setting qvalue_thresh&gt;0.05 is not reccommended in practice.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Installed MAGMA version: v1.10</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Skipping MAGMA installation.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The desired_version of MAGMA is currently installed: v1.10</span>
@@ -242,10 +249,39 @@ pre-existing results files are detected.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  Set force_standardise=TRUE to re-standardise.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Importing precomputed MAGMA results.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Running MAGMA: Linear mode</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping gene symbols in specificity_quantiles matrix to entrez IDs.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Warning: No annotLevel 1 celltypes reach significance with Q&lt;0.05: returning NULL.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Reading enrichment results file into R.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Running MAGMA: Linear mode</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping gene symbols in specificity_quantiles matrix to entrez IDs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Reading enrichment results file into R.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping gene symbols in specificity_quantiles matrix to entrez IDs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping gene symbols in specificity_quantiles matrix to entrez IDs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> magma  </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --gene-results '/tmp/RtmpmBVVvt/MAGMA_Files/ieu-a-298.tsv.gz.35UP.10DOWN/ieu-a-298.tsv.gz.35UP.10DOWN.genes.raw' </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --gene-covar '/tmp/RtmpmBVVvt/filee786f0de878' </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --model direction=pos condition='oligodendrocytes' </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --out '/tmp/RtmpmBVVvt/MAGMA_Files/ieu-a-298.tsv.gz.35UP.10DOWN/ieu-a-298.tsv.gz.35UP.10DOWN.level1.35UP.10DOWN.Linear.ControlFor_oligodendrocytes'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Reading enrichment results file into R.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> magma  </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --gene-results '/tmp/RtmpmBVVvt/MAGMA_Files/ieu-a-298.tsv.gz.35UP.10DOWN/ieu-a-298.tsv.gz.35UP.10DOWN.genes.raw' </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --gene-covar '/tmp/RtmpmBVVvt/filee786f0de878' </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --model direction=pos condition='oligodendrocytes' </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --out '/tmp/RtmpmBVVvt/MAGMA_Files/ieu-a-298.tsv.gz.35UP.10DOWN/ieu-a-298.tsv.gz.35UP.10DOWN.level1.35UP.10DOWN.ControlFor_oligodendrocytes'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Reading enrichment results file into R.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping gene symbols in specificity_quantiles matrix to entrez IDs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> magma  </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --gene-results '/tmp/RtmpmBVVvt/MAGMA_Files/ieu-a-298.tsv.gz.35UP.10DOWN/ieu-a-298.tsv.gz.35UP.10DOWN.genes.raw' </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --gene-covar '/tmp/RtmpmBVVvt/filee788278d23' </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --model direction=pos condition='oligodendrocytes' </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --out '/tmp/RtmpmBVVvt/MAGMA_Files/ieu-a-298.tsv.gz.35UP.10DOWN/ieu-a-298.tsv.gz.35UP.10DOWN.level2.35UP.10DOWN.Linear.ControlFor_oligodendrocytes'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Reading enrichment results file into R.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> magma  </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --gene-results '/tmp/RtmpmBVVvt/MAGMA_Files/ieu-a-298.tsv.gz.35UP.10DOWN/ieu-a-298.tsv.gz.35UP.10DOWN.genes.raw' </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --gene-covar '/tmp/RtmpmBVVvt/filee788278d23' </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --model direction=pos condition='oligodendrocytes' </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   --out '/tmp/RtmpmBVVvt/MAGMA_Files/ieu-a-298.tsv.gz.35UP.10DOWN/ieu-a-298.tsv.gz.35UP.10DOWN.level2.35UP.10DOWN.ControlFor_oligodendrocytes'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Reading enrichment results file into R.</span>
 </code></pre></div>
     </div>
   </div>

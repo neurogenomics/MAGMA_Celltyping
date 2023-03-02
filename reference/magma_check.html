@@ -71,7 +71,12 @@ required.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">magma_check</span><span class="op">(</span>version <span class="op">=</span> <span class="cn">NULL</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">magma_check</span><span class="op">(</span></span>
+<span>  version <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  upgrade <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  return_version <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -83,6 +88,10 @@ required.</p>
 <dt>upgrade</dt>
 <dd><p>If MAGMA is already installed and is not the latest version, 
 should it be upgraded to the latest version? (Default: <code>FALSE</code>).</p></dd>
+
+
+<dt>return_version</dt>
+<dd><p>Return the MAGMA version being used.</p></dd>
 
 
 <dt>verbose</dt>
