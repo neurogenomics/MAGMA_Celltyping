@@ -43,6 +43,7 @@
     - Add unit tests
 * Add new function `fix_celltype_names2`
     for situations when you don't want to make all celltypes in vector unique.
+* Add unit tests for interactive `check_n` func
     
 ## Bug fixes 
 

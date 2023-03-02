@@ -1,6 +1,6 @@
 test_that("map_snps_to_genes works", {
     
-    if(!is_32bit()){
+    if(!is_32bit() & (.Platform$OS.type != "windows")){
         t1 <- Sys.time()
         #### Gather data ####
         ctd <- ewceData::ctd()
@@ -14,18 +14,15 @@ test_that("map_snps_to_genes works", {
         genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(
             path_formatted = path_formatted,
             genome_build = "hg19",
-            N = 5000) 
+            N = NULL) 
         ## Test
         genesOut_cols <- c("GENE","CHR","START","STOP","NSNPS",
                            "NPARAM","N","ZSTAT","P") 
-        ### Skip on Windows for now (not working on GHA)
-        if(.Platform$OS.type != "windows"){
-            testthat::expect_true(file.exists(genesOutPath))
-            testthat::expect_true(file.exists(gsub(".out",".raw",genesOutPath)))
-            genesOut_dt <- data.table::fread(file = genesOutPath)
-            testthat::expect_true(all(genesOut_cols %in% colnames(genesOut_dt)))
-            testthat::expect_true(nrow(genesOut_dt)>70)
-        }
+        testthat::expect_true(file.exists(genesOutPath))
+        testthat::expect_true(file.exists(gsub(".out",".raw",genesOutPath)))
+        genesOut_dt <- data.table::fread(file = genesOutPath)
+        testthat::expect_true(all(genesOut_cols %in% colnames(genesOut_dt)))
+        testthat::expect_true(nrow(genesOut_dt)>70) 
         
         #### Run enrichment pipeline ####
         ## Run

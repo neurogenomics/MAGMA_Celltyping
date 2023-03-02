@@ -8,10 +8,10 @@ check_n <- function(path_formatted,
             n_arg <- "ncol=N"
         } else {
             nval <- as.numeric(
-                readline(paste(
+                ask_integer(prompt = paste(
                     "There is no N column within the sumstats file.",
-                    "What is the N value for this GWAS?"
-                ))
+                    "What is the N value for this GWAS?")
+                )
             )
             
             if (is.na(nval)) {

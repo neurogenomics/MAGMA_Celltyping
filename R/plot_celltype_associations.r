@@ -198,6 +198,7 @@ plot_celltype_associations <- function(ctAssocs,
             height <- calc_height(width = width,
                                   ctAssocs = ctAssocs, 
                                   annotLevel = annotLevel)
+            dir.create(dirname(fName),showWarnings = FALSE, recursive = TRUE)
             ggplot2::ggsave(filename = fName,
                             plot = fig,
                             width = width, 
