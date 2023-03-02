@@ -69,6 +69,8 @@
     - Now exported
     - Add new column "analysis_name"
     - Add new arg: `keep_types=` to subset results types.
+* `map_snps_to_genes`
+    - Fix bug preventing automatic detection of "N" column.
 
 
 # MAGMA.Celltyping 2.0.7

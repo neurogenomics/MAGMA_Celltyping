@@ -1,7 +1,7 @@
 check_n <- function(path_formatted,
                     N){
     
-    if (is.null(N) | is.na(N)) {
+    if (is.null(N) || is.na(N)) {
         first_line <- readLines(path_formatted, n = 1)
         column_headers <- strsplit(first_line, "\t")[[1]]
         if ("N" %in% column_headers) {

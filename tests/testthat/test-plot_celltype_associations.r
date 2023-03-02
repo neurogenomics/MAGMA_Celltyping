@@ -16,4 +16,14 @@ test_that("plot_celltype_associations works", {
         bind_plots = TRUE, 
         show_plot = FALSE)
     testthat::expect_true(methods::is(figs2,"gg"))
+    
+    
+    
+    figs3 <- MAGMA.Celltyping::plot_celltype_associations(
+        ctAssocs = ctAssocs,
+        ctd = ctd,
+        plotDendro = FALSE,
+        bind_plots = TRUE, 
+        show_plot = FALSE)
+    testthat::expect_true(methods::is(figs3,"gg"))
 })
