@@ -21,8 +21,11 @@ iterate_conditional_celltypes_grouped <- function(allRes,
                                                   magmaPaths,
                                                   upstream_kb, 
                                                   downstream_kb,
-                                                  version){
-    
+                                                  version,
+                                                  verbose){
+    if(length(signifCells2)==0){
+        stopper("Must provide at least one celltype to control for.")
+    }
     pastedControls <- paste(signifCells2, collapse = ",")
     if (EnrichmentMode == "Linear") {
         if (annotLevel != controlledAnnotLevel) {
@@ -59,7 +62,7 @@ iterate_conditional_celltypes_grouped <- function(allRes,
         controlledCovarCols2 <- controlledCovarCols
         colnames(controlledCovarCols2)[-1] <- sprintf(
             "%s.covar", colnames(controlledCovarCols2)[-1])
-        write.table(x = controlledCovarCols2, 
+        utils::write.table(x = controlledCovarCols2, 
                     file = controlCovarFile, 
                     quote = FALSE, 
                     row.names = FALSE, 
@@ -88,7 +91,8 @@ iterate_conditional_celltypes_grouped <- function(allRes,
             sumstatsPrefix2)
     }
     magma_run(cmd = magma_cmd, 
-              version = version)
+              version = version,
+              verbose = verbose)
     
     cond_res <- load_magma_results_file(path = sprintf("%s.gsa.out",
                                                        sumstatsPrefix2),
@@ -96,7 +100,8 @@ iterate_conditional_celltypes_grouped <- function(allRes,
                                         ctd = ctd, 
                                         genesOutCOND = NA, 
                                         EnrichmentMode = EnrichmentMode,
-                                        ControlForCT = pastedControls)
+                                        ControlForCT = pastedControls, 
+                                        verbose = verbose)
     allRes <- rbind(allRes, cond_res)
     return(allRes)
 }

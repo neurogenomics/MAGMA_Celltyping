@@ -27,15 +27,12 @@
 #'
 #' @export
 #' @importFrom methods show
-#' @importFrom stats setNames
-#' @importFrom EWCE fix_celltype_names
-#' @examples
-#' res <- enrichment_results
-#' ctAssocs <- res$`finn-a-AD.tsv.gz.35UP.10DOWN`$ctAssocsLinear
+#' @importFrom stats setNames 
+#' @examples 
+#' ctAssocs <- MAGMA.Celltyping::enrichment_results[[1]]$ctAssocsLinear
 #' ctd <- ewceData::ctd()
-#' figs <- plot_celltype_associations(
-#'     ctAssocs = ctAssocs,
-#'     ctd = ctd)
+#' figs <- plot_celltype_associations(ctAssocs = ctAssocs,
+#'                                    ctd = ctd)
 plot_celltype_associations <- function(ctAssocs,
                                        ctd, 
                                        useSignificanceLine = TRUE,
@@ -84,7 +81,7 @@ plot_celltype_associations <- function(ctAssocs,
                              unique(ctAssocs[[1]]$results$GCOV_FILE)))
     if (length(whichGWAS) > 1) {
         stopper("Only results for one GWAS at a tile should be provided to",
-                "plot_celltype_association. For multiple GWAS,",
+                "plot_celltype_association(). For multiple GWAS,",
                 "use magma_tileplot().")
     }
     #### MAGMA paths #####
@@ -137,10 +134,12 @@ plot_celltype_associations <- function(ctAssocs,
                                         expand = NULL, 
                                         verbose = verbose)
             ctAssocs[[annotLevel]]$results$Celltype <-
-                factor(EWCE::fix_celltype_names(
-                    celltypes = ctAssocs[[annotLevel]]$results$Celltype),
-                       levels = EWCE::fix_celltype_names(
-                           celltypes = ctdDendro$ordered_cells), 
+                factor(fix_celltype_names2(
+                    celltypes = ctAssocs[[annotLevel]]$results$Celltype, 
+                    make_unique = FALSE),
+                       levels = fix_celltype_names2(
+                           celltypes = ctdDendro$ordered_cells, 
+                           make_unique = FALSE), 
                        ordered = TRUE)
         }
         #### Make the figure ####

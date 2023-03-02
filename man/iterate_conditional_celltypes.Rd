@@ -16,7 +16,8 @@ iterate_conditional_celltypes(
   magmaPaths,
   upstream_kb,
   downstream_kb,
-  version
+  version,
+  verbose
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ should SNPs be included?}
 should SNPs be included?}
 
 \item{version}{MAGMA version to use.}
+
+\item{verbose}{Print messages.}
 }
 \description{
 Support function for 

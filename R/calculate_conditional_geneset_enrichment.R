@@ -59,6 +59,7 @@ calculate_conditional_geneset_enrichment <- function(
     #### Check MAGMA installation ####
     magma_check(version = version, 
                 verbose = verbose)
+    controlledCTs <- unique(controlledCTs)
     #### Handle MAGMA Files ####
     #### Trick downstream functions into working with only MAGMA files ####
     magma_dir <- magma_dir[1]

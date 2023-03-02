@@ -4,10 +4,20 @@
 \alias{magma_installed_version}
 \title{MAGMA installed version}
 \usage{
-magma_installed_version(magma_x = magma_executable(), verbose = TRUE)
+magma_installed_version(
+  magma_x = magma_executable(),
+  as_package_version = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{magma_x}{MAGMA executable.}
+
+\item{as_package_version}{Return as the object class 
+\link[base]{package_version}. 
+NOTE, this will convert any character suffixes into numbers:
+e.g. \code{"v1.06a"} --> \code{"v1.06.1"}, or 
+\code{"v1.06b"} --> \code{"v1.06.2"}}
 
 \item{verbose}{Print messages.}
 }

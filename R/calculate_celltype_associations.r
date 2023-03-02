@@ -25,12 +25,13 @@
 #' magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
 #'     
 #' #### Run pipeline ####
-#' ctAssocs <- MAGMA.Celltyping::calculate_celltype_associations(
+#' ctAssocs <- calculate_celltype_associations(
 #'     ctd = ctd,
 #'     ctd_levels = 1,
 #'     magma_dir = magma_dir,
 #'     ctd_species = "mouse")
 #' @export
+#' @importFrom stats setNames
 #' @keywords main_function
 calculate_celltype_associations <- function(ctd,
                                             ctd_levels = seq_len(length(ctd)),
@@ -46,10 +47,16 @@ calculate_celltype_associations <- function(ctd,
                                             force_new = FALSE,
                                             version = NULL,
                                             verbose = TRUE) {
+    # templateR:::args2vars(calculate_celltype_associations)
+    
     #### Check MAGMA installation ####
-    magma_check(version = version,
-                verbose = verbose)
+    magma_version <- magma_check(version = version,
+                                 return_version = TRUE,
+                                 verbose = verbose)
+    
     #### Process args ####
+    analysis_name <- check_analysis_name(EnrichmentMode = EnrichmentMode,
+                                         analysis_name = analysis_name)
     check_enrichment_mode(EnrichmentMode = EnrichmentMode)
     #### Handle MAGMA Files ####
     #### Trick downstream functions into working with only MAGMA files ####
@@ -63,7 +70,7 @@ calculate_celltype_associations <- function(ctd,
     gwas_sumstats_path <- fix_path(gwas_sumstats_path)
     #### prepare quantile groups ####
     # MAGMA.Celltyping can only use human GWAS
-    if (prepare_ctd) {
+    if (isTRUE(prepare_ctd)) {
         output_species <- "human"
         ctd <- prepare_quantile_groups(
             ctd = ctd,
@@ -87,9 +94,9 @@ calculate_celltype_associations <- function(ctd,
         downstream_kb = downstream_kb
     )
     #### Iterate over each CTD level ####
-    output <- lapply(ctd_levels, function(annotLevel){
-        #### Prepare output list ####
-        tmp <- list()
+    output <- lapply(stats::setNames(ctd_levels,
+                                     paste0("level",ctd_levels)),
+                     function(annotLevel){
         sumstatsPrefix2 <- sprintf(
             "%s.level%s",
             magmaPaths$filePathPrefix, annotLevel
@@ -97,143 +104,65 @@ calculate_celltype_associations <- function(ctd,
         path <- sprintf("%s.%s.gsa.out",
                         sumstatsPrefix2,
                         analysis_name)
+        
         path <- get_actual_path(path)
-        geneCovarFile <- NULL
-        # messager(path,v=verbose)
-
-        if ((!file.exists(path)) || force_new) {
+        #### Use existing results, or compute new ones ####
+        if ((!file.exists(path)) || isTRUE(force_new)) {
             messager("Running MAGMA:",EnrichmentMode,"mode", v = verbose) 
+            #### Linear mode ####
             if (EnrichmentMode == "Linear") {
-                # First match quantiles to the genes in the genes.out file...
-                # then write as the genesCovar file (the input to MAGMA)
-                geneCovarFile <- create_gene_covar_file(
-                    genesOutFile = sprintf(
-                        "%s.genes.out",
-                        magmaPaths$filePathPrefix
-                    ),
-                    ctd = ctd,
-                    annotLevel = annotLevel,
-                    ctd_species = ctd_species,
-                    genesOutCOND = genesOutCOND
-                )
-
-                if (is.na(genesOutCOND[1])) {
-                  out_file <- paste0(sumstatsPrefix2,'.',
-                                     analysis_name)
-                    magma_cmd <- sprintf(
-                        paste(
-                            "magma",
-                            "--gene-results '%s.genes.raw'",
-                            "--gene-covar '%s'",
-                            "--model direction=pos --out '%s'"
-                        ),
-                        magmaPaths$filePathPrefix,
-                        geneCovarFile,
-                        out_file
-                    )
-                } else {
-                    conditionOn <- paste(sprintf(
-                        "ZSTAT%s",
-                        seq_len(length(genesOutCOND))
-                    ),
-                    collapse = ","
-                    )
-                    out_file <- paste0(sumstatsPrefix2,'.',
-                                       analysis_name)
-                    magma_cmd <- sprintf(
-                        paste(
-                            "magma",
-                            "--gene-results '%s.genes.raw'",
-                            "--gene-covar '%s'",
-                            "--model direction=pos  condition-residualize='%s'",
-                            "--out '%s'"
-                        ),
-                        magmaPaths$filePathPrefix,
-                        geneCovarFile,
-                        conditionOn,
-                        out_file
-                    )
-                }
+                cca_out <- calculate_celltype_associations_linear(
+                    magmaPaths=magmaPaths,
+                    ctd=ctd,
+                    annotLevel=annotLevel,
+                    ctd_species=ctd_species,
+                    genesOutCOND=genesOutCOND,
+                    sumstatsPrefix2=sumstatsPrefix2,
+                    analysis_name=analysis_name)
+            #### Top 10% mode ####
             } else if (EnrichmentMode == "Top 10%") {
-                # First match quantiles to the genes in the genes.out file...
-                # then write as the genesCovar file (the input to MAGMA)
-                geneCovarFile <- create_top10percent_genesets_file(
-                    genesOutFile = sprintf(
-                      "%s.genes.out",
-                      magmaPaths$filePathPrefix
-                    ),
-                    ctd = ctd,
-                    annotLevel = annotLevel,
-                    ctd_species = ctd_species
-                )
-
-                if (is.na(genesOutCOND[1])) {
-                  out_file <- paste0(sumstatsPrefix2,'.',
-                                     analysis_name)
-                    magma_cmd <- sprintf(
-                        paste(
-                            "magma",
-                            "--gene-results '%s.genes.raw'",
-                            "--set-annot '%s'",
-                            "--out '%s'"
-                        ),
-                        magmaPaths$filePathPrefix,
-                        geneCovarFile,
-                        out_file
-                    )
-                } else {
-                    geneCovarFile2 <- create_gene_covar_file(
-                        genesOutFile = sprintf(
-                            "%s.genes.out",
-                            magmaPaths$filePathPrefix
-                        ),
-                        ctd = ctd,
-                        annotLevel = annotLevel,
-                        ctd_species = ctd_species,
-                        genesOutCOND = genesOutCOND
-                    )
-                    conditionOn <- paste(sprintf(
-                        "ZSTAT%s",
-                        seq_len(length(genesOutCOND))
-                    ),
-                    collapse = ","
-                    )
-                    out_file <- paste0(sumstatsPrefix2,'.',
-                                       analysis_name)
-                    magma_cmd <- sprintf(
-                        paste(
-                            "magma",
-                            "--gene-results '%s.genes.raw'",
-                            "--set-annot '%s' twosided",
-                            "--gene-covar '%s' condition-only='%s'",
-                            "--out '%s'"
-                        ),
-                        magmaPaths$filePathPrefix,
-                        geneCovarFile,
-                        geneCovarFile2,
-                        conditionOn,
-                        out_file
-                    )
-                }
+                cca_out <- calculate_celltype_associations_top10(
+                    magmaPaths=magmaPaths,
+                    ctd=ctd,
+                    annotLevel=annotLevel,
+                    ctd_species=ctd_species,
+                    genesOutCOND=genesOutCOND,
+                    sumstatsPrefix2=sumstatsPrefix2,
+                    analysis_name=analysis_name,
+                    magma_version=magma_version)
             }
+            magma_cmd <- cca_out$magma_cmd
+            geneCovarFile <- cca_out$geneCovarFile
             #### Run MAGMA command ####
             magma_run(cmd = magma_cmd, 
                       version = version)
         } else {
             messager("Importing precomputed MAGMA results.",
+                     "magma_cmd and geneCovarFile will be set to NULL.",
                      v = verbose)
+            magma_cmd <- NULL
+            geneCovarFile <- NULL
         }
-        tmp$geneCovarFile <- geneCovarFile
+        #### Prepare output list ####
+        tmp <- list()
         tmp$results <- load_magma_results_file(
             path = path,
             annotLevel = annotLevel,
             ctd = ctd,
             genesOutCOND = genesOutCOND,
             EnrichmentMode = EnrichmentMode,
-            ControlForCT = "BASELINE"
-        ) 
+            analysis_name = analysis_name,
+            ControlForCT = "BASELINE", 
+            verbose = verbose
+        )  
+        tmp$results_path <- path
+        tmp$magma_cmd <- magma_cmd
+        tmp$annotLevel <- annotLevel
+        tmp$geneCovarFile <- geneCovarFile
+        tmp$genesOutCOND <- genesOutCOND
+        tmp$EnrichmentMode <- EnrichmentMode
         return(tmp)
-    }) |> `names<-`(paste0("level",ctd_levels)) # //End lapply loop
+    }) # //End lapply loop
 
     #### Calculate total number of tests performed ####
     totalTests <- 0
@@ -244,6 +173,7 @@ calculate_celltype_associations <- function(ctd,
     output$gwas_sumstats_path <- gwas_sumstats_path
     output$analysis_name <- analysis_name
     output$upstream_kb <- upstream_kb
-    output$downstream_kb <- downstream_kb
+    output$downstream_kb <- downstream_kb 
+    output$magma_version <- magma_version
     return(output)
 }

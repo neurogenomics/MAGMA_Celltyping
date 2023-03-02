@@ -1,0 +1,12 @@
+# MEAN_SAMPLE_SIZE = 74046
+# TOTAL_GENES = 962
+# TEST_DIRECTION = one-sided, positive (set), one-sided, positive (covar)
+# CONDITIONED_INTERNAL = gene size, gene density, inverse mac, log(gene size), log(gene density), log(inverse mac)
+VARIABLE                  TYPE  NGENES         BETA     BETA_STD           SE            P
+astrocytes_ependymal     COVAR     962  -0.00037294   -0.0045268    0.0022566      0.56561
+endothelial_mural        COVAR     962    0.0002391    0.0029144    0.0023811      0.46002
+interneurons             COVAR     962   -0.0033333     -0.03932    0.0024009      0.91728
+microglia                COVAR     962  -0.00028386   -0.0036131    0.0022446       0.5503
+oligodendrocytes         COVAR     962    0.0016776     0.019964    0.0024613      0.24785
+pyramidal_CA1            COVAR     962   -0.0037493    -0.044045    0.0023802      0.94218
+pyramidal_SS             COVAR     962   -0.0023657    -0.028281    0.0023306       0.8448

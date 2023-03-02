@@ -17,6 +17,7 @@ calculate_conditional_celltype_associations(
   controlTopNcells = NA,
   controlledCTs = NA,
   EnrichmentMode = "Linear",
+  qvalue_thresh = 0.05,
   force_new = FALSE,
   version = NULL,
   verbose = TRUE
@@ -59,6 +60,9 @@ e.g. \code{c('Interneuron type 16','Medium Spiny Neuron')}.}
 \item{EnrichmentMode}{[Optional] Should either 'Linear' or 'Top 10\%' mode
 be used for testing enrichment?}
 
+\item{qvalue_thresh}{Multiple-testing corrected p-value threshold to filter
+by when determining which celltypes to condition with.}
+
 \item{force_new}{[Optional] Force new MAGMA analyses even if the
 pre-existing results files are detected.}
 
@@ -100,15 +104,15 @@ Three sets of analyses are run:
 \examples{
 #### Prepare cell-type data ####
 ctd <- ewceData::ctd()
-
 #### Prepare GWAS MAGMA data ####
 magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
-    
 #### Run pipeline ####
-ctAssocs <- MAGMA.Celltyping::calculate_conditional_celltype_associations(
+ctAssocs <- calculate_conditional_celltype_associations(
     ctd = ctd,
     controlledAnnotLevel = 1,
     controlTopNcells = 1,
+    qvalue_thresh = 1,
     magma_dir = magma_dir,
-    ctd_species = "mouse") 
+    ctd_species = "mouse", 
+    force = TRUE) 
 }

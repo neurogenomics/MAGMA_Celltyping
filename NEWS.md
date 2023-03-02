@@ -26,6 +26,23 @@
 * `map_snps_to_genes`
     - Fix `genesOut` path for Windows.
     - Subfunctionalize :`check_n`, `check_genomeLocFile`
+* `enrichment_results`:
+    - Update example results with extra slots and named levels.
+* Added raw MAGMA results file as an example:
+    - "inst/extdata/ieu-a-298.tsv.gz.35UP.10DOWN.level1.MainRun.gsa.out"
+* `calculate_conditional_celltype_associations`
+    - Pass up new arg: `qvalue_thresh`
+    - Add unit tests that test for non-NULL results.
+    - Ensure the BASELINE
+* *test-celltype_associations_pipeline.r*
+    - Add unit tests for additional CTDs (e.g. "ctd_AIBS","ctd_Aerts2018").
+* `magma_tileplot`
+    - Replace  `grDevices` / `gridExtra` with `patchwork`
+    - Move legend to top
+    - Add axis labels
+    - Add unit tests
+* Add new function `fix_celltype_names2`
+    for situations when you don't want to make all celltypes in vector unique.
     
 ## Bug fixes 
 
@@ -36,6 +53,22 @@
         when creating an ordered factor.
 * `merge_magma_results`
     - Add names to levels 
+* `calculate_celltype_associations`:
+    - Fix issue raised here: https://github.com/neurogenomics/MAGMA_Celltyping/pull/135
+    - Made flags conditional on MAGMA version.
+    - Subfunctionalize: `calculate_celltype_associations_linear`, `calculate_celltype_associations_top10`
+    - Ensure `EnrichmentMode` gets added to the saved file names to distinguish results from one another
+        via new internal func: `check_analysis_name`.
+* `load_magma_results_file`
+    - Was incorrectly giving *>50% of celltypes missing. %s celltypes* error whenever Top10% + 
+        conditional was being used.
+    - Remove creations of `res$COVAR` column, as this is no longer relevant 
+        given the structure of the results table.
+    - Remove outdated steps to fix celltype names, which were very roundabout and convoluted.
+    - Don't set `rownames(res) <- res$VARIABLE` as this causes duplicate rownames.
+    - Now exported
+    - Add new column "analysis_name"
+    - Add new arg: `keep_types=` to subset results types.
 
 
 # MAGMA.Celltyping 2.0.7

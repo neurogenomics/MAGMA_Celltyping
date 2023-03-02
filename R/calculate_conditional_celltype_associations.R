@@ -26,6 +26,8 @@
 #' that annotation level should be controlled for?
 #' @param controlledCTs Array of the celltype to be controlled for,
 #' e.g. \code{c('Interneuron type 16','Medium Spiny Neuron')}. 
+#' @param qvalue_thresh Multiple-testing corrected p-value threshold to filter
+#'  by when determining which celltypes to condition with.
 #' @inheritParams celltype_associations_pipeline
 #' @inheritParams calculate_celltype_associations
 #'
@@ -37,22 +39,23 @@
 #'  \item{Conditional results: conditioning all specified cell-types at once}.
 #' }
 #' 
+#' @export
+#' @importFrom utils read.table
+#' @importFrom EWCE fix_celltype_names
 #' @examples
 #' #### Prepare cell-type data ####
 #' ctd <- ewceData::ctd()
-#' 
 #' #### Prepare GWAS MAGMA data ####
 #' magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
-#'     
 #' #### Run pipeline ####
-#' ctAssocs <- MAGMA.Celltyping::calculate_conditional_celltype_associations(
+#' ctAssocs <- calculate_conditional_celltype_associations(
 #'     ctd = ctd,
 #'     controlledAnnotLevel = 1,
 #'     controlTopNcells = 1,
+#'     qvalue_thresh = 1,
 #'     magma_dir = magma_dir,
-#'     ctd_species = "mouse") 
-#' @export
-#' @importFrom utils read.table
+#'     ctd_species = "mouse", 
+#'     force = TRUE) 
 calculate_conditional_celltype_associations <- function(
     ctd,
     ctd_species = infer_ctd_species(ctd),
@@ -66,10 +69,20 @@ calculate_conditional_celltype_associations <- function(
     controlTopNcells = NA,
     controlledCTs = NA,
     EnrichmentMode = "Linear",
+    qvalue_thresh = 0.05,
     force_new = FALSE,
     version = NULL,
     verbose = TRUE) {
     
+    # templateR:::args2vars(calculate_conditional_celltype_associations)
+    
+    if(qvalue_thresh>0.05){
+        messager(
+            "WARNING: Setting qvalue_thresh>0.05",
+            "is not reccommended in practice."
+            )
+    }
+    controlledCTs <- unique(controlledCTs)
     #### Check MAGMA installation ####
     magma_check(version = version,
                 verbose = verbose)
@@ -86,7 +99,7 @@ calculate_conditional_celltype_associations <- function(
     }
     #### prepare quantile groups ####
     # MAGMA.Celltyping can only use human GWAS
-    if (prepare_ctd) {
+    if (isTRUE(prepare_ctd)) {
         output_species <- "human"
         ctd <- prepare_quantile_groups(
             ctd = ctd,
@@ -128,7 +141,7 @@ calculate_conditional_celltype_associations <- function(
     ##### Calculate the baseline associations ####
     ctAssocs <- calculate_celltype_associations(
         ctd = ctd,
-        analysis_name = analysis_name,
+        analysis_name = paste0(analysis_name,"_BASELINE"),
         prepare_ctd = prepare_ctd,
         gwas_sumstats_path = gwas_sumstats_path, 
         ctd_species = ctd_species,
@@ -136,59 +149,25 @@ calculate_conditional_celltype_associations <- function(
         upstream_kb = upstream_kb,
         downstream_kb = downstream_kb,
         force_new = force_new,
-        verbose = verbose
-    )
-
-    if (!any(is.na(controlledCTs))) {
-        # Check if controlledCTs are all in the CTD
-        # at the expected annotation level
-        if (mean(controlledCTs %in% colnames(
-            ctd[[controlledAnnotLevel]]$specificity
-        )) < 1) {
-            missingCTs <- controlledCTs[
-                !controlledCTs %in% colnames(
-                    ctd[[controlledAnnotLevel]]$specificity
-                )
-            ]
-            stopper(
-                "The following celltypes are not found at",
-                "the specified annotation level:",
-                paste(missingCTs, sep = " ")
-            )
-        } else {
-            signifCells <- controlledCTs
-        }
-    } else {
-        # Find the cells which are most significant at baseline
-        # at controlled annotation level
-        res <- ctAssocs[[controlledAnnotLevel]]$results
-        res <- res[order(res$P), ]
-        signifCells <- as.character(
-            res[
-                res$P < (0.05 / ctAssocs$total_baseline_tests_performed),
-                "Celltype"
-            ]
-        )
-
-        if (length(signifCells) > controlTopNcells) {
-            signifCells <- signifCells[seq_len(controlTopNcells)]
-        }
-
-        # If there are no significant cells... then stop
-        if (length(signifCells) == 0) {
-            messager("Warning: No annotLevel",controlledAnnotLevel,
-                     "celltypes reach significance with Q<0.05:",
-                     "returning NULL.")
-            return(NULL)
-        }
-    }
-
+        verbose = verbose) 
+    #### Check the celltypes being controlled for ####
+    signifCells <- check_controlled_celltypes(
+        ctAssocs=ctAssocs,
+        controlledCTs=controlledCTs,
+        controlledAnnotLevel=controlledAnnotLevel,
+        controlTopNcells=controlTopNcells,
+        qvalue_thresh=qvalue_thresh,
+        ctd=ctd) 
+    #### Early stop if no celltypes found ####
+    if(is.null(signifCells)) return(NULL)
+    signifCells2 <- EWCE::fix_celltype_names(celltypes = signifCells)
     #### Create gene covar file for the controlled for annotation level ####
     controlledCovarFile <- create_gene_covar_file(
         genesOutFile = sprintf("%s.genes.out", magmaPaths$filePathPrefix),
         ctd = ctd,
         annotLevel = controlledAnnotLevel,
-        ctd_species = ctd_species
+        ctd_species = ctd_species,
+        verbose = verbose
     )
     # Read in the controlled Covar File
     controlledCovarData <- utils::read.table(
@@ -196,36 +175,16 @@ calculate_conditional_celltype_associations <- function(
         stringsAsFactors = FALSE,
         header = TRUE,
         check.names = FALSE
-    )
-    transliterateMap <- data.frame(
-        original = colnames(ctd[[
-        controlledAnnotLevel]]$specificity_quantiles),
-        modified = colnames(controlledCovarData)[
-            seq(2, length(colnames(controlledCovarData)))
-        ],
-        stringsAsFactors = FALSE,
-        check.names = FALSE,
-        check.rows = FALSE
-    )
-    if (!is.na(controlledCTs[1])) {
-        # Because full stops replace spaces when the covars
-        # are written to file... (and MAGMA sees spaces as delimiters)
-        signifCells2 <- transliterateMap[
-            transliterateMap$original %in% signifCells,
-        ]$modified
-    } else {
-        signifCells2 <- signifCells
-    }
+    )  
     controlledCovarCols <- controlledCovarData[, c("entrez", signifCells2)]
-    controlCovarFile <- tempfile()
-    write.table(
+    controlCovarFile <- tempfile(fileext = "controlCovarFile.txt")
+    utils::write.table(
         x = controlledCovarCols,
         file = controlCovarFile,
         quote = FALSE,
         row.names = FALSE,
         sep = "\t"
-    )
-    
+    ) 
     #### Iterate over CTD levels ####
     for (annotLevel in seq_len(length(ctd))) {
         #### Create gene-covariacne file ####
@@ -251,7 +210,8 @@ calculate_conditional_celltype_associations <- function(
             magmaPaths=magmaPaths, 
             upstream_kb=upstream_kb, 
             downstream_kb=downstream_kb,
-            version=version)
+            version=version,
+            verbose=verbose)
         ##### Then control for all controlled cells together ##### 
         allRes <- iterate_conditional_celltypes_grouped(
             allRes=allRes,
@@ -266,11 +226,14 @@ calculate_conditional_celltype_associations <- function(
             magmaPaths=magmaPaths,
             upstream_kb=upstream_kb, 
             downstream_kb=downstream_kb,
-            version=version)
+            version=version,
+            verbose=verbose)
         ## This line makes it so the baseline results 
         ## are appended to the conditional results
-        ctAssocs[[annotLevel]]$results <- rbind(ctAssocs[[annotLevel]]$results,
-                                                allRes) 
+        ctAssocs[[annotLevel]]$results <- data.table::rbindlist(
+            list(ctAssocs[[annotLevel]]$results,
+                 allRes),
+            fill = TRUE) 
     } #### End for loop over CTD levels
     
     ##### Calculate total number of tests performed ####
@@ -283,5 +246,9 @@ calculate_conditional_celltype_associations <- function(
     ctAssocs$analysis_name <- analysis_name
     ctAssocs$upstream_kb <- upstream_kb
     ctAssocs$downstream_kb <- downstream_kb 
+    ctAssocs$qvalue_thresh <- qvalue_thresh  
+    ctAssocs$controlledAnnotLevel <- controlledAnnotLevel  
+    ctAssocs$controlTopNcells <- controlTopNcells  
+    ctAssocs$controlledCTs <- controlledCTs  
     return(ctAssocs)
 }

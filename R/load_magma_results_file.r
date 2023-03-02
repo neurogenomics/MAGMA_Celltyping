@@ -11,21 +11,45 @@
 #' (Default: \code{'Linear'}).
 #' @param ControlForCT [Optional] May be an internal argument. 
 #' We suggest ignoring or take a look at the code to figure it out.
+#' @param keep_all_rows Keep all rows, without filtering  
+#' such that there is only one row per celltype.
+#' @param verbose Print messages.
 #' @inheritParams calculate_celltype_associations
-#' @inheritParams calculate_celltype_enrichment_limma
-#' @return Contents of the .gcov.out file.
+#' @inheritParams calculate_celltype_enrichment_limma 
+#' @returns Contents of the .gcov.out file.
 #' 
-#' @keywords internal 
+#' @export
+#' @importFrom utils read.table
+#' @examples
+#' path <- system.file(
+#'     "extdata","ieu-a-298.tsv.gz.35UP.10DOWN.level1.MainRun.gsa.out",
+#'     package = "MAGMA.Celltyping")
+#' ctd <- ewceData::ctd()
+#' annotLevel <- 1
+#' EnrichmentMode <- "Linear"
+#' res <- load_magma_results_file(path = path, 
+#'                                ctd = ctd,
+#'                                annotLevel = annotLevel,
+#'                                EnrichmentMode = EnrichmentMode)
 load_magma_results_file <- function(path,
-                                    annotLevel,
                                     ctd,
+                                    annotLevel,
+                                    EnrichmentMode,
                                     genesOutCOND = NA,
-                                    EnrichmentMode = "Linear",
-                                    ControlForCT = "BASELINE") {
+                                    analysis_name = NULL,
+                                    ControlForCT = "BASELINE",
+                                    keep_all_rows = FALSE,
+                                    verbose = TRUE) {
+    # templateR:::args2vars(load_magma_results_file)
     requireNamespace("utils")
     requireNamespace("dplyr")
-    #### Avoid confusing checks ####
-    VARIABLE <- NGENES <- NULL;
+    VARIABLE <- NGENES <- TYPE <- NULL;
+    
+    messager("Reading enrichment results file into R.",v=verbose)
+    force(path)
+    force(ctd)
+    force(annotLevel) 
+    genesOutCOND <- genesOutCOND[1]
     path <- get_actual_path(path)
     #### Check EnrichmentMode has correct values ####
     check_enrichment_mode(EnrichmentMode = EnrichmentMode)
@@ -34,25 +58,27 @@ load_magma_results_file <- function(path,
         length(grep(".gsa.out$|.gsa.out.txt$", path)) == 0) {
         stop("If EnrichmentMode=='Linear' then path must end in '.gsa.out'")
     }
-    res <- utils::read.table(path, stringsAsFactors = FALSE)
+    res <- utils::read.table(path, stringsAsFactors = FALSE, header = FALSE)
     colnames(res) <- as.character(res[1, ])
-    res$level <- annotLevel
     res <- res[-1, ]
-
     # Check if some of the variables are ZSTAT
     # (if so, this indicates that another GWAS is being controlled for)
-    isConditionedOnGWAS <- sum(grepl("ZSTAT", colnames(res))) > 0
-
+    isConditionedOnGWAS <- (sum(grepl("ZSTAT", colnames(res))) > 0 ) |
+        sum(grepl("^ZSTAT", res$VARIABLE))>0
     # The VARIABLE column in MAGMA output is limited by 30 characters.
     # If so, use the FULL_NAME column.
     if (!is.null(res$FULL_NAME)) {
         res$VARIABLE <- res$FULL_NAME
     }
-
-    # Do some error checking
-    numCTinCTD <- length(colnames(ctd[[annotLevel]]$specificity))
-    numCTinRes <- dim(res)[1]
-    if (ControlForCT[1] == "BASELINE" & !isConditionedOnGWAS) {
+    #### Do some error checking ####
+    ctd_celltypes <- colnames(ctd[[annotLevel]]$specificity)
+    res_celltypes <- unique(
+        grep("^ZSTAT",res$VARIABLE, value = TRUE, invert = TRUE)
+    )
+    numCTinCTD <- length(ctd_celltypes) 
+    numCTinRes <- length(res_celltypes)
+    if (ControlForCT[1] == "BASELINE" &&
+        isFALSE(isConditionedOnGWAS)) {
         if (numCTinCTD != numCTinRes) {
             if (abs(numCTinCTD - numCTinRes) > as.integer(numCTinRes * .5)) {
                 stop(sprintf(
@@ -61,93 +87,56 @@ load_magma_results_file <- function(path,
                              Did you provide the correct annotLevel?",
                     numCTinCTD, numCTinRes
                 ))
-            }
-            messager(sprintf("%s celltypes in ctd but %s in results file.
-                      Some cell-types may have been dropped due to
-                             'variance is too low (set contains only one
-                             gene used in analysis)'.", numCTinCTD, numCTinRes))
-            messager(
-                "<50% of celltypes missing.",
-                "Attemping to fix by removing missing cell-types:\n",
-                paste(" - ",
-                    dplyr::setdiff(
-                        colnames(ctd[[annotLevel]]$specificity),
-                        res$VARIABLE
-                    ),
-                    collapse = "\n"
+            } else {
+                messager(numCTinCTD,
+                "celltypes in ctd but",numCTinRes,"in results file.",
+                "Some celltypes may have been dropped due if the variance",
+                "being too low (i.e. set contains only one gene used in analysis).")
+                messager(
+                    "<50% of celltypes missing.",
+                    "Attemping to fix by removing missing cell-types:\n",
+                    paste(" - ",
+                          base::setdiff(
+                              ctd_celltypes,
+                              res_celltypes
+                          ),
+                          collapse = "\n"
+                    )
                 )
-            )
-            ctd_colnames <- colnames(ctd[[annotLevel]]$specificity)
-            res <- subset(res, VARIABLE %in% ctd_colnames)
-            res$COVAR <- ctd_colnames[ctd_colnames %in% res$VARIABLE]
-        } else {
-            res$COVAR <- colnames(ctd[[annotLevel]]$specificity)
-        }
-    } else {
-        tmpF <- tempfile()
-        tmpDat <- t(data.frame(
-            original = colnames(ctd[[annotLevel]]$specificity),
-            stringsAsFactors = FALSE,
-            check.names = FALSE,
-            check.rows = FALSE
-        ))
-        colnames(tmpDat) <- colnames(ctd[[annotLevel]]$specificity)
-        utils::write.csv(tmpDat, file = tmpF)
-        editedNames <- colnames(utils::read.csv(
-            file = tmpF,
-            stringsAsFactors = FALSE
-        ))[-1]
-        transliterateMap <- data.frame(
-            original = colnames(ctd[[annotLevel]]$specificity),
-            edited = editedNames,
-            stringsAsFactors = FALSE,
-            check.rows = FALSE,
-            check.names = FALSE
-        )
-        rownames(transliterateMap) <- transliterateMap$edited
-        # res = res[res$COVAR %in% rownames(transliterateMap),]
-        res <- res[res$VARIABLE %in% rownames(transliterateMap), ]
-        # res$COVAR = transliterateMap[res$COVAR,]$original
-        res$VARIABLE <- transliterateMap[res$VARIABLE, ]$original
-    }
-
+                res <- subset(res, 
+                              VARIABLE %in% ctd_celltypes |
+                                  startsWith(VARIABLE,"ZSTAT")) 
+            } 
+        } 
+    }  
     # In the new version of MAGMA, when you run conditional analyses,
     # each model has a number, and the covariates also get p-values...
     # ---- The information contained is actually quite useful....
-    # but for now just drop it
-    if (sum(res$MODEL == 1) > 1) {
-        xx <- sort(table(res$VARIABLE), decreasing = TRUE)
-        tt <- xx[xx > 1]
-        controlledCTs <- names(tt)
-        res <- res[!res$VARIABLE %in% controlledCTs, ]
-    }
-
-    # rownames(res) = res$COVAR
-    rownames(res) <- res$VARIABLE
+    # but for now just drop it 
+    if(isFALSE(keep_all_rows)){
+        if(EnrichmentMode=="Linear"){
+            res <- subset(res, TYPE=="COVAR" & (VARIABLE %in% res_celltypes))    
+        } else if (EnrichmentMode=="Top 10%"){
+            res <- subset(res, TYPE=="SET" & (VARIABLE %in% res_celltypes))    
+        }
+    }  
     res$BETA <- as.numeric(res$BETA)
     res$BETA_STD <- as.numeric(res$BETA_STD)
     res$SE <- as.numeric(res$SE)
     res$P <- as.numeric(res$P)
+    res$log10p <- log(res$P, 10)
+    res$level <- annotLevel
     res$Method <- "MAGMA"
+    res$EnrichmentMode <- EnrichmentMode 
     res$GCOV_FILE <- basename(path)
     res$CONTROL <- paste(ControlForCT, collapse = ",")
     res$CONTROL_label <- paste(ControlForCT, collapse = ",")
-    res$log10p <- log(res$P, 10)
     res$genesOutCOND <- paste(genesOutCOND, collapse = " | ")
-    res$EnrichmentMode <- EnrichmentMode 
+    res$analysis_name <- analysis_name
     res <- res |>
         dplyr::rename(Celltype = VARIABLE,
-                      OBS_GENES = NGENES) #|>
-        # purrr::modify_at(c("SET"), ~NULL)
-    res$SET <- NULL
-    res <- res[, c(
-        "Celltype", "OBS_GENES", "BETA", "BETA_STD",
-        "SE", "P", "level", "Method", "GCOV_FILE",
-        "CONTROL", "CONTROL_label", "log10p",
-        "genesOutCOND", "EnrichmentMode"
-    )]
-    # }
-
+                      OBS_GENES = NGENES) 
+    res$SET <- NULL 
     return(res)
 }
 

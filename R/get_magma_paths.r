@@ -30,11 +30,12 @@ get_magma_paths <- function(gwas_sumstats_path = NA,
                             downstream_kb = NA,
                             output_path = NA) {
     # Error checking
-    if (is.na(gwas_sumstats_path) &
+    if ((is.null(gwas_sumstats_path) || is.na(gwas_sumstats_path) ) &&
         is.na(output_path)) {
         stop("Either gwas_sumstats_path or output_path must be specified")
     }
-    if (!is.na(gwas_sumstats_path) &
+    if (!is.null(gwas_sumstats_path) &&
+        !is.na(gwas_sumstats_path) &&
         (is.na(upstream_kb) |
             is.na(downstream_kb))) {
         stop(paste(

@@ -5,7 +5,7 @@
 \alias{enrichment_results}
 \title{Example celltype enrichment results}
 \format{
-An object of class \code{list} of length 2.
+An object of class \code{list} of length 1.
 }
 \source{
 \code{ 
@@ -14,11 +14,13 @@ magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
 ctd <- ewceData::ctd()
 enrichment_results <- MAGMA.Celltyping::celltype_associations_pipeline(
     magma_dirs = magma_dirs,
-    ctd = ctd, 
-    ctd_species = "mouse", 
-    ctd_name = "Zeisel2015", 
-    run_linear = TRUE, 
-    run_top10 = TRUE)
+    ctd = ctd,
+    ctd_species = "mouse",
+    ctd_name = "Zeisel2015",
+    run_linear = TRUE,
+    run_top10 = TRUE, 
+    run_conditional = TRUE, 
+    force_new = TRUE)
 usethis::use_data(enrichment_results, overwrite = TRUE)
 }
 }

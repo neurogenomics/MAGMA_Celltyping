@@ -63,10 +63,8 @@ Can take input from either
  \link[MAGMA.Celltyping]{calculate_conditional_celltype_associations}.
 }
 \examples{
-res <- enrichment_results
-ctAssocs <- res$`finn-a-AD.tsv.gz.35UP.10DOWN`$ctAssocsLinear
+ctAssocs <- MAGMA.Celltyping::enrichment_results[[1]]$ctAssocsLinear
 ctd <- ewceData::ctd()
-figs <- plot_celltype_associations(
-    ctAssocs = ctAssocs,
-    ctd = ctd)
+figs <- plot_celltype_associations(ctAssocs = ctAssocs,
+                                   ctd = ctd)
 }

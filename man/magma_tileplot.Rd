@@ -2,7 +2,7 @@
 % Please edit documentation in R/magma_tileplot.r
 \name{magma_tileplot}
 \alias{magma_tileplot}
-\title{MAGMA tileplot}
+\title{MAGMA tile plot}
 \usage{
 magma_tileplot(
   ctd,
@@ -10,8 +10,15 @@ magma_tileplot(
   height = 13,
   width = 4,
   annotLevel = 1,
+  fill = "-log10(P)",
   fileTag = "",
-  output_path = tempdir()
+  output_path = tempdir(),
+  qvalue_thresh = NULL,
+  plotDendro = TRUE,
+  show_plot = TRUE,
+  bind_plots = TRUE,
+  wrap_width = 50,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -27,14 +34,38 @@ magma_tileplot(
 
 \item{annotLevel}{Annotation level to plot the results for.}
 
+\item{fill}{Variable in \code{results} to fill the plot tile colors by.
+Passed to \link[ggplot2]{aes_string}.}
+
 \item{fileTag}{String appended to the names of the saved PDFs,
 i.e. the name of the celltype data file used.}
 
 \item{output_path}{Location where the results should be plotted.}
+
+\item{qvalue_thresh}{The multiple-testing corrected p-value at 
+which to filter results (set to \code{NULL} to skip filtering).}
+
+\item{plotDendro}{Should the dendrogram of celltypes be
+shown alongside the figure? TRUE or FALSE.}
+
+\item{show_plot}{Print to the plot(s).}
+
+\item{bind_plots}{Bind the list of plots together using 
+\link[patchwork]{wrap_plots}.}
+
+\item{wrap_width}{Width at which to wrap x-axis text labels.}
+
+\item{verbose}{Print messages.}
 }
 \value{
 List of two ggplot objects.
 }
 \description{
 Used after merging results from multiple GWAS studies.
+}
+\examples{
+res <- MAGMA.Celltyping::enrichment_results[[1]]
+results <- res$ctAssocMerged$level1$results
+ctd <- ewceData::ctd()
+tile_res <- magma_tileplot(ctd=ctd, results=results)
 }

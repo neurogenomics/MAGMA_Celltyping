@@ -6,30 +6,40 @@
 \usage{
 load_magma_results_file(
   path,
-  annotLevel,
   ctd,
+  annotLevel,
+  EnrichmentMode,
   genesOutCOND = NA,
-  EnrichmentMode = "Linear",
-  ControlForCT = "BASELINE"
+  analysis_name = NULL,
+  ControlForCT = "BASELINE",
+  keep_all_rows = FALSE,
+  verbose = TRUE
 )
 }
 \arguments{
 \item{path}{Path to a .gcov.out file (if \code{EnrichmentMode=='Linear'}).
 or .sets.out (if EnrichmentMode=='Top 10\%').}
 
-\item{annotLevel}{Level within the \code{ctd} to use.}
-
 \item{ctd}{Cell type data structure containing
 \code{specificity_quantiles}.}
 
-\item{genesOutCOND}{[Optional] If the analysis controlled for another GWAS, 
-then this is included as a column. Otherwise the column is \code{NA}.}
+\item{annotLevel}{Level within the \code{ctd} to use.}
 
 \item{EnrichmentMode}{[Optional] Either 'Linear' or 'Top 10\%' 
 (Default: \code{'Linear'}).}
 
+\item{genesOutCOND}{[Optional] If the analysis controlled for another GWAS, 
+then this is included as a column. Otherwise the column is \code{NA}.}
+
+\item{analysis_name}{Used in file names which area created.}
+
 \item{ControlForCT}{[Optional] May be an internal argument. 
 We suggest ignoring or take a look at the code to figure it out.}
+
+\item{keep_all_rows}{Keep all rows, without filtering
+such that there is only one row per celltype.}
+
+\item{verbose}{Print messages.}
 }
 \value{
 Contents of the .gcov.out file.
@@ -38,4 +48,15 @@ Contents of the .gcov.out file.
 Convenience function which just does a little formatting to make 
 it easier to use.
 }
-\keyword{internal}
+\examples{
+path <- system.file(
+    "extdata","ieu-a-298.tsv.gz.35UP.10DOWN.level1.MainRun.gsa.out",
+    package = "MAGMA.Celltyping")
+ctd <- ewceData::ctd()
+annotLevel <- 1
+EnrichmentMode <- "Linear"
+res <- load_magma_results_file(path = path, 
+                               ctd = ctd,
+                               annotLevel = annotLevel,
+                               EnrichmentMode = EnrichmentMode)
+}

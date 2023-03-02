@@ -78,7 +78,7 @@ ctd <- ewceData::ctd()
 magma_dir <- MAGMA.Celltyping::import_magma_files(ids = "ieu-a-298")
     
 #### Run pipeline ####
-ctAssocs <- MAGMA.Celltyping::calculate_celltype_associations(
+ctAssocs <- calculate_celltype_associations(
     ctd = ctd,
     ctd_levels = 1,
     magma_dir = magma_dir,

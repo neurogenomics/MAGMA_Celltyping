@@ -18,7 +18,8 @@ iterate_conditional_celltypes <- function(ctd,
                                           magmaPaths, 
                                           upstream_kb, 
                                           downstream_kb,
-                                          version){
+                                          version,
+                                          verbose){
     allRes <- 0
     for (i in seq_len(length(signifCells2))) {
         controlFor <- signifCells2[i]
@@ -34,7 +35,7 @@ iterate_conditional_celltypes <- function(ctd,
                     x = genesCovarData,
                     y = controlledCovarCols[, c("entrez", controlFor)]
                 )
-                write.table(
+                utils::write.table(
                     x = genesCovarData2,
                     file = genesCovarFile,
                     quote = FALSE,
@@ -68,14 +69,13 @@ iterate_conditional_celltypes <- function(ctd,
             controlledCovarCols2 <- controlledCovarCols
             colnames(controlledCovarCols2)[-1] <-
                 sprintf("%s.covar", colnames(controlledCovarCols2)[-1])
-            write.table(
+            utils::write.table(
                 x = controlledCovarCols2,
                 file = controlCovarFile,
                 quote = FALSE,
                 row.names = FALSE,
                 sep = "\t"
-            )
-            controlledCTcovarNames <- colnames(controlledCovarCols2)[-1]
+            ) 
             sumstatsPrefix2 <- sprintf(
                 "%s.level%s.%sUP.%sDOWN.Top10.ControlFor_%s",
                 magmaPaths$filePathPrefix,
@@ -104,14 +104,16 @@ iterate_conditional_celltypes <- function(ctd,
         }
         #### Run MAGMA command ####
         magma_run(cmd = magma_cmd, 
-                  version = version) 
+                  version = version,
+                  verbose = verbose) 
         cond_res <- load_magma_results_file(
             path = sprintf("%s.gsa.out", sumstatsPrefix2), 
             annotLevel = annotLevel, 
             ctd = ctd, 
             genesOutCOND = NA, 
             EnrichmentMode = EnrichmentMode, 
-            ControlForCT = controlFor) 
+            ControlForCT = controlFor,
+            verbose = verbose) 
         if (i == 1) {
             allRes <- cond_res
         } else {

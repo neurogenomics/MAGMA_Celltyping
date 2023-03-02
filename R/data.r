@@ -123,11 +123,13 @@
 #' ctd <- ewceData::ctd()
 #' enrichment_results <- MAGMA.Celltyping::celltype_associations_pipeline(
 #'     magma_dirs = magma_dirs,
-#'     ctd = ctd, 
-#'     ctd_species = "mouse", 
-#'     ctd_name = "Zeisel2015", 
-#'     run_linear = TRUE, 
-#'     run_top10 = TRUE)
+#'     ctd = ctd,
+#'     ctd_species = "mouse",
+#'     ctd_name = "Zeisel2015",
+#'     run_linear = TRUE,
+#'     run_top10 = TRUE, 
+#'     run_conditional = TRUE, 
+#'     force_new = TRUE)
 #' usethis::use_data(enrichment_results, overwrite = TRUE)
 #' }
 #' @usage data("enrichment_results")

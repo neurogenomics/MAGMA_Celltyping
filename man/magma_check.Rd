@@ -4,13 +4,20 @@
 \alias{magma_check}
 \title{MAGMA check}
 \usage{
-magma_check(version = NULL, upgrade = FALSE, verbose = TRUE)
+magma_check(
+  version = NULL,
+  upgrade = FALSE,
+  return_version = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{version}{MAGMA version.}
 
 \item{upgrade}{If MAGMA is already installed and is not the latest version, 
 should it be upgraded to the latest version? (Default: \code{FALSE}).}
+
+\item{return_version}{Return the MAGMA version being used.}
 
 \item{verbose}{Print messages.}
 }
