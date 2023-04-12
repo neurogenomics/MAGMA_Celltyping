@@ -15,14 +15,14 @@
 #'                      overwrite = TRUE)
 #' }
 #' @keywords internal
-get_genome_ref_piggyback <- function(genome_ref_dir, 
+get_genome_ref_piggyback <- function(genome_ref_dir,  
                                      verbose = TRUE) {
     ##### Link to 1000 genomes reference data. ####
     zipfile <- sprintf("%s.zip", genome_ref_dir)
     #### Download file ####
     options(timeout = 60 * 5)
     get_data(paste0(basename(genome_ref_dir),".zip"),
-             repo = "neurogenomics/MAGMA_Celltyping",
+             repo = "neurogenomics/MAGMA_Celltyping", 
              storage_dir = genome_ref_dir)
     #### Unzip file ####
     messager("Unzipping file.", v = verbose) 

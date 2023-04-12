@@ -8,10 +8,10 @@ get_ctd(
   ctd_name = c("ctd_AIBS", "ctd_allKI", "ctd_BlueLake2018_FrontalCortexOnly",
     "ctd_BlueLake2018_VisualCortexOnly", "ctd_DivSeq", "ctd_DRONC_human",
     "ctd_DRONC_mouse", "ctd_Saunders", "ctd_Tasic", "ctd_Zeisel2015", "ctd_Zeisel2018",
-    "ctd_TabulaMuris", "ctd_Aerts2018", "ctd_FlyCellAtlas", "ctd_Avalos2019",
-    "ctd_DescartesHuman", "ctd_HumanCellLandscape", "ctd_Jiang2021",
-    "ctd_NonHumanPrimateAtlas", "ctd_DescartesMouse", "ctd_Raj2018", "ctd_Raj2018",
-    "ctd_Farnsworth2020"),
+    "ctd_TabulaMuris_facs", "ctd_TabulaMuris_droplet", "ctd_Aerts2018",
+    "ctd_FlyCellAtlas", "ctd_Avalos2019", "ctd_DescartesHuman", "ctd_DescartesMouse",
+    "ctd_HumanCellLandscape", "ctd_Jiang2021", "ctd_NonHumanPrimateCellAtlas",
+    "ctd_Raj2018", "ctd_Raj2018", "ctd_Farnsworth2020"),
   tag = "v2.0.8",
   .token = gh::gh_token(),
   storage_dir = tools::R_user_dir(package = "MAGMA.Celltyping", which = "cache")
@@ -117,7 +117,7 @@ CTD file with data from aging fly central nervous system atlas.
 \cr Reference: \doi{10.1016/j.cell.2018.05.057}\cr
 \href{https://scope.aertslab.org/}{Source}
 }
-\item{"ctd_Aerts2021"\cr}{
+\item{"ctd_FlyCellAtlas"\cr}{
 CTD file with data from adult fly whole-body atlas
  (a.k.a the FlyCellAtlas).
 \cr Reference: \doi{10.1126/science.abk2432}\cr
@@ -138,8 +138,16 @@ CTD file with data from developing zebrafish central nervous system atlas.
 \cr Reference: \doi{10.1016/j.ydbio.2019.11.008}\cr  
 \href{http://cells.ucsc.edu/?ds=zebrafish-dev}{Source}
 }
-\item{"ctd_TabulaMuris"\cr}{
+\item{"ctd_TabulaMuris_facs"\cr}{
 CTD file with data from adult mouse whole-body atlas.
+Uses the Smart-seq2 (FACS) subset of the data and covers a greater number 
+of cell-types than the Droplet version.
+\cr Reference: \doi{10.1038/s41586-018-0590-4}\cr   
+\href{https://tabula-muris.ds.czbiohub.org/}{Source}
+}
+\item{"ctd_TabulaMuris_droplet"\cr}{
+CTD file with data from adult mouse whole-body atlas.
+Uses the Droplet subset of the data 
 \cr Reference: \doi{10.1038/s41586-018-0590-4}\cr   
 \href{https://tabula-muris.ds.czbiohub.org/}{Source}
 }
@@ -153,13 +161,13 @@ CTD file with data from developing fly central nervous system atlas.
 \cr Reference: \doi{10.7554/eLife.50354}\cr 
 \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE134722}{Source}
 }
-\item{"ctd_Han2022"\cr}{
+\item{"ctd_NonHumanPrimateCellAtlas"\cr}{
 CTD file with data from adult monkey whole-body atlas.
 \cr Reference: \doi{10.1038/s41586-022-04587-3}\cr 
 \href{https://db.cngb.org/nhpca/download}{Source}
 }
-\item{"ctd_Cao2019"\cr}{
-CTD file with data from developing mouse whole-body atlas.
+\item{"ctd_DescartesMouse"\cr}{
+CTD file with data from the Descartes developing mouse whole-body atlas.
 \cr Reference: \doi{10.1038/s41586-019-0969-x}\cr 
 \href{https://oncoscape.v3.sttrcancer.org/atlas.gs.washington.edu.mouse.rna}{
 Source}
