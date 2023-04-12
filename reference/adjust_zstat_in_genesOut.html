@@ -26,7 +26,7 @@ using the default log function.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.9</span>
       </span>
     </div>
 
@@ -145,6 +145,12 @@ See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-lin
 <dd><p>Which species' genes names to convert <code>exp</code> to.
 See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a> for all available species.</p></dd>
 
+    <dt><code>sctSpecies_origin</code></dt>
+<dd><p>Species that the <code>sct_data</code> 
+originally came from, regardless of its current gene format 
+(e.g. it was previously converted from mouse to human gene orthologs).
+ This is used for computing an appropriate backgrund.</p></dd>
+
     <dt><code>non121_strategy</code></dt>
 <dd><p>How to handle genes that don't have
 1:1 mappings between <code>input_species</code>:<code>output_species</code>.
@@ -221,7 +227,6 @@ numeric column names.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using built-in example files: ieu-a-298.tsv.gz.35UP.10DOWN</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning MAGMA gene.* file paths</span>
 <span class="r-in"><span><span class="va">ctd</span> <span class="op">&lt;-</span> <span class="fu">ewceData</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ewceData/man/ctd.html" class="external-link">ctd</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> snapshotDate(): 2023-02-28</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> see ?ewceData and browseVignettes('ewceData') for documentation</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> loading from cache</span>
 <span class="r-in"><span></span></span>
@@ -230,12 +235,11 @@ numeric column names.</p></dd>
 <span class="r-in"><span>    magma_GenesOut_file <span class="op">=</span> <span class="va">myGenesOut</span>,</span></span>
 <span class="r-in"><span>    ctd_species <span class="op">=</span> <span class="st">"mouse"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Warning: sctSpecies_origin not provided. Setting to 'mouse' by default.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Standardising CellTypeDataset</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Found 5 matrix types across 2 CTD levels.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Importing genes.out file.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 4 genes without HGNC gene symbols were dropped.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 371 genes that are absent from the ctd were dropped.</span>

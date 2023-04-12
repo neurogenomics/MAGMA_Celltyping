@@ -85,7 +85,7 @@ CTD file with data from aging fly central nervous system atlas.
  Reference: doi:10.1016/j.cell.2018.05.057
 
 Source
-"ctd_Aerts2021"
+"ctd_FlyCellAtlas"
 CTD file with data from adult fly whole-body atlas
  (a.k.a the FlyCellAtlas).
  Reference: doi:10.1126/science.abk2432
@@ -106,8 +106,16 @@ CTD file with data from developing zebrafish central nervous system atlas.
  Reference: doi:10.1016/j.ydbio.2019.11.008
   
 Source
-"ctd_TabulaMuris"
+"ctd_TabulaMuris_facs"
 CTD file with data from adult mouse whole-body atlas.
+Uses the Smart-seq2 (FACS) subset of the data and covers a greater number 
+of cell-types than the Droplet version.
+ Reference: doi:10.1038/s41586-018-0590-4
+   
+Source
+"ctd_TabulaMuris_droplet"
+CTD file with data from adult mouse whole-body atlas.
+Uses the Droplet subset of the data 
  Reference: doi:10.1038/s41586-018-0590-4
    
 Source
@@ -121,13 +129,13 @@ CTD file with data from developing fly central nervous system atlas.
  Reference: doi:10.7554/eLife.50354
  
 Source
-"ctd_Han2022"
+"ctd_NonHumanPrimateCellAtlas"
 CTD file with data from adult monkey whole-body atlas.
  Reference: doi:10.1038/s41586-022-04587-3
  
 Source
-"ctd_Cao2019"
-CTD file with data from developing mouse whole-body atlas.
+"ctd_DescartesMouse"
+CTD file with data from the Descartes developing mouse whole-body atlas.
  Reference: doi:10.1038/s41586-019-0969-x
  
 
@@ -151,7 +159,7 @@ Source
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.9</span>
       </span>
     </div>
 
@@ -267,7 +275,7 @@ CTD file with data from developing mouse central nervous system atlas.
 CTD file with data from aging fly central nervous system atlas.
 <br> Reference: <a href="https://doi.org/10.1016/j.cell.2018.05.057" class="external-link">doi:10.1016/j.cell.2018.05.057</a>
 <br><a href="https://scope.aertslab.org/" class="external-link">Source</a></p></li>
-<li><p>"ctd_Aerts2021"<br>
+<li><p>"ctd_FlyCellAtlas"<br>
 CTD file with data from adult fly whole-body atlas
  (a.k.a the FlyCellAtlas).
 <br> Reference: <a href="https://doi.org/10.1126/science.abk2432" class="external-link">doi:10.1126/science.abk2432</a>
@@ -284,8 +292,15 @@ CTD file with data from developing zebrafish central nervous system atlas.
 CTD file with data from developing zebrafish central nervous system atlas.
 <br> Reference: <a href="https://doi.org/10.1016/j.ydbio.2019.11.008" class="external-link">doi:10.1016/j.ydbio.2019.11.008</a>
 <br><a href="http://cells.ucsc.edu/?ds=zebrafish-dev" class="external-link">Source</a></p></li>
-<li><p>"ctd_TabulaMuris"<br>
+<li><p>"ctd_TabulaMuris_facs"<br>
 CTD file with data from adult mouse whole-body atlas.
+Uses the Smart-seq2 (FACS) subset of the data and covers a greater number 
+of cell-types than the Droplet version.
+<br> Reference: <a href="https://doi.org/10.1038/s41586-018-0590-4" class="external-link">doi:10.1038/s41586-018-0590-4</a>
+<br><a href="https://tabula-muris.ds.czbiohub.org/" class="external-link">Source</a></p></li>
+<li><p>"ctd_TabulaMuris_droplet"<br>
+CTD file with data from adult mouse whole-body atlas.
+Uses the Droplet subset of the data 
 <br> Reference: <a href="https://doi.org/10.1038/s41586-018-0590-4" class="external-link">doi:10.1038/s41586-018-0590-4</a>
 <br><a href="https://tabula-muris.ds.czbiohub.org/" class="external-link">Source</a></p></li>
 <li><p>"ctd_TabulaMurisSenis" (Under construction)<br>
@@ -296,12 +311,12 @@ CTD file with data from aging adult mouse whole-body atlas.
 CTD file with data from developing fly central nervous system atlas.
 <br> Reference: <a href="https://doi.org/10.7554/eLife.50354" class="external-link">doi:10.7554/eLife.50354</a>
 <br><a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE134722" class="external-link">Source</a></p></li>
-<li><p>"ctd_Han2022"<br>
+<li><p>"ctd_NonHumanPrimateCellAtlas"<br>
 CTD file with data from adult monkey whole-body atlas.
 <br> Reference: <a href="https://doi.org/10.1038/s41586-022-04587-3" class="external-link">doi:10.1038/s41586-022-04587-3</a>
 <br><a href="https://db.cngb.org/nhpca/download" class="external-link">Source</a></p></li>
-<li><p>"ctd_Cao2019"<br>
-CTD file with data from developing mouse whole-body atlas.
+<li><p>"ctd_DescartesMouse"<br>
+CTD file with data from the Descartes developing mouse whole-body atlas.
 <br> Reference: <a href="https://doi.org/10.1038/s41586-019-0969-x" class="external-link">doi:10.1038/s41586-019-0969-x</a>
 <br><a href="https://oncoscape.v3.sttrcancer.org/atlas.gs.washington.edu.mouse.rna" class="external-link">
 Source</a></p></li>
@@ -312,10 +327,12 @@ Source</a></p></li>
 <span>  ctd_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ctd_AIBS"</span>, <span class="st">"ctd_allKI"</span>, <span class="st">"ctd_BlueLake2018_FrontalCortexOnly"</span>,</span>
 <span>    <span class="st">"ctd_BlueLake2018_VisualCortexOnly"</span>, <span class="st">"ctd_DivSeq"</span>, <span class="st">"ctd_DRONC_human"</span>,</span>
 <span>    <span class="st">"ctd_DRONC_mouse"</span>, <span class="st">"ctd_Saunders"</span>, <span class="st">"ctd_Tasic"</span>, <span class="st">"ctd_Zeisel2015"</span>, <span class="st">"ctd_Zeisel2018"</span>,</span>
-<span>    <span class="st">"ctd_TabulaMuris"</span>, <span class="st">"ctd_Aerts2018"</span>, <span class="st">"ctd_Aerts2021"</span>, <span class="st">"ctd_Avalos2019"</span>,</span>
-<span>    <span class="st">"ctd_DescartesHuman"</span>, <span class="st">"ctd_DescartesHuman_brain"</span>, <span class="st">"ctd_HumanCellLandscape"</span>,</span>
-<span>    <span class="st">"ctd_Jiang2021"</span>, <span class="st">"ctd_Han2022"</span>, <span class="st">"ctd_Cao2019"</span>, <span class="st">"ctd_Raj2018"</span>, <span class="st">"ctd_Raj2018"</span>,</span>
-<span>    <span class="st">"ctd_Farnsworth2020"</span><span class="op">)</span>,</span>
+<span>    <span class="st">"ctd_TabulaMuris_facs"</span>, <span class="st">"ctd_TabulaMuris_droplet"</span>, <span class="st">"ctd_Aerts2018"</span>,</span>
+<span>    <span class="st">"ctd_FlyCellAtlas"</span>, <span class="st">"ctd_Avalos2019"</span>, <span class="st">"ctd_DescartesHuman"</span>, <span class="st">"ctd_DescartesMouse"</span>,</span>
+<span>    <span class="st">"ctd_HumanCellLandscape"</span>, <span class="st">"ctd_Jiang2021"</span>, <span class="st">"ctd_NonHumanPrimateCellAtlas"</span>,</span>
+<span>    <span class="st">"ctd_Raj2018"</span>, <span class="st">"ctd_Raj2018"</span>, <span class="st">"ctd_Farnsworth2020"</span><span class="op">)</span>,</span>
+<span>  tag <span class="op">=</span> <span class="st">"v2.0.8"</span>,</span>
+<span>  .token <span class="op">=</span> <span class="fu">gh</span><span class="fu">::</span><span class="fu"><a href="https://gh.r-lib.org/reference/gh_token.html" class="external-link">gh_token</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  storage_dir <span class="op">=</span> <span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/userdir.html" class="external-link">R_user_dir</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"MAGMA.Celltyping"</span>, which <span class="op">=</span> <span class="st">"cache"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -324,6 +341,14 @@ Source</a></p></li>
     <h2>Arguments</h2>
     <dl><dt>ctd_name</dt>
 <dd><p>Name of one or more CellTypeDatset objects to import.</p></dd>
+
+
+<dt>tag</dt>
+<dd><p>tag for the GitHub release to which this data should be attached.</p></dd>
+
+
+<dt>.token</dt>
+<dd><p>GitHub authentication token, see <code>[gh::gh_token()]</code></p></dd>
 
 
 <dt>storage_dir</dt>

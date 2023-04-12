@@ -21,7 +21,7 @@ the cell-type specificity score from the CellTypeDataset
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.9</span>
       </span>
     </div>
 
@@ -146,6 +146,12 @@ See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-lin
 <dd><p>Which species' genes names to convert <code>exp</code> to.
 See <a href="https://rdrr.io/pkg/EWCE/man/list_species.html" class="external-link">list_species</a> for all available species.</p></dd>
 
+    <dt><code>sctSpecies_origin</code></dt>
+<dd><p>Species that the <code>sct_data</code> 
+originally came from, regardless of its current gene format 
+(e.g. it was previously converted from mouse to human gene orthologs).
+ This is used for computing an appropriate backgrund.</p></dd>
+
     <dt><code>non121_strategy</code></dt>
 <dd><p>How to handle genes that don't have
 1:1 mappings between <code>input_species</code>:<code>output_species</code>.
@@ -231,7 +237,7 @@ numeric column names.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning MAGMA directories.</span>
 <span class="r-in"><span><span class="va">magma_res</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="merge_results.html">merge_results</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="va"><a href="enrichment_results.html">enrichment_results</a></span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving full merged results to ==&gt; /tmp/RtmpMEJXGX/MAGMA_celltyping./.lvl1.csv</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving full merged results to ==&gt; /tmp/RtmpETEEae/MAGMA_celltyping./.lvl1.csv</span>
 <span class="r-in"><span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">get_driver_genes</span><span class="op">(</span>ctd <span class="op">=</span> <span class="va">ctd</span>, </span></span>
 <span class="r-in"><span>                                               magma_res <span class="op">=</span> <span class="va">magma_res</span>, </span></span>
 <span class="r-in"><span>                                               GenesOut_dir <span class="op">=</span> <span class="va">GenesOut_dir</span>, </span></span>
@@ -295,12 +301,11 @@ numeric column names.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   - species: mouse </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   - percent_match: 92%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Inferred ctd species: mouse</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Warning: sctSpecies_origin not provided. Setting to 'mouse' by default.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Standardising CellTypeDataset</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Found 5 matrix types across 2 CTD levels.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Processing level: 2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Converting to sparse matrix.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> + Finding driver genes for: ieu-a-298 GWAS x CTD</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Importing genes.out file.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 4 genes without HGNC gene symbols were dropped.</span>
