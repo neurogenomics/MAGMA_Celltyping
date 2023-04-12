@@ -1,3 +1,16 @@
+# MAGMA.Celltyping 2.0.9
+
+## New features  
+
+* Update tags from "latest" to "v2.0.0" and "v2.0.8"
+    - Did this so I can better version-control each Release. 
+    Plus I'm renaming some CTDs to make them more intuitive.
+    - Also adding some new CTDS: "TabulaMuris_droplet", "TabulaMuris_facs"
+* `get_data` / `get_ctd`
+    - Expose `.token` arg.
+    - Expose `tag` arg.
+    - Make token error instructions more explicit and add GH docs link.
+
 # MAGMA.Celltyping 2.0.8
 
 ## New features  

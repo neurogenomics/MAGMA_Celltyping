@@ -8,15 +8,21 @@ get_ctd(
   ctd_name = c("ctd_AIBS", "ctd_allKI", "ctd_BlueLake2018_FrontalCortexOnly",
     "ctd_BlueLake2018_VisualCortexOnly", "ctd_DivSeq", "ctd_DRONC_human",
     "ctd_DRONC_mouse", "ctd_Saunders", "ctd_Tasic", "ctd_Zeisel2015", "ctd_Zeisel2018",
-    "ctd_TabulaMuris", "ctd_Aerts2018", "ctd_Aerts2021", "ctd_Avalos2019",
-    "ctd_DescartesHuman", "ctd_DescartesHuman_brain", "ctd_HumanCellLandscape",
-    "ctd_Jiang2021", "ctd_Han2022", "ctd_Cao2019", "ctd_Raj2018", "ctd_Raj2018",
+    "ctd_TabulaMuris", "ctd_Aerts2018", "ctd_FlyCellAtlas", "ctd_Avalos2019",
+    "ctd_DescartesHuman", "ctd_HumanCellLandscape", "ctd_Jiang2021",
+    "ctd_NonHumanPrimateAtlas", "ctd_DescartesMouse", "ctd_Raj2018", "ctd_Raj2018",
     "ctd_Farnsworth2020"),
+  tag = "v2.0.8",
+  .token = gh::gh_token(),
   storage_dir = tools::R_user_dir(package = "MAGMA.Celltyping", which = "cache")
 )
 }
 \arguments{
 \item{ctd_name}{Name of one or more CellTypeDatset objects to import.}
+
+\item{tag}{tag for the GitHub release to which this data should be attached.}
+
+\item{.token}{GitHub authentication token, see \verb{[gh::gh_token()]}}
 
 \item{storage_dir}{Folder in which to save the CellTypeDatset.}
 }

@@ -1,18 +1,20 @@
-<img src= 'https://github.com/neurogenomics/MAGMA_Celltyping/raw/master/inst/hex/hex.png' height= '300' ><br><br><br><br>
-[![](https://img.shields.io/badge/devel%20version-2.0.8-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
-[![R build
-status](https://github.com/neurogenomics/MAGMA_Celltyping/workflows/rworkflows/badge.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/actions)
-[![](https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/commits/master)
-[![](https://img.shields.io/github/languages/code-size/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
-[![](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping/branch/master/graph/badge.svg)](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping)
+<img src='https://github.com/neurogenomics/MAGMA_Celltyping/raw/master/inst/hex/hex.png' title='Hex sticker for MAGMA.Celltyping' height='300'><br>
 [![License:
-GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)  
+GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)
+[![](https://img.shields.io/badge/devel%20version-2.0.9-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
+[![](https://img.shields.io/github/languages/code-size/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
+[![](https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/commits/master)
+<br> [![R build
+status](https://github.com/neurogenomics/MAGMA_Celltyping/workflows/rworkflows/badge.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/actions)
+[![](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping/branch/master/graph/badge.svg)](https://codecov.io/gh/neurogenomics/MAGMA_Celltyping)
+<br>
+<a href='https://app.codecov.io/gh/neurogenomics/MAGMA_Celltyping/tree/master' target='_blank'><img src='https://codecov.io/gh/neurogenomics/MAGMA_Celltyping/branch/master/graphs/icicle.svg' title='Codecov icicle graph' width='200' height='50' style='vertical-align: top;'></a>  
 <h4>  
 Authors: <i>Brian Schilder, Alan Murphy, Julien Bryois, Nathan
 Skene</i>  
 </h4>
 <h4>  
-README updated: <i>Mar-01-2023</i>  
+README updated: <i>Apr-12-2023</i>  
 </h4>
 
 ## Introduction

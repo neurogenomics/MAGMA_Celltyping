@@ -7,6 +7,8 @@
 get_data(
   fname,
   repo = "neurogenomics/MAGMA_Celltyping",
+  tag = "v2.0.8",
+  .token = gh::gh_token(),
   storage_dir = tools::R_user_dir(package = "MAGMA.Celltyping", which = "cache"),
   overwrite = TRUE,
   check = FALSE
@@ -14,6 +16,10 @@ get_data(
 }
 \arguments{
 \item{repo}{Repository name in format "owner/repo". Defaults to \code{guess_repo()}.}
+
+\item{tag}{tag for the GitHub release to which this data should be attached.}
+
+\item{.token}{GitHub authentication token, see \verb{[gh::gh_token()]}}
 
 \item{overwrite}{Should any local files of the same name be overwritten?
 default \code{TRUE}.}

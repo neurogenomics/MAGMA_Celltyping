@@ -87,7 +87,7 @@
 #' \cr Reference: \doi{10.1016/j.cell.2018.05.057}\cr
 #' \href{https://scope.aertslab.org/}{Source}
 #' }
-#' \item{"ctd_Aerts2021"\cr}{
+#' \item{"ctd_FlyCellAtlas"\cr}{
 #' CTD file with data from adult fly whole-body atlas
 #'  (a.k.a the FlyCellAtlas).
 #' \cr Reference: \doi{10.1126/science.abk2432}\cr
@@ -108,8 +108,16 @@
 #' \cr Reference: \doi{10.1016/j.ydbio.2019.11.008}\cr  
 #' \href{http://cells.ucsc.edu/?ds=zebrafish-dev}{Source}
 #' }
-#' \item{"ctd_TabulaMuris"\cr}{
+#' \item{"ctd_TabulaMuris_facs"\cr}{
 #' CTD file with data from adult mouse whole-body atlas.
+#' Uses the Smart-seq2 (FACS) subset of the data and covers a greater number 
+#' of cell-types than the Droplet version.
+#' \cr Reference: \doi{10.1038/s41586-018-0590-4}\cr   
+#' \href{https://tabula-muris.ds.czbiohub.org/}{Source}
+#' }
+#' \item{"ctd_TabulaMuris_droplet"\cr}{
+#' CTD file with data from adult mouse whole-body atlas.
+#' Uses the Droplet subset of the data 
 #' \cr Reference: \doi{10.1038/s41586-018-0590-4}\cr   
 #' \href{https://tabula-muris.ds.czbiohub.org/}{Source}
 #' }
@@ -123,13 +131,13 @@
 #' \cr Reference: \doi{10.7554/eLife.50354}\cr 
 #' \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE134722}{Source}
 #' }
-#' \item{"ctd_Han2022"\cr}{
+#' \item{"ctd_NonHumanPrimateCellAtlas"\cr}{
 #' CTD file with data from adult monkey whole-body atlas.
 #' \cr Reference: \doi{10.1038/s41586-022-04587-3}\cr 
 #' \href{https://db.cngb.org/nhpca/download}{Source}
 #' }
-#' \item{"ctd_Cao2019"\cr}{
-#' CTD file with data from developing mouse whole-body atlas.
+#' \item{"ctd_DescartesMouse"\cr}{
+#' CTD file with data from the Descartes developing mouse whole-body atlas.
 #' \cr Reference: \doi{10.1038/s41586-019-0969-x}\cr 
 #' \href{https://oncoscape.v3.sttrcancer.org/atlas.gs.washington.edu.mouse.rna}{
 #' Source}
@@ -137,11 +145,13 @@
 #' }
 #' @param ctd_name Name of one or more CellTypeDatset objects to import.
 #' @param storage_dir Folder in which to save the CellTypeDatset.
+#' @inheritParams piggyback::pb_upload
 #' @returns CellTypeDataset object, or a named list of CellTypeDataset objects.
 #' @export
 #' @importFrom tools R_user_dir
 #' @importFrom stats setNames
 #' @importFrom stringr str_split
+#' @importFrom gh gh_token
 #' @examples
 #' ctd <- MAGMA.Celltyping::get_ctd("ctd_AIBS")
 get_ctd <- function(ctd_name = c(
@@ -156,20 +166,22 @@ get_ctd <- function(ctd_name = c(
                         "ctd_Tasic",
                         "ctd_Zeisel2015",
                         "ctd_Zeisel2018",
-                        "ctd_TabulaMuris",
+                        "ctd_TabulaMuris_facs",
+                        "ctd_TabulaMuris_droplet",
                         "ctd_Aerts2018",
-                        "ctd_Aerts2021",
+                        "ctd_FlyCellAtlas",
                         "ctd_Avalos2019",
-                        "ctd_DescartesHuman",
-                        "ctd_DescartesHuman_brain", 
+                        "ctd_DescartesHuman",  
+                        "ctd_DescartesMouse",
                         "ctd_HumanCellLandscape",
                         "ctd_Jiang2021",
-                        "ctd_Han2022",
-                        "ctd_Cao2019",
+                        "ctd_NonHumanPrimateCellAtlas",
                         "ctd_Raj2018",
                         "ctd_Raj2018",
                         "ctd_Farnsworth2020"
                     ),
+                    tag = "v2.0.8",
+                    .token = gh::gh_token(),
                     storage_dir = tools::R_user_dir(
                         package = "MAGMA.Celltyping",
                         which = "cache"
@@ -178,7 +190,8 @@ get_ctd <- function(ctd_name = c(
     requireNamespace("piggyback")
     #### Check that files exist on Releases ####
     files <- piggyback::pb_list(repo = "neurogenomics/MAGMA_Celltyping",
-                                tag = "latest")
+                                tag = tag,
+                                .token = .token)
     files$name <- stringr::str_split(files$file_name,"\\.",
                                      simplify = TRUE)[,1] 
     files <- files[files$name %in% ctd_name,] 
@@ -186,11 +199,11 @@ get_ctd <- function(ctd_name = c(
     if(length(ctd_dict)==0) stop("No matching CTD files found.")
     #### Download files ####
     messager("Downloading",length(ctd_name),"CellTypeDataset file(s).")
-    ctd_list <- mapply(ctd_dict,
-                       SIMPLIFY = FALSE,
-                       FUN=function(x){
+    ctd_list <- lapply(ctd_dict, function(x){
                tmp <- get_data(
                    fname = x,
+                   tag = tag,
+                   .token = .token,
                    storage_dir = storage_dir
                )
                #### Import the data ####
