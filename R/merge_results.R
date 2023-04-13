@@ -53,9 +53,16 @@ merge_results <- function(MAGMA_results,
     Celltype <- P <- FDR <- NULL;
     #### Iterate ####
     merged_results <- lapply(names(MAGMA_results), function(nm) {
+        #### Check if the result exists ####
+        if(is.null(MAGMA_results[[nm]][[filetype]])){
+            messager("Results is NULL:",nm,"-",filetype,v=verbose)
+            return(NULL)
+        }
         #### Ensure requested level doesn't exceed available levels ####
         lvls <- grep("level", names(MAGMA_results[[nm]][[filetype]]),
                      value = TRUE)
+        ## Account for the fact that older version of MAGMA.Celltyping 
+        ## didn't label the levels as "level#".
         if(length(lvls>0)){
             level <- min(level,length(lvls))
         }
@@ -87,8 +94,8 @@ merge_results <- function(MAGMA_results,
     if (!is.null(q_thresh)) {
         messager("Filtering results @ FDR<", q_thresh,v=verbose)
         merged_results <- subset(merged_results, FDR < q_thresh)
-        messager(nrow(merged_results), 
-                " significant results remaining.",
+        messager(formatC(nrow(merged_results),big.mark = ","), 
+                "significant results remaining.",
                 v=verbose)
     }
     return(merged_results)
