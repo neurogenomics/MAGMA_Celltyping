@@ -40,10 +40,12 @@
 #' @inheritParams calculate_celltype_associations
 #' @inheritParams calculate_conditional_celltype_associations
 #' @inheritParams prepare_quantile_groups
-#'
 #' @returns A list containing the results of each selected
 #' celltype associations analysis.
-#'
+#' 
+#' @keywords main_function
+#' @export
+#' @importFrom parallel mclapply
 #' @examples
 #' magma_dirs <- MAGMA.Celltyping::import_magma_files(ids = c("ieu-a-298"))
 #' ctd <- ewceData::ctd()
@@ -53,11 +55,7 @@
 #'     ctd_levels = 1,
 #'     ctd_name = "Zeisel2015",
 #'     ctd_species = "mouse",
-#'     magma_dirs = magma_dirs
-#' )
-#' @keywords main_function
-#' @export
-#' @importFrom parallel mclapply
+#'     magma_dirs = magma_dirs)
 celltype_associations_pipeline <- function(ctd,
                                            ctd_levels = seq_len(length(ctd)),
                                            ctd_name,
@@ -91,14 +89,14 @@ celltype_associations_pipeline <- function(ctd,
     #### prepare quantile groups ####
     # MAGMA.Celltyping can only use human GWAS
     {
-        messager("Standardising CellTypeDataset.",v=verbose)
+        messager("Preparing CellTypeDataset.",v=verbose)
         output_species <- "human"
         ctd <- prepare_quantile_groups(
             ctd = ctd,
             input_species = ctd_species,
             output_species = output_species,
             standardise = standardise,
-            verbose = FALSE
+            verbose = verbose>1
         )
         ctd_species <- output_species
     } 

@@ -41,18 +41,24 @@
 #' @importFrom stats p.adjust
 #' @importFrom stringr str_split
 merge_results <- function(MAGMA_results,
-                           level = 1,
-                           dataset_name = NULL,
-                           species = "mouse",
-                           filetype = "ctAssocMerged",
-                           q_thresh = NULL,
-                           method = "fdr",
-                           save_dir = tempdir(),
-                           verbose = TRUE) {
+                          level = 1,
+                          dataset_name = NULL,
+                          species = "mouse",
+                          filetype = "ctAssocMerged",
+                          q_thresh = NULL,
+                          method = "fdr",
+                          save_dir = tempdir(),
+                          verbose = TRUE) {
     #### Avoid confusing checks ####
     Celltype <- P <- FDR <- NULL;
     #### Iterate ####
     merged_results <- lapply(names(MAGMA_results), function(nm) {
+        #### Ensure requested level doesn't exceed available levels ####
+        lvls <- grep("level", names(MAGMA_results[[nm]][[filetype]]),
+                     value = TRUE)
+        if(length(lvls>0)){
+            level <- min(level,length(lvls))
+        }
         cbind(
             GWAS = stringr::str_split(nm, ".annotated")[[1]][1],
             MAGMA_results[[nm]][[filetype]][[level]]$results
