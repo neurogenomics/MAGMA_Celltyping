@@ -106,7 +106,6 @@ res <- MAGMA.Celltyping::celltype_associations_pipeline(
     ctd_levels = 1,
     ctd_name = "Zeisel2015",
     ctd_species = "mouse",
-    magma_dirs = magma_dirs
-)
+    magma_dirs = magma_dirs)
 }
 \keyword{main_function}

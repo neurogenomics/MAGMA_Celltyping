@@ -1,3 +1,20 @@
+# MAGMA.Celltyping 2.0.10
+
+## New features
+
+* `map_snps_to_genes` 
+  - Add new `duplicate` arg to control what to do with duplicate/non-bilalleic SNPs.
+  - Add new `synonym_dup` arg to control what to do with synonymous SNPs.
+  - Add subfunctions `check_duplicate`, `check_synonym_dup`
+* Add bug/feature report note to startup message.
+
+## Bug fixes
+
+* `get_magma_paths`
+  - Uses `file.path` instead of hard-coded "/" symbols.
+* `map_snps_to_genes` --> 
+  - `decompress` wasn't recognizing files with ".bgz" suffix. 
+
 # MAGMA.Celltyping 2.0.9
 
 ## New features  

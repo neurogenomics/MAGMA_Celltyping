@@ -40,7 +40,7 @@ load_magma_results_file <- function(path,
                                     ControlForCT = "BASELINE",
                                     keep_all_rows = FALSE,
                                     verbose = TRUE) {
-    # templateR:::args2vars(load_magma_results_file)
+    # devoptera::args2vars(load_magma_results_file)
     requireNamespace("utils")
     requireNamespace("dplyr")
     VARIABLE <- NGENES <- TYPE <- NULL;
@@ -58,9 +58,11 @@ load_magma_results_file <- function(path,
         length(grep(".gsa.out$|.gsa.out.txt$", path)) == 0) {
         stop("If EnrichmentMode=='Linear' then path must end in '.gsa.out'")
     }
-    res <- utils::read.table(path, stringsAsFactors = FALSE, header = FALSE)
-    colnames(res) <- as.character(res[1, ])
-    res <- res[-1, ]
+    {
+      res <- utils::read.table(path, stringsAsFactors = FALSE, header = FALSE)
+      colnames(res) <- as.character(res[1, ])
+      res <- res[-1, ]
+    }
     # Check if some of the variables are ZSTAT
     # (if so, this indicates that another GWAS is being controlled for)
     isConditionedOnGWAS <- (sum(grepl("ZSTAT", colnames(res))) > 0 ) |

@@ -47,7 +47,7 @@ calculate_celltype_associations <- function(ctd,
                                             force_new = FALSE,
                                             version = NULL,
                                             verbose = TRUE) {
-    # templateR:::args2vars(calculate_celltype_associations)
+    # devoptera::args2vars(calculate_celltype_associations)
     
     #### Check MAGMA installation ####
     magma_version <- magma_check(version = version,

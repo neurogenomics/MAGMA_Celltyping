@@ -7,7 +7,7 @@
 decompress(
   path_formatted,
   remove = FALSE,
-  overwrite = FALSE,
+  overwrite = TRUE,
   storage_dir = tempdir(),
   verbose = TRUE
 )

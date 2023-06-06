@@ -47,7 +47,7 @@ plot_celltype_associations <- function(ctAssocs,
                                        bind_plots = FALSE,
                                        ncol = 1,
                                        verbose = TRUE) {
-    # templateR:::args2vars(plot_celltype_associations)
+    # devoptera::args2vars(plot_celltype_associations)
     requireNamespace("ggplot2")
     requireNamespace("patchwork")
     

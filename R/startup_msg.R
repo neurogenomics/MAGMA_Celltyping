@@ -17,7 +17,17 @@ startup_msg <- function(){
             ),
             exdent = 5,
             width = 80),
-            collapse = "\n"),"\n",
+            collapse = "\n"),"\n","\n",
+        stringr::str_wrap(
+          paste( 
+            "Please report any bugs or feature requests by filling out",
+            "an Issues template:\n",
+            "https://github.com/neurogenomics/MAGMA_Celltyping/issues"
+          ),
+          exdent = 5,
+          width = 80
+        ),
+        "\n",
         line(n)," ",vc," ",line(27)," ",vc," ",line(n),"\n"
     )
 }
