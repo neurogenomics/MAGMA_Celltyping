@@ -1,5 +1,6 @@
 test_that("magma_run works", {
   
+    options(download.file.method = "libcurl")
     if(!is_32bit()){
         magma_x <- magma_install()
         magma_run(cmd = "--version") 

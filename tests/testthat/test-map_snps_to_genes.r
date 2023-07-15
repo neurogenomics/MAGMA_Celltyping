@@ -1,5 +1,6 @@
 test_that("map_snps_to_genes works", {
     
+    options(download.file.method = "libcurl")
     if(!is_32bit() & (.Platform$OS.type != "windows")){
         t1 <- Sys.time()
         #### Gather data ####

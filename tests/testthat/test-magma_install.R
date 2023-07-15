@@ -1,6 +1,7 @@
 test_that("magma_install/uninstall works", {
   
-    if(!is_32bit()){
+    options(download.file.method = "libcurl")
+    if(!is_32bit()){ 
       #### Run first to ensure we're starting from scratch #### 
       uninstalled_prelim <- magma_uninstall()
       
