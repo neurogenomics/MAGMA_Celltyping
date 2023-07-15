@@ -17,7 +17,7 @@
 import_magma_files_metadata <- function(file_types,
                                         use_local = TRUE,
                                         verbose = TRUE){
-    if(use_local){
+    if(isTRUE(use_local)){
         magma_files_metadata <- MAGMA.Celltyping::magma_files_metadata
     } else{
         magma_files_metadata <- data.table::fread(
@@ -37,5 +37,5 @@ import_magma_files_metadata <- function(file_types,
     #     query = paste(file_types, collapse = "|"),
     #     return_download_api = TRUE,
     #     verbose = verbose
-    # ) 
+    # )
 }

@@ -2,8 +2,10 @@
 
 ## Bug fixes
 
-- `create_fake_gwas_path`
+* `create_fake_gwas_path`
   - Don't remove "MAGMA_Files" from all parts of path.
+* `magma_files_metadata`
+  - Update metadata. 
 
 # MAGMA.Celltyping 2.0.10
 

@@ -28,7 +28,7 @@
 #' 
 #' #### MAGMA 2 #####
 #' genesOut2 <- MAGMA.Celltyping::import_magma_files(
-#'     ids = c("ukb-b-6548"),
+#'     ids = c("ukb-a-333"),
 #'     file_types = ".genes.out",
 #'     return_dir = FALSE)
 #' magma2 <- MAGMA.Celltyping::adjust_zstat_in_genesOut(
