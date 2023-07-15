@@ -17,6 +17,9 @@
 #'
 #' @returns File path for the genes.out file
 #'
+#' @export
+#' @importFrom stats setNames
+#' @keywords main_function
 #' @examples
 #' #### Prepare cell-type data ####
 #' ctd <- ewceData::ctd()
@@ -30,9 +33,6 @@
 #'     ctd_levels = 1,
 #'     magma_dir = magma_dir,
 #'     ctd_species = "mouse")
-#' @export
-#' @importFrom stats setNames
-#' @keywords main_function
 calculate_celltype_associations <- function(ctd,
                                             ctd_levels = seq_len(length(ctd)),
                                             ctd_species = infer_ctd_species(ctd),
@@ -47,7 +47,7 @@ calculate_celltype_associations <- function(ctd,
                                             force_new = FALSE,
                                             version = NULL,
                                             verbose = TRUE) {
-    # templateR:::args2vars(calculate_celltype_associations)
+    # devoptera::args2vars(calculate_celltype_associations)
     
     #### Check MAGMA installation ####
     magma_version <- magma_check(version = version,

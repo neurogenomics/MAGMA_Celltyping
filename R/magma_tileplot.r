@@ -43,7 +43,7 @@ magma_tileplot <- function(ctd,
                            wrap_width = 50,
                            verbose = TRUE) {
     
-    # templateR:::args2vars(magma_tileplot)
+    # devoptera::args2vars(magma_tileplot)
     requireNamespace("ggplot2")
     requireNamespace("ggdendro")
     requireNamespace("patchwork")

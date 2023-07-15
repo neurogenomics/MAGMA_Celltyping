@@ -10,6 +10,8 @@ map_snps_to_genes(
   upstream_kb = 35,
   downstream_kb = 10,
   N = NULL,
+  duplicate = c("drop", "first", "last", "error"),
+  synonym_dup = c("skip", "skip-dup", "drop", "drop-dup", "error"),
   genome_ref_path = NULL,
   population = "eur",
   genes_only = FALSE,
@@ -36,6 +38,39 @@ should SNPs be included?}
 should SNPs be included?}
 
 \item{N}{What is the N number for this GWAS? That is cases + controls.}
+
+\item{duplicate}{The duplicate modifier can be used to specify the desired
+behaviour for dealing with duplicate SNPs in the file, and can be set to 
+one of four values: 'drop', 'first', 'last', and 'error'. When set to 
+'drop', the corresponding SNP is removed from the analysis entirely. 
+When set to 'first' or 'last', either the first or the last entry for
+ that SNPs in the file is used. When set to 'error', the program terminates 
+ if encountering any duplicate SNPs. The default mode is 'duplicate=drop'. 
+ Note that SNPs are only checked for duplication if they are present in 
+ the genotype data, and if they have a non-missing pvalue 
+ (and sample size, if ncol is set). When synonymous SNP IDs have been 
+ loaded, different SNP IDs referring to the same SNP are considered 
+ duplicates as well. Unless duplicate is set to 'error', a list of 
+ duplicate SNPs will be written to the supplementary log file.}
+
+\item{synonym_dup}{When loading SNP ID synonyms, MAGMA may detect SNP IDs 
+in the genotype data that are synonyms of each other. The synonym-dup
+ modifier for the --bfile flag can be used to specify the desired behaviour 
+ for dealing with such SNPs. This modifier can be set to one of four values:
+  'drop', 'drop-dup', 'skip', 'skip-dup' and 'error'. When set to 'drop', 
+  SNPs that have multiple synonyms in the data are removed from the analysis.
+   Conversely, when set to 'skip' the SNPs are left in the data and the 
+   synonym entry in the synonym file is skipped. When set to 'drop-dup', 
+   for each synonym entry only the first listed in the synonym file is 
+   retained; for subsequent SNP IDs in the same entry that are found in 
+   the data are removed, and their IDs are mapped as synonyms to the first
+    SNP. When set to 'skipdup' the genotype data for all synonymous SNPs 
+    is retained; SNP IDs not found in the data are mapped to the first SNP
+     in the synonym entry that is. Finally, when set to 'error', the program
+      will simply terminate when encountering synonymous SNPs in the data. 
+      The default mode is 'synonym-dup=skip'. Unless synonym-dup is set to 
+      error, a list of synonymous SNPs in the data will be written to the 
+      supplementary log file.}
 
 \item{genome_ref_path}{Path to the folder containing the 1000
 genomes reference (downloaded with \link[MAGMA.Celltyping]{get_genome_ref}).}

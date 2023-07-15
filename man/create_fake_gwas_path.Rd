@@ -8,7 +8,7 @@ create_fake_gwas_path(
   magma_dir,
   upstream_kb = 35,
   downstream_kb = 10,
-  remove_pattern = "MAGMA_Files"
+  remove_pattern = "/MAGMA_Files/"
 )
 }
 \arguments{

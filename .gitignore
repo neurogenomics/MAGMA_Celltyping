@@ -3,7 +3,6 @@ tests/testthat/MAGMA_Figures
 Icon?
 magma.log
 magma
-
 # R project files
 *.Rproj
 .Rproj.user
@@ -46,3 +45,4 @@ vignettes/*.R
 *.knit.md
 # R Environment Variables
 .Renviron
+ieugwasr_oauth

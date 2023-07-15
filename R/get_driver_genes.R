@@ -43,7 +43,7 @@ get_driver_genes <- function(ctd,
                              spec_deciles = NULL,
                              verbose = TRUE,
                              ...) {
-    # templateR:::args2vars(get_driver_genes)
+    # devoptera::args2vars(get_driver_genes)
     # scKirby::source_all()
     
     #### Avoid confusing checks ####

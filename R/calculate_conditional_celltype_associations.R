@@ -74,7 +74,7 @@ calculate_conditional_celltype_associations <- function(
     version = NULL,
     verbose = TRUE) {
     
-    # templateR:::args2vars(calculate_conditional_celltype_associations)
+    # devoptera::args2vars(calculate_conditional_celltype_associations)
     
     if(qvalue_thresh>0.05){
         messager(

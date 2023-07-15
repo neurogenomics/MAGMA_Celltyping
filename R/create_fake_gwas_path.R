@@ -10,14 +10,15 @@
 create_fake_gwas_path <- function(magma_dir,
                                   upstream_kb = 35,
                                   downstream_kb = 10,
-                                  remove_pattern="MAGMA_Files"){
+                                  remove_pattern="/MAGMA_Files/"){
     fake_gwas_ss <- file.path(
-        gsub(remove_pattern, "", dirname(magma_dir)),
+      dirname(magma_dir),
         gsub(
             paste0(".", upstream_kb, "UP.", downstream_kb, "DOWN"), "",
             basename(magma_dir)
         )
     )
+    fake_gwas_ss <- gsub(remove_pattern,"/",fake_gwas_ss)
     fake_gwas_ss <- fix_path(fake_gwas_ss)
     return(fake_gwas_ss)
 }

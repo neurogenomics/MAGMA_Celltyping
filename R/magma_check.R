@@ -11,7 +11,7 @@ magma_check <- function(version = NULL,
                         upgrade = FALSE,
                         return_version = FALSE,
                         verbose = TRUE){ 
-    # templateR:::args2vars(magma_check)
+    # devoptera::args2vars(magma_check)
     
     #### Check if it is indeed working #####
     magma_x <- magma_install(desired_version = version,
