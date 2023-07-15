@@ -19,7 +19,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.11</span>
       </span>
     </div>
 
@@ -79,6 +79,8 @@
 <span>  upstream_kb <span class="op">=</span> <span class="fl">35</span>,</span>
 <span>  downstream_kb <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  N <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  duplicate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"drop"</span>, <span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"error"</span><span class="op">)</span>,</span>
+<span>  synonym_dup <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"skip"</span>, <span class="st">"skip-dup"</span>, <span class="st">"drop"</span>, <span class="st">"drop-dup"</span>, <span class="st">"error"</span><span class="op">)</span>,</span>
 <span>  genome_ref_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  population <span class="op">=</span> <span class="st">"eur"</span>,</span>
 <span>  genes_only <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -116,6 +118,43 @@ should SNPs be included?</p></dd>
 
 <dt>N</dt>
 <dd><p>What is the N number for this GWAS? That is cases + controls.</p></dd>
+
+
+<dt>duplicate</dt>
+<dd><p>The duplicate modifier can be used to specify the desired
+behaviour for dealing with duplicate SNPs in the file, and can be set to 
+one of four values: 'drop', 'first', 'last', and 'error'. When set to 
+'drop', the corresponding SNP is removed from the analysis entirely. 
+When set to 'first' or 'last', either the first or the last entry for
+ that SNPs in the file is used. When set to 'error', the program terminates 
+ if encountering any duplicate SNPs. The default mode is 'duplicate=drop'. 
+ Note that SNPs are only checked for duplication if they are present in 
+ the genotype data, and if they have a non-missing pvalue 
+ (and sample size, if ncol is set). When synonymous SNP IDs have been 
+ loaded, different SNP IDs referring to the same SNP are considered 
+ duplicates as well. Unless duplicate is set to 'error', a list of 
+ duplicate SNPs will be written to the supplementary log file.</p></dd>
+
+
+<dt>synonym_dup</dt>
+<dd><p>When loading SNP ID synonyms, MAGMA may detect SNP IDs 
+in the genotype data that are synonyms of each other. The synonym-dup
+ modifier for the --bfile flag can be used to specify the desired behaviour 
+ for dealing with such SNPs. This modifier can be set to one of four values:
+  'drop', 'drop-dup', 'skip', 'skip-dup' and 'error'. When set to 'drop', 
+  SNPs that have multiple synonyms in the data are removed from the analysis.
+   Conversely, when set to 'skip' the SNPs are left in the data and the 
+   synonym entry in the synonym file is skipped. When set to 'drop-dup', 
+   for each synonym entry only the first listed in the synonym file is 
+   retained; for subsequent SNP IDs in the same entry that are found in 
+   the data are removed, and their IDs are mapped as synonyms to the first
+    SNP. When set to 'skipdup' the genotype data for all synonymous SNPs 
+    is retained; SNP IDs not found in the data are mapped to the first SNP
+     in the synonym entry that is. Finally, when set to 'error', the program
+      will simply terminate when encountering synonymous SNPs in the data. 
+      The default mode is 'synonym-dup=skip'. Unless synonym-dup is set to 
+      error, a list of synonymous SNPs in the data will be written to the 
+      supplementary log file.</p></dd>
 
 
 <dt>genome_ref_path</dt>

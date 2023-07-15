@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.11</span>
       </span>
     </div>
 
@@ -63,6 +63,46 @@
       <small>Source: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.0.11" id="magmacelltyping-2011">MAGMA.Celltyping 2.0.11<a class="anchor" aria-label="anchor" href="#magmacelltyping-2011"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-2-0-11">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-11"></a></h3>
+<ul><li>
+<code>create_fake_gwas_path</code>
+<ul><li>Don’t remove “MAGMA_Files” from all parts of path.</li>
+</ul></li>
+<li>
+<code>magma_files_metadata</code>
+<ul><li>Update metadata.</li>
+</ul></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.0.10" id="magmacelltyping-2010">MAGMA.Celltyping 2.0.10<a class="anchor" aria-label="anchor" href="#magmacelltyping-2010"></a></h2>
+<div class="section level3">
+<h3 id="new-features-2-0-10">New features<a class="anchor" aria-label="anchor" href="#new-features-2-0-10"></a></h3>
+<ul><li>
+<code>map_snps_to_genes</code>
+<ul><li>Add new <code>duplicate</code> arg to control what to do with duplicate/non-bilalleic SNPs.</li>
+<li>Add new <code>synonym_dup</code> arg to control what to do with synonymous SNPs.</li>
+<li>Add subfunctions <code>check_duplicate</code>, <code>check_synonym_dup</code>
+</li>
+</ul></li>
+<li>Add bug/feature report note to startup message.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-2-0-10">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-10"></a></h3>
+<ul><li>
+<code>get_magma_paths</code>
+<ul><li>Uses <code>file.path</code> instead of hard-coded “/” symbols.</li>
+</ul></li>
+<li>
+<code>map_snps_to_genes</code> –&gt;
+<ul><li>
+<code>decompress</code> wasn’t recognizing files with “.bgz” suffix.</li>
+</ul></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.9" id="magmacelltyping-209">MAGMA.Celltyping 2.0.9<a class="anchor" aria-label="anchor" href="#magmacelltyping-209"></a></h2>
 <div class="section level3">
