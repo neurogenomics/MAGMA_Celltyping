@@ -138,7 +138,8 @@ map_snps_to_genes <- function(path_formatted,
   }
   #### Determine which genome build it uses & get path to gene loc file ####
   genomeLocFile <- check_genomeLocFile(genome_build = genome_build,
-                                       path_formatted = path_formatted)
+                                       path_formatted = path_formatted,
+                                       storage_dir = storage_dir)
   #### Create genes.annot ####
   message_parallel("\n==== MAGMA Step 1: Generate genes.annot file ====\n")
   magma_cmd <- sprintf(

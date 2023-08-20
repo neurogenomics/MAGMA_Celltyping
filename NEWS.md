@@ -1,11 +1,20 @@
 # MAGMA.Celltyping 2.0.11
 
+## New features
+
+* `map_snps_to_genes`: 
+  - expose `storage_dir` arg to `check_genomeLocFile`.
+
 ## Bug fixes
 
 * `create_fake_gwas_path`
   - Don't remove "MAGMA_Files" from all parts of path.
 * `magma_files_metadata`
   - Update metadata. 
+
+## Bug fixes
+
+* Fix GHA downloads with "libcurl" settings.
 
 # MAGMA.Celltyping 2.0.10
 

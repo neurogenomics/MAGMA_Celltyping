@@ -5,7 +5,7 @@
 \alias{magma_files_metadata}
 \title{MAGMA_Files_Public: metadata}
 \format{
-An object of class \code{data.table} (inherits from \code{data.frame}) with 10863 rows and 56 columns.
+An object of class \code{data.table} (inherits from \code{data.frame}) with 54 rows and 29 columns.
 }
 \source{
 \code{
