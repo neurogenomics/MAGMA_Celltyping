@@ -15,7 +15,13 @@ magma_links_versions <- function(links,
                                  filter_v = TRUE,
                                  verbose = TRUE){
     if(!is.character(links)) return(NULL)
-    versions <- stringr::str_split(links, "_", simplify = TRUE)[,2]
+    versions <- sapply(seq_len(length(links)),function(i){
+      if(endsWith(links[[i]],".zip")){
+        strsplit(links[[i]],"_")[[1]][2]
+      } else{
+        strsplit(names(links)[i],"_")[[1]][2] 
+      }
+    })
     versions <- gsub(".zip","",versions)
     if(unique_only){
         versions <- unique(versions)

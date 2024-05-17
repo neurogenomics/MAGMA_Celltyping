@@ -4,7 +4,12 @@
 \alias{magma_download_binary}
 \title{Download a MAGMA binary}
 \usage{
-magma_download_binary(magma_url, dest_dir = find_install_dir(), verbose = TRUE)
+magma_download_binary(
+  magma_url,
+  dest_dir = find_install_dir(),
+  destfile = basename(magma_url),
+  verbose = TRUE
+)
 }
 \arguments{
 \item{magma_url}{URL path to MAGMA executable.}

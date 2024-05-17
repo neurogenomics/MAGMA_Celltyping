@@ -43,6 +43,7 @@ get_genome_ref <- function(genome_ref_path = NULL,
                            timeout = 60 * 5,
                            verbose = TRUE) {
     #### population ####
+    dir.create(storage_dir,showWarnings = FALSE, recursive = TRUE)
     population <- tolower(population[1])
     method <- tolower(method[1])
     pop_opts <- c("eur", "afr", "amr", "eas", "sas")

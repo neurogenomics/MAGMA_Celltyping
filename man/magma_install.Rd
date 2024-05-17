@@ -37,5 +37,5 @@ For a list of all changes across MAGMA versions, please see
  \href{https://ctg.cncr.nl/software/MAGMA/doc/changelog.txt}{here}.
 }
 \examples{
-magma <- MAGMA.Celltyping::magma_install()
+magma <- magma_install()
 }

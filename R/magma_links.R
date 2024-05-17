@@ -17,7 +17,7 @@ magma_links <- function(latest_only = TRUE,
                         use_local = TRUE,
                         return_table = FALSE,
                         verbose = TRUE) {
-    latest <- NULL;
+    latest <- link <- NULL;
     #### Avoid issues with subset when colnames same as variable names ####
     OS <- os;
     VERSION <- if(is.null(version)) {
@@ -34,6 +34,15 @@ magma_links <- function(latest_only = TRUE,
             magma_links_gather()
         }, error = function(e) MAGMA.Celltyping::magma_links_stored)
     }  
+    #### Fix URLs ####
+    ## Need to update this bit manually...
+    meta[version=="v1.10" & os=="Linux",link:="https://vu.data.surfsara.nl/index.php/s/zkKbNeNOZAhFXZB/download"]
+    meta[version=="v1.10" & os=="Mac",link:="https://vu.data.surfsara.nl/index.php/s/1M1d9vHtVidEwvU/download"]
+    meta[version=="v1.10" & os=="Windows",link:="https://vu.data.surfsara.nl/index.php/s/TOH4SuvczAKE29d/download"]
+    meta[version=="v1.10" & os=="source",link:="https://vu.data.surfsara.nl/index.php/s/1OOi7bxLWef0GwY/download"]
+    ## Can substitute the rest
+    meta[,link:=gsub("https://ctg.cncr.nl/software/MAGMA/prog//|https://ctg.cncr.nl/software/MAGMA/prog/archive//",
+                     "https://vu.data.surfsara.nl/index.php/s/8qDPUbOTrZ9lW2b/download?path=%2F&files=",link)]
     #### Filter by OS ####
     if (!is.null(OS)) {  
         meta <- subset(meta, os==OS)

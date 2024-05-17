@@ -19,13 +19,14 @@
 #' @export
 #' @importFrom utils unzip
 #' @examples 
-#' magma <- MAGMA.Celltyping::magma_install()
+#' magma <- magma_install()
 magma_install <- function(dest_dir = find_install_dir(),
                           desired_version = "latest",
                           upgrade = FALSE,
                           verbose = TRUE) { 
     #### Standardise desired_version ####
-    if(is.null(desired_version) || length(desired_version)==0) {
+    if(is.null(desired_version) || 
+       length(desired_version)==0) {
         desired_version <- "latest"
     }
     desired_version <- tolower(desired_version)[1]
@@ -67,6 +68,7 @@ magma_install <- function(dest_dir = find_install_dir(),
         destpath <- magma_download_binary(
             magma_url = magma_url,
             dest_dir = dest_dir,
+            destfile = paste0(names(magma_url),".zip"),
             verbose = verbose
         ) 
         dest_magma <- magma_find_executable(destpath = destpath)

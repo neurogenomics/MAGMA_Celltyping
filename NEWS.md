@@ -1,3 +1,9 @@
+# MAGMA.Celltyping 2.0.12
+
+## Bug fixes
+
+* Update URLs for getting MAGMA executables.
+
 # MAGMA.Celltyping 2.0.11
 
 ## New features
