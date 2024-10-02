@@ -1,4 +1,4 @@
-name: Bug Report
+name: :bug: Bug Report
 description: Create a bug report to help us improve
 labels: [bug, no-bot]
 body:
