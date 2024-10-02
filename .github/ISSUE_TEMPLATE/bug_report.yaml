@@ -1,5 +1,5 @@
-name: :bug: Bug Report
-description: Create a bug report to help us improve
+name: 🐛 Bug Report
+description: File a bug report
 labels: [bug, no-bot]
 body:
   - type: markdown
