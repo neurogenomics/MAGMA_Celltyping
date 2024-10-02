@@ -59,6 +59,8 @@ body:
       placeholder: |
         # For example:
         Error in `[.data.frame`(df, "bTYPO") : undefined columns selected
+    validations:
+      required: true
 
   - type: textarea
     id: expected-behavior
@@ -68,9 +70,13 @@ body:
         Tell us what you expect to happen.
       placeholder: |
         The values of the data.frame column are printed.
+    validations:
+      required: true
 
   - type: textarea
     id: session-info
+    validations:
+      required: true
     attributes:
       label: Session info
       description: |
