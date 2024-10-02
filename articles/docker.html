@@ -103,15 +103,11 @@ Vignette updated: <i>Oct-02-2024</i><br>
     
     
 <div class="section level2">
-<h2 id="dockerhub">DockerHub<a class="anchor" aria-label="anchor" href="#dockerhub"></a>
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>magma.celltyping is now available via <a href="https://hub.docker.com/repository/docker/neurogenomicslab/magma.celltyping" class="external-link">DockerHub</a>
+<p>MAGMA.Celltyping is now available via <a href="https://ghcr.io/ghcr.io/neurogenomics/MAGMA.Celltyping" class="external-link">ghcr.io</a>
 as a containerised environment with Rstudio and all necessary
 dependencies pre-installed.</p>
-<div class="section level3">
-<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h3>
-</div>
 <div class="section level3">
 <h3 id="method-1-via-docker">Method 1: via Docker<a class="anchor" aria-label="anchor" href="#method-1-via-docker"></a>
 </h3>
@@ -119,7 +115,7 @@ dependencies pre-installed.</p>
 Docker</a> if you have not already.</p>
 <p>Create an image of the <a href="https://www.docker.com/" class="external-link">Docker</a>
 container in command line:</p>
-<pre><code>docker pull neurogenomicslab/magma.celltyping</code></pre>
+<pre><code>docker pull ghcr.io/neurogenomics/MAGMA.Celltyping</code></pre>
 <p>Once the image has been created, you can launch it with:</p>
 <pre><code>docker run \
   -d \
@@ -127,8 +123,8 @@ container in command line:</p>
   -e PASSWORD="&lt;your_password&gt;" \
   -v ~/Desktop:/Desktop \
   -v /Volumes:/Volumes \
-  -p 8787:8787 \
-  neurogenomicslab/magma.celltyping</code></pre>
+  -p 8900:8787 \
+  ghcr.io/neurogenomics/MAGMA.Celltyping</code></pre>
 <div class="section level4">
 <h4 id="notes">NOTES<a class="anchor" aria-label="anchor" href="#notes"></a>
 </h4>
@@ -155,15 +151,17 @@ Desktop</a> to easily manage your containers.</li>
 <p>If you are using a system that does not allow Docker (as is the case
 for many institutional computing clusters), you can instead <a href="https://docs.sylabs.io/guides/2.6/user-guide/singularity_and_docker.html" class="external-link">install
 Docker images via Singularity</a>.</p>
-<pre><code>singularity pull docker://neurogenomicslab/magma.celltyping</code></pre>
+<pre><code>singularity pull docker://ghcr.io/neurogenomics/MAGMA.Celltyping</code></pre>
+<p>For troubleshooting, see the <a href="https://docs.sylabs.io/guides/latest/user-guide/singularity_and_docker.html#github-container-registry" class="external-link">Singularity
+documentation</a>.</p>
 </div>
-<div class="section level3">
-<h3 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
 <p>Finally, launch the containerised Rstudio by entering the following
-URL in any web browser: <em><a href="http://localhost:8787/" class="external-link uri">http://localhost:8787/</a></em></p>
+URL in any web browser: <em><a href="http://localhost:8900/" class="external-link uri">http://localhost:8900/</a></em></p>
 <p>Login using the credentials set during the Installation steps.</p>
-</div>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
