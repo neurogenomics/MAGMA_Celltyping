@@ -2,7 +2,6 @@ name: Feature Request
 description: Suggest a way we could improve the project
 labels: [enhancement, no-bot]
 body:
-
   - type: textarea
     id: problem
     attributes:
