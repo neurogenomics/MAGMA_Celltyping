@@ -1,5 +1,6 @@
 name: ⭐ Feature Request
 description: Submit a feature request
+labels: [enhancement, no-bot]
 body:
   - type: markdown
     attributes:
