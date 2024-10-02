@@ -7,7 +7,7 @@
 get_genome_ref(
   genome_ref_path = NULL,
   storage_dir = tools::R_user_dir("MAGMA.Celltyping", which = "cache"),
-  method = c("magma", "piggback"),
+  method = c("magma"),
   population = c("eur", "afr", "amr", "eas", "sas"),
   timeout = 60 * 5,
   verbose = TRUE
@@ -49,6 +49,6 @@ If the file already exists, it will simply return the path.
 }
 \examples{
 \dontrun{
-genome_ref_path <- MAGMA.Celltyping::get_genome_ref()
+genome_ref_path <- get_genome_ref()
 }
 }

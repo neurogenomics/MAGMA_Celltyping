@@ -1,3 +1,15 @@
+# MAGMA.Celltyping 2.0.13
+
+## New features
+
+* Fully remove deprecated function `format.sumstats.for.magma`
+* Add auto-close-template: https://github.com/marketplace/actions/auto-close-issues
+
+## Bug fixes
+
+* Update URLs for getting MAGMA reference genome files (#154).
+* *test-magma_links.R*: `package_version` comparisons now only work with strings instead of numbers.
+
 # MAGMA.Celltyping 2.0.12
 
 ## Bug fixes

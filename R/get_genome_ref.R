@@ -32,28 +32,21 @@
 #' 
 #' @examples
 #' \dontrun{
-#' genome_ref_path <- MAGMA.Celltyping::get_genome_ref()
+#' genome_ref_path <- get_genome_ref()
 #' }
 get_genome_ref <- function(genome_ref_path = NULL,
                            storage_dir = tools::R_user_dir(
                                "MAGMA.Celltyping",
                                which="cache"),
-                           method = c("magma","piggback"),
+                           method = c("magma"),
                            population = c("eur", "afr", "amr", "eas", "sas"),
                            timeout = 60 * 5,
                            verbose = TRUE) {
     #### population ####
     dir.create(storage_dir,showWarnings = FALSE, recursive = TRUE)
     population <- tolower(population[1])
+    population <- match.arg(population)
     method <- tolower(method[1])
-    pop_opts <- c("eur", "afr", "amr", "eas", "sas")
-    if (!population %in% pop_opts) {
-        stop_msg <- paste0(
-            "population must be one of:\n",
-            paste0(" - ", pop_opts, collapse = "\n")
-        )
-        stop(stop_msg)
-    }
     #### Set up paths ####
     if (is.null(genome_ref_path)) {
         genome_ref_dir <- file.path(storage_dir, 
@@ -83,7 +76,12 @@ get_genome_ref <- function(genome_ref_path = NULL,
                 verbose = verbose
             )
         }
-        
+      ### Reference file is too large to be stored in GitHub Releases now
+      #else if(method == "piggyback"){
+            # get_genome_ref_piggyback(
+            #     genome_ref_dir = genome_ref_dir, 
+            #     verbose = verbose
+            # )
     }
     #### Return the folder + the file prefix ####
     return(genome_ref_path)

@@ -7,6 +7,11 @@ assignees: ''
 
 ---
 
+:warning: :warning: :warning: 
+PLEASE NOTE, YOUR ISSUE WILL BE AUTOMATICALLY CLOSED IF IT DOES NOT USE AND COMPLETE THE TEMPLATE.
+These templates are designed to give us the basic information necessary to help debug your issues.  
+:warning: :warning: :warning: 
+
 ## 1. Bug description
 
 (A clear and concise description of what the bug is.)

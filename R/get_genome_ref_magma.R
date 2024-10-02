@@ -6,18 +6,22 @@
 #' 
 #' @param genome_ref_dir Folder to download reference to.
 #' @param verbose Print messages.
-#' @source \href{https://ctg.cncr.nl/software/MAGMA/ref_data/}{MAGMA archives} 
+#' @source \href{https://cncr.nl/research/magma/}{MAGMA site} 
 #' 
 #' @keywords internal
 get_genome_ref_magma <- function(genome_ref_dir, 
+                                 population = "eur",
                                  timeout = 60 * 5,
                                  verbose = TRUE) {
     #### Get link ####
-    input_url <- paste(
-        "https://ctg.cncr.nl/software/MAGMA",
-        "ref_data",paste0(basename(genome_ref_dir),".zip"), 
-        sep="/"
-        )
+    link_dict <- list(
+      "g1000_eur"="https://vu.data.surfsara.nl/index.php/s/VZNByNwpD8qqINe/download",
+      "g1000_afr"="https://vu.data.surfsara.nl/index.php/s/ePXET6IWVTwTes4/download",
+      "g1000_eas"="https://vu.data.surfsara.nl/index.php/s/dz6PYdKOi3xVqHn/download",
+      "g1000_sas"="https://vu.data.surfsara.nl/index.php/s/C6UkTV5nuFo8cJC/download",
+      "g1000_amr"="https://vu.data.surfsara.nl/index.php/s/TXDEm70eEO7AgOb/download"
+    )
+    input_url <- link_dict[[paste0("g1000_",tolower(population))]]
     ##### Link to 1000 genomes reference data. ####
     zipfile <- sprintf("%s.zip", genome_ref_dir)
     #### Download file ####

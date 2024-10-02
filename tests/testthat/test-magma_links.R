@@ -11,17 +11,17 @@ test_that("magma_links works", {
         magma_mac <-MAGMA.Celltyping:::magma_links(latest_only = TRUE,
                                os = "Mac",
                                verbose = FALSE)
-        testthat::expect_true(to_version(magma_mac)>=1.1) 
+        testthat::expect_true(to_version(magma_mac)>="1.1") 
         
         #### Windows ####
         magma_win <- MAGMA.Celltyping:::magma_links(latest_only = TRUE,
                                                     os = "Windows")
-        testthat::expect_true(to_version(magma_win)>=1.1) 
+        testthat::expect_true(to_version(magma_win)>="1.1") 
         
         #### Linux ####
         magma_linux <- MAGMA.Celltyping:::magma_links(latest_only = TRUE,
                                                       os = "Linux")
-        testthat::expect_true(to_version(magma_linux)>=1.1) 
+        testthat::expect_true(to_version(magma_linux)>="1.1") 
           
         #### All ####
         meta <- MAGMA.Celltyping:::magma_links(latest_only = FALSE,

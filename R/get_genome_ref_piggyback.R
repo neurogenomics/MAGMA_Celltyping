@@ -6,9 +6,10 @@
 #' 
 #' @param genome_ref_dir Folder to download reference to.
 #' @param verbose Print messages.
+#' @inheritDotParams get_data
 #' @source 
 #' \code{
-#' genome_ref_path <- MAGMA.Celltyping::get_genome_ref(method = "magma")
+#' genome_ref_path <- get_genome_ref(method = "magma")
 #'
 #' piggyback::pb_upload(file = genome_ref_path,
 #'                      repo = "neurogenomics/MAGMA_Celltyping",
@@ -16,14 +17,16 @@
 #' }
 #' @keywords internal
 get_genome_ref_piggyback <- function(genome_ref_dir,  
-                                     verbose = TRUE) {
+                                     verbose = TRUE,
+                                     ...) {
     ##### Link to 1000 genomes reference data. ####
     zipfile <- sprintf("%s.zip", genome_ref_dir)
     #### Download file ####
     options(timeout = 60 * 5)
     get_data(paste0(basename(genome_ref_dir),".zip"),
              repo = "neurogenomics/MAGMA_Celltyping", 
-             storage_dir = genome_ref_dir)
+             storage_dir = genome_ref_dir,
+             ...)
     #### Unzip file ####
     messager("Unzipping file.", v = verbose) 
     utils::unzip(

@@ -5,7 +5,7 @@
 \title{Download genome ref: piggyback}
 \source{
 \code{
-genome_ref_path <- MAGMA.Celltyping::get_genome_ref(method = "magma")
+genome_ref_path <- get_genome_ref(method = "magma")
 
 piggyback::pb_upload(file = genome_ref_path,
                      repo = "neurogenomics/MAGMA_Celltyping",
@@ -13,12 +13,22 @@ piggyback::pb_upload(file = genome_ref_path,
 }
 }
 \usage{
-get_genome_ref_piggyback(genome_ref_dir, verbose = TRUE)
+get_genome_ref_piggyback(genome_ref_dir, verbose = TRUE, ...)
 }
 \arguments{
 \item{genome_ref_dir}{Folder to download reference to.}
 
 \item{verbose}{Print messages.}
+
+\item{...}{
+  Arguments passed on to \code{\link[=get_data]{get_data}}
+  \describe{
+    \item{\code{repo}}{Repository name in format "owner/repo". Defaults to \code{guess_repo()}.}
+    \item{\code{tag}}{tag for the GitHub release to which this data should be attached.}
+    \item{\code{overwrite}}{Should any local files of the same name be overwritten?
+default \code{TRUE}.}
+    \item{\code{.token}}{GitHub authentication token, see \verb{[gh::gh_token()]}}
+  }}
 }
 \description{
 Download and decompress the genome reference needed to run

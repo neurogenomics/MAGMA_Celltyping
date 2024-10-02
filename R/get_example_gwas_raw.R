@@ -2,9 +2,9 @@
 #'
 #' Write example GWAS summary statistics to disk.
 #'
-#' @param save_path Path to save sum stats.
 #' @param timeout How many seconds to wait before timeout.
 #' @param verbose Print messages. 
+#' @inheritParams get_data
 #'
 #' @return Path to sumstats
 #'

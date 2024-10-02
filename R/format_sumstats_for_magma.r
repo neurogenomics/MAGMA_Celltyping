@@ -21,7 +21,4 @@ format_sumstats_for_magma <- function(path) {
     mungesumstats_deprecation_msg()
 }
 
-
-format.sumstats.for.magma <- function(path){
-    format_sumstats_for_magma(path)
-}
+ 

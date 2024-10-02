@@ -15,8 +15,6 @@ get_example_gwas_raw(
 \item{timeout}{How many seconds to wait before timeout.}
 
 \item{verbose}{Print messages.}
-
-\item{save_path}{Path to save sum stats.}
 }
 \value{
 Path to sumstats

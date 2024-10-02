@@ -1,7 +1,7 @@
 Package: MAGMA.Celltyping
 Type: Package
 Title: Find Causal Cell-Types Underlying Complex Trait Genetics
-Version: 2.0.12
+Version: 2.0.13
 Authors@R:
     c(person(given = "Brian",
            family = "Schilder",
@@ -73,6 +73,6 @@ Suggests:
 SystemRequirements: A system installation of
     [MAGMA](https://ctg.cncr.nl/software/magma) is required 
     but can be installed automatically by this package.
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Encoding: UTF-8
 Config/testthat/edition: 3

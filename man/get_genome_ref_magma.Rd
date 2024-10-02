@@ -4,10 +4,15 @@
 \alias{get_genome_ref_magma}
 \title{Download genome ref: magma}
 \source{
-\href{https://ctg.cncr.nl/software/MAGMA/ref_data/}{MAGMA archives}
+\href{https://cncr.nl/research/magma/}{MAGMA site}
 }
 \usage{
-get_genome_ref_magma(genome_ref_dir, timeout = 60 * 5, verbose = TRUE)
+get_genome_ref_magma(
+  genome_ref_dir,
+  population = "eur",
+  timeout = 60 * 5,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{genome_ref_dir}{Folder to download reference to.}
