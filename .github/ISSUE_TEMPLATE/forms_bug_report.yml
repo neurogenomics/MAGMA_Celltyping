@@ -76,22 +76,22 @@ body:
       description: |
         Copy and paste the output of the `sessionInfo() R function.
       placeholder: |
-        R version 4.4.1 (2024-06-14)
-        Platform: aarch64-apple-darwin20
-        Running under: macOS 15.0
+        R version 4.4.1 (2024-06-14)  
+        Platform: aarch64-apple-darwin20  
+        Running under: macOS 15.0  
         
-        Matrix products: default
-        BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
-        LAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0
+        Matrix products: default  
+        BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib   
+        LAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0  
         
-        locale:
-        [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+        locale:  
+        [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8  
         
-        time zone: Europe/London
-        tzcode source: internal
+        time zone: Europe/London  
+        tzcode source: internal 
         
-        attached base packages:
-        [1] stats     graphics  grDevices utils     datasets  methods   base     
+        attached base packages:  
+        [1] stats     graphics  grDevices utils     datasets  methods   base       
         ...
         ...
         ...
