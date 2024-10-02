@@ -1,4 +1,4 @@
-name: Bug Report2
+name: Bug Report
 description: Create a bug report to help us improve
 labels: [bug, no-bot]
 body:
@@ -8,7 +8,7 @@ body:
         Thanks for taking the time to fill out this issue! :hugs:
         
         However note the following before opening an issue:
-        * IF YOU DON'T FILL IN THE TEMPLATE, YOUR ISSUE IS LIABLE TO BE CLOSED.
+        * :warning: IF YOU DON'T FILL IN THE TEMPLATE, YOUR ISSUE IS LIABLE TO BE CLOSED. :warning:
 
   - type: checkboxes
     id: checklist
@@ -19,17 +19,13 @@ body:
           required: true
         - label: "I checked, but didn't find any duplicates (open OR closed) of this issue in the repo"
           required: true
-        - label: "I have read the contribution guidelines given at XY"
-          required: true
-        - label: "This issue contains only one bug. I will open one issue for every bug report I want to file."
-          required: true
 
   - type: input
     id: version
     attributes:
      label: Affected version
      description: "What version are you currently using?"
-     placeholder: "x.xx.x (you can check this with the `packageVersion` R function.)"
+     placeholder: "x.y.z (check with the `packageVersion()` R function)"
     validations:
       required: true
 
@@ -38,7 +34,7 @@ body:
     attributes:
       label: Steps to reproduce the bug
       description: |
-        Please add all the code necessary to reproduce the bug here (step-by-step).
+        Please add **ALL** the code necessary to reproduce the bug here (step-by-step).
         By 'reproduce', we mean that someone else can copy and paste the exact same code into their R console, execute it, and get the exact same output as you.
         
         This means you need to define all variables *within* the example, including data.
@@ -48,6 +44,7 @@ body:
         
         See [here](https://www.r-bloggers.com/2020/10/how-to-make-a-reprex/) for an intro to making a reproducible example (i.e. reprex) and why they're important! 
       placeholder: |
+        # For example:
         df <- data.frame(list(a=rep(2,3), b=rep(1,3)))
         df["bTYPO"]
     validations:
@@ -60,6 +57,7 @@ body:
       description: |
         Copy and paste the R console output. 
       placeholder: |
+        # For example:
         Error in `[.data.frame`(mtcars, "bTYPO") : undefined columns selected
 
   - type: textarea
@@ -73,6 +71,26 @@ body:
     id: session-info
     attributes:
       label: Session info
+      description: |
+        Copy and paste the output of the `sessionInfo() R function.
       value: |
-        - Copy and paste the output of the R function `sessionInfo()`
+        R version 4.4.1 (2024-06-14)
+        Platform: aarch64-apple-darwin20
+        Running under: macOS 15.0
+        
+        Matrix products: default
+        BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
+        LAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0
+        
+        locale:
+        [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+        
+        time zone: Europe/London
+        tzcode source: internal
+        
+        attached base packages:
+        [1] stats     graphics  grDevices utils     datasets  methods   base     
+        ...
+        ...
+        ...
  

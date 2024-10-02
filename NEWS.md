@@ -4,6 +4,7 @@
 
 * Fully remove deprecated function `format.sumstats.for.magma`
 * Add auto-close-template: https://github.com/marketplace/actions/auto-close-issues
+* Host updated Docker container in [GitHub Packages](https://github.com/neurogenomics/MAGMA_Celltyping/pkgs/container/magma.celltyping)
 
 ## Bug fixes
 
