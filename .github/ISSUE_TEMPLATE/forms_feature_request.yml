@@ -1,0 +1,50 @@
+name: Feature Request
+description: Suggest a way we could improve the project
+labels: [enhancement, no-bot]
+body:
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / Limitation
+      description: |
+         If your feature request is related to a problem or limitation, please describe them.
+         Include links to any relevant Issues or line of source code.
+      placeholder: |
+         I noticed this function doesn't currently [...]
+    validations:
+      required: true
+
+  - type: textarea
+    id: request
+    attributes:
+      label: Proposed solutions
+      description: |
+        Please describe your feature request.
+        Describe the solution you'd like to see. 
+      placeholder: |
+        I think it could be improved by adding [...]
+
+  - type: textarea
+    id: suggestions
+    attributes:
+      label: Suggestions
+      description: |
+        If you have some suggestions/ideas/directions about how to address your feature request.
+        For example, you could include links to other packages that have solved similar issues.
+      placeholder: |
+        - One idea would be to add an [...], similar to how this package did [LINK].
+        - An alternative solution might be [...]
+        
+- type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: |
+        Add any additional context to your feature request.
+        For example, the broader use case in which you're using the package.
+      placeholder: |
+        Our lab studies [...] and thought it would be cool to try [...]
+      validations:
+        required: false
+ 
