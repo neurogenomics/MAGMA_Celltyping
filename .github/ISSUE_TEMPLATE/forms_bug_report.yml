@@ -8,7 +8,7 @@ body:
         Thanks for taking the time to fill out this issue! :hugs:
         
         However note the following before opening an issue:
-        * :warning: IF YOU DON'T FILL IN THE TEMPLATE, YOUR ISSUE IS LIABLE TO BE CLOSED. :warning:
+        :warning: **IF YOU DON'T FILL IN THE TEMPLATE, YOUR ISSUE IS LIABLE TO BE CLOSED.** :warning:
 
   - type: checkboxes
     id: checklist
@@ -66,6 +66,8 @@ body:
       label: Expected behavior
       description: |
         Tell us what you expect to happen.
+      placeholder: |
+        The values of the data.frame column are printed.
 
   - type: textarea
     id: session-info
@@ -73,7 +75,7 @@ body:
       label: Session info
       description: |
         Copy and paste the output of the `sessionInfo() R function.
-      value: |
+      placeholder: |
         R version 4.4.1 (2024-06-14)
         Platform: aarch64-apple-darwin20
         Running under: macOS 15.0
