@@ -15,7 +15,7 @@ description <- read.dcf("DESCRIPTION", fields = "Description")[1]
 
 ## Introduction
 
-This R package contains code used for testing which cell types can explain the heritability signal from GWAS summary statistics. The method was described in our [2018 Nature Genetics paper](https://www.nature.com/articles/s41588-018-0129-5). 
+This R package contains code used for testing which cell types can explain the heritability signal from GWAS summary statistics. The method was described in our [2018 Nature Genetics paper](https://www.nature.com/articles/s41588-018-0129-5).  
 
 This package takes GWAS summary statistics + single-cell transcriptome specificity data (in [EWCE](https://github.com/NathanSkene/EWCE)'s CellTypeData format) as input. It then calculates and returns the enrichment between the GWAS trait and the cell-types. 
 
