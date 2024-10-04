@@ -23,7 +23,7 @@ To reduce file size, SNPs have been filtered to Minor Allele Frequency (MAF)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.14</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@ To reduce file size, SNPs have been filtered to Minor Allele Frequency (MAF)
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_example_gwas</span><span class="op">(</span></span>
 <span>  trait <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"educational_attainment"</span>, <span class="st">"fluid_intelligence"</span>, <span class="st">"prospective_memory"</span><span class="op">)</span>,</span>
 <span>  munged <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  storage_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  storage_dir <span class="op">=</span> <span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/userdir.html" class="external-link">R_user_dir</a></span><span class="op">(</span><span class="st">"MAGMA.Celltyping"</span>, which <span class="op">=</span> <span class="st">"cache"</span><span class="op">)</span>,</span>
 <span>  timeout <span class="op">=</span> <span class="fl">60</span> <span class="op">*</span> <span class="fl">5</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>

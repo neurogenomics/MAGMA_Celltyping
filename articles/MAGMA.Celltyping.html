@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.14</span>
       </span>
     </div>
 
@@ -92,7 +92,7 @@ Skene</i><br>
             
             <h4 data-toc-skip class="date"><h4>
 <br>
-Updated: <i>Oct-02-2024</i><br>
+Updated: <i>Oct-04-2024</i><br>
 </h4></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/blob/master/vignettes/MAGMA.Celltyping.Rmd" class="external-link"><code>vignettes/MAGMA.Celltyping.Rmd</code></a></small>
@@ -253,7 +253,7 @@ plotted and further analysed.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">merged_results</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="../reference/merge_results.html">merge_results</a></span><span class="op">(</span></span>
 <span>  MAGMA_results <span class="op">=</span> <span class="va">MAGMA_results</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Saving full merged results to ==&gt; /tmp/Rtmpx9JFRn/MAGMA_celltyping./.lvl1.csv</span></span></code></pre>
+<pre><code><span><span class="co">## Saving full merged results to ==&gt; /tmp/Rtmpj3yhpr/MAGMA_celltyping./.lvl1.csv</span></span></code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">merged_results</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -955,12 +955,12 @@ significant p-values (per phenotype).</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
 <span><span class="co">## [1] ewceData_1.13.0         ExperimentHub_2.13.1    AnnotationHub_3.13.3   </span></span>
-<span><span class="co">## [4] BiocFileCache_2.13.0    dbplyr_2.5.0            BiocGenerics_0.51.2    </span></span>
-<span><span class="co">## [7] dplyr_1.1.4             MAGMA.Celltyping_2.0.13 BiocStyle_2.33.1       </span></span>
+<span><span class="co">## [4] BiocFileCache_2.13.0    dbplyr_2.5.0            BiocGenerics_0.51.3    </span></span>
+<span><span class="co">## [7] dplyr_1.1.4             MAGMA.Celltyping_2.0.14 BiocStyle_2.33.1       </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##   [1] splines_4.4.1               BiocIO_1.15.2              </span></span>
-<span><span class="co">##   [3] bitops_1.0-8                ggplotify_0.1.2            </span></span>
+<span><span class="co">##   [3] bitops_1.0-9                ggplotify_0.1.2            </span></span>
 <span><span class="co">##   [5] filelock_1.0.3              tibble_3.2.1               </span></span>
 <span><span class="co">##   [7] R.oo_1.26.0                 XML_3.99-0.17              </span></span>
 <span><span class="co">##   [9] lifecycle_1.0.4             rstatix_0.7.2              </span></span>
@@ -978,7 +978,7 @@ significant p-values (per phenotype).</p>
 <span><span class="co">##  [33] GenomeInfoDbData_1.2.13     IRanges_2.39.2             </span></span>
 <span><span class="co">##  [35] S4Vectors_0.43.2            tidytree_0.4.6             </span></span>
 <span><span class="co">##  [37] pkgdown_2.1.1               codetools_0.2-20           </span></span>
-<span><span class="co">##  [39] DelayedArray_0.31.12        tidyselect_1.2.1           </span></span>
+<span><span class="co">##  [39] DelayedArray_0.31.13        tidyselect_1.2.1           </span></span>
 <span><span class="co">##  [41] aplot_0.2.3                 UCSC.utils_1.1.0           </span></span>
 <span><span class="co">##  [43] farver_2.1.2                lme4_1.1-35.5              </span></span>
 <span><span class="co">##  [45] matrixStats_1.4.1           stats4_4.4.1               </span></span>
@@ -987,8 +987,8 @@ significant p-values (per phenotype).</p>
 <span><span class="co">##  [51] tools_4.4.1                 treeio_1.29.1              </span></span>
 <span><span class="co">##  [53] ragg_1.3.3                  Rcpp_1.0.13                </span></span>
 <span><span class="co">##  [55] glue_1.8.0                  SparseArray_1.5.41         </span></span>
-<span><span class="co">##  [57] xfun_0.47                   MatrixGenerics_1.17.0      </span></span>
-<span><span class="co">##  [59] GenomeInfoDb_1.41.1         RNOmni_1.0.1.2             </span></span>
+<span><span class="co">##  [57] xfun_0.48                   MatrixGenerics_1.17.0      </span></span>
+<span><span class="co">##  [59] GenomeInfoDb_1.41.2         RNOmni_1.0.1.2             </span></span>
 <span><span class="co">##  [61] withr_3.0.1                 BiocManager_1.30.25        </span></span>
 <span><span class="co">##  [63] fastmap_1.2.0               boot_1.3-31                </span></span>
 <span><span class="co">##  [65] fansi_1.0.6                 digest_0.6.37              </span></span>
@@ -1032,7 +1032,7 @@ significant p-values (per phenotype).</p>
 <span><span class="co">## [141] patchwork_1.3.0             bit64_4.5.2                </span></span>
 <span><span class="co">## [143] ggplot2_3.5.1               KEGGREST_1.45.1            </span></span>
 <span><span class="co">## [145] statmod_1.5.0               highr_0.11                 </span></span>
-<span><span class="co">## [147] SummarizedExperiment_1.35.2 googleAuthR_2.0.2          </span></span>
+<span><span class="co">## [147] SummarizedExperiment_1.35.3 googleAuthR_2.0.2          </span></span>
 <span><span class="co">## [149] gargle_1.5.2                broom_1.0.7                </span></span>
 <span><span class="co">## [151] memoise_2.0.1               bslib_0.8.0                </span></span>
 <span><span class="co">## [153] ggtree_3.13.1               bit_4.5.0                  </span></span>
