@@ -40,7 +40,7 @@ piggyback::pb_upload(file = path_formatted,
 get_example_gwas(
   trait = c("educational_attainment", "fluid_intelligence", "prospective_memory"),
   munged = TRUE,
-  storage_dir = tempdir(),
+  storage_dir = tools::R_user_dir("MAGMA.Celltyping", which = "cache"),
   timeout = 60 * 5,
   verbose = TRUE
 )

@@ -86,8 +86,20 @@ create_gene_covar_file <- function(genesOutFile,
     dup_genes <- duplicated(quantDat2$entrez)
     if(sum(dup_genes, na.rm = TRUE)>0){
         messager("Removing", sum(dup_genes, na.rm = TRUE),
-                 "genes with duplicate entrez IDs.",v=verbose)
+                 "gene(s) with duplicate entrez IDs.",v=verbose)
         quantDat2 <- quantDat2[!dup_genes,]
+    }
+    #### Ensure there are no duplicate cell types when ignoring case (which MAGMA does) ####
+    dup_ct <- duplicated(toupper(colnames(quantDat2)))
+    if(sum(dup_ct)>0){
+      messager("Removing", sum(dup_ct, na.rm = TRUE),
+               "cell type(s) with duplicate cell types (when ignoring upper/lowercase):",
+               paste(shQuote(colnames(quantDat2)[dup_ct]), collapse = ","),
+               "Please consider regenerating your CTD object with",
+               "unique cell type names (when ignoring upper/lowercase)",
+               "for more accurate results.",
+               v=verbose)
+      quantDat2 <- quantDat2[,!dup_ct]
     }
     #### Write genes covar file to disk ####
     geneCovarFile <- tempfile()

@@ -1,3 +1,14 @@
+# MAGMA.Celltyping 2.0.14
+
+## New features
+
+* Make sure `get_example_gwas` caches data.
+
+## Bug fixes
+
+* `create_gene_covar_file`: Add check to drop duplicate cell types (after ignoring case)
+* `load_magma_results_file`: Update message to include scenario where cell types dropped due to be duplicated.
+
 # MAGMA.Celltyping 2.0.13
 
 ## New features

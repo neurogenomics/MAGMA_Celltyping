@@ -93,7 +93,8 @@ load_magma_results_file <- function(path,
                 messager(numCTinCTD,
                 "celltypes in ctd but",numCTinRes,"in results file.",
                 "Some celltypes may have been dropped due if the variance",
-                "being too low (i.e. set contains only one gene used in analysis).")
+                "being too low (i.e. set contains only one gene used in analysis)",
+                "OR duplicate celltype names (after ignoring case).")
                 messager(
                     "<50% of celltypes missing.",
                     "Attemping to fix by removing missing cell-types:\n",

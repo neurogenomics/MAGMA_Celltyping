@@ -46,7 +46,7 @@ prepare_quantile_groups <- function(ctd,
         ctd <- lapply(ctd, EWCE::bin_specificity_into_quantiles,
                       numberOfBins = numberOfBins, 
                       matrix_name = "specificity_quantiles") 
-    }
+    } 
     #### Compute specificity deciles ####
     ctd <- lapply(ctd, EWCE::bin_specificity_into_quantiles,
                   numberOfBins = 10, 

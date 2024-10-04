@@ -16,7 +16,8 @@ check_quantiles <- function(ctd,
                               function(lvl,
                                        .matrix_name=matrix_name,
                                        .metric=metric[1]){
-        messager("Checking CTD: level ",lvl,v=TRUE, parallel = TRUE)
+        messager("Checking CTD ",matrix_name," matrix: ",
+                 "level ",lvl,v=TRUE, parallel = TRUE)
         ctd_1lvl <- ctd[[lvl]]
         if(.metric=="n"){
             col_unique <- apply(ctd_1lvl[[.matrix_name]], 2,

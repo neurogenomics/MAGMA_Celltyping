@@ -104,7 +104,6 @@ calculate_celltype_associations <- function(ctd,
         path <- sprintf("%s.%s.gsa.out",
                         sumstatsPrefix2,
                         analysis_name)
-        
         path <- get_actual_path(path)
         #### Use existing results, or compute new ones ####
         if ((!file.exists(path)) || isTRUE(force_new)) {

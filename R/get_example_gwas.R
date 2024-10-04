@@ -61,7 +61,8 @@ get_example_gwas <- function(trait = c(
                                  "prospective_memory"
                              ),
                              munged = TRUE,
-                             storage_dir = tempdir(),
+                             storage_dir = tools::R_user_dir("MAGMA.Celltyping",
+                                                             which="cache"),
                              timeout = 60 * 5,
                              verbose = TRUE) {
     trait <- tolower(trait)[1]

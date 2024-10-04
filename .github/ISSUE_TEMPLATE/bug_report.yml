@@ -43,10 +43,14 @@ body:
         If that's not possible, please at least include a screenshot of your data and other relevant details.
         
         See [here](https://www.r-bloggers.com/2020/10/how-to-make-a-reprex/) for an intro to making a reproducible example (i.e. reprex) and why they're important! 
+        
+        Surrounding your code in triple backticks will render it nicely on GitHub.
       placeholder: |
         # For example:
+        ```R
         df <- data.frame(list(a=rep(2,3), b=rep(1,3)))
         df["bTYPO"]
+        ```
     validations:
       required: true
 
@@ -58,7 +62,9 @@ body:
         Copy and paste the R console output. 
       placeholder: |
         # For example:
+        ```R
         Error in `[.data.frame`(df, "bTYPO") : undefined columns selected
+        ```
     validations:
       required: true
 
@@ -82,6 +88,7 @@ body:
       description: |
         Copy and paste the output of the `sessionInfo() R function.
       placeholder: |
+        ```R
         R version 4.4.1 (2024-06-14)  
         Platform: aarch64-apple-darwin20  
         Running under: macOS 15.0  
@@ -101,4 +108,5 @@ body:
         ...
         ...
         ...
+        ```
  
