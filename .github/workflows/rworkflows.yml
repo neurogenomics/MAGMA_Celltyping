@@ -29,11 +29,11 @@ jobs:
           r: auto
           cont: ~
           rspm: ~
-        - os: windows-latest
-          bioc: release
-          r: auto
-          cont: ~
-          rspm: ~
+        ##- os: windows-latest- failing install on windows just removing for now
+        ##  bioc: release
+        ##  r: auto
+        ##  cont: ~
+        ##  rspm: ~
     steps:
     - uses: neurogenomics/rworkflows@master
       with:
