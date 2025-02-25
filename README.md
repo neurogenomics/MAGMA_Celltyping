@@ -1,7 +1,7 @@
 <img src='https://github.com/neurogenomics/MAGMA_Celltyping/raw/master/inst/hex/hex.png' title='Hex sticker for MAGMA.Celltyping' height='300'><br>
 [![License:
 GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)
-[![](https://img.shields.io/badge/devel%20version-2.0.13-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
+[![](https://img.shields.io/badge/devel%20version-2.0.15-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
 [![](https://img.shields.io/github/languages/code-size/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
 [![](https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/commits/master)
 <br> [![R build
@@ -14,7 +14,7 @@ Authors: <i>Brian Schilder, Alan Murphy, Julien Bryois, Nathan
 Skene</i>  
 </h4>
 <h4>  
-README updated: <i>Oct-02-2024</i>  
+README updated: <i>Feb-20-2025</i>  
 </h4>
 
 ## Introduction

@@ -160,8 +160,23 @@ Now we'll construct a heatmap visualizing the enrichment results, such that each
 ```{r Heatmap, error=TRUE}  
 heat <- MAGMA.Celltyping::results_heatmap(
   merged_results = merged_results, 
-  title = "Alzheimer's Disease (ieu-a-298) vs. nervous system cell-types (Zeisel2015)",
+  title = "Alzheimer's Disease (ieu-a-298) vs.\nnervous system cell-types (Zeisel2015)",
   fdr_thresh = 1)
+```
+
+## Bar plot
+
+Now we can also plot the p-value results (-log10 p-values) based on a 
+significance threshold (for either linear and top10%) together in a bar plot 
+(sorted by top10% results).
+
+```{r Barplot, error=TRUE}
+barplot_ggplot <- MAGMA.Celltyping::results_barplot(
+  merged_results = merged_results,
+  title="Alzheimer's Disease (ieu-a-298) vs.\nnervous system cell-types (Zeisel2015)",
+  fdr_thresh = 1,
+  horz_line_p = .2
+)
 ```
 
 

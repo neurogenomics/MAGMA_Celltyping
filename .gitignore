@@ -46,3 +46,5 @@ vignettes/*.R
 # R Environment Variables
 .Renviron
 ieugwasr_oauth
+/doc/
+/Meta/

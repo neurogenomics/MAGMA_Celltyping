@@ -1,3 +1,10 @@
+# MAGMA.Celltyping 2.0.15
+
+## New features
+
+* New barplot added to show all significant top 10% and linear results.
+
+
 # MAGMA.Celltyping 2.0.14
 
 ## New features
