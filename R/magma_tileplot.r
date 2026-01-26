@@ -92,16 +92,14 @@ magma_tileplot <- function(ctd,
         x = results$q,
         breaks = c(0, 0.00001, 0.0001, 0.001, 0.05, 1),
         labels = c(4, 3, 2, 1, NA)
-    )
+    ) |> as.character() |> as.numeric()
+    #### Filter by qvalue threshold ####
     if (!is.null(qvalue_thresh)) {
         results <- subset(results, q <= qvalue_thresh)
     }
-    #### Parse negative (-) sign in fill var ####
-    fill_neg <- FALSE
-    if (grepl("^-", fill)) {
-        fill_neg <- TRUE
-        fill <- gsub("^-", "", fill)
-    }
+    #### Parse  fill var ####
+    fill_expr <- rlang::parse_expr(fill)
+    results$fill_var <- rlang::eval_tidy(fill_expr, data = results)
     
     #### Prepare the tileplot ####
     results$GCOV_FILE <- stringr::str_wrap(gsub("\\.", ". ", results$GCOV_FILE), width = wrap_width)
@@ -109,9 +107,9 @@ magma_tileplot <- function(ctd,
         ggplot2::geom_tile(ggplot2::aes(
             x = .data$GCOV_FILE,
             y = .data$Celltype,
-            fill = ifelse(fill_neg, -.data[[fill]], .data[[fill]])
+            fill = .data$fill_var
         )) +
-        ggplot2::labs(x = "MAGMA file", y = "Cell type", title = "MAGMA enrichment results") +
+        ggplot2::labs(x = "MAGMA file", y = "Cell type", title = "MAGMA enrichment results", fill = fill) +
         ggplot2::scale_fill_gradient(low = "white", high = "darkblue") +
         ggplot2::geom_point(
             ggplot2::aes(

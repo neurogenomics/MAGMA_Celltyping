@@ -55,7 +55,9 @@ Imports:
     methods,
     reshape2,
     tools,
-    gh
+    gh,
+    lifecycle,
+    rlang
 Suggests: 
     rworkflows,
     markdown,

@@ -10,7 +10,12 @@
 #' @param x_lab Plot x-axis label.
 #' @param fdr_thresh FDR filtering threshold.
 #' @param facet_formula Facet formula for plot,
-#'  passed to \link[ggplot2]{facet_grid}.
+#' passed to \link[ggplot2]{facet_grid}.
+#'
+#'  DEPRECATED: Please use
+#'  \code{facet_rows} and \code{facet_cols} instead.
+#' @param facet_rows Facet rows for plot, passed to \link[ggplot2]{facet_grid}.
+#' @param facet_cols Facet columns for plot, passed to \link[ggplot]{facet_grid}.
 #' @param x_var x-axis variable.
 #' @param y_var y-axis variable.
 #' @param fill_var Fill variable.
@@ -18,7 +23,7 @@
 #' @param save_path Path to save plot to.
 #' @param height Plot height.
 #' @param width Plot width.
-#' @inheritParams ggplot2::facet_grid
+#' @inheritParams ggplot2::facet
 #' @inheritParams ggplot2::ggsave
 #'
 #' @return ggplot object.
@@ -31,11 +36,14 @@
 #'     fdr_thresh = 1)
 #' @export
 #' @importFrom stats as.formula
+#' @importFrom lifecycle deprecate_stop
 results_heatmap <- function(merged_results,
                             title = NULL,
                             x_lab = NULL,
                             fdr_thresh = .05,
-                            facet_formula = "EnrichmentMode ~ .",
+                            facet_formula = NULL,
+                            facet_rows = "EnrichmentMode",
+                            facet_cols = NULL,
                             x_var = "Celltype",
                             y_var = "GWAS",
                             fill_var = "-log1p(FDR)",
@@ -46,6 +54,16 @@ results_heatmap <- function(merged_results,
                             width = 7,
                             dpi = 300,
                             save_path = file.path(tempdir(), "MAGMA_Celltyping.heatmap.jpg")) {
+    #### Check deprecated arg ####
+    if (!is.null(facet_formula)) {
+        deprecate_stop(
+            when = "2.0.16",
+            what = I("results_heatmap(facet_formula)"),
+            with = I("results_heatmap(facet_rows, facet_cols)"),
+            details = "This change was made due to the deprecation of 'facet_grid(formula=...)' in ggplot2."
+        )
+    }
+    
     #### Avoid confusing checks ####
     FDR <- NULL
     
@@ -55,26 +73,32 @@ results_heatmap <- function(merged_results,
     }
     if (is.null(fdr_thresh))
         fdr_thresh <- 1
-    subtitle <- if (!is.null(fdr_thresh))
+    subtitle <- if (!is.null(fdr_thresh)) {
         paste0("FDR < ", fdr_thresh)
-    else
+    } else {
         NULL
+    }
     #### Filter by FDR ####
     plot_dat <- subset(merged_results, FDR < fdr_thresh)
     messager(formatC(nrow(plot_dat), big.mark = ","), "results @ FDR <", fdr_thresh)
     if (nrow(plot_dat) == 0)
         stop("Filtered data must contain >0 rows.")
+    #### Parse fill_var ####
+    fill_expr <- rlang::parse_expr(fill_var)
+    plot_dat$fill_var <- rlang::eval_tidy(fill_expr, data = plot_dat)
     #### Plot ####
-    heat <- ggplot2::ggplot(data = plot_dat, ggplot2::aes(x = .data[[x_var]], y = .data[[y_var]], fill = .data[[fill_var]])) +
+    heat <- ggplot2::ggplot(data = plot_dat, ggplot2::aes(x = .data[[x_var]], y = .data[[y_var]], fill = .data$fill_var)) +
         ggplot2::geom_tile(color = "white") +
         ggplot2::facet_grid(
-            facets = stats::as.formula(facet_formula),
+            rows = facet_rows,
+            cols = facet_cols,
             scales = scales,
             space = space
         ) +
         ggplot2::labs(title = title,
                       subtitle = subtitle,
-                      x = x_lab) +
+                      x = x_lab,
+                      fill = fill_var) +
         ggplot2::scale_fill_gradient(
             low = "blue",
             high = "red",
