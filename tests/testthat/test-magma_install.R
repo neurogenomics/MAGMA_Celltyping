@@ -1,3 +1,4 @@
+skip_if_offline()
 test_that("magma_install/uninstall works", {
   
     options(download.file.method = "libcurl")

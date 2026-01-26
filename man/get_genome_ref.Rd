@@ -9,7 +9,7 @@ get_genome_ref(
   storage_dir = tools::R_user_dir("MAGMA.Celltyping", which = "cache"),
   method = c("magma"),
   population = c("eur", "afr", "amr", "eas", "sas"),
-  timeout = 60 * 5,
+  timeout = 60 * 15,
   verbose = TRUE
 )
 }

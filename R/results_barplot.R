@@ -35,7 +35,7 @@
 #'     merged_results = merged_results,
 #'     fdr_thresh = 1)  
 #' @export
-#' @importFrom ggplot2 ggplot element_blank ggsave geom_vline geom_bar aes_string labs theme_bw theme scale_fill_manual
+#' @importFrom ggplot2 ggplot element_blank ggsave geom_vline geom_bar aes labs theme_bw theme scale_fill_manual
 results_barplot <- function(merged_results,
                             title = NULL,
                             y_lab = NULL,
@@ -86,9 +86,9 @@ results_barplot <- function(merged_results,
     #### Plot ####
     bar <- ggplot2::ggplot(
       data = plot_dat,
-      ggplot2::aes_string(y = y_var,
-                   x = x_var,
-                   fill = fill_var)) + 
+      ggplot2::aes(y = .data[[y_var]],
+                   x = .data[[x_var]],
+                   fill = .data[[fill_var]])) + 
       ggplot2::geom_bar(stat = "identity", 
                         position = "dodge") +
       ggplot2::labs(x = x_lab, 

@@ -63,9 +63,3 @@ compare_trait_enrichments <- function(magmaPath1 = NA,
     # print(magma3[magma3$comparisonP2sided<0.05,])
     return(magma3)
 }
-
-
-compare.trait.enrichments <- function(...){
-    .Deprecated("compare_trait_enrichments")
-    compare_trait_enrichments(...)
-}

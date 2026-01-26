@@ -1,27 +1,34 @@
+skip_if_offline()
 test_that("map_snps_to_genes works", {
-    
     options(download.file.method = "libcurl")
-    if(!is_32bit() & (.Platform$OS.type != "windows")){
+    if (!is_32bit() & (.Platform$OS.type != "windows")) {
         t1 <- Sys.time()
         #### Gather data ####
         ctd <- ewceData::ctd()
         #### Run SNP-to-gene mapping ####
-        ## Use a very small example GWAS file  
-        path_formatted <- MAGMA.Celltyping::get_example_gwas(
-            trait = "educational_attainment")
+        ## Use a very small example GWAS file
+        path_formatted <- MAGMA.Celltyping::get_example_gwas(trait = "educational_attainment")
         ## Map
         genesOutPath <- MAGMA.Celltyping::map_snps_to_genes(
             path_formatted = path_formatted,
             genome_build = "hg19",
-            N = 5000) 
+            N = 5000
+        )
         ## Test
-        genesOut_cols <- c("GENE","CHR","START","STOP","NSNPS",
-                           "NPARAM","N","ZSTAT","P") 
+        genesOut_cols <- c("GENE",
+                           "CHR",
+                           "START",
+                           "STOP",
+                           "NSNPS",
+                           "NPARAM",
+                           "N",
+                           "ZSTAT",
+                           "P")
         testthat::expect_true(file.exists(genesOutPath))
-        testthat::expect_true(file.exists(gsub(".out",".raw",genesOutPath)))
+        testthat::expect_true(file.exists(gsub(".out", ".raw", genesOutPath)))
         genesOut_dt <- data.table::fread(file = genesOutPath)
         testthat::expect_true(all(genesOut_cols %in% colnames(genesOut_dt)))
-        testthat::expect_true(nrow(genesOut_dt)>70) 
+        testthat::expect_true(nrow(genesOut_dt) > 70)
         
         #### Run enrichment pipeline ####
         ## Run
@@ -33,16 +40,20 @@ test_that("map_snps_to_genes works", {
             ctd_species = "mouse"
         )
         ## Test
-        ctAssocs_names <- c("total_baseline_tests_performed","gwas_sumstats_path",
-                            "analysis_name","upstream_kb","downstream_kb")
+        ctAssocs_names <- c(
+            "total_baseline_tests_performed",
+            "gwas_sumstats_path",
+            "analysis_name",
+            "upstream_kb",
+            "downstream_kb"
+        )
         testthat::expect_true(all(ctAssocs_names %in% names(ctAssocs)))
-        celltypes <- EWCE::fix_celltype_names(
-            celltypes =  colnames(ctd[[1]]$specificity))
+        celltypes <- EWCE::fix_celltype_names(celltypes =  colnames(ctd[[1]]$specificity))
         testthat::expect_true(all(celltypes %in% ctAssocs[[1]]$results$Celltype))
         
         t2 <- Sys.time()
-        print(t2-t1)
-         
+        print(t2 - t1)
+        
         #### Bi-allelic vs. Multi-allelic GWAS sumstats ####
         ### Set dbSNP version
         # dbSNP <- 144 # 155
@@ -59,7 +70,7 @@ test_that("map_snps_to_genes works", {
         #   # force_new = TRUE,
         #   duplicate = "first",
         #   synonym_dup = "skip-dup",
-        #   genome_build = "hg19") 
+        #   genome_build = "hg19")
         # ## With multi-allelic SNPs
         # ## Munge
         # path_formatted2 <- MungeSumstats::import_sumstats(
@@ -75,8 +86,8 @@ test_that("map_snps_to_genes works", {
         #   # force_new = TRUE,
         #   duplicate = "first",
         #   synonym_dup = "skip-dup",
-        #   genome_build = "hg19") 
-        # ## Compare GWAS files 
+        #   genome_build = "hg19")
+        # ## Compare GWAS files
         # dt1 <- data.table::fread( path_formatted1[[1]])
         # dt2 <- data.table::fread( path_formatted2[[1]])
         # testthat::expect_lt(nrow(dt1), nrow(dt2))
@@ -90,23 +101,25 @@ test_that("map_snps_to_genes works", {
         #   full.names = TRUE)
         # bed <- plinkr::read_plink_bed_file_from_files(
         #   bed_filename = f[1],
-        #   bim_filename = f[2], 
+        #   bim_filename = f[2],
         #   fam_filename = f[3])
         # f_syn <- list.files(
         #   path = "/Users/schilder/Library/Caches/org.R-project.R/R/MAGMA.Celltyping/g1000_eur/",
-        #   pattern = "synonyms$", 
+        #   pattern = "synonyms$",
         #   full.names = TRUE)
         # syn <- readLines(f_syn)[-c(1,2)]
-        # snps_syn <- paste0("rs",unlist(strsplit(syn," "))) 
+        # snps_syn <- paste0("rs",unlist(strsplit(syn," ")))
         # snps <- unique(c(rownames(bed),snps_syn))
         # snps1 <- intersect(snps,dt1$SNP)
         # snps2 <- intersect(snps,dt2$SNP)
         # testthat::expect_false(length(snps1)==length(snps2))
         # length(snps2)- length(snps1)
-        # ## Compare MAGMA files 
+        # ## Compare MAGMA files
         # g1 <- MAGMA.Celltyping:::read_magma_genes_out(genesOutPath1)
         # g2 <- MAGMA.Celltyping:::read_magma_genes_out(genesOutPath2)
-        # all.equal(g1,g2) 
+        # all.equal(g1,g2)
         
-    } else {testthat::expect_null(NULL)}
+    } else {
+        testthat::expect_null(NULL)
+    }
 })

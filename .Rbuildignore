@@ -18,3 +18,5 @@ MAGMA.Celltyping/inst/hex
 package-lock.json
 package.json
 ^ieugwasr_oauth$
+.DS_Store
+^tests/.*\.(tsv|tsv\.gz|pdf)$

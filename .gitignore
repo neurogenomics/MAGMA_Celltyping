@@ -48,3 +48,9 @@ vignettes/*.R
 ieugwasr_oauth
 /doc/
 /Meta/
+# MacOS
+.DS_Store
+# Test output files
+MAGMA_Figures/
+tests/**/*.pdf
+tests/**/*.tsv*

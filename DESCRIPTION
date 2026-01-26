@@ -1,7 +1,7 @@
 Package: MAGMA.Celltyping
 Type: Package
 Title: Find Causal Cell-Types Underlying Complex Trait Genetics
-Version: 2.0.15
+Version: 2.0.16
 Authors@R:
     c(person(given = "Brian",
            family = "Schilder",
@@ -18,6 +18,11 @@ Authors@R:
            role = c("aut"),
            email = "julien.bryois@gmail.com",
            comment = c(ORCID = "0000-0002-4747-2166")),
+     person(given = "Hiranyamaya (Hiru)",
+           family = "Dash",
+           role = c("ctb"),
+           email = "hdash.work@gmail.com",
+           comment = c(ORCID = "0009-0005-5514-505X")),
      person(given = "Nathan",
            family = "Skene",
            role = c("aut"),
@@ -55,7 +60,9 @@ Imports:
     methods,
     reshape2,
     tools,
-    gh
+    gh,
+    lifecycle,
+    rlang
 Suggests: 
     rworkflows,
     markdown,
@@ -73,6 +80,6 @@ Suggests:
 SystemRequirements: A system installation of
     [MAGMA](https://ctg.cncr.nl/software/magma) is required 
     but can be installed automatically by this package.
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Encoding: UTF-8
 Config/testthat/edition: 3
