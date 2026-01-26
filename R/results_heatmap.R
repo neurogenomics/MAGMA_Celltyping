@@ -23,7 +23,7 @@
 #' @param save_path Path to save plot to.
 #' @param height Plot height.
 #' @param width Plot width.
-#' @inheritParams ggplot2::facet
+#' @inheritParams ggplot2::facet_grid
 #' @inheritParams ggplot2::ggsave
 #'
 #' @return ggplot object.

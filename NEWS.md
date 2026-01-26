@@ -5,6 +5,7 @@
 * Fix ggplot v4 breaking changes
 * Fix MAGMA download links
 
+
 # MAGMA.Celltyping 2.0.15
 
 ## New features

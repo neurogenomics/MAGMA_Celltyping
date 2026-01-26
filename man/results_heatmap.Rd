@@ -51,6 +51,16 @@ passed to \link[ggplot2]{facet_grid}.
 
 \item{fill_var}{Fill variable.}
 
+\item{scales}{Are scales shared across all facets (the default,
+\code{"fixed"}), or do they vary across rows (\code{"free_x"}),
+columns (\code{"free_y"}), or both rows and columns (\code{"free"})?}
+
+\item{space}{If \code{"fixed"}, the default, all panels have the same size.
+If \code{"free_y"} their height will be proportional to the length of the
+y scale; if \code{"free_x"} their width will be proportional to the
+length of the x scale; or if \code{"free"} both height and width will
+vary.  This setting has no effect unless the appropriate scales also vary.}
+
 \item{show_plot}{Whether to print the plot.}
 
 \item{height}{Plot height.}
