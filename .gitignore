@@ -54,3 +54,4 @@ ieugwasr_oauth
 MAGMA_Figures/
 tests/**/*.pdf
 tests/**/*.tsv*
+docs

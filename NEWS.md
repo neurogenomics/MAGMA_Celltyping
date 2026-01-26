@@ -6,6 +6,7 @@
     - `calculate.conditional.celltype.enrichment.probabilities.wtLimma`
     - `calculate.celltype.enrichment.probabilities.wtLimma`
     - `compare.trait.enrichments`
+* Update documentation website to Bootstrap 5.
 
 ## Bug fixes
 
