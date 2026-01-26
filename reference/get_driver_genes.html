@@ -21,7 +21,7 @@ the cell-type specificity score from the CellTypeDataset
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.16</span>
       </span>
     </div>
 
@@ -64,7 +64,7 @@ the cell-type specificity score from the CellTypeDataset
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get genes driving significant <span class="pkg">MAGMA_celltyping</span> results</h1>
-    <small class="dont-index">Source: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/blob/master/R/get_driver_genes.R" class="external-link"><code>R/get_driver_genes.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/blob/ggplot-fix/R/get_driver_genes.R" class="external-link"><code>R/get_driver_genes.R</code></a></small>
     <div class="hidden name"><code>get_driver_genes.Rd</code></div>
     </div>
 
@@ -157,37 +157,51 @@ originally came from, regardless of its current gene format
     <dt><code>non121_strategy</code></dt>
 <dd><p>How to handle genes that don't have
 1:1 mappings between <code>input_species</code>:<code>output_species</code>.
-Options include:<br></p><ul><li><p><code>"drop_both_species" or "dbs" or 1</code> : <br>
-Drop genes that have duplicate
-mappings in either the <code>input_species</code> or <code>output_species</code> <br>
-(<em>DEFAULT</em>).</p></li>
-<li><p><code>"drop_input_species" or "dis" or 2</code> : <br>
-Only drop genes that have duplicate
-mappings in the <code>input_species</code>.</p></li>
-<li><p><code>"drop_output_species" or "dos" or 3</code> : <br>
-Only drop genes that have duplicate
-mappings in the <code>output_species</code>.</p></li>
-<li><p><code>"keep_both_species" or "kbs" or 4</code> : <br>
-Keep all genes regardless of whether
-they have duplicate mappings in either species.</p></li>
-<li><p><code>"keep_popular" or "kp" or 5</code> : <br>
-Return only the most "popular" interspecies ortholog mappings.
+Options include:<br></p><dl><dt><code>"drop_both_species" or "dbs" or 1</code></dt>
+<dd><p>Drop genes that have duplicate
+mappings in either the <code>input_species</code> or <code>output_species</code>
+(<em>DEFAULT</em>).</p></dd>
+
+<dt><code>"drop_input_species" or "dis" or 2</code></dt>
+<dd><p>Only drop genes that have duplicate
+mappings in the <code>input_species</code>.</p></dd>
+
+<dt><code>"drop_output_species" or "dos" or 3</code></dt>
+<dd><p>Only drop genes that have duplicate
+mappings in the <code>output_species</code>.</p></dd>
+
+<dt><code>"keep_both_species" or "kbs" or 4</code></dt>
+<dd><p>Keep all genes regardless of whether
+they have duplicate mappings in either species.</p></dd>
+
+<dt><code>"keep_popular" or "kp" or 5</code></dt>
+<dd><p>Return only the most "popular" interspecies ortholog mappings.
  This procedure tends to yield a greater number of returned genes
- but at the cost of many of them not being true biological 1:1 orthologs.</p></li>
-<li><p><code>"sum","mean","median","min" or "max"</code> : <br>
- When <code>gene_df</code> is a matrix and <code>gene_output="rownames"</code>,
+ but at the cost of many of them not being true biological 1:1 orthologs.</p></dd>
+
+ <dt><code>"sum","mean","median","min" or "max"</code></dt>
+<dd><p>When <code>gene_df</code> is a matrix and <code>gene_output="rownames"</code>,
   these options will aggregate many-to-one gene mappings
   (<code>input_species</code>-to-<code>output_species</code>)
-  after dropping any duplicate genes in the <code>output_species</code>.</p></li>
-</ul></dd>
+  after dropping any duplicate genes in the <code>output_species</code>.</p></dd>
+
+
+</dl></dd>
 
     <dt><code>method</code></dt>
-<dd><p>R package to use for gene mapping:</p><ul><li><p><code>"gprofiler"</code> : Slower but more species and genes.</p></li>
-<li><p><code>"homologene"</code> : Faster but fewer species and genes.</p></li>
-<li><p><code>"babelgene"</code> : Faster but fewer species and genes.
-Also gives consensus scores for each gene mapping based on a
- several different data sources.</p></li>
-</ul></dd>
+<dd><p>R package to use for gene mapping:</p><dl><dt><code>"gprofiler"</code></dt>
+<dd><p>Slower but more species and genes.</p></dd>
+
+ <dt><code>"homologene"</code></dt>
+<dd><p>Faster but fewer species and genes.</p></dd>
+
+ <dt><code>"babelgene"</code></dt>
+<dd><p>Faster but fewer species and genes.
+ Also gives consensus scores for each gene mapping based on a
+ several different data sources.</p></dd>
+
+
+</dl></dd>
 
     <dt><code>force_new_quantiles</code></dt>
 <dd><p>By default, quantile computation is
@@ -239,7 +253,7 @@ numeric column names.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning MAGMA directories.</span>
 <span class="r-in"><span><span class="va">magma_res</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="merge_results.html">merge_results</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="va"><a href="enrichment_results.html">enrichment_results</a></span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving full merged results to ==&gt; /tmp/RtmpM4LzbN/MAGMA_celltyping./.lvl1.csv</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving full merged results to ==&gt; /tmp/RtmpEiFr7F/MAGMA_celltyping./.lvl1.csv</span>
 <span class="r-in"><span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">get_driver_genes</span><span class="op">(</span>ctd <span class="op">=</span> <span class="va">ctd</span>, </span></span>
 <span class="r-in"><span>                                               magma_res <span class="op">=</span> <span class="va">magma_res</span>, </span></span>
 <span class="r-in"><span>                                               GenesOut_dir <span class="op">=</span> <span class="va">GenesOut_dir</span>, </span></span>
@@ -257,7 +271,7 @@ numeric column names.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping species name: human</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Common name mapping found for human</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 1 organism identified from search: 9606</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gene table with 19,129 rows retrieved.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using cached file: /github/home/.cache/R/orthogene/all_genes-9606-homologene.csv.gz</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning all 19,129 genes from human.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Testing for gene overlap with: monkey</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Retrieving all genes using: homologene.</span>
@@ -265,7 +279,7 @@ numeric column names.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping species name: monkey</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Common name mapping found for monkey</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 1 organism identified from search: 9544</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gene table with 16,843 rows retrieved.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using cached file: /github/home/.cache/R/orthogene/all_genes-9544-homologene.csv.gz</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning all 16,843 genes from monkey.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Testing for gene overlap with: rat</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Retrieving all genes using: homologene.</span>
@@ -273,7 +287,7 @@ numeric column names.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping species name: rat</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Common name mapping found for rat</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 1 organism identified from search: 10116</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gene table with 20,616 rows retrieved.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using cached file: /github/home/.cache/R/orthogene/all_genes-10116-homologene.csv.gz</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning all 20,616 genes from rat.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Testing for gene overlap with: mouse</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Retrieving all genes using: homologene.</span>
@@ -281,7 +295,7 @@ numeric column names.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping species name: mouse</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Common name mapping found for mouse</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 1 organism identified from search: 10090</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gene table with 21,207 rows retrieved.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using cached file: /github/home/.cache/R/orthogene/all_genes-10090-homologene.csv.gz</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning all 21,207 genes from mouse.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Testing for gene overlap with: zebrafish</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Retrieving all genes using: homologene.</span>
@@ -289,7 +303,7 @@ numeric column names.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping species name: zebrafish</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Common name mapping found for zebrafish</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 1 organism identified from search: 7955</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gene table with 20,897 rows retrieved.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using cached file: /github/home/.cache/R/orthogene/all_genes-7955-homologene.csv.gz</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning all 20,897 genes from zebrafish.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Testing for gene overlap with: fly</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Retrieving all genes using: homologene.</span>
@@ -297,7 +311,7 @@ numeric column names.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Mapping species name: fly</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Common name mapping found for fly</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 1 organism identified from search: 7227</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Gene table with 8,438 rows retrieved.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using cached file: /github/home/.cache/R/orthogene/all_genes-7227-homologene.csv.gz</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Returning all 8,438 genes from fly.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Top match:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   - species: mouse </span>
@@ -351,7 +365,7 @@ numeric column names.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>

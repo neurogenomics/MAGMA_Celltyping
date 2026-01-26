@@ -18,7 +18,7 @@ celltype_associations_pipeline."><!-- mathjax --><script src="https://cdnjs.clou
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.16</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@ celltype_associations_pipeline."><!-- mathjax --><script src="https://cdnjs.clou
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot heatmap of enrichment results</h1>
-    <small class="dont-index">Source: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/blob/master/R/results_heatmap.R" class="external-link"><code>R/results_heatmap.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/blob/ggplot-fix/R/results_heatmap.R" class="external-link"><code>R/results_heatmap.R</code></a></small>
     <div class="hidden name"><code>results_heatmap.Rd</code></div>
     </div>
 
@@ -76,7 +76,9 @@ celltype_associations_pipeline."><!-- mathjax --><script src="https://cdnjs.clou
 <span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  x_lab <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fdr_thresh <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>  facet_formula <span class="op">=</span> <span class="st">"EnrichmentMode ~ ."</span>,</span>
+<span>  facet_formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  facet_rows <span class="op">=</span> <span class="st">"EnrichmentMode"</span>,</span>
+<span>  facet_cols <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  x_var <span class="op">=</span> <span class="st">"Celltype"</span>,</span>
 <span>  y_var <span class="op">=</span> <span class="st">"GWAS"</span>,</span>
 <span>  fill_var <span class="op">=</span> <span class="st">"-log1p(FDR)"</span>,</span>
@@ -114,7 +116,17 @@ celltype_associations_pipeline."><!-- mathjax --><script src="https://cdnjs.clou
 
 <dt id="arg-facet-formula">facet_formula<a class="anchor" aria-label="anchor" href="#arg-facet-formula"></a></dt>
 <dd><p>Facet formula for plot,
-passed to <a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a>.</p></dd>
+passed to <a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a>.</p>
+<p>DEPRECATED: Please use
+ <code>facet_rows</code> and <code>facet_cols</code> instead.</p></dd>
+
+
+<dt id="arg-facet-rows">facet_rows<a class="anchor" aria-label="anchor" href="#arg-facet-rows"></a></dt>
+<dd><p>Facet rows for plot, passed to <a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a>.</p></dd>
+
+
+<dt id="arg-facet-cols">facet_cols<a class="anchor" aria-label="anchor" href="#arg-facet-cols"></a></dt>
+<dd><p>Facet columns for plot, passed to facet_grid.</p></dd>
 
 
 <dt id="arg-x-var">x_var<a class="anchor" aria-label="anchor" href="#arg-x-var"></a></dt>
@@ -157,7 +169,8 @@ vary.  This setting has no effect unless the appropriate scales also vary.</p></
 
 <dt id="arg-dpi">dpi<a class="anchor" aria-label="anchor" href="#arg-dpi"></a></dt>
 <dd><p>Plot resolution. Also accepts a string input: "retina" (320),
-"print" (300), or "screen" (72). Applies only to raster output types.</p></dd>
+"print" (300), or "screen" (72). Only applies when converting pixel units,
+as is typical for raster output types.</p></dd>
 
 
 <dt id="arg-save-path">save_path<a class="anchor" aria-label="anchor" href="#arg-save-path"></a></dt>
@@ -173,16 +186,11 @@ vary.  This setting has no effect unless the appropriate scales also vary.</p></
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">MAGMA_results</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="va"><a href="enrichment_results.html">enrichment_results</a></span></span></span>
 <span class="r-in"><span><span class="va">merged_results</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="merge_results.html">merge_results</a></span><span class="op">(</span><span class="va">MAGMA_results</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving full merged results to ==&gt; /tmp/RtmpM4LzbN/MAGMA_celltyping./.lvl1.csv</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving full merged results to ==&gt; /tmp/RtmpEiFr7F/MAGMA_celltyping./.lvl1.csv</span>
 <span class="r-in"><span><span class="va">heat</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">results_heatmap</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    merged_results <span class="op">=</span> <span class="va">merged_results</span>,</span></span>
-<span class="r-in"><span>    fdr_thresh <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>  </span></span>
+<span class="r-in"><span>    fdr_thresh <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 14 results @ FDR &lt; 1</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The `facets` argument of `facet_grid()` is deprecated as of ggplot2 2.2.0.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use the `rows` argument instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">MAGMA.Celltyping</span> package.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue at</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/neurogenomics/MAGMA_Celltyping/issues&gt;</span>.</span>
 <span class="r-plt img"><img src="results_heatmap-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
@@ -198,7 +206,7 @@ vary.  This setting has no effect unless the appropriate scales also vary.</p></
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>

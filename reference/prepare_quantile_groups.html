@@ -19,7 +19,7 @@ from the CTD data which are not 1:1 orthologs with the GWAS species."><!-- mathj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.16</span>
       </span>
     </div>
 
@@ -62,7 +62,7 @@ from the CTD data which are not 1:1 orthologs with the GWAS species."><!-- mathj
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Prepare quantile groups for each celltype based on specificity</h1>
-    <small class="dont-index">Source: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/blob/master/R/prepare_quantile_groups.r" class="external-link"><code>R/prepare_quantile_groups.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/blob/ggplot-fix/R/prepare_quantile_groups.r" class="external-link"><code>R/prepare_quantile_groups.r</code></a></small>
     <div class="hidden name"><code>prepare_quantile_groups.Rd</code></div>
     </div>
 
@@ -101,29 +101,36 @@ Provides gene ortholog conversion.</p></dd>
 <dt id="arg-non-strategy">non121_strategy<a class="anchor" aria-label="anchor" href="#arg-non-strategy"></a></dt>
 <dd><p>How to handle genes that don't have
 1:1 mappings between <code>input_species</code>:<code>output_species</code>.
-Options include:<br></p><ul><li><p><code>"drop_both_species" or "dbs" or 1</code> : <br>
-Drop genes that have duplicate
-mappings in either the <code>input_species</code> or <code>output_species</code> <br>
-(<em>DEFAULT</em>).</p></li>
-<li><p><code>"drop_input_species" or "dis" or 2</code> : <br>
-Only drop genes that have duplicate
-mappings in the <code>input_species</code>.</p></li>
-<li><p><code>"drop_output_species" or "dos" or 3</code> : <br>
-Only drop genes that have duplicate
-mappings in the <code>output_species</code>.</p></li>
-<li><p><code>"keep_both_species" or "kbs" or 4</code> : <br>
-Keep all genes regardless of whether
-they have duplicate mappings in either species.</p></li>
-<li><p><code>"keep_popular" or "kp" or 5</code> : <br>
-Return only the most "popular" interspecies ortholog mappings.
+Options include:<br></p><dl><dt><code>"drop_both_species" or "dbs" or 1</code></dt>
+<dd><p>Drop genes that have duplicate
+mappings in either the <code>input_species</code> or <code>output_species</code>
+(<em>DEFAULT</em>).</p></dd>
+
+<dt><code>"drop_input_species" or "dis" or 2</code></dt>
+<dd><p>Only drop genes that have duplicate
+mappings in the <code>input_species</code>.</p></dd>
+
+<dt><code>"drop_output_species" or "dos" or 3</code></dt>
+<dd><p>Only drop genes that have duplicate
+mappings in the <code>output_species</code>.</p></dd>
+
+<dt><code>"keep_both_species" or "kbs" or 4</code></dt>
+<dd><p>Keep all genes regardless of whether
+they have duplicate mappings in either species.</p></dd>
+
+<dt><code>"keep_popular" or "kp" or 5</code></dt>
+<dd><p>Return only the most "popular" interspecies ortholog mappings.
  This procedure tends to yield a greater number of returned genes
- but at the cost of many of them not being true biological 1:1 orthologs.</p></li>
-<li><p><code>"sum","mean","median","min" or "max"</code> : <br>
- When <code>gene_df</code> is a matrix and <code>gene_output="rownames"</code>,
+ but at the cost of many of them not being true biological 1:1 orthologs.</p></dd>
+
+ <dt><code>"sum","mean","median","min" or "max"</code></dt>
+<dd><p>When <code>gene_df</code> is a matrix and <code>gene_output="rownames"</code>,
   these options will aggregate many-to-one gene mappings
   (<code>input_species</code>-to-<code>output_species</code>)
-  after dropping any duplicate genes in the <code>output_species</code>.</p></li>
-</ul></dd>
+  after dropping any duplicate genes in the <code>output_species</code>.</p></dd>
+
+
+</dl></dd>
 
 
 <dt id="arg-input-species">input_species<a class="anchor" aria-label="anchor" href="#arg-input-species"></a></dt>
@@ -182,7 +189,7 @@ with additional quantiles matrix.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>

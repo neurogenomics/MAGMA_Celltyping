@@ -18,7 +18,7 @@ celltype_associations_pipeline."><!-- mathjax --><script src="https://cdnjs.clou
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MAGMA.Celltyping</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.16</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@ celltype_associations_pipeline."><!-- mathjax --><script src="https://cdnjs.clou
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot barplot of enrichment results - plotting -log10 (p-value) but cut-off significance is based on FDR where if either linear or top10<!-- % result is &lt; --> FDR threshold the result will be plotted</h1>
-    <small class="dont-index">Source: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/blob/master/R/results_barplot.R" class="external-link"><code>R/results_barplot.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/neurogenomics/MAGMA_Celltyping/blob/ggplot-fix/R/results_barplot.R" class="external-link"><code>R/results_barplot.R</code></a></small>
     <div class="hidden name"><code>results_barplot.Rd</code></div>
     </div>
 
@@ -157,7 +157,8 @@ NULL to avoid sorting. Default is Top 10%.</p></dd>
 
 <dt id="arg-dpi">dpi<a class="anchor" aria-label="anchor" href="#arg-dpi"></a></dt>
 <dd><p>Plot resolution. Also accepts a string input: "retina" (320),
-"print" (300), or "screen" (72). Applies only to raster output types.</p></dd>
+"print" (300), or "screen" (72). Only applies when converting pixel units,
+as is typical for raster output types.</p></dd>
 
 
 <dt id="arg-save-path">save_path<a class="anchor" aria-label="anchor" href="#arg-save-path"></a></dt>
@@ -173,7 +174,7 @@ NULL to avoid sorting. Default is Top 10%.</p></dd>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">MAGMA_results</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="va"><a href="enrichment_results.html">enrichment_results</a></span></span></span>
 <span class="r-in"><span><span class="va">merged_results</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu"><a href="merge_results.html">merge_results</a></span><span class="op">(</span><span class="va">MAGMA_results</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving full merged results to ==&gt; /tmp/RtmpM4LzbN/MAGMA_celltyping./.lvl1.csv</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Saving full merged results to ==&gt; /tmp/RtmpEiFr7F/MAGMA_celltyping./.lvl1.csv</span>
 <span class="r-in"><span><span class="va">bar</span> <span class="op">&lt;-</span> <span class="fu">MAGMA.Celltyping</span><span class="fu">::</span><span class="fu">results_barplot</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    merged_results <span class="op">=</span> <span class="va">merged_results</span>,</span></span>
 <span class="r-in"><span>    fdr_thresh <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>  </span></span>
@@ -193,7 +194,7 @@ NULL to avoid sorting. Default is Top 10%.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>
