@@ -64,7 +64,7 @@ compare_trait_enrichments <- function(magmaPath1 = NA,
     return(magma3)
 }
 
-
+#' @export
 compare.trait.enrichments <- function(...){
     .Deprecated("compare_trait_enrichments")
     compare_trait_enrichments(...)

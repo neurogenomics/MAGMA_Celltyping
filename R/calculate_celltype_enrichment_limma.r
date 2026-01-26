@@ -177,6 +177,7 @@ calculate_celltype_enrichment_limma <- function(
     }
 }
 
+#' @export
 calculate.celltype.enrichment.probabilities.wtLimma <- function(...) {
     .Deprecated("calculate_celltype_enrichment_limma")
     calculate_celltype_enrichment_limma(...)

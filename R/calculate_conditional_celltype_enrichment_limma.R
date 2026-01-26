@@ -244,6 +244,7 @@ calculate_conditional_celltype_enrichment_limma <- function(
     return(df2 |> dplyr::rename(Celltype = ct))
 }
 
+#' @export
 calculate.conditional.celltype.enrichment.probabilities.wtLimma <-
     function(...) {
         .Deprecated(
