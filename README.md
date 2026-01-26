@@ -1,7 +1,7 @@
 <img src='https://github.com/neurogenomics/MAGMA_Celltyping/raw/master/inst/hex/hex.png' title='Hex sticker for MAGMA.Celltyping' height='300'><br>
 [![License:
 GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)
-[![](https://img.shields.io/badge/devel%20version-2.0.15-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
+[![](https://img.shields.io/badge/devel%20version-2.0.16-black.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
 [![](https://img.shields.io/github/languages/code-size/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping)
 [![](https://img.shields.io/github/last-commit/neurogenomics/MAGMA_Celltyping.svg)](https://github.com/neurogenomics/MAGMA_Celltyping/commits/master)
 <br> [![R build
