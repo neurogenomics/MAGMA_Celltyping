@@ -1,3 +1,9 @@
+# MAGMA.Celltyping 2.0.16
+
+## Bug fixes
+
+* Fix ggplot v4 breaking changes
+
 # MAGMA.Celltyping 2.0.15
 
 ## New features

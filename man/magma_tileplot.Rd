@@ -10,7 +10,7 @@ magma_tileplot(
   height = 13,
   width = 4,
   annotLevel = 1,
-  fill = "-log10(P)",
+  fill = "-log10p",
   fileTag = "",
   output_path = tempdir(),
   qvalue_thresh = NULL,
@@ -24,7 +24,7 @@ magma_tileplot(
 \arguments{
 \item{ctd}{Cell type data structure containing "specificity_quantiles".}
 
-\item{results}{Output from either 
+\item{results}{Output from either
 \link[MAGMA.Celltyping]{calculate_celltype_associations} or
 \link[MAGMA.Celltyping]{calculate_conditional_celltype_associations}.}
 
@@ -35,14 +35,14 @@ magma_tileplot(
 \item{annotLevel}{Annotation level to plot the results for.}
 
 \item{fill}{Variable in \code{results} to fill the plot tile colors by.
-Passed to \link[ggplot2]{aes_string}.}
+Passed to \link[ggplot2]{aes}.}
 
 \item{fileTag}{String appended to the names of the saved PDFs,
 i.e. the name of the celltype data file used.}
 
 \item{output_path}{Location where the results should be plotted.}
 
-\item{qvalue_thresh}{The multiple-testing corrected p-value at 
+\item{qvalue_thresh}{The multiple-testing corrected p-value at
 which to filter results (set to \code{NULL} to skip filtering).}
 
 \item{plotDendro}{Should the dendrogram of celltypes be
@@ -50,7 +50,7 @@ shown alongside the figure? TRUE or FALSE.}
 
 \item{show_plot}{Print to the plot(s).}
 
-\item{bind_plots}{Bind the list of plots together using 
+\item{bind_plots}{Bind the list of plots together using
 \link[patchwork]{wrap_plots}.}
 
 \item{wrap_width}{Width at which to wrap x-axis text labels.}

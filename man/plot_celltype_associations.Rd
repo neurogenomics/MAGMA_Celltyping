@@ -21,7 +21,7 @@ plot_celltype_associations(
 )
 }
 \arguments{
-\item{ctAssocs}{Output from either 
+\item{ctAssocs}{Output from either
 \link[MAGMA.Celltyping]{calculate_celltype_associations} or
 \link[MAGMA.Celltyping]{calculate_conditional_celltype_associations}.}
 
@@ -47,7 +47,7 @@ shown alongside the figure? TRUE or FALSE.}
 
 \item{show_plot}{Print to the plot(s).}
 
-\item{bind_plots}{Bind the list of plots together using 
+\item{bind_plots}{Bind the list of plots together using
 \link[patchwork]{wrap_plots}.}
 
 \item{ncol}{Number of columns to put plots into during \code{bind_plots}.}
