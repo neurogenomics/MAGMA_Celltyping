@@ -40,7 +40,7 @@ get_genome_ref <- function(genome_ref_path = NULL,
                                which="cache"),
                            method = c("magma"),
                            population = c("eur", "afr", "amr", "eas", "sas"),
-                           timeout = 60 * 5,
+                           timeout = 60 * 15,
                            verbose = TRUE) {
     #### population ####
     dir.create(storage_dir,showWarnings = FALSE, recursive = TRUE)
