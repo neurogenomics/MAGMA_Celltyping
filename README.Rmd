@@ -54,7 +54,7 @@ MAGMA.Celltyping::install_magma(desired_version="<version>",
 
 ## Using older versions
 
-With the release of `MAGMA_Celltyping` 2.0 in January 2022, there have been a number of [major updates and bug fixes](https://github.com/neurogenomics/MAGMA_Celltyping/pull/93). 
+With the release of `MAGMA.Celltyping` 2.0 in January 2022, there have been a number of [major updates and bug fixes](https://github.com/neurogenomics/MAGMA_Celltyping/pull/93). 
 
 - Only R>4.0.0 is supported. To use this package with older versions of R, install with:`remotes::install_github("neurogenomics/MAGMA_Celltyping@01a9e53")` 
 

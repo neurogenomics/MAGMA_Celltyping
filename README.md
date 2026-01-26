@@ -14,7 +14,7 @@ Authors: <i>Brian Schilder, Alan Murphy, Julien Bryois, Nathan
 Skene</i>  
 </h4>
 <h4>  
-README updated: <i>Feb-20-2025</i>  
+README updated: <i>Jan-26-2026</i>  
 </h4>
 
 ## Introduction
@@ -65,7 +65,7 @@ MAGMA.Celltyping::install_magma(desired_version="<version>",
 
 ## Using older versions
 
-With the release of `MAGMA_Celltyping` 2.0 in January 2022, there have
+With the release of `MAGMA.Celltyping` 2.0 in January 2022, there have
 been a number of [major updates and bug
 fixes](https://github.com/neurogenomics/MAGMA_Celltyping/pull/93).
 

@@ -1,9 +1,17 @@
 # MAGMA.Celltyping 2.0.16
 
+## New features
+
+* Fully remove deprecated functions:
+    - `calculate.conditional.celltype.enrichment.probabilities.wtLimma`
+    - `calculate.celltype.enrichment.probabilities.wtLimma`
+    - `compare.trait.enrichments`
+
 ## Bug fixes
 
 * Fix ggplot v4 breaking changes
 * Fix MAGMA download links
+* Update tests for removed functions
 
 
 # MAGMA.Celltyping 2.0.15
