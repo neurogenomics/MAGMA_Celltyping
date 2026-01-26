@@ -42,7 +42,7 @@ magma_links <- function(latest_only = TRUE,
     meta[version=="v1.10" & os=="source",link:="https://vu.data.surfsara.nl/index.php/s/1OOi7bxLWef0GwY/download"]
     ## Can substitute the rest
     meta[,link:=gsub("https://ctg.cncr.nl/software/MAGMA/prog//|https://ctg.cncr.nl/software/MAGMA/prog/archive//",
-                     "https://vu.data.surfsara.nl/index.php/s/8qDPUbOTrZ9lW2b/download?path=%2F&files=",link)]
+                     "https://vu.data.surf.nl/public.php/dav/files/8qDPUbOTrZ9lW2b/",link)]
     #### Filter by OS ####
     if (!is.null(OS)) {  
         meta <- subset(meta, os==OS)
