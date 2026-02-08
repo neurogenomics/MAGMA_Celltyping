@@ -35,7 +35,7 @@ magma_tileplot(
 \item{annotLevel}{Annotation level to plot the results for.}
 
 \item{fill}{Variable in \code{results} to fill the plot tile colors by.
-Passed to \link[ggplot2]{aes_string}.}
+Passed to \link[ggplot2]{aes}.}
 
 \item{fileTag}{String appended to the names of the saved PDFs,
 i.e. the name of the celltype data file used.}

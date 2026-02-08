@@ -45,8 +45,7 @@ get_ctd_dendro <- function(ctd,
     ordered_cells <- as.character(ddata$labels$label)
     dendroPlot <- ggplot2::ggplot(ggdendro::segment(ddata)) +
         ggplot2::geom_segment(
-            ggplot2::aes_string(x = "x", y = "y",
-                                xend = "xend", yend = "yend")) +
+            ggplot2::aes(x = x, y = y, xend = xend, yend = yend)) +
         ggplot2::coord_flip() +
         ggdendro::theme_dendro() 
     if(!is.null(expand)){

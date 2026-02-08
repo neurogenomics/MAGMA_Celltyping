@@ -7,11 +7,6 @@
 create_DT(data, caption = "", scrollY = 400)
 }
 \arguments{
-\item{data}{a data object (either a matrix or a data frame)}
-
-\item{caption}{the table caption; a character vector or a tag object
-generated from \code{htmltools::tags$caption()}}
-
 \item{scrollY}{Max height (in pixels) before wrapping the 
 table in a vertical scroll bar.}
 }

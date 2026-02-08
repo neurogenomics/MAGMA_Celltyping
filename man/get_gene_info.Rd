@@ -8,8 +8,6 @@ get_gene_info(genelist, attributes = c("size"), one_row_per_gene = FALSE)
 }
 \arguments{
 \item{genelist}{Gene list.}
-
-\item{attributes}{Attributes you want to retrieve.  A possible list of attributes can be retrieved using the function listAttributes.}
 }
 \description{
 Get gene info from Biomart

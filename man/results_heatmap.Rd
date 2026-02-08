@@ -59,7 +59,8 @@ vary.  This setting has no effect unless the appropriate scales also vary.}
 \item{width}{Plot width.}
 
 \item{dpi}{Plot resolution. Also accepts a string input: "retina" (320),
-"print" (300), or "screen" (72). Applies only to raster output types.}
+"print" (300), or "screen" (72). Only applies when converting pixel units,
+as is typical for raster output types.}
 
 \item{save_path}{Path to save plot to.}
 }

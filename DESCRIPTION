@@ -73,6 +73,6 @@ Suggests:
 SystemRequirements: A system installation of
     [MAGMA](https://ctg.cncr.nl/software/magma) is required 
     but can be installed automatically by this package.
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Encoding: UTF-8
 Config/testthat/edition: 3

@@ -14,7 +14,7 @@
 #' which to filter results (set to \code{NULL} to skip filtering).
 #' @param output_path Location where the results should be plotted.
 #' @param fill Variable in \code{results} to fill the plot tile colors by.
-#' Passed to \link[ggplot2]{aes_string}.
+#' Passed to \link[ggplot2]{aes}.
 #' @param wrap_width Width at which to wrap x-axis text labels.
 #' @param verbose Print messages.
 #' @inheritParams plot_celltype_associations
@@ -92,19 +92,19 @@ magma_tileplot <- function(ctd,
     #### Prepare the tileplot ####
     results$GCOV_FILE <- stringr::str_wrap(gsub("\\.",". ",results$GCOV_FILE),
                                            width = wrap_width)
+    .data <- NULL
     fig_Heatmap_WOdendro <- ggplot2::ggplot(results) +
         ggplot2::geom_tile(
-            ggplot2::aes_string(x = "GCOV_FILE", 
-                                y = "Celltype", 
-                                fill = fill
-                         )) + 
+            ggplot2::aes(x = GCOV_FILE,
+                         y = Celltype,
+                         fill = .data[[fill]])) + 
         ggplot2::labs(x="MAGMA file",
                       y="Cell type",
                       title = "MAGMA enrichment results") + 
         ggplot2::scale_fill_gradient(low = "white", high = "darkblue") +
         ggplot2::geom_point(
-            ggplot2::aes_string(x = "GCOV_FILE", y = "Celltype", 
-                                size = "dotsize"), 
+            ggplot2::aes(x = GCOV_FILE, y = Celltype,
+                         size = dotsize), 
             col = "black", 
             na.rm = TRUE) +
         ggplot2::theme_bw() +

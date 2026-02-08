@@ -42,15 +42,15 @@ results_heatmap <- function(merged_results,
                             scales = "free_y",
                             space = "fixed",
                             show_plot = TRUE,
-                            height = 5, 
+                            height = 5,
                             width = 7,
                             dpi = 300,
                             save_path = file.path(
                                 tempdir(),
                                 "MAGMA_Celltyping.heatmap.jpg")
-                            ) { 
+                            ) {
     #### Avoid confusing checks ####
-    FDR <- NULL;
+    FDR <- .data <- NULL;
     #### Check args #####
     if (!"GWAS" %in% colnames(merged_results)) {
         merged_results$GWAS <- merged_results$dataset
@@ -62,14 +62,17 @@ results_heatmap <- function(merged_results,
     messager(formatC(nrow(plot_dat), big.mark = ","),
              "results @ FDR <",fdr_thresh)
     if(nrow(plot_dat)==0) stop("Filtered data must contain >0 rows.")
+    #### Parse facet formula for modern ggplot2 syntax ####
+    facet_parts <- parse_facet_formula(facet_formula)
     #### Plot ####
     heat <- ggplot2::ggplot(
         data = plot_dat,
-        ggplot2::aes_string(x = x_var, y = y_var, fill = fill_var)
+        ggplot2::aes(x = .data[[x_var]], y = .data[[y_var]], fill = .data[[fill_var]])
     ) +
         ggplot2::geom_tile(color = "white") +
         ggplot2::facet_grid(
-            facets = stats::as.formula(facet_formula),
+            rows = facet_parts$rows,
+            cols = facet_parts$cols,
             scales = scales,
             space = space
         ) +

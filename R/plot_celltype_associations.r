@@ -145,10 +145,10 @@ plot_celltype_associations <- function(ctAssocs,
         }
         #### Make the figure ####
         messager("+ Generating figure.",v=verbose)
-        fig <- ggplot2::ggplot(ctAssocs[[annotLevel]]$results, 
-                              ggplot2::aes_string(x = "factor(Celltype)", 
-                                                  y = "-log10p",
-                                                  fill = "FullMethod")) + 
+        fig <- ggplot2::ggplot(ctAssocs[[annotLevel]]$results,
+                              ggplot2::aes(x = factor(Celltype),
+                                           y = `-log10p`,
+                                           fill = FullMethod)) + 
             ggplot2::geom_bar(stat = "identity", 
                               position = "dodge") +
             ggplot2::coord_flip() +
